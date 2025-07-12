@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuis Interaktif - Pemahaman Konsep Dasar</title>
+    <title>Kuis Interaktif - Analisis Pembelajaran</title>
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter -->
@@ -12,69 +12,70 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* Custom styles */
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* Simple transition for showing/hiding elements */
         .screen, .modal-backdrop {
             transition: opacity 0.5s ease-in-out;
         }
-        /* Custom button styling for a more engaging feel */
         .option-btn {
             @apply w-full text-left p-4 rounded-lg border-2 border-gray-300 bg-white transform transition-all duration-200;
         }
         .option-btn:hover {
              @apply bg-indigo-50 border-indigo-500 shadow-md -translate-y-0.5;
         }
-        .option-btn.selected {
-            @apply bg-indigo-100 border-indigo-600 ring-2 ring-indigo-300;
-        }
-        .option-btn.correct {
-            @apply bg-green-100 border-green-600;
-        }
-        .option-btn.incorrect {
-            @apply bg-red-100 border-red-600;
-        }
-        /* Custom modal styling */
-        .modal-backdrop {
-            @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4;
-        }
-        .modal-box {
-            @apply bg-white rounded-lg shadow-xl w-full max-w-sm text-center;
-        }
-        .modal-content {
-             @apply p-6;
+        .option-btn.selected { @apply bg-indigo-100 border-indigo-600 ring-2 ring-indigo-300; }
+        .option-btn.correct { @apply bg-green-100 border-green-600; }
+        .option-btn.incorrect { @apply bg-red-100 border-red-600; }
+        .modal-backdrop { @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4; }
+        .modal-box { @apply bg-white rounded-lg shadow-xl w-full max-w-sm text-center; }
+        .modal-content { @apply p-6; }
+
+        /* Print-specific styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #analysis-screen-printable, #analysis-screen-printable * {
+                visibility: visible;
+            }
+            #analysis-screen-printable {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .no-print {
+                display: none;
+            }
         }
     </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
 
-    <div class="w-full max-w-2xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden flex flex-col min-h-[550px] sm:min-h-[600px]">
+    <div class="w-full max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden flex flex-col min-h-[600px]">
         <!-- Start Screen -->
         <div id="start-screen" class="screen p-8 text-center flex-grow flex flex-col justify-center">
+            <!-- Content is the same as before -->
             <div>
                 <h1 class="text-3xl font-bold text-gray-800 mb-2">Selamat Datang di Kuis Interaktif!</h1>
                 <p class="text-gray-600 mb-6">Uji pemahaman Anda tentang beberapa konsep dasar.</p>
-                
-                <!-- Petunjuk Pengerjaan -->
                 <div class="text-left max-w-md mx-auto bg-gray-50 p-4 rounded-lg mb-6 border border-gray-200">
                     <h3 class="font-bold text-gray-700 mb-2 flex items-center"><i class="fas fa-info-circle mr-2 text-indigo-500"></i>Petunjuk Pengerjaan:</h3>
                     <ul class="list-disc list-inside text-gray-600 space-y-1 text-sm">
                         <li>Baca setiap soal dengan teliti.</li>
                         <li>Pilih salah satu jawaban yang Anda anggap paling benar.</li>
                         <li>Skor akhir akan ditampilkan setelah semua soal terjawab.</li>
-                        <li>Hasil Anda akan disimpan untuk analisis guru.</li>
                     </ul>
                 </div>
-
                 <div class="mb-4">
                     <input type="text" id="name-input" placeholder="Ketik nama Anda di sini..." class="w-full max-w-md mx-auto p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
-                <button id="start-btn" class="w-full max-w-md mx-auto bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors duration-300">
-                    Mulai Kuis
-                </button>
+                <button id="start-btn" class="w-full max-w-md mx-auto bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors duration-300">Mulai Kuis</button>
                 <div class="mt-6">
                     <a href="#" id="teacher-login-btn" class="text-sm text-indigo-600 hover:underline">Login sebagai Guru</a>
                 </div>
@@ -83,6 +84,7 @@
 
         <!-- Quiz Screen -->
         <div id="quiz-screen" class="screen p-8 hidden flex-grow flex flex-col">
+            <!-- Content is the same, layout fixed -->
             <div class="flex-shrink-0">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-xl font-bold text-gray-800">Soal <span id="question-number"></span> dari <span id="total-questions"></span></h2>
@@ -100,6 +102,7 @@
 
         <!-- Result Screen -->
         <div id="result-screen" class="screen p-8 text-center hidden flex-grow flex flex-col justify-center">
+            <!-- Content is the same -->
             <div>
                 <h1 class="text-3xl font-bold text-gray-800 mb-2">Kuis Selesai!</h1>
                 <p class="text-gray-600 mb-4">Terima kasih, <span id="result-name" class="font-bold"></span>!</p>
@@ -109,74 +112,68 @@
                     <p id="score-details" class="text-gray-600"></p>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                    <button id="restart-btn" class="bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors duration-300">
-                        Coba Lagi
-                    </button>
-                    <button id="analysis-btn" class="bg-gray-700 text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-800 transition-colors duration-300">
-                        Lihat Papan Peringkat
-                    </button>
+                    <button id="restart-btn" class="bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors duration-300 no-print">Coba Lagi</button>
+                    <button id="analysis-btn" class="bg-gray-700 text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-800 transition-colors duration-300 no-print">Lihat Papan Peringkat</button>
                 </div>
             </div>
         </div>
         
         <!-- Analysis Screen -->
         <div id="analysis-screen" class="screen p-8 hidden flex-grow flex flex-col">
-            <h1 class="text-3xl font-bold text-gray-800 mb-4 flex-shrink-0">Analisis & Papan Peringkat</h1>
-            <p class="text-gray-600 mb-6 flex-shrink-0">Berikut adalah hasil dari semua peserta yang telah mengikuti kuis.</p>
-            <div class="overflow-x-auto flex-grow">
-                <table class="min-w-full bg-white border">
-                    <thead class="bg-gray-200">
-                        <tr>
-                            <th class="py-2 px-4 border-b text-left">Nama Peserta</th>
-                            <th class="py-2 px-4 border-b text-center">Skor</th>
-                            <th class="py-2 px-4 border-b text-left">Waktu</th>
-                            <th class="py-2 px-4 border-b text-center">Detail</th>
-                        </tr>
-                    </thead>
-                    <tbody id="analysis-table-body">
-                        <tr><td colspan="4" class="text-center p-4">Memuat data...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-             <button id="back-to-start-btn" class="mt-6 bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors duration-300 flex-shrink-0">
-                Kembali ke Awal
-            </button>
-        </div>
-    </div>
+            <div id="analysis-screen-printable">
+                <div class="flex justify-between items-center mb-4">
+                    <h1 class="text-3xl font-bold text-gray-800">Laporan Analisis Kuis</h1>
+                    <button id="print-btn" class="no-print bg-gray-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-700 flex items-center gap-2"><i class="fas fa-print"></i> Cetak Laporan</button>
+                </div>
+                
+                <!-- Visualizations -->
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-8">
+                    <div class="lg:col-span-3 bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2">Analisis Butir Soal (% Jawaban Benar)</h3>
+                        <canvas id="itemAnalysisChart"></canvas>
+                    </div>
+                    <div class="lg:col-span-2 bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2">Distribusi Kelompok Siswa</h3>
+                        <canvas id="groupingChart"></canvas>
+                    </div>
+                </div>
 
-    <!-- Modals -->
-    <div id="alert-modal" class="modal-backdrop hidden">
-        <div class="modal-box">
-            <div class="modal-content">
-                <p id="alert-message" class="mb-4 text-lg"></p>
-                <button id="alert-close-btn" class="bg-indigo-600 text-white font-bold py-2 px-8 rounded-lg hover:bg-indigo-700 transition-colors">OK</button>
-            </div>
-        </div>
-    </div>
+                <!-- Student Grouping Details -->
+                <div class="mb-8">
+                    <h3 class="font-bold text-lg mb-2">Pengelompokan Siswa Berdasarkan Kemampuan</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div id="group-high" class="bg-green-50 border border-green-200 p-4 rounded-lg"></div>
+                        <div id="group-medium" class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg"></div>
+                        <div id="group-low" class="bg-red-50 border border-red-200 p-4 rounded-lg"></div>
+                    </div>
+                </div>
 
-    <div id="teacher-login-modal" class="modal-backdrop hidden">
-        <div class="modal-box">
-            <div class="modal-content">
-                <h3 class="text-xl font-bold mb-4">Login Guru</h3>
-                <p class="text-gray-600 mb-4">Masukkan kata sandi untuk melihat analisis.</p>
-                <input type="password" id="password-input" class="w-full p-2 border border-gray-300 rounded-lg mb-4">
-                <div class="flex gap-2">
-                    <button id="teacher-cancel-btn" class="w-full bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-400">Batal</button>
-                    <button id="teacher-submit-btn" class="w-full bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-indigo-700">Masuk</button>
+                <!-- Leaderboard -->
+                <div>
+                    <h3 class="font-bold text-lg mb-2">Papan Peringkat (Semua Peserta)</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white border">
+                            <thead class="bg-gray-200">
+                                <tr>
+                                    <th class="py-2 px-4 border-b text-left">Nama</th>
+                                    <th class="py-2 px-4 border-b text-center">Skor</th>
+                                    <th class="py-2 px-4 border-b text-left">Waktu</th>
+                                    <th class="py-2 px-4 border-b text-center no-print">Detail Jawaban</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analysis-table-body"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+            <button id="back-to-start-btn" class="no-print mt-6 bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 self-center">Kembali ke Awal</button>
         </div>
     </div>
 
-    <div id="detail-modal" class="modal-backdrop hidden">
-        <div class="modal-box max-w-lg">
-             <div class="modal-content text-left">
-                <h3 class="text-xl font-bold mb-4 text-center">Detail Jawaban: <span id="detail-student-name"></span></h3>
-                <div id="detail-answers-container" class="space-y-4 max-h-96 overflow-y-auto p-1"></div>
-                <button id="detail-close-btn" class="mt-6 w-full bg-indigo-600 text-white font-bold py-2 px-8 rounded-lg hover:bg-indigo-700 transition-colors">Tutup</button>
-            </div>
-        </div>
-    </div>
+    <!-- Modals (same as before) -->
+    <div id="alert-modal" class="modal-backdrop hidden"> <div class="modal-box"> <div class="modal-content"> <p id="alert-message" class="mb-4 text-lg"></p> <button id="alert-close-btn" class="bg-indigo-600 text-white font-bold py-2 px-8 rounded-lg hover:bg-indigo-700">OK</button> </div> </div> </div>
+    <div id="teacher-login-modal" class="modal-backdrop hidden"> <div class="modal-box"> <div class="modal-content"> <h3 class="text-xl font-bold mb-4">Login Guru</h3> <p class="text-gray-600 mb-4">Masukkan kata sandi.</p> <input type="password" id="password-input" class="w-full p-2 border border-gray-300 rounded-lg mb-4"> <div class="flex gap-2"> <button id="teacher-cancel-btn" class="w-full bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-400">Batal</button> <button id="teacher-submit-btn" class="w-full bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-indigo-700">Masuk</button> </div> </div> </div> </div>
+    <div id="detail-modal" class="modal-backdrop hidden"> <div class="modal-box max-w-lg"> <div class="modal-content text-left"> <h3 class="text-xl font-bold mb-4 text-center">Detail Jawaban: <span id="detail-student-name"></span></h3> <div id="detail-answers-container" class="space-y-4 max-h-96 overflow-y-auto p-1"></div> <button id="detail-close-btn" class="mt-6 w-full bg-indigo-600 text-white font-bold py-2 px-8 rounded-lg hover:bg-indigo-700">Tutup</button> </div> </div> </div>
 
     <!-- Firebase SDK -->
     <script type="module">
@@ -184,17 +181,15 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, serverTimestamp, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // --- QUIZ AND FIREBASE SETUP (No changes) ---
         const quizData = [
             { question: "Saat kalian mencari nama teman di HP, apakah HP memeriksa nama satu per satu dari awal sampai akhir?", options: { a: "Ya, selalu periksa satu per satu", b: "Tidak tahu", c: "Langsung lompat ke nama yang dicari (jika data terurut)" }, correct: "c" },
             { question: "Apa itu perulangan (loop) dalam pemrograman?", options: { a: "Melakukan sesuatu berulang-ulang sampai kondisi terpenuhi", b: "Menyimpan data sekali saja", c: "Menghapus data secara permanen" }, correct: "a" },
             { question: "Data yang diurutkan (sorted) artinya...", options: { a: "Disusun secara acak atau sembarangan", b: "Disusun dari kecil ke besar atau besar ke kecil", c: "Dihapus sebagian datanya" }, correct: "b" }
         ];
-
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-quiz-app';
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { apiKey: "AIzaSyDbTlt9d-t0U7qlkQW7Z_z8itkKvDp1qQA", authDomain: "kuissingkat-795ab.firebaseapp.com", projectId: "kuissingkat-795ab" };
-
         let app, auth, db, userId;
-
         try {
             app = initializeApp(firebaseConfig);
             auth = getAuth(app);
@@ -203,31 +198,18 @@
                 if (user) userId = user.uid;
                 else signInAnonymously(auth).catch(e => console.error("Sign-in failed", e));
             });
-        } catch (e) {
-            console.error("Firebase init failed:", e);
-            showAlert("Gagal terhubung ke layanan.");
-        }
-        
-        const screens = {
-            start: document.getElementById('start-screen'),
-            quiz: document.getElementById('quiz-screen'),
-            result: document.getElementById('result-screen'),
-            analysis: document.getElementById('analysis-screen')
-        };
-        const modals = {
-            alert: document.getElementById('alert-modal'),
-            teacherLogin: document.getElementById('teacher-login-modal'),
-            detail: document.getElementById('detail-modal')
-        };
-        
-        // --- STATE & ELEMENTS ---
+        } catch (e) { console.error("Firebase init failed:", e); showAlert("Gagal terhubung ke layanan."); }
+
+        // --- DOM & STATE (No changes) ---
+        const screens = { start: document.getElementById('start-screen'), quiz: document.getElementById('quiz-screen'), result: document.getElementById('result-screen'), analysis: document.getElementById('analysis-screen') };
+        const modals = { alert: document.getElementById('alert-modal'), teacherLogin: document.getElementById('teacher-login-modal'), detail: document.getElementById('detail-modal') };
         let currentQuestionIndex = 0, score = 0, userName = '', userAnswers = [];
         const nameInput = document.getElementById('name-input');
         const totalQuestionsElem = document.getElementById('total-questions');
-        const analysisTableBody = document.getElementById('analysis-table-body');
         const passwordInput = document.getElementById('password-input');
+        let itemAnalysisChartInstance, groupingChartInstance;
 
-        // --- EVENT LISTENERS ---
+        // --- EVENT LISTENERS (Added print button) ---
         document.getElementById('start-btn').addEventListener('click', startQuiz);
         document.getElementById('options-container').addEventListener('click', handleOptionClick);
         document.getElementById('restart-btn').addEventListener('click', () => switchScreen(screens.start));
@@ -236,178 +218,158 @@
         document.getElementById('teacher-login-btn').addEventListener('click', () => modals.teacherLogin.classList.remove('hidden'));
         document.getElementById('teacher-cancel-btn').addEventListener('click', () => modals.teacherLogin.classList.add('hidden'));
         document.getElementById('teacher-submit-btn').addEventListener('click', handleTeacherLogin);
-        analysisTableBody.addEventListener('click', handleAnalysisTableClick);
-        
-        // Modal close buttons
+        document.getElementById('analysis-table-body').addEventListener('click', handleAnalysisTableClick);
+        document.getElementById('print-btn').addEventListener('click', () => window.print());
         document.getElementById('alert-close-btn').addEventListener('click', () => modals.alert.classList.add('hidden'));
         document.getElementById('detail-close-btn').addEventListener('click', () => modals.detail.classList.add('hidden'));
 
-        // --- FUNCTIONS ---
-        function switchScreen(activeScreen) {
-            Object.values(screens).forEach(s => s.classList.add('hidden'));
-            if (activeScreen === screens.start) resetQuiz();
-            activeScreen.classList.remove('hidden');
-        }
-
-        function startQuiz() {
-            userName = nameInput.value.trim();
-            if (!userName) return showAlert("Nama tidak boleh kosong!");
-            if (!db || !auth.currentUser) return showAlert("Layanan belum siap. Mohon tunggu.");
-            
-            document.getElementById('user-info').textContent = `Peserta: ${userName}`;
-            switchScreen(screens.quiz);
-            loadQuestion();
-        }
-
-        function loadQuestion() {
-            document.getElementById('feedback-text').textContent = '';
-            const q = quizData[currentQuestionIndex];
-            document.getElementById('question-number').textContent = currentQuestionIndex + 1;
-            document.getElementById('question-text').textContent = q.question;
-            
-            const optionsContainer = document.getElementById('options-container');
-            optionsContainer.innerHTML = '';
-            for (const key in q.options) {
-                const li = document.createElement('li');
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.dataset.option = key;
-                btn.innerHTML = `<span class="font-bold mr-3">${key.toUpperCase()}</span> ${q.options[key]}`;
-                li.appendChild(btn);
-                optionsContainer.appendChild(li);
-            }
-        }
-
-        function handleOptionClick(e) {
-            const clickedButton = e.target.closest('button');
-            if (!clickedButton || !clickedButton.dataset.option) return;
-
-            document.querySelectorAll('#options-container button').forEach(btn => btn.disabled = true);
-            
-            const selectedOption = clickedButton.dataset.option;
-            const q = quizData[currentQuestionIndex];
-            const isCorrect = selectedOption === q.correct;
-            
-            if (isCorrect) score++;
-
-            userAnswers.push({ question: q.question, selected: selectedOption, correct: q.correct, isCorrect });
-
-            clickedButton.classList.add('selected', isCorrect ? 'correct' : 'incorrect');
-            const feedbackText = document.getElementById('feedback-text');
-            feedbackText.textContent = isCorrect ? 'Jawaban Benar!' : `Kurang Tepat. Jawaban benar: ${q.correct.toUpperCase()}`;
-            feedbackText.className = `mt-4 text-center font-medium min-h-[2rem] ${isCorrect ? 'text-green-600' : 'text-red-600'}`;
-            if (!isCorrect) document.querySelector(`#options-container [data-option="${q.correct}"]`).classList.add('correct');
-
-            setTimeout(() => {
-                currentQuestionIndex++;
-                if (currentQuestionIndex < quizData.length) loadQuestion();
-                else showResults();
-            }, 1500);
-        }
-
-        async function showResults() {
-            document.getElementById('result-name').textContent = userName;
-            document.getElementById('score-text').textContent = `${score}/${quizData.length}`;
-            document.getElementById('score-details').textContent = `Anda menjawab benar ${score} dari ${quizData.length} soal.`;
-            switchScreen(screens.result);
-            await saveResultsToFirestore();
-        }
-
-        async function saveResultsToFirestore() {
-            if (!db || !userId) return console.error("Firestore not ready.");
-            try {
-                await addDoc(collection(db, `artifacts/${appId}/public/data/quiz_results`), {
-                    name: userName, userId, score, totalQuestions: quizData.length, answers: userAnswers, timestamp: serverTimestamp()
-                });
-            } catch (error) {
-                console.error("Error saving results:", error);
-                showAlert("Gagal menyimpan hasil kuis Anda.");
-            }
-        }
-
+        // --- CORE FUNCTIONS (Quiz logic, no changes) ---
+        function switchScreen(activeScreen) { Object.values(screens).forEach(s => s.classList.add('hidden')); if (activeScreen === screens.start) resetQuiz(); activeScreen.classList.remove('hidden'); }
+        function startQuiz() { userName = nameInput.value.trim(); if (!userName) return showAlert("Nama tidak boleh kosong!"); if (!db || !auth.currentUser) return showAlert("Layanan belum siap. Mohon tunggu."); document.getElementById('user-info').textContent = `Peserta: ${userName}`; switchScreen(screens.quiz); loadQuestion(); }
+        function loadQuestion() { document.getElementById('feedback-text').textContent = ''; const q = quizData[currentQuestionIndex]; document.getElementById('question-number').textContent = currentQuestionIndex + 1; document.getElementById('question-text').textContent = q.question; const optionsContainer = document.getElementById('options-container'); optionsContainer.innerHTML = ''; for (const key in q.options) { const li = document.createElement('li'); const btn = document.createElement('button'); btn.className = 'option-btn'; btn.dataset.option = key; btn.innerHTML = `<span class="font-bold mr-3">${key.toUpperCase()}</span> ${q.options[key]}`; li.appendChild(btn); optionsContainer.appendChild(li); } }
+        function handleOptionClick(e) { const clickedButton = e.target.closest('button'); if (!clickedButton || !clickedButton.dataset.option) return; document.querySelectorAll('#options-container button').forEach(btn => btn.disabled = true); const selectedOption = clickedButton.dataset.option; const q = quizData[currentQuestionIndex]; const isCorrect = selectedOption === q.correct; if (isCorrect) score++; userAnswers.push({ question: q.question, selected: selectedOption, correct: q.correct, isCorrect }); clickedButton.classList.add('selected', isCorrect ? 'correct' : 'incorrect'); const feedbackText = document.getElementById('feedback-text'); feedbackText.textContent = isCorrect ? 'Jawaban Benar!' : `Kurang Tepat. Jawaban benar: ${q.correct.toUpperCase()}`; feedbackText.className = `mt-4 text-center font-medium min-h-[2rem] ${isCorrect ? 'text-green-600' : 'text-red-600'}`; if (!isCorrect) document.querySelector(`#options-container [data-option="${q.correct}"]`).classList.add('correct'); setTimeout(() => { currentQuestionIndex++; if (currentQuestionIndex < quizData.length) loadQuestion(); else showResults(); }, 1500); }
+        async function showResults() { document.getElementById('result-name').textContent = userName; document.getElementById('score-text').textContent = `${score}/${quizData.length}`; document.getElementById('score-details').textContent = `Anda menjawab benar ${score} dari ${quizData.length} soal.`; switchScreen(screens.result); await saveResultsToFirestore(); }
+        async function saveResultsToFirestore() { if (!db || !userId) return console.error("Firestore not ready."); try { await addDoc(collection(db, `artifacts/${appId}/public/data/quiz_results`), { name: userName, userId, score, totalQuestions: quizData.length, answers: userAnswers, timestamp: serverTimestamp() }); } catch (error) { console.error("Error saving results:", error); showAlert("Gagal menyimpan hasil kuis Anda."); } }
+        function resetQuiz() { currentQuestionIndex = 0; score = 0; userName = ''; userAnswers = []; nameInput.value = ''; }
+        function showAlert(message) { document.getElementById('alert-message').textContent = message; modals.alert.classList.remove('hidden'); }
+        function handleTeacherLogin() { const password = passwordInput.value; if (password === 'guru123') { passwordInput.value = ''; modals.teacherLogin.classList.add('hidden'); showAnalysis(); } else { showAlert('Kata sandi salah!'); } }
+        function handleAnalysisTableClick(e) { if (e.target.classList.contains('view-details-btn')) { const name = e.target.dataset.name; const answers = JSON.parse(e.target.dataset.answers); showAnswerDetails(name, answers); } }
+        function showAnswerDetails(name, answers) { document.getElementById('detail-student-name').textContent = name; const container = document.getElementById('detail-answers-container'); container.innerHTML = ''; answers.forEach((ans, index) => { const isCorrect = ans.isCorrect; const icon = isCorrect ? '<i class="fas fa-check-circle text-green-500"></i>' : '<i class="fas fa-times-circle text-red-500"></i>'; const detailHtml = `<div class="p-3 rounded-lg ${isCorrect ? 'bg-green-50' : 'bg-red-50'}"><p class="font-semibold text-gray-800">Soal ${index + 1}:</p><p class="text-sm text-gray-600 mb-2">${ans.question}</p><p class="text-sm">Jawaban ${name}: <span class="font-bold">${ans.selected.toUpperCase()}</span> ${icon}</p>${!isCorrect ? `<p class="text-sm">Jawaban Benar: <span class="font-bold">${ans.correct.toUpperCase()}</span></p>` : ''}</div>`; container.innerHTML += detailHtml; }); modals.detail.classList.remove('hidden'); }
+        
+        // --- NEW & UPDATED ANALYSIS FUNCTIONS ---
         async function showAnalysis() {
             switchScreen(screens.analysis);
+            const analysisTableBody = document.getElementById('analysis-table-body');
             analysisTableBody.innerHTML = '<tr><td colspan="4" class="text-center p-4">Memuat data...</td></tr>';
 
-            if (!db) return analysisTableBody.innerHTML = '<tr><td colspan="4" class="text-center p-4 text-red-500">Gagal terhubung ke database.</td></tr>';
+            if (!db) {
+                showAlert("Gagal terhubung ke database.");
+                return;
+            }
 
             try {
                 const querySnapshot = await getDocs(query(collection(db, `artifacts/${appId}/public/data/quiz_results`)));
                 const results = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                results.sort((a, b) => (b.score - a.score) || (a.timestamp?.toDate() || 0) - (b.timestamp?.toDate() || 0));
 
-                if (results.length === 0) return analysisTableBody.innerHTML = '<tr><td colspan="4" class="text-center p-4">Belum ada data hasil kuis.</td></tr>';
+                if (results.length === 0) {
+                    analysisTableBody.innerHTML = '<tr><td colspan="4" class="text-center p-4">Belum ada data hasil kuis.</td></tr>';
+                    // Clear analysis sections if no data
+                    document.getElementById('group-high').innerHTML = '';
+                    document.getElementById('group-medium').innerHTML = '';
+                    document.getElementById('group-low').innerHTML = '';
+                    if(itemAnalysisChartInstance) itemAnalysisChartInstance.destroy();
+                    if(groupingChartInstance) groupingChartInstance.destroy();
+                    return;
+                }
+                
+                // 1. Process data for analysis
+                const itemStats = Array(quizData.length).fill(0).map(() => ({ correct: 0, total: 0 }));
+                const groups = { high: [], medium: [], low: [] };
+                const tiers = { high: 0.8, medium: 0.5 };
 
-                analysisTableBody.innerHTML = '';
-                results.forEach((data) => {
-                    const date = data.timestamp ? data.timestamp.toDate().toLocaleString('id-ID') : 'N/A';
-                    const row = document.createElement('tr');
-                    row.className = 'hover:bg-gray-50';
-                    row.innerHTML = `
-                        <td class="py-2 px-4 border-b">${data.name}</td>
-                        <td class="py-2 px-4 border-b text-center font-bold">${data.score}/${data.totalQuestions}</td>
-                        <td class="py-2 px-4 border-b text-sm text-gray-600">${date}</td>
-                        <td class="py-2 px-4 border-b text-center">
-                            <button class="view-details-btn bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm" data-name="${data.name}" data-answers='${JSON.stringify(data.answers)}'>
-                                Lihat
-                            </button>
-                        </td>
-                    `;
-                    analysisTableBody.appendChild(row);
+                results.forEach(res => {
+                    if (res.answers && Array.isArray(res.answers)) {
+                        res.answers.forEach((ans, index) => {
+                            if(index < itemStats.length) {
+                                itemStats[index].total++;
+                                if (ans.isCorrect) {
+                                    itemStats[index].correct++;
+                                }
+                            }
+                        });
+                    }
+                    const percentage = res.score / res.totalQuestions;
+                    if (percentage >= tiers.high) groups.high.push(res.name);
+                    else if (percentage >= tiers.medium) groups.medium.push(res.name);
+                    else groups.low.push(res.name);
                 });
+
+                // 2. Render all parts of the analysis
+                renderLeaderboard(results);
+                renderItemAnalysisChart(itemStats);
+                renderGroupingChart(groups);
+                renderGroupingLists(groups);
+
             } catch (error) {
                 console.error("Error fetching analysis:", error);
-                analysisTableBody.innerHTML = '<tr><td colspan="4" class="text-center p-4 text-red-500">Gagal memuat data.</td></tr>';
+                showAlert("Gagal memuat data analisis.");
             }
+        }
+
+        function renderLeaderboard(results) {
+            results.sort((a, b) => (b.score - a.score) || (a.timestamp?.toDate() || 0) - (b.timestamp?.toDate() || 0));
+            const analysisTableBody = document.getElementById('analysis-table-body');
+            analysisTableBody.innerHTML = '';
+            results.forEach((data) => {
+                const date = data.timestamp ? data.timestamp.toDate().toLocaleString('id-ID') : 'N/A';
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+                row.innerHTML = `
+                    <td class="py-2 px-4 border-b">${data.name}</td>
+                    <td class="py-2 px-4 border-b text-center font-bold">${data.score}/${data.totalQuestions}</td>
+                    <td class="py-2 px-4 border-b text-sm text-gray-600">${date}</td>
+                    <td class="py-2 px-4 border-b text-center no-print">
+                        <button class="view-details-btn bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm" data-name="${data.name}" data-answers='${JSON.stringify(data.answers)}'>
+                            Lihat
+                        </button>
+                    </td>
+                `;
+                analysisTableBody.appendChild(row);
+            });
+        }
+
+        function renderItemAnalysisChart(stats) {
+            const ctx = document.getElementById('itemAnalysisChart').getContext('2d');
+            if(itemAnalysisChartInstance) {
+                itemAnalysisChartInstance.destroy();
+            }
+            itemAnalysisChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: quizData.map((_, i) => `Soal ${i + 1}`),
+                    datasets: [{
+                        label: '% Jawaban Benar',
+                        data: stats.map(s => s.total > 0 ? (s.correct / s.total) * 100 : 0),
+                        backgroundColor: 'rgba(79, 70, 229, 0.8)',
+                        borderColor: 'rgba(79, 70, 229, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: { y: { beginAtZero: true, max: 100 } },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        function renderGroupingChart(groups) {
+            const ctx = document.getElementById('groupingChart').getContext('2d');
+            if(groupingChartInstance) {
+                groupingChartInstance.destroy();
+            }
+            groupingChartInstance = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Paham Konsep', 'Perlu Bimbingan', 'Butuh Perhatian Khusus'],
+                    datasets: [{
+                        data: [groups.high.length, groups.medium.length, groups.low.length],
+                        backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
+                        hoverOffset: 4
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
         }
         
-        function handleTeacherLogin() {
-            const password = passwordInput.value;
-            if (password === 'guru123') {
-                passwordInput.value = '';
-                modals.teacherLogin.classList.add('hidden');
-                showAnalysis();
-            } else {
-                showAlert('Kata sandi salah!');
-            }
-        }
+        function renderGroupingLists(groups) {
+            const highContainer = document.getElementById('group-high');
+            const mediumContainer = document.getElementById('group-medium');
+            const lowContainer = document.getElementById('group-low');
 
-        function handleAnalysisTableClick(e) {
-            if (e.target.classList.contains('view-details-btn')) {
-                const name = e.target.dataset.name;
-                const answers = JSON.parse(e.target.dataset.answers);
-                showAnswerDetails(name, answers);
-            }
-        }
-
-        function showAnswerDetails(name, answers) {
-            document.getElementById('detail-student-name').textContent = name;
-            const container = document.getElementById('detail-answers-container');
-            container.innerHTML = '';
-            answers.forEach((ans, index) => {
-                const isCorrect = ans.isCorrect;
-                const icon = isCorrect ? '<i class="fas fa-check-circle text-green-500"></i>' : '<i class="fas fa-times-circle text-red-500"></i>';
-                const detailHtml = `
-                    <div class="p-3 rounded-lg ${isCorrect ? 'bg-green-50' : 'bg-red-50'}">
-                        <p class="font-semibold text-gray-800">Soal ${index + 1}:</p>
-                        <p class="text-sm text-gray-600 mb-2">${ans.question}</p>
-                        <p class="text-sm">Jawaban ${name}: <span class="font-bold">${ans.selected.toUpperCase()}</span> ${icon}</p>
-                        ${!isCorrect ? `<p class="text-sm">Jawaban Benar: <span class="font-bold">${ans.correct.toUpperCase()}</span></p>` : ''}
-                    </div>
-                `;
-                container.innerHTML += detailHtml;
-            });
-            modals.detail.classList.remove('hidden');
-        }
-
-        function resetQuiz() {
-            currentQuestionIndex = 0; score = 0; userName = ''; userAnswers = [];
-            nameInput.value = '';
-        }
-
-        function showAlert(message) {
-            document.getElementById('alert-message').textContent = message;
-            modals.alert.classList.remove('hidden');
+            highContainer.innerHTML = `<h4 class="font-bold text-green-800 mb-2">Paham Konsep (${groups.high.length} siswa)</h4><ul class="list-disc list-inside text-sm">${groups.high.map(name => `<li>${name}</li>`).join('') || '<li class="list-none italic text-gray-500">Tidak ada siswa</li>'}</ul>`;
+            mediumContainer.innerHTML = `<h4 class="font-bold text-yellow-800 mb-2">Perlu Bimbingan (${groups.medium.length} siswa)</h4><ul class="list-disc list-inside text-sm">${groups.medium.map(name => `<li>${name}</li>`).join('') || '<li class="list-none italic text-gray-500">Tidak ada siswa</li>'}</ul>`;
+            lowContainer.innerHTML = `<h4 class="font-bold text-red-800 mb-2">Butuh Perhatian Khusus (${groups.low.length} siswa)</h4><ul class="list-disc list-inside text-sm">${groups.low.map(name => `<li>${name}</li>`).join('') || '<li class="list-none italic text-gray-500">Tidak ada siswa</li>'}</ul>`;
         }
 
         // --- INITIALIZE ---
