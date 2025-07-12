@@ -86,7 +86,7 @@
             </div>
             <div>
                 <a href="index.html" class="bg-slate-200 text-slate-800 px-4 py-2 rounded-lg hover:bg-slate-300 transition-colors font-semibold">
-                    Kembali ke Beranda
+                    Kembali ke Index
                 </a>
             </div>
         </div>
@@ -208,6 +208,14 @@
                                 </ul>
                                 <details class="text-sm">
                                     <summary class="font-semibold cursor-pointer">Lihat Tahapan Proses & Pseudocode</summary>
+                                    <p class="font-semibold mt-2">Tahapan Proses:</p>
+                                    <ol class="list-decimal list-inside space-y-1">
+                                        <li>Mulai dari elemen pertama, bandingkan dengan elemen kedua.</li>
+                                        <li>Jika elemen pertama lebih besar dari yang kedua, tukar posisi mereka.</li>
+                                        <li>Pindah ke pasangan berikutnya (elemen kedua dan ketiga), lalu bandingkan dan tukar jika perlu.</li>
+                                        <li>Lanjutkan proses ini sampai akhir daftar. Ini menyelesaikan satu putaran dan menempatkan elemen terbesar di posisi paling akhir.</li>
+                                        <li>Ulangi seluruh proses dari awal, tetapi abaikan elemen terakhir yang sudah pasti di posisi yang benar. Lakukan ini sampai seluruh daftar terurut.</li>
+                                    </ol>
                                     <p class="font-semibold mt-2">Pseudocode:</p>
                                     <div class="code-block">ULANGI (n-1) KALI
   UNTUK i DARI 0 SAMPAI n-2
@@ -251,6 +259,14 @@ AKHIR ULANGI</div>
                                 </ul>
                                 <details class="text-sm">
                                     <summary class="font-semibold cursor-pointer">Lihat Tahapan Proses & Pseudocode</summary>
+                                    <p class="font-semibold mt-2">Tahapan Proses:</p>
+                                    <ol class="list-decimal list-inside space-y-1">
+                                        <li>Cari nilai terkecil di seluruh daftar.</li>
+                                        <li>Tukar nilai terkecil itu dengan elemen di posisi pertama. Sekarang posisi pertama sudah benar.</li>
+                                        <li>Cari nilai terkecil di sisa daftar (mulai dari posisi kedua).</li>
+                                        <li>Tukar dengan elemen di posisi kedua.</li>
+                                        <li>Ulangi proses sampai seluruh daftar terurut.</li>
+                                    </ol>
                                     <p class="font-semibold mt-2">Pseudocode:</p>
                                     <div class="code-block">UNTUK i DARI 0 SAMPAI n-2
   SET minIndex = i
@@ -295,6 +311,16 @@ AKHIR UNTUK</div>
                                 </ul>
                                 <details class="text-sm">
                                     <summary class="font-semibold cursor-pointer">Lihat Tahapan Proses & Pseudocode</summary>
+                                    <p class="font-semibold mt-2">Tahapan Proses:</p>
+                                    <ol class="list-decimal list-inside space-y-1">
+                                        <li>Mulai dari elemen kedua. Anggap elemen pertama sudah terurut.</li>
+                                        <li>Simpan elemen kedua sebagai "kunci" yang akan disisipkan.</li>
+                                        <li>Bandingkan "kunci" dengan elemen di kirinya (di bagian terurut).</li>
+                                        <li>Jika elemen di kiri lebih besar, geser elemen itu ke kanan.</li>
+                                        <li>Ulangi langkah 4 sampai menemukan posisi yang tepat (elemen di kiri lebih kecil atau sudah sampai di awal daftar).</li>
+                                        <li>Sisipkan "kunci" di posisi yang kosong.</li>
+                                        <li>Ambil elemen berikutnya dan ulangi proses.</li>
+                                    </ol>
                                     <p class="font-semibold mt-2">Pseudocode:</p>
                                     <div class="code-block">UNTUK i DARI 1 SAMPAI n-1
   SET kunci = elemen[i]
@@ -339,6 +365,13 @@ AKHIR UNTUK</div>
                                 </ul>
                                 <details class="text-sm">
                                     <summary class="font-semibold cursor-pointer">Lihat Tahapan Proses & Pseudocode</summary>
+                                    <p class="font-semibold mt-2">Tahapan Proses:</p>
+                                    <ol class="list-decimal list-inside space-y-1">
+                                        <li>Pilih sebuah elemen dari array sebagai "pivot" (misalnya, elemen terakhir).</li>
+                                        <li>Atur ulang array sehingga semua elemen yang lebih kecil dari pivot berada di sebelah kirinya, dan semua elemen yang lebih besar berada di sebelah kanannya. Pivot sekarang berada di posisi akhirnya yang benar. Proses ini disebut partisi.</li>
+                                        <li>Secara rekursif, terapkan langkah 1 dan 2 ke sub-array di sebelah kiri pivot.</li>
+                                        <li>Secara rekursif, terapkan langkah 1 dan 2 ke sub-array di sebelah kanan pivot.</li>
+                                    </ol>
                                     <p class="font-semibold mt-2">Pseudocode:</p>
                                     <div class="code-block">FUNGSI quickSort(arr, kiri, kanan)
   JIKA kiri < kanan
