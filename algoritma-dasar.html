@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panduan Lengkap Algoritma untuk SMA</title>
+    <title>Panduan Lengkap Algoritma (Format Slide)</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -16,6 +16,26 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden; /* Prevent body scroll */
+        }
+        #slide-container {
+            flex-grow: 1;
+            overflow: hidden;
+            position: relative;
+        }
+        #slide-wrapper {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+        .slide {
+            width: 100%;
+            flex-shrink: 0;
+            overflow-y: auto; /* Allow individual slide to scroll if content is long */
+            padding: 2rem 1.5rem;
         }
         .algo-box {
             display: flex;
@@ -58,180 +78,181 @@
 <body class="bg-slate-50 text-slate-800">
 
     <!-- Header -->
-    <header class="bg-white shadow-md sticky top-0 z-10">
-        <div class="container mx-auto px-6 py-4">
-            <h1 class="text-2xl font-bold text-teal-600">Dasar-Dasar Algoritma</h1>
-            <p class="text-slate-600">Memberi Perintah pada Komputer Secara Efisien</p>
+    <header class="bg-white shadow-md z-10 flex-shrink-0">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-teal-600">Dasar-Dasar Algoritma</h1>
+                <p class="text-slate-600">Memberi Perintah pada Komputer Secara Efisien</p>
+            </div>
+            <div>
+                <a href="index.html" class="bg-slate-200 text-slate-800 px-4 py-2 rounded-lg hover:bg-slate-300 transition-colors font-semibold">
+                    Kembali ke Beranda
+                </a>
+            </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-6 py-10">
+    <!-- Slide Container -->
+    <div id="slide-container">
+        <div id="slide-wrapper">
 
-        <!-- Section: Introduction -->
-        <section id="intro" class="mb-16">
-            <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Apa Itu Algoritma?</h2>
-            <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200 text-lg text-slate-700 space-y-4">
-                <p>Setelah kita tahu cara menyimpan data (Struktur Data) dan memberi perintah dasar (Logika & Operator), sekarang kita akan belajar <strong class="text-teal-600">Algoritma</strong>.</p>
-                <p>Algoritma adalah <strong class="text-teal-600">serangkaian langkah-langkah logis dan terstruktur untuk menyelesaikan suatu masalah</strong>. Anggap saja ini seperti resep masakan: ada bahan-bahannya (input), langkah-langkah memasak (proses), dan hasilnya adalah masakan lezat (output).</p>
-                <p class="font-semibold">Memilih algoritma yang tepat akan membuat program kita berjalan jauh lebih cepat dan efisien. Mari kita pelajari dua jenis algoritma yang paling fundamental.</p>
-            </div>
-        </section>
-
-        <!-- Section: Searching Algorithms -->
-        <section id="searching" class="mb-16">
-            <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Algoritma Pencarian: Menemukan Harta Karun</h2>
-            <p class="text-lg text-slate-600 mb-8">Ini adalah algoritma untuk menemukan sebuah data (item) tertentu di dalam sebuah kumpulan data (misalnya, Array).</p>
-            
-            <!-- Linear Search -->
-            <div class="bg-white p-6 rounded-xl shadow-lg border mb-8">
-                <h3 class="text-2xl font-bold mb-2">1. Linear Search (Pencarian Lurus)</h3>
-                <p class="mb-4">Ini adalah cara paling sederhana: kita memeriksa setiap data satu per satu dari awal sampai akhir, hingga data yang dicari ditemukan atau sampai kita mencapai akhir kumpulan data.</p>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="space-y-4">
-                        <p class="font-semibold">Analogi:</p>
-                        <p>Mencari satu buku spesifik di rak dengan memeriksa setiap buku dari paling kiri ke paling kanan.</p>
-                        <p class="font-semibold">Kapan Digunakan?</p>
-                        <ul class="list-disc list-inside text-sm">
-                            <li>Saat kumpulan data <strong class="text-red-500">tidak terurut</strong> (acak).</li>
-                            <li>Saat kumpulan datanya kecil, sehingga tidak terlalu lambat.</li>
-                        </ul>
-                        <p class="font-semibold">Tahapan Proses:</p>
-                        <ol class="list-decimal list-inside text-sm space-y-1">
-                            <li>Mulai dari elemen pertama (indeks 0).</li>
-                            <li>Bandingkan elemen saat ini dengan data yang dicari.</li>
-                            <li>Jika sama, pencarian selesai dan elemen ditemukan.</li>
-                            <li>Jika tidak sama, pindah ke elemen berikutnya.</li>
-                            <li>Ulangi langkah 2-4 sampai elemen ditemukan atau sampai akhir dari kumpulan data.</li>
-                        </ol>
+            <!-- Slide 1: Introduction -->
+            <div class="slide">
+                <section id="intro">
+                    <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Apa Itu Algoritma?</h2>
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200 text-lg text-slate-700 space-y-4 max-w-4xl mx-auto">
+                        <p>Setelah kita tahu cara menyimpan data (Struktur Data) dan memberi perintah dasar (Logika & Operator), sekarang kita akan belajar <strong class="text-teal-600">Algoritma</strong>.</p>
+                        <p>Algoritma adalah <strong class="text-teal-600">serangkaian langkah-langkah logis dan terstruktur untuk menyelesaikan suatu masalah</strong>. Anggap saja ini seperti resep masakan: ada bahan-bahannya (input), langkah-langkah memasak (proses), dan hasilnya adalah masakan lezat (output).</p>
+                        <p class="font-semibold">Memilih algoritma yang tepat akan membuat program kita berjalan jauh lebih cepat dan efisien. Mari kita pelajari dua jenis algoritma yang paling fundamental.</p>
                     </div>
-                    <div>
-                        <h4 class="font-semibold text-center mb-2">Visualisasi</h4>
-                        <div id="linear-visual" class="algo-box"></div>
-                        <div class="flex flex-wrap justify-center items-center gap-2 mt-4">
-                            <label for="linear-search-input">Cari Angka:</label>
-                            <input type="number" id="linear-search-input" class="w-20 p-2 border rounded" value="45">
-                            <button id="linear-search-btn" onclick="linearSearch()" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Cari</button>
+                </section>
+            </div>
+
+            <!-- Slide 2: Linear Search -->
+            <div class="slide">
+                 <section id="linear-search-section">
+                    <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Pencarian: Linear Search</h2>
+                    <div class="bg-white p-6 rounded-xl shadow-lg border">
+                        <h3 class="text-2xl font-bold mb-2">1. Linear Search (Pencarian Lurus)</h3>
+                        <p class="mb-4">Ini adalah cara paling sederhana: kita memeriksa setiap data satu per satu dari awal sampai akhir, hingga data yang dicari ditemukan atau sampai kita mencapai akhir kumpulan data.</p>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="space-y-4">
+                                <p class="font-semibold">Analogi:</p>
+                                <p>Mencari satu buku spesifik di rak dengan memeriksa setiap buku dari paling kiri ke paling kanan.</p>
+                                <p class="font-semibold">Kapan Digunakan?</p>
+                                <ul class="list-disc list-inside text-sm">
+                                    <li>Saat kumpulan data <strong class="text-red-500">tidak terurut</strong> (acak).</li>
+                                    <li>Saat kumpulan datanya kecil, sehingga tidak terlalu lambat.</li>
+                                </ul>
+                                <p class="font-semibold">Tahapan Proses:</p>
+                                <ol class="list-decimal list-inside text-sm space-y-1">
+                                    <li>Mulai dari elemen pertama (indeks 0).</li>
+                                    <li>Bandingkan elemen saat ini dengan data yang dicari.</li>
+                                    <li>Jika sama, pencarian selesai dan elemen ditemukan.</li>
+                                    <li>Jika tidak sama, pindah ke elemen berikutnya.</li>
+                                    <li>Ulangi langkah 2-4 sampai elemen ditemukan atau sampai akhir dari kumpulan data.</li>
+                                </ol>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-center mb-2">Visualisasi</h4>
+                                <div id="linear-visual" class="algo-box"></div>
+                                <div class="flex flex-wrap justify-center items-center gap-2 mt-4">
+                                    <label for="linear-search-input">Cari Angka:</label>
+                                    <input type="number" id="linear-search-input" class="w-20 p-2 border rounded" value="45">
+                                    <button id="linear-search-btn" onclick="linearSearch()" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Cari</button>
+                                </div>
+                                <p id="linear-search-info" class="text-center text-sm text-slate-500 mt-2 h-4"></p>
+                            </div>
                         </div>
-                        <p id="linear-search-info" class="text-center text-sm text-slate-500 mt-2 h-4"></p>
                     </div>
-                </div>
+                </section>
             </div>
 
-            <!-- Binary Search -->
-            <div class="bg-white p-6 rounded-xl shadow-lg border">
-                <h3 class="text-2xl font-bold mb-2">2. Binary Search (Pencarian Biner)</h3>
-                <p class="mb-4">Ini adalah cara yang jauh lebih cepat, namun punya syarat: <strong class="text-green-500">data harus sudah terurut</strong>. Cara kerjanya adalah dengan terus-menerus membagi dua kumpulan data dan hanya mencari di separuh bagian yang relevan.</p>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="space-y-4">
-                        <p class="font-semibold">Analogi:</p>
-                        <p>Mencari kata di kamus. Kamu buka bagian tengah, lihat apakah kata yang kamu cari ada di sebelum atau sesudah halaman itu, lalu kamu abaikan separuh bagian kamus yang salah dan ulangi prosesnya.</p>
-                        <p class="font-semibold">Kapan Digunakan?</p>
-                        <ul class="list-disc list-inside text-sm">
-                            <li>Saat kumpulan data <strong class="text-green-500">sudah terurut</strong>.</li>
-                            <li>Sangat efisien untuk kumpulan data yang besar.</li>
-                        </ul>
-                        <p class="font-semibold">Tahapan Proses:</p>
-                        <ol class="list-decimal list-inside text-sm space-y-1">
-                            <li>Tentukan batas kiri (low) dan kanan (high) dari area pencarian. Awalnya, ini adalah seluruh data.</li>
-                            <li>Cari elemen tengah (mid).</li>
-                            <li>Bandingkan elemen tengah dengan data yang dicari.</li>
-                            <li>Jika sama, pencarian selesai.</li>
-                            <li>Jika data yang dicari lebih besar, abaikan separuh bagian kiri dan ulangi proses dengan area pencarian baru di sebelah kanan.</li>
-                            <li>Jika data yang dicari lebih kecil, abaikan separuh bagian kanan dan ulangi proses dengan area pencarian baru di sebelah kiri.</li>
-                        </ol>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold text-center mb-2">Visualisasi</h4>
-                        <div id="binary-visual" class="algo-box"></div>
-                        <div class="flex flex-wrap justify-center items-center gap-2 mt-4">
-                            <label for="binary-search-input">Cari Angka:</label>
-                            <input type="number" id="binary-search-input" class="w-20 p-2 border rounded" value="72">
-                            <button id="binary-search-btn" onclick="binarySearch()" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Cari</button>
+            <!-- Slide 3: Binary Search -->
+            <div class="slide">
+                <section id="binary-search-section">
+                    <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Pencarian: Binary Search</h2>
+                    <div class="bg-white p-6 rounded-xl shadow-lg border">
+                        <h3 class="text-2xl font-bold mb-2">2. Binary Search (Pencarian Biner)</h3>
+                        <p class="mb-4">Ini adalah cara yang jauh lebih cepat, namun punya syarat: <strong class="text-green-500">data harus sudah terurut</strong>. Cara kerjanya adalah dengan terus-menerus membagi dua kumpulan data dan hanya mencari di separuh bagian yang relevan.</p>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="space-y-4">
+                                <p class="font-semibold">Analogi:</p>
+                                <p>Mencari kata di kamus. Kamu buka bagian tengah, lihat apakah kata yang kamu cari ada di sebelum atau sesudah halaman itu, lalu kamu abaikan separuh bagian kamus yang salah dan ulangi prosesnya.</p>
+                                <p class="font-semibold">Kapan Digunakan?</p>
+                                <ul class="list-disc list-inside text-sm">
+                                    <li>Saat kumpulan data <strong class="text-green-500">sudah terurut</strong>.</li>
+                                    <li>Sangat efisien untuk kumpulan data yang besar.</li>
+                                </ul>
+                                <p class="font-semibold">Tahapan Proses:</p>
+                                <ol class="list-decimal list-inside text-sm space-y-1">
+                                    <li>Tentukan batas kiri (low) dan kanan (high) dari area pencarian.</li>
+                                    <li>Cari elemen tengah (mid).</li>
+                                    <li>Bandingkan elemen tengah dengan data yang dicari.</li>
+                                    <li>Jika sama, pencarian selesai.</li>
+                                    <li>Jika data dicari lebih besar, abaikan sisi kiri, cari di sisi kanan.</li>
+                                    <li>Jika data dicari lebih kecil, abaikan sisi kanan, cari di sisi kiri.</li>
+                                </ol>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-center mb-2">Visualisasi</h4>
+                                <div id="binary-visual" class="algo-box"></div>
+                                <div class="flex flex-wrap justify-center items-center gap-2 mt-4">
+                                    <label for="binary-search-input">Cari Angka:</label>
+                                    <input type="number" id="binary-search-input" class="w-20 p-2 border rounded" value="72">
+                                    <button id="binary-search-btn" onclick="binarySearch()" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Cari</button>
+                                </div>
+                                <p id="binary-search-info" class="text-center text-sm text-slate-500 mt-2 h-4"></p>
+                            </div>
                         </div>
-                        <p id="binary-search-info" class="text-center text-sm text-slate-500 mt-2 h-4"></p>
                     </div>
-                </div>
+                </section>
             </div>
-        </section>
 
-        <!-- Section: Sorting Algorithms -->
-        <section id="sorting" class="mb-16">
-            <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Algoritma Pengurutan: Merapikan yang Berantakan</h2>
-            <p class="text-lg text-slate-600 mb-8">Ini adalah algoritma untuk menyusun ulang kumpulan data dalam urutan tertentu (misalnya, dari terkecil ke terbesar). Data yang terurut adalah syarat untuk algoritma pencarian cepat seperti Binary Search.</p>
-            
-            <!-- Bubble Sort -->
-            <div class="bg-white p-6 rounded-xl shadow-lg border mb-8">
-                <h3 class="text-2xl font-bold mb-2">1. Bubble Sort (Pengurutan Gelembung)</h3>
-                <p class="mb-4">Algoritma ini berulang kali melewati daftar, membandingkan setiap pasang elemen yang bersebelahan dan menukarnya jika urutannya salah.</p>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="space-y-4">
-                        <p class="font-semibold">Analogi:</p>
-                        <p>Seperti gelembung udara di dalam air, elemen "paling ringan" (angka terkecil) akan perlahan "mengapung" ke atas (posisi awal) setelah setiap putaran.</p>
-                        <p class="font-semibold">Kapan Digunakan?</p>
-                        <ul class="list-disc list-inside text-sm">
-                            <li>Sangat bagus untuk tujuan edukasi karena logikanya sederhana.</li>
-                            <li>Praktis untuk daftar yang sangat kecil atau hampir terurut.</li>
-                            <li><strong class="text-red-500">Tidak efisien</strong> untuk kumpulan data yang besar.</li>
-                        </ul>
-                        <details class="text-sm">
-                            <summary class="font-semibold cursor-pointer">Lihat Tahapan Proses & Pseudocode</summary>
-                            <p class="font-semibold mt-2">Tahapan Proses:</p>
-                            <ol class="list-decimal list-inside space-y-1">
-                                <li>Mulai dari elemen pertama, bandingkan dengan elemen kedua.</li>
-                                <li>Jika elemen pertama lebih besar dari yang kedua, tukar posisi mereka.</li>
-                                <li>Pindah ke pasangan berikutnya (elemen kedua dan ketiga), lalu bandingkan dan tukar jika perlu.</li>
-                                <li>Lanjutkan proses ini sampai akhir daftar. Ini menyelesaikan satu putaran dan menempatkan elemen terbesar di posisi paling akhir.</li>
-                                <li>Ulangi seluruh proses dari awal, tetapi abaikan elemen terakhir yang sudah pasti di posisi yang benar. Lakukan ini sampai seluruh daftar terurut.</li>
-                            </ol>
-                            <p class="font-semibold mt-2">Pseudocode:</p>
-                            <div class="code-block">ULANGI (n-1) KALI
+            <!-- Slide 4: Bubble Sort -->
+            <div class="slide">
+                <section id="bubble-sort-section">
+                    <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Pengurutan: Bubble Sort</h2>
+                    <div class="bg-white p-6 rounded-xl shadow-lg border">
+                        <h3 class="text-2xl font-bold mb-2">1. Bubble Sort (Pengurutan Gelembung)</h3>
+                        <p class="mb-4">Algoritma ini berulang kali melewati daftar, membandingkan setiap pasang elemen yang bersebelahan dan menukarnya jika urutannya salah.</p>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="space-y-4">
+                                <p class="font-semibold">Analogi:</p>
+                                <p>Seperti gelembung udara di dalam air, elemen "paling ringan" (angka terkecil) akan perlahan "mengapung" ke atas (posisi awal) setelah setiap putaran.</p>
+                                <p class="font-semibold">Kapan Digunakan?</p>
+                                <ul class="list-disc list-inside text-sm">
+                                    <li>Sangat bagus untuk tujuan edukasi karena logikanya sederhana.</li>
+                                    <li>Praktis untuk daftar yang sangat kecil atau hampir terurut.</li>
+                                    <li><strong class="text-red-500">Tidak efisien</strong> untuk kumpulan data yang besar.</li>
+                                </ul>
+                                <details class="text-sm">
+                                    <summary class="font-semibold cursor-pointer">Lihat Tahapan Proses & Pseudocode</summary>
+                                    <p class="font-semibold mt-2">Pseudocode:</p>
+                                    <div class="code-block">ULANGI (n-1) KALI
   UNTUK i DARI 0 SAMPAI n-2
     JIKA elemen[i] > elemen[i+1]
       TUKAR(elemen[i], elemen[i+1])
     AKHIR JIKA
   AKHIR UNTUK
 AKHIR ULANGI</div>
-                        </details>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold text-center mb-2">Visualisasi</h4>
-                        <div id="bubble-visual" class="algo-box"></div>
-                        <div class="flex flex-wrap justify-center items-center gap-2 mt-4">
-                            <button id="bubble-sort-btn" onclick="bubbleSort()" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Urutkan</button>
-                            <button onclick="resetSort('bubble')" class="bg-slate-500 text-white px-4 py-2 rounded hover:bg-slate-600">Acak Ulang</button>
+                                </details>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-center mb-2">Visualisasi</h4>
+                                <div id="bubble-visual" class="algo-box"></div>
+                                <div class="flex flex-wrap justify-center items-center gap-2 mt-4">
+                                    <button id="bubble-sort-btn" onclick="bubbleSort()" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Urutkan</button>
+                                    <button onclick="resetSort('bubble')" class="bg-slate-500 text-white px-4 py-2 rounded hover:bg-slate-600">Acak Ulang</button>
+                                </div>
+                                <p id="bubble-sort-info" class="text-center text-sm text-slate-500 mt-2 h-4"></p>
+                            </div>
                         </div>
-                        <p id="bubble-sort-info" class="text-center text-sm text-slate-500 mt-2 h-4"></p>
                     </div>
-                </div>
+                </section>
             </div>
             
-            <!-- Selection Sort -->
-            <div class="bg-white p-6 rounded-xl shadow-lg border mb-8">
-                <h3 class="text-2xl font-bold mb-2">2. Selection Sort (Pengurutan Seleksi)</h3>
-                <p class="mb-4">Algoritma ini membagi daftar menjadi dua bagian: bagian terurut dan tidak terurut. Kemudian, ia berulang kali mencari elemen terkecil dari bagian yang tidak terurut dan memindahkannya ke akhir bagian yang terurut.</p>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="space-y-4">
-                        <p class="font-semibold">Analogi:</p>
-                        <p>Mengurutkan setumpuk kartu ujian. Kamu cari ujian dengan nilai terendah, ambil, dan letakkan di tumpukan baru. Ulangi terus sampai tumpukan lama habis.</p>
-                        <p class="font-semibold">Kapan Digunakan?</p>
-                        <ul class="list-disc list-inside text-sm">
-                            <li>Berguna saat jumlah data kecil.</li>
-                            <li>Logikanya cukup mudah dipahami.</li>
-                            <li><strong class="text-red-500">Tidak efisien</strong> untuk data besar, sama seperti Bubble Sort.</li>
-                        </ul>
-                         <details class="text-sm">
-                            <summary class="font-semibold cursor-pointer">Lihat Tahapan Proses & Pseudocode</summary>
-                            <p class="font-semibold mt-2">Tahapan Proses:</p>
-                            <ol class="list-decimal list-inside space-y-1">
-                                <li>Cari nilai terkecil di seluruh daftar.</li>
-                                <li>Tukar nilai terkecil itu dengan elemen di posisi pertama. Sekarang posisi pertama sudah benar.</li>
-                                <li>Cari nilai terkecil di sisa daftar (mulai dari posisi kedua).</li>
-                                <li>Tukar dengan elemen di posisi kedua.</li>
-                                <li>Ulangi proses sampai seluruh daftar terurut.</li>
-                            </ol>
-                            <p class="font-semibold mt-2">Pseudocode:</p>
-                            <div class="code-block">UNTUK i DARI 0 SAMPAI n-2
+            <!-- Slide 5: Selection Sort -->
+            <div class="slide">
+                <section id="selection-sort-section">
+                    <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Pengurutan: Selection Sort</h2>
+                    <div class="bg-white p-6 rounded-xl shadow-lg border">
+                        <h3 class="text-2xl font-bold mb-2">2. Selection Sort (Pengurutan Seleksi)</h3>
+                        <p class="mb-4">Algoritma ini membagi daftar menjadi dua bagian: bagian terurut dan tidak terurut. Kemudian, ia berulang kali mencari elemen terkecil dari bagian yang tidak terurut dan memindahkannya ke akhir bagian yang terurut.</p>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="space-y-4">
+                                <p class="font-semibold">Analogi:</p>
+                                <p>Mengurutkan setumpuk kartu ujian. Kamu cari ujian dengan nilai terendah, ambil, dan letakkan di tumpukan baru. Ulangi terus sampai tumpukan lama habis.</p>
+                                <p class="font-semibold">Kapan Digunakan?</p>
+                                <ul class="list-disc list-inside text-sm">
+                                    <li>Berguna saat jumlah data kecil.</li>
+                                    <li>Logikanya cukup mudah dipahami.</li>
+                                    <li><strong class="text-red-500">Tidak efisien</strong> untuk data besar.</li>
+                                </ul>
+                                <details class="text-sm">
+                                    <summary class="font-semibold cursor-pointer">Lihat Tahapan Proses & Pseudocode</summary>
+                                    <p class="font-semibold mt-2">Pseudocode:</p>
+                                    <div class="code-block">UNTUK i DARI 0 SAMPAI n-2
   SET minIndex = i
   UNTUK j DARI i+1 SAMPAI n-1
     JIKA elemen[j] < elemen[minIndex]
@@ -240,48 +261,42 @@ AKHIR ULANGI</div>
   AKHIR UNTUK
   TUKAR(elemen[i], elemen[minIndex])
 AKHIR UNTUK</div>
-                        </details>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold text-center mb-2">Visualisasi</h4>
-                        <div id="selection-visual" class="algo-box"></div>
-                        <div class="flex flex-wrap justify-center items-center gap-2 mt-4">
-                            <button id="selection-sort-btn" onclick="selectionSort()" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Urutkan</button>
-                            <button onclick="resetSort('selection')" class="bg-slate-500 text-white px-4 py-2 rounded hover:bg-slate-600">Acak Ulang</button>
+                                </details>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-center mb-2">Visualisasi</h4>
+                                <div id="selection-visual" class="algo-box"></div>
+                                <div class="flex flex-wrap justify-center items-center gap-2 mt-4">
+                                    <button id="selection-sort-btn" onclick="selectionSort()" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Urutkan</button>
+                                    <button onclick="resetSort('selection')" class="bg-slate-500 text-white px-4 py-2 rounded hover:bg-slate-600">Acak Ulang</button>
+                                </div>
+                                <p id="selection-sort-info" class="text-center text-sm text-slate-500 mt-2 h-4"></p>
+                            </div>
                         </div>
-                        <p id="selection-sort-info" class="text-center text-sm text-slate-500 mt-2 h-4"></p>
                     </div>
-                </div>
+                </section>
             </div>
 
-            <!-- Insertion Sort -->
-            <div class="bg-white p-6 rounded-xl shadow-lg border">
-                <h3 class="text-2xl font-bold mb-2">3. Insertion Sort (Pengurutan Sisip)</h3>
-                <p class="mb-4">Seperti Selection Sort, algoritma ini juga membagi daftar menjadi bagian terurut dan tidak terurut. Ia mengambil satu elemen dari bagian tak terurut dan menyisipkannya ke posisi yang benar di bagian yang sudah terurut.</p>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="space-y-4">
-                        <p class="font-semibold">Analogi:</p>
-                        <p>Mengurutkan kartu di tangan saat bermain. Kamu ambil satu kartu, lalu kamu geser-geser kartu di tanganmu untuk membuat ruang dan menyisipkan kartu baru itu di posisi yang tepat.</p>
-                        <p class="font-semibold">Kapan Digunakan?</p>
-                        <ul class="list-disc list-inside text-sm">
-                            <li>Sangat efisien untuk daftar kecil.</li>
-                            <li>Bekerja sangat baik jika data sudah hampir terurut.</li>
-                            <li>Lebih efisien dari Bubble dan Selection Sort pada praktiknya.</li>
-                        </ul>
-                         <details class="text-sm">
-                            <summary class="font-semibold cursor-pointer">Lihat Tahapan Proses & Pseudocode</summary>
-                            <p class="font-semibold mt-2">Tahapan Proses:</p>
-                            <ol class="list-decimal list-inside space-y-1">
-                                <li>Mulai dari elemen kedua. Anggap elemen pertama sudah terurut.</li>
-                                <li>Simpan elemen kedua sebagai "kunci" yang akan disisipkan.</li>
-                                <li>Bandingkan "kunci" dengan elemen di kirinya (di bagian terurut).</li>
-                                <li>Jika elemen di kiri lebih besar, geser elemen itu ke kanan.</li>
-                                <li>Ulangi langkah 4 sampai menemukan posisi yang tepat (elemen di kiri lebih kecil atau sudah sampai di awal daftar).</li>
-                                <li>Sisipkan "kunci" di posisi yang kosong.</li>
-                                <li>Ambil elemen berikutnya dan ulangi proses.</li>
-                            </ol>
-                            <p class="font-semibold mt-2">Pseudocode:</p>
-                            <div class="code-block">UNTUK i DARI 1 SAMPAI n-1
+            <!-- Slide 6: Insertion Sort -->
+            <div class="slide">
+                <section id="insertion-sort-section">
+                    <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Pengurutan: Insertion Sort</h2>
+                    <div class="bg-white p-6 rounded-xl shadow-lg border">
+                        <h3 class="text-2xl font-bold mb-2">3. Insertion Sort (Pengurutan Sisip)</h3>
+                        <p class="mb-4">Ia mengambil satu elemen dari bagian tak terurut dan menyisipkannya ke posisi yang benar di bagian yang sudah terurut.</p>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="space-y-4">
+                                <p class="font-semibold">Analogi:</p>
+                                <p>Mengurutkan kartu di tangan saat bermain. Kamu ambil satu kartu, lalu kamu geser-geser kartu di tanganmu untuk membuat ruang dan menyisipkan kartu baru itu di posisi yang tepat.</p>
+                                <p class="font-semibold">Kapan Digunakan?</p>
+                                <ul class="list-disc list-inside text-sm">
+                                    <li>Sangat efisien untuk daftar kecil dan data yang hampir terurut.</li>
+                                    <li>Lebih efisien dari Bubble dan Selection Sort pada praktiknya.</li>
+                                </ul>
+                                <details class="text-sm">
+                                    <summary class="font-semibold cursor-pointer">Lihat Tahapan Proses & Pseudocode</summary>
+                                    <p class="font-semibold mt-2">Pseudocode:</p>
+                                    <div class="code-block">UNTUK i DARI 1 SAMPAI n-1
   SET kunci = elemen[i]
   SET j = i - 1
   SELAMA j >= 0 DAN elemen[j] > kunci
@@ -290,83 +305,118 @@ AKHIR UNTUK</div>
   AKHIR SELAMA
   SET elemen[j+1] = kunci
 AKHIR UNTUK</div>
-                        </details>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold text-center mb-2">Visualisasi</h4>
-                        <div id="insertion-visual" class="algo-box"></div>
-                        <div class="flex flex-wrap justify-center items-center gap-2 mt-4">
-                            <button id="insertion-sort-btn" onclick="insertionSort()" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Urutkan</button>
-                            <button onclick="resetSort('insertion')" class="bg-slate-500 text-white px-4 py-2 rounded hover:bg-slate-600">Acak Ulang</button>
+                                </details>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-center mb-2">Visualisasi</h4>
+                                <div id="insertion-visual" class="algo-box"></div>
+                                <div class="flex flex-wrap justify-center items-center gap-2 mt-4">
+                                    <button id="insertion-sort-btn" onclick="insertionSort()" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Urutkan</button>
+                                    <button onclick="resetSort('insertion')" class="bg-slate-500 text-white px-4 py-2 rounded hover:bg-slate-600">Acak Ulang</button>
+                                </div>
+                                <p id="insertion-sort-info" class="text-center text-sm text-slate-500 mt-2 h-4"></p>
+                            </div>
                         </div>
-                        <p id="insertion-sort-info" class="text-center text-sm text-slate-500 mt-2 h-4"></p>
                     </div>
-                </div>
+                </section>
             </div>
-        </section>
-        
-        <!-- Section: Advanced Sorting -->
-        <section id="advanced-sorting" class="mb-16">
-            <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Algoritma Pengurutan Tingkat Lanjut</h2>
-            <p class="text-lg text-slate-600 mb-8">Algoritma berikut ini jauh lebih kompleks, tetapi juga jauh lebih cepat untuk data besar. Mereka menggunakan pendekatan "Divide and Conquer" (Pecah dan Taklukkan).</p>
 
-            <!-- Quick Sort -->
-            <div class="bg-white p-6 rounded-xl shadow-lg border mb-8">
-                <h3 class="text-2xl font-bold mb-2">4. Quick Sort (Pengurutan Cepat)</h3>
-                <p class="mb-4">Ini adalah salah satu algoritma pengurutan tercepat. Ia bekerja dengan memilih satu elemen sebagai "pivot", lalu mempartisi (mengatur ulang) elemen lain di sekitarnya: semua yang lebih kecil dari pivot diletakkan di sebelah kiri, dan yang lebih besar di sebelah kanan. Proses ini diulangi secara rekursif (berulang untuk sub-bagian) pada bagian kiri dan kanan.</p>
-                 <div class="grid md:grid-cols-2 gap-8">
-                    <div class="space-y-4">
-                        <p class="font-semibold">Analogi:</p>
-                        <p>Mengatur barisan siswa berdasarkan tinggi. Kamu pilih satu siswa (pivot). Siswa lain yang lebih pendek disuruh ke sebelah kirinya, yang lebih tinggi ke sebelah kanannya. Sekarang kamu punya dua sub-barisan yang lebih kecil, dan kamu ulangi proses yang sama di setiap sub-barisan itu.</p>
-                        <p class="font-semibold">Kapan Digunakan?</p>
-                        <ul class="list-disc list-inside text-sm">
-                            <li>Sangat umum digunakan di dunia nyata karena kecepatannya.</li>
-                            <li>Pilihan utama untuk mengurutkan data berukuran besar.</li>
-                        </ul>
-                         <details class="text-sm">
-                            <summary class="font-semibold cursor-pointer">Lihat Tahapan Proses & Pseudocode</summary>
-                            <p class="font-semibold mt-2">Tahapan Proses:</p>
-                            <ol class="list-decimal list-inside space-y-1">
-                                <li>Pilih sebuah elemen dari array sebagai "pivot" (misalnya, elemen terakhir).</li>
-                                <li>Atur ulang array sehingga semua elemen yang lebih kecil dari pivot berada di sebelah kirinya, dan semua elemen yang lebih besar berada di sebelah kanannya. Pivot sekarang berada di posisi akhirnya yang benar. Proses ini disebut partisi.</li>
-                                <li>Secara rekursif, terapkan langkah 1 dan 2 ke sub-array di sebelah kiri pivot.</li>
-                                <li>Secara rekursif, terapkan langkah 1 dan 2 ke sub-array di sebelah kanan pivot.</li>
-                            </ol>
-                            <p class="font-semibold mt-2">Pseudocode:</p>
-                            <div class="code-block">FUNGSI quickSort(arr, kiri, kanan)
+            <!-- Slide 7: Quick Sort -->
+            <div class="slide">
+                <section id="quick-sort-section">
+                    <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Pengurutan Lanjut: Quick Sort</h2>
+                    <div class="bg-white p-6 rounded-xl shadow-lg border">
+                        <h3 class="text-2xl font-bold mb-2">4. Quick Sort (Pengurutan Cepat)</h3>
+                        <p class="mb-4">Ia bekerja dengan memilih satu elemen sebagai "pivot", lalu mempartisi elemen lain di sekitarnya: semua yang lebih kecil dari pivot di kiri, dan yang lebih besar di kanan. Proses ini diulangi secara rekursif.</p>
+                        <div class="grid md:grid-cols-2 gap-8">
+                             <div class="space-y-4">
+                                <p class="font-semibold">Analogi:</p>
+                                <p>Mengatur barisan siswa. Pilih satu siswa (pivot). Yang lebih pendek ke kiri, yang lebih tinggi ke kanan. Ulangi proses yang sama di sub-barisan kiri dan kanan.</p>
+                                <p class="font-semibold">Kapan Digunakan?</p>
+                                <ul class="list-disc list-inside text-sm">
+                                    <li>Sangat umum digunakan di dunia nyata karena kecepatannya.</li>
+                                    <li>Pilihan utama untuk mengurutkan data berukuran besar.</li>
+                                </ul>
+                                <details class="text-sm">
+                                    <summary class="font-semibold cursor-pointer">Lihat Tahapan Proses & Pseudocode</summary>
+                                    <p class="font-semibold mt-2">Pseudocode:</p>
+                                    <div class="code-block">FUNGSI quickSort(arr, kiri, kanan)
   JIKA kiri < kanan
     SET pivotIndex = partisi(arr, kiri, kanan)
     quickSort(arr, kiri, pivotIndex - 1)
     quickSort(arr, pivotIndex + 1, kanan)
   AKHIR JIKA
 AKHIR FUNGSI</div>
-                        </details>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold text-center mb-2">Visualisasi</h4>
-                        <div id="quick-visual" class="algo-box"></div>
-                        <div class="flex flex-wrap justify-center items-center gap-2 mt-4">
-                            <button id="quick-sort-btn" onclick="runQuickSort()" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Urutkan</button>
-                            <button onclick="resetSort('quick')" class="bg-slate-500 text-white px-4 py-2 rounded hover:bg-slate-600">Acak Ulang</button>
+                                </details>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-center mb-2">Visualisasi</h4>
+                                <div id="quick-visual" class="algo-box"></div>
+                                <div class="flex flex-wrap justify-center items-center gap-2 mt-4">
+                                    <button id="quick-sort-btn" onclick="runQuickSort()" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700">Urutkan</button>
+                                    <button onclick="resetSort('quick')" class="bg-slate-500 text-white px-4 py-2 rounded hover:bg-slate-600">Acak Ulang</button>
+                                </div>
+                                <p id="quick-sort-info" class="text-center text-sm text-slate-500 mt-2 h-4"></p>
+                            </div>
                         </div>
-                        <p id="quick-sort-info" class="text-center text-sm text-slate-500 mt-2 h-4"></p>
                     </div>
-                </div>
+                </section>
             </div>
-        </section>
+            
+            <!-- Slide 8: Conclusion -->
+            <div class="slide flex items-center justify-center">
+                <section id="conclusion" class="text-center">
+                    <h2 class="text-3xl font-bold mb-4">Algoritma yang Tepat untuk Tugas yang Tepat</h2>
+                    <p class="max-w-3xl mx-auto text-lg text-slate-600">Seperti memilih antara berjalan kaki atau naik pesawat, memilih algoritma yang benar sangatlah penting. Linear Search itu mudah tapi lambat untuk data besar, sementara Binary Search sangat cepat tapi butuh data terurut. Memahami kelebihan dan kekurangan setiap algoritma adalah ciri seorang engineer yang hebat.</p>
+                </section>
+            </div>
 
-        <!-- Conclusion -->
-        <section id="conclusion" class="text-center py-16">
-            <h2 class="text-3xl font-bold mb-4">Algoritma yang Tepat untuk Tugas yang Tepat</h2>
-            <p class="max-w-3xl mx-auto text-lg text-slate-600">Seperti memilih antara berjalan kaki atau naik pesawat, memilih algoritma yang benar sangatlah penting. Linear Search itu mudah tapi lambat untuk data besar, sementara Binary Search sangat cepat tapi butuh data terurut. Memahami kelebihan dan kekurangan setiap algoritma adalah ciri seorang engineer yang hebat.</p>
-        </section>
-    </main>
+        </div>
+    </div>
 
-    <footer class="text-center py-6 border-t border-slate-200 bg-white">
-        <p class="text-slate-500">&copy; 2025 Kelas Informatika Pak Muslih. Dibuat dengan semangat belajar.</p>
+    <!-- Navigation Footer -->
+    <footer class="bg-white shadow-t-lg border-t z-10 p-4 flex-shrink-0">
+        <div class="container mx-auto flex justify-between items-center">
+            <button id="prev-btn" class="bg-slate-600 text-white px-6 py-2 rounded hover:bg-slate-700 disabled:bg-slate-300 disabled:cursor-not-allowed">Sebelumnya</button>
+            <div id="progress-indicator" class="font-semibold text-slate-700"></div>
+            <button id="next-btn" class="bg-teal-600 text-white px-6 py-2 rounded hover:bg-teal-700 disabled:bg-teal-300 disabled:cursor-not-allowed">Berikutnya</button>
+        </div>
     </footer>
 
     <script>
+        // --- Slide Navigation Logic ---
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const slideWrapper = document.getElementById('slide-wrapper');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const progressIndicator = document.getElementById('progress-indicator');
+
+        function showSlide(index) {
+            slideWrapper.style.transform = `translateX(-${index * 100}%)`;
+            currentSlide = index;
+            updateNav();
+        }
+
+        function updateNav() {
+            progressIndicator.textContent = `Slide ${currentSlide + 1} dari ${slides.length}`;
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < slides.length - 1) {
+                showSlide(currentSlide + 1);
+            }
+        });
+        
+        // --- Algorithm Logic (Copied from previous version) ---
         const linearData = [12, 5, 88, 23, 45, 67, 31, 9, 50, 74];
         const binaryData = [9, 12, 23, 31, 45, 50, 67, 72, 88, 95];
         let bubbleData = [], selectionData = [], insertionData = [], quickData = [];
@@ -398,7 +448,6 @@ AKHIR FUNGSI</div>
             });
         }
         
-        // --- Linear Search Logic ---
         async function linearSearch() {
             const btn = document.getElementById('linear-search-btn');
             btn.disabled = true;
@@ -427,7 +476,6 @@ AKHIR FUNGSI</div>
             btn.disabled = false;
         }
 
-        // --- Binary Search Logic ---
         async function binarySearch() {
             const btn = document.getElementById('binary-search-btn');
             btn.disabled = true;
@@ -469,7 +517,6 @@ AKHIR FUNGSI</div>
             btn.disabled = false;
         }
 
-        // --- Generic Sort Functions ---
         function generateRandomArray(dataType, size = 10, maxVal = 100) {
             const data = Array.from({length: size}, () => Math.floor(Math.random() * maxVal) + 1);
             let container;
@@ -477,7 +524,7 @@ AKHIR FUNGSI</div>
             if (dataType === 'selection') { selectionData = [...data]; container = selectionVisual; }
             if (dataType === 'insertion') { insertionData = [...data]; container = insertionVisual; }
             if (dataType === 'quick') { quickData = [...data]; container = quickVisual; }
-            renderArray(container, data, 105, dataType);
+            if(container) renderArray(container, data, 105, dataType);
         }
         
         function resetSort(dataType) {
@@ -530,7 +577,7 @@ AKHIR FUNGSI</div>
 
             for (let i = 0; i < selectionData.length - 1; i++) {
                 let minIndex = i;
-                selectionVisual.children[i].classList.add('bar-min'); // Mark current position
+                selectionVisual.children[i].classList.add('bar-min');
                 info.textContent = `Mencari nilai terkecil untuk posisi ${i}...`;
                 await sleep(500);
 
@@ -638,7 +685,7 @@ AKHIR FUNGSI</div>
             }
         }
 
-        // Initial calls to set up the visualizations
+        // Initial calls to set up the visualizations and navigation
         window.onload = () => {
             renderArray(linearVisual, linearData, 100, 'linear');
             renderArray(binaryVisual, binaryData, 100, 'binary');
@@ -646,6 +693,7 @@ AKHIR FUNGSI</div>
             generateRandomArray('selection');
             generateRandomArray('insertion');
             generateRandomArray('quick');
+            showSlide(0); // Initialize the first slide
         };
     </script>
 </body>
