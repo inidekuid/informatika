@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisasi Algoritma Pencarian</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        #binary-array-container {
+            position: relative
+        }
+        .array-block {
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            overflow: visible;
+        }
+        .pointer {
+            position: absolute;
+            z-index: 10; /* Memastikan pointer berada di atas angka */
+            background-color: rgba(255, 255, 255, 0.8); /* Memberikan latar belakang semi-transparan */
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 10px;
+            text-align: center;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Menambahkan bayangan untuk visibilitas */
+            pointer-events: none; /* Pointer tidak mengganggu interaksi dengan blok */
+            white-space: nowrap; /* Mencegah teks terpotong */
+        }
+        /* Custom scrollbar */
+        .log-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .log-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .log-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        .log-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary .arrow {
+            transition: transform 0.2s;
+        }
+        details[open] summary .arrow {
+            transform: rotate(90deg);
+        }
+        
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-6xl bg-white rounded-2xl shadow-lg p-6 md:p-8">
+        <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6">Visualisasi Cara Kerja Pencarian Komputer</h1>
+        <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">Masukkan sebuah angka dari daftar di bawah (contoh: 77), lalu klik "Cari" pada salah satu kolom untuk melihat bagaimana komputer menemukan angka tersebut.</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            <!-- Kolom Pencarian Linear -->
+            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 flex flex-col">
+                <h2 class="text-xl font-bold text-gray-700 mb-2">1. Cara Urut (Linear Search)</h2>
+                <p class="text-sm text-gray-500 mb-4">Cara ini seperti mencari buku di rak yang berantakan. Kita harus memeriksa setiap buku satu per satu dari paling kiri sampai ketemu.</p>
+                
+                <details class="mb-4">
+                    <summary class="cursor-pointer text-sm font-semibold text-blue-600 flex items-center gap-1">
+                        <span class="arrow">&#9654;</span> Lihat Cara Kerjanya
+                    </summary>
+                    <div class="mt-2 text-sm bg-white p-3 rounded-md border">
+                        <h4 class="font-bold mb-1">Langkah-langkah:</h4>
+                        <ol class="list-decimal list-inside space-y-1">
+                            <li>Lihat angka pertama di daftar.</li>
+                            <li>Apakah ini angka yang kita cari?</li>
+                            <li>Jika **YA**, pencarian selesai.</li>
+                            <li>Jika **TIDAK**, pindah ke angka berikutnya dan ulangi langkah 2.</li>
+                            <li>Jika sudah dicek semua dan tidak ada, berarti angka itu tidak ada di daftar.</li>
+                        </ol>
+                        <h4 class="font-bold mt-3 mb-1">Logika Komputer (disederhanakan):</h4>
+                        <pre class="bg-gray-800 text-white p-2 rounded text-xs"><code>UNTUK setiap angka DALAM daftar:
+  JIKA angka ini == angka yang dicari:
+    BILANG "KETEMU!"
+    BERHENTI
+
+BILANG "TIDAK KETEMU."</code></pre>
+                    </div>
+                </details>
+
+                <div id="linear-array-container" class="flex flex-wrap gap-2 mb-4 min-h-[60px]"></div>
+                <div class="flex items-center gap-3 mb-4">
+                    <input type="number" id="linear-input" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Masukkan angka...">
+                    <button id="linear-search-btn" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex-shrink-0">Cari</button>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Status: <span id="linear-status" class="font-semibold text-gray-800">Menunggu input...</span></p>
+                    <p class="text-sm text-gray-600">Jumlah Langkah: <span id="linear-steps" class="font-semibold text-gray-800">0</span></p>
+                </div>
+                <h3 class="text-md font-semibold text-gray-700 mt-4 mb-2">Log Proses:</h3>
+                <div id="linear-log" class="log-container h-48 bg-white border border-gray-300 rounded-lg p-3 overflow-y-auto text-sm flex-grow">
+                    <!-- Log entries will be added here by JS -->
+                </div>
+            </div>
+
+            <!-- Kolom Pencarian Biner -->
+            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 flex flex-col">
+                <h2 class="text-xl font-bold text-gray-700 mb-2">2. Cara Potong Kompas (Binary Search)</h2>
+                <p class="text-sm text-gray-500 mb-4">Cara ini seperti mencari kata di kamus. Kita langsung buka ke tengah, lalu memutuskan mau ke arah depan atau belakang. **Syarat: datanya harus sudah urut!**</p>
+                
+                <details class="mb-4">
+                    <summary class="cursor-pointer text-sm font-semibold text-indigo-600 flex items-center gap-1">
+                        <span class="arrow">&#9654;</span> Lihat Cara Kerjanya
+                    </summary>
+                    <div class="mt-2 text-sm bg-white p-3 rounded-md border">
+                        <h4 class="font-bold mb-1">Langkah-langkah:</h4>
+                        <ol class="list-decimal list-inside space-y-1">
+                            <li>Tentukan area pencarian (dari awal sampai akhir).</li>
+                            <li>Ambil angka yang ada persis di tengah area itu.</li>
+                            <li>Bandingkan angka tengah dengan yang kita cari.</li>
+                            <li>Jika **SAMA**, pencarian selesai.</li>
+                            <li>Jika angka tengah **LEBIH KECIL**, abaikan seluruh bagian kiri. Ulangi dari langkah 2 di bagian kanan.</li>
+                            <li>Jika angka tengah **LEBIH BESAR**, abaikan seluruh bagian kanan. Ulangi dari langkah 2 di bagian kiri.</li>
+                        </ol>
+                        <h4 class="font-bold mt-3 mb-1">Logika Komputer (disederhanakan):</h4>
+                        <pre class="bg-gray-800 text-white p-2 rounded text-xs"><code>SELAMA area pencarian masih ada:
+  LIHAT angka di tengah area
+  JIKA angka tengah == angka yang dicari:
+    BILANG "KETEMU!"
+    BERHENTI
+  JIKA angka tengah < dari yang dicari:
+    GANTI area pencarian menjadi BAGIAN KANAN
+  JIKA TIDAK:
+    GANTI area pencarian menjadi BAGIAN KIRI
+
+BILANG "TIDAK KETEMU."</code></pre>
+                    </div>
+                </details>
+
+                <div id="binary-array-container" class="flex flex-wrap gap-2 mb-4 min-h-[60px]"></div>
+                 <div class="flex items-center gap-3 mb-4">
+                    <input type="number" id="binary-input" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Masukkan angka...">
+                    <button id="binary-search-btn" class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-indigo-700 transition-colors flex-shrink-0">Cari</button>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Status: <span id="binary-status" class="font-semibold text-gray-800">Menunggu input...</span></p>
+                    <p class="text-sm text-gray-600">Jumlah Langkah: <span id="binary-steps" class="font-semibold text-gray-800">0</span></p>
+                </div>
+                <h3 class="text-md font-semibold text-gray-700 mt-4 mb-2">Log Proses:</h3>
+                <div id="binary-log" class="log-container h-48 bg-white border border-gray-300 rounded-lg p-3 overflow-y-auto text-sm flex-grow">
+                    <!-- Log entries will be added here by JS -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const data = [4, 11, 15, 22, 28, 33, 39, 45, 51, 58, 62, 67, 71, 77, 80, 85, 90, 93, 96, 100];
+        const animationSpeed = 700; // milidetik
+
+        // Elemen UI
+        const linearContainer = document.getElementById('linear-array-container');
+        const binaryContainer = document.getElementById('binary-array-container');
+        const linearInput = document.getElementById('linear-input');
+        const binaryInput = document.getElementById('binary-input');
+        const linearSearchBtn = document.getElementById('linear-search-btn');
+        const binarySearchBtn = document.getElementById('binary-search-btn');
+        const linearStatus = document.getElementById('linear-status');
+        const linearSteps = document.getElementById('linear-steps');
+        const linearLog = document.getElementById('linear-log');
+        const binaryStatus = document.getElementById('binary-status');
+        const binarySteps = document.getElementById('binary-steps');
+        const binaryLog = document.getElementById('binary-log');
+
+        // Fungsi untuk menambahkan log
+        function addLog(logContainer, message, type = 'info') {
+            const p = document.createElement('p');
+            p.textContent = message;
+            if (type === 'success') {
+                p.className = 'text-green-600 font-semibold';
+            } else if (type === 'fail') {
+                p.className = 'text-red-600';
+            } else {
+                 p.className = 'text-gray-700';
+            }
+            logContainer.appendChild(p);
+            logContainer.scrollTop = logContainer.scrollHeight; // Auto-scroll to bottom
+        }
+
+        // Fungsi untuk menggambar kotak-kotak array
+        function drawArray(container, arrayData) {
+            container.innerHTML = '';
+            arrayData.forEach((value, index) => {
+                const block = document.createElement('div');
+                block.className = 'array-block w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-gray-200 text-gray-700 font-semibold rounded-lg border border-gray-300';
+                block.textContent = value;
+                block.id = `${container.id}-block-${index}`;
+                container.appendChild(block);
+            });
+        }
+
+        // Fungsi untuk mereset visual
+        function resetVisuals(containerId) {
+            const container = document.getElementById(containerId);
+            const blocks = container.querySelectorAll('.array-block');
+            blocks.forEach(block => {
+                 block.className = 'array-block w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-gray-200 text-gray-700 font-semibold rounded-lg border border-gray-300';
+                 const pointers = block.querySelectorAll('.pointer');
+                 pointers.forEach(p => p.remove());
+            });
+        }
+        
+        // Fungsi untuk menambahkan pointer di bawah blok
+        function setPointer(containerId, index, text, colorClass) {
+             const block = document.getElementById(`${containerId}-block-${index}`);
+             if(block){
+                const pointer = document.createElement('div');
+                pointer.className = `pointer ${colorClass}`;
+                pointer.textContent = text;
+                pointer.style.position = 'absolute';
+                pointer.style.left = '50%';
+                pointer.style.transform = 'translateX(-50%)';
+                pointer.style.bottom = '-18px'; // Jarak di bawah kotak
+                block.appendChild(pointer);
+             }
+        }
+        
+        function disableButtons() {
+            linearSearchBtn.disabled = true;
+            binarySearchBtn.disabled = true;
+            linearSearchBtn.classList.add('opacity-50');
+            binarySearchBtn.classList.add('opacity-50');
+        }
+        
+        function enableButtons() {
+            linearSearchBtn.disabled = false;
+            binarySearchBtn.disabled = false;
+            linearSearchBtn.classList.remove('opacity-50');
+            binarySearchBtn.classList.remove('opacity-50');
+        }
+
+        // Visualisasi Pencarian Linear
+        async function visualizeLinearSearch() {
+            const target = parseInt(linearInput.value);
+            if (isNaN(target)) {
+                linearStatus.textContent = 'Input tidak valid.';
+                return;
+            }
+            
+            disableButtons();
+            resetVisuals('linear-array-container');
+            linearLog.innerHTML = '';
+            addLog(linearLog, `Mulai mencari angka ${target}...`);
+            linearStatus.textContent = 'Mencari...';
+            linearSteps.textContent = '0';
+            let steps = 0;
+            let found = false;
+
+            for (let i = 0; i < data.length; i++) {
+                steps++;
+                linearSteps.textContent = steps;
+                addLog(linearLog, `Langkah ${steps}: Memeriksa posisi ${i} (nilai ${data[i]})...`);
+                
+                const block = document.getElementById(`linear-array-container-block-${i}`);
+                block.classList.remove('bg-gray-200');
+                block.classList.add('bg-yellow-400', 'scale-110');
+                
+                await new Promise(resolve => setTimeout(resolve, animationSpeed));
+
+                if (data[i] === target) {
+                    block.classList.remove('bg-yellow-400');
+                    block.classList.add('bg-green-500', 'text-white');
+                    linearStatus.textContent = `Ditemukan di posisi ${i}!`;
+                    addLog(linearLog, `   -> Ditemukan!`, 'success');
+                    found = true;
+                    break;
+                } else {
+                    block.classList.remove('bg-yellow-400', 'scale-110');
+                    block.classList.add('bg-red-400', 'text-white');
+                }
+            }
+
+            if (!found) {
+                linearStatus.textContent = 'Tidak ditemukan dalam daftar.';
+                addLog(linearLog, 'Selesai. Target tidak ditemukan.', 'fail');
+            }
+            enableButtons();
+        }
+
+        // Visualisasi Pencarian Biner
+        async function visualizeBinarySearch() {
+            const target = parseInt(binaryInput.value);
+            if (isNaN(target)) {
+                binaryStatus.textContent = 'Input tidak valid.';
+                return;
+            }
+
+            disableButtons();
+            resetVisuals('binary-array-container');
+            binaryLog.innerHTML = '';
+            addLog(binaryLog, `Mulai mencari angka ${target}...`);
+            binaryStatus.textContent = 'Mencari...';
+            binarySteps.textContent = '0';
+            
+            let steps = 0;
+            let low = 0;
+            let high = data.length - 1;
+            let found = false;
+
+            while (low <= high) {
+                steps++;
+                binarySteps.textContent = steps;
+                resetVisuals('binary-array-container'); // Bersihkan pointer di setiap langkah
+                
+                setPointer('binary-array-container', low, 'AWAL', 'bg-blue-200 text-blue-800');
+                setPointer('binary-array-container', high, 'AKHIR', 'bg-red-200 text-red-800');
+
+                let mid = Math.floor((low + high) / 2);
+                const midBlock = document.getElementById(`binary-array-container-block-${mid}`);
+                
+                addLog(binaryLog, `Langkah ${steps}: Area [${low}-${high}]. Tengah di posisi ${mid} (nilai ${data[mid]}).`);
+                
+                if (midBlock) {
+                    midBlock.classList.remove('bg-gray-200');
+                    midBlock.classList.add('bg-yellow-200', 'scale-110');
+                    setPointer('binary-array-container', mid, 'TENGAH', 'bg-yellow-200 text-yellow-800');
+                }
+                
+                await new Promise(resolve => setTimeout(resolve, animationSpeed * 2));
+
+                if (data[mid] === target) {
+                    if(midBlock) {
+                        midBlock.classList.remove('bg-yellow-200');
+                        midBlock.classList.add('bg-green-500', 'text-white');
+                    }
+                    binaryStatus.textContent = `Ditemukan di posisi ${mid}!`;
+                    addLog(binaryLog, `   -> Ditemukan!`, 'success');
+                    found = true;
+                    break;
+                } else if (data[mid] < target) {
+                    binaryStatus.textContent = `Nilai tengah (${data[mid]}) terlalu kecil. Cari di kanan.`;
+                    addLog(binaryLog, `   -> Keputusan: Nilai tengah terlalu kecil, cari di kanan.`);
+                    low = mid + 1;
+                } else {
+                    binaryStatus.textContent = `Nilai tengah (${data[mid]}) terlalu besar. Cari di kiri.`;
+                    addLog(binaryLog, `   -> Keputusan: Nilai tengah terlalu besar, cari di kiri.`);
+                    high = mid - 1;
+                }
+                 await new Promise(resolve => setTimeout(resolve, animationSpeed));
+            }
+
+            if (!found) {
+                binaryStatus.textContent = 'Tidak ditemukan dalam daftar.';
+                addLog(binaryLog, 'Selesai. Target tidak ditemukan.', 'fail');
+            }
+            enableButtons();
+        }
+        function showPointer(container, index, label) {
+            const pointer = document.createElement('div');
+            pointer.className = 'pointer';
+            pointer.textContent = label;
+
+            const targetElement = container.children[index];
+            const rect = targetElement.getBoundingClientRect();
+
+            // Posisi pointer di atas elemen target
+            pointer.style.left = `${rect.left + window.scrollX}px`;
+            pointer.style.top = `${rect.top + window.scrollY - 20}px`; // Offset ke atas agar tidak menutupi angka
+
+            container.appendChild(pointer);
+
+            // Hapus pointer setelah simulasi selesai
+            setTimeout(() => {
+                container.removeChild(pointer);
+            }, animationSpeed);
+        }
+
+        // Event Listeners
+        linearSearchBtn.addEventListener('click', visualizeLinearSearch);
+        binarySearchBtn.addEventListener('click', visualizeBinarySearch);
+        
+        // Sinkronisasi input
+        linearInput.addEventListener('input', () => binaryInput.value = linearInput.value);
+        binaryInput.addEventListener('input', () => linearInput.value = linearInput.value);
+
+        // Inisialisasi
+        drawArray(linearContainer, data);
+        drawArray(binaryContainer, data);
+    </script>
+</body>
+</html>
