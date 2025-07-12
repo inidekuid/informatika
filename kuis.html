@@ -51,69 +51,79 @@
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
 
-    <div class="w-full max-w-2xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+    <div class="w-full max-w-2xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden flex flex-col min-h-[550px] sm:min-h-[600px]">
         <!-- Start Screen -->
-        <div id="start-screen" class="screen p-8 text-center">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">Selamat Datang di Kuis Interaktif!</h1>
-            <p class="text-gray-600 mb-6">Uji pemahaman Anda tentang beberapa konsep dasar.</p>
-            
-            <!-- Petunjuk Pengerjaan -->
-            <div class="text-left max-w-md mx-auto bg-gray-50 p-4 rounded-lg mb-6 border border-gray-200">
-                <h3 class="font-bold text-gray-700 mb-2 flex items-center"><i class="fas fa-info-circle mr-2 text-indigo-500"></i>Petunjuk Pengerjaan:</h3>
-                <ul class="list-disc list-inside text-gray-600 space-y-1 text-sm">
-                    <li>Baca setiap soal dengan teliti.</li>
-                    <li>Pilih salah satu jawaban yang Anda anggap paling benar.</li>
-                    <li>Skor akhir akan ditampilkan setelah semua soal terjawab.</li>
-                    <li>Hasil Anda akan disimpan untuk analisis guru.</li>
-                </ul>
-            </div>
+        <div id="start-screen" class="screen p-8 text-center flex-grow flex flex-col justify-center">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Selamat Datang di Kuis Interaktif!</h1>
+                <p class="text-gray-600 mb-6">Uji pemahaman Anda tentang beberapa konsep dasar.</p>
+                
+                <!-- Petunjuk Pengerjaan -->
+                <div class="text-left max-w-md mx-auto bg-gray-50 p-4 rounded-lg mb-6 border border-gray-200">
+                    <h3 class="font-bold text-gray-700 mb-2 flex items-center"><i class="fas fa-info-circle mr-2 text-indigo-500"></i>Petunjuk Pengerjaan:</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1 text-sm">
+                        <li>Baca setiap soal dengan teliti.</li>
+                        <li>Pilih salah satu jawaban yang Anda anggap paling benar.</li>
+                        <li>Skor akhir akan ditampilkan setelah semua soal terjawab.</li>
+                        <li>Hasil Anda akan disimpan untuk analisis guru.</li>
+                    </ul>
+                </div>
 
-            <div class="mb-4">
-                <input type="text" id="name-input" placeholder="Ketik nama Anda di sini..." class="w-full max-w-md mx-auto p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-            </div>
-            <button id="start-btn" class="w-full max-w-md mx-auto bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors duration-300">
-                Mulai Kuis
-            </button>
-            <div class="mt-6">
-                <a href="#" id="teacher-login-btn" class="text-sm text-indigo-600 hover:underline">Login sebagai Guru</a>
+                <div class="mb-4">
+                    <input type="text" id="name-input" placeholder="Ketik nama Anda di sini..." class="w-full max-w-md mx-auto p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <button id="start-btn" class="w-full max-w-md mx-auto bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors duration-300">
+                    Mulai Kuis
+                </button>
+                <div class="mt-6">
+                    <a href="#" id="teacher-login-btn" class="text-sm text-indigo-600 hover:underline">Login sebagai Guru</a>
+                </div>
             </div>
         </div>
 
         <!-- Quiz Screen -->
-        <div id="quiz-screen" class="screen p-8 hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-gray-800">Soal <span id="question-number"></span> dari <span id="total-questions"></span></h2>
-                <div id="user-info" class="text-sm text-gray-500"></div>
+        <div id="quiz-screen" class="screen p-8 hidden flex-grow flex flex-col">
+            <div class="flex-shrink-0">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-gray-800">Soal <span id="question-number"></span> dari <span id="total-questions"></span></h2>
+                    <div id="user-info" class="text-sm text-gray-500"></div>
+                </div>
+                <p id="question-text" class="text-lg text-gray-700 mb-6 min-h-[80px]"></p>
             </div>
-            <p id="question-text" class="text-lg text-gray-700 mb-6 min-h-[60px]"></p>
-            <ul id="options-container" class="space-y-3"></ul>
-            <div id="feedback-text" class="mt-4 text-center font-medium"></div>
+            <div class="flex-grow flex flex-col justify-center">
+                <ul id="options-container" class="space-y-3"></ul>
+            </div>
+            <div class="flex-shrink-0">
+                 <div id="feedback-text" class="mt-4 text-center font-medium min-h-[2rem]"></div>
+            </div>
         </div>
 
         <!-- Result Screen -->
-        <div id="result-screen" class="screen p-8 text-center hidden">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">Kuis Selesai!</h1>
-            <p class="text-gray-600 mb-4">Terima kasih, <span id="result-name" class="font-bold"></span>!</p>
-            <div class="bg-indigo-50 rounded-lg p-6 mb-6">
-                <p class="text-lg text-gray-700">Skor Anda:</p>
-                <p id="score-text" class="text-5xl font-bold text-indigo-600 my-2"></p>
-                <p id="score-details" class="text-gray-600"></p>
-            </div>
-            <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                <button id="restart-btn" class="bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors duration-300">
-                    Coba Lagi
-                </button>
-                <button id="analysis-btn" class="bg-gray-700 text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-800 transition-colors duration-300">
-                    Lihat Papan Peringkat
-                </button>
+        <div id="result-screen" class="screen p-8 text-center hidden flex-grow flex flex-col justify-center">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Kuis Selesai!</h1>
+                <p class="text-gray-600 mb-4">Terima kasih, <span id="result-name" class="font-bold"></span>!</p>
+                <div class="bg-indigo-50 rounded-lg p-6 mb-6">
+                    <p class="text-lg text-gray-700">Skor Anda:</p>
+                    <p id="score-text" class="text-5xl font-bold text-indigo-600 my-2"></p>
+                    <p id="score-details" class="text-gray-600"></p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button id="restart-btn" class="bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors duration-300">
+                        Coba Lagi
+                    </button>
+                    <button id="analysis-btn" class="bg-gray-700 text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-800 transition-colors duration-300">
+                        Lihat Papan Peringkat
+                    </button>
+                </div>
             </div>
         </div>
         
         <!-- Analysis Screen -->
-        <div id="analysis-screen" class="screen p-8 hidden">
-            <h1 class="text-3xl font-bold text-gray-800 mb-4">Analisis & Papan Peringkat</h1>
-            <p class="text-gray-600 mb-6">Berikut adalah hasil dari semua peserta yang telah mengikuti kuis.</p>
-            <div class="overflow-x-auto">
+        <div id="analysis-screen" class="screen p-8 hidden flex-grow flex flex-col">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4 flex-shrink-0">Analisis & Papan Peringkat</h1>
+            <p class="text-gray-600 mb-6 flex-shrink-0">Berikut adalah hasil dari semua peserta yang telah mengikuti kuis.</p>
+            <div class="overflow-x-auto flex-grow">
                 <table class="min-w-full bg-white border">
                     <thead class="bg-gray-200">
                         <tr>
@@ -128,7 +138,7 @@
                     </tbody>
                 </table>
             </div>
-             <button id="back-to-start-btn" class="mt-6 bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors duration-300">
+             <button id="back-to-start-btn" class="mt-6 bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors duration-300 flex-shrink-0">
                 Kembali ke Awal
             </button>
         </div>
@@ -258,11 +268,13 @@
             const optionsContainer = document.getElementById('options-container');
             optionsContainer.innerHTML = '';
             for (const key in q.options) {
-                const btn = document.createElement('ol');
-                btn.className = 'btn';
+                const li = document.createElement('li');
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
                 btn.dataset.option = key;
-                btn.innerHTML = `<span class="font-bold mr-2">${key.toUpperCase()}.</span> ${q.options[key]}`;
-                optionsContainer.appendChild(btn);
+                btn.innerHTML = `<span class="font-bold mr-3">${key.toUpperCase()}</span> ${q.options[key]}`;
+                li.appendChild(btn);
+                optionsContainer.appendChild(li);
             }
         }
 
@@ -275,13 +287,15 @@
             const selectedOption = clickedButton.dataset.option;
             const q = quizData[currentQuestionIndex];
             const isCorrect = selectedOption === q.correct;
+            
+            if (isCorrect) score++;
 
             userAnswers.push({ question: q.question, selected: selectedOption, correct: q.correct, isCorrect });
 
             clickedButton.classList.add('selected', isCorrect ? 'correct' : 'incorrect');
             const feedbackText = document.getElementById('feedback-text');
             feedbackText.textContent = isCorrect ? 'Jawaban Benar!' : `Kurang Tepat. Jawaban benar: ${q.correct.toUpperCase()}`;
-            feedbackText.className = `mt-4 text-center font-medium ${isCorrect ? 'text-green-600' : 'text-red-600'}`;
+            feedbackText.className = `mt-4 text-center font-medium min-h-[2rem] ${isCorrect ? 'text-green-600' : 'text-red-600'}`;
             if (!isCorrect) document.querySelector(`#options-container [data-option="${q.correct}"]`).classList.add('correct');
 
             setTimeout(() => {
@@ -319,13 +333,13 @@
 
             try {
                 const querySnapshot = await getDocs(query(collection(db, `artifacts/${appId}/public/data/quiz_results`)));
-                const results = querySnapshot.docs.map(doc => doc.data());
+                const results = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 results.sort((a, b) => (b.score - a.score) || (a.timestamp?.toDate() || 0) - (b.timestamp?.toDate() || 0));
 
                 if (results.length === 0) return analysisTableBody.innerHTML = '<tr><td colspan="4" class="text-center p-4">Belum ada data hasil kuis.</td></tr>';
 
                 analysisTableBody.innerHTML = '';
-                results.forEach((data, index) => {
+                results.forEach((data) => {
                     const date = data.timestamp ? data.timestamp.toDate().toLocaleString('id-ID') : 'N/A';
                     const row = document.createElement('tr');
                     row.className = 'hover:bg-gray-50';
