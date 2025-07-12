@@ -81,12 +81,12 @@
     <header class="bg-white shadow-md z-10 flex-shrink-0">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div>
-                <h1 class="text-2xl font-bold text-teal-600">Dasar-Dasar Algoritma</h1>
-                <p class="text-slate-600">Memberi Perintah pada Komputer Secara Efisien</p>
+                <h1 class="text-xl sm:text-2xl font-bold text-teal-600">Dasar-Dasar Algoritma</h1>
+                <p class="text-sm text-slate-600">Memberi Perintah pada Komputer Secara Efisien</p>
             </div>
             <div>
-                <a href="index.html" class="bg-slate-200 text-slate-800 px-4 py-2 rounded-lg hover:bg-slate-300 transition-colors font-semibold">
-                    Kembali ke Index
+                <a href="index.html" class="bg-slate-200 text-slate-800 px-3 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-slate-300 transition-colors font-semibold text-sm">
+                    Kembali
                 </a>
             </div>
         </div>
@@ -99,11 +99,11 @@
             <!-- Slide 1: Introduction -->
             <div class="slide">
                 <section id="intro">
-                    <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Apa Itu Algoritma?</h2>
+                    <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Yuk, Kenalan Sama Algoritma!</h2>
                     <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200 text-lg text-slate-700 space-y-4 max-w-4xl mx-auto">
-                        <p>Setelah kita tahu cara menyimpan data (Struktur Data) dan memberi perintah dasar (Logika & Operator), sekarang kita akan belajar <strong class="text-teal-600">Algoritma</strong>.</p>
-                        <p>Algoritma adalah <strong class="text-teal-600">serangkaian langkah-langkah logis dan terstruktur untuk menyelesaikan suatu masalah</strong>. Anggap saja ini seperti resep masakan: ada bahan-bahannya (input), langkah-langkah memasak (proses), dan hasilnya adalah masakan lezat (output).</p>
-                        <p class="font-semibold">Memilih algoritma yang tepat akan membuat program kita berjalan jauh lebih cepat dan efisien. Mari kita pelajari dua jenis algoritma yang paling fundamental.</p>
+                        <p>Oke, kita sudah tahu cara komputer menyimpan data dan mengerti perintah dasar. Nah, sekarang saatnya kita jadi "sutradara" yang memberi arahan pada komputer. Caranya? Pakai <strong class="text-teal-600">Algoritma</strong>!</p>
+                        <p>Gampangnya, algoritma itu seperti <strong class="text-teal-600">resep masakan</strong>. Ada bahan-bahannya (data), ada langkah-langkah yang jelas (prosesnya), dan ada hasil akhirnya (solusi dari masalah). Resep yang bagus akan menghasilkan masakan enak dengan cepat, kan? Sama!</p>
+                        <p class="font-semibold">Dengan memilih "resep" atau algoritma yang pas, program kita bisa jadi super cepat dan efisien. Ayo kita bedah resep-resep paling dasar dan penting di dunia pemrograman!</p>
                     </div>
                 </section>
             </div>
@@ -114,23 +114,23 @@
                     <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Pencarian: Linear Search</h2>
                     <div class="bg-white p-6 rounded-xl shadow-lg border">
                         <h3 class="text-2xl font-bold mb-2">1. Linear Search (Pencarian Lurus)</h3>
-                        <p class="mb-4">Ini adalah cara paling sederhana: kita memeriksa setiap data satu per satu dari awal sampai akhir, hingga data yang dicari ditemukan atau sampai kita mencapai akhir kumpulan data.</p>
+                        <p class="mb-4">Ini dia cara paling jujur dan apa adanya. Kita cek satu-satu semua data, dari paling depan sampai paling belakang. Terus begitu sampai ketemu, atau sampai datanya habis dan ternyata nggak ada.</p>
                         <div class="grid md:grid-cols-2 gap-8">
                             <div class="space-y-4">
                                 <p class="font-semibold">Analogi:</p>
-                                <p>Mencari satu buku spesifik di rak dengan memeriksa setiap buku dari paling kiri ke paling kanan.</p>
-                                <p class="font-semibold">Kapan Digunakan?</p>
+                                <p>Kamu lagi cari kaos kaki warna biru di laci yang isinya berantakan. Mau nggak mau, kamu harus angkat satu-satu setiap kaos kaki sampai yang warna biru ketemu. Sabar ya!</p>
+                                <p class="font-semibold">Kapan Dipakai?</p>
                                 <ul class="list-disc list-inside text-sm">
-                                    <li>Saat kumpulan data <strong class="text-red-500">tidak terurut</strong> (acak).</li>
-                                    <li>Saat kumpulan datanya kecil, sehingga tidak terlalu lambat.</li>
+                                    <li>Kalau datanya <strong class="text-red-500">acak-acakan</strong> dan kamu malas merapikannya dulu.</li>
+                                    <li>Kalau datanya cuma sedikit. Nggak akan terasa lambat, kok!</li>
                                 </ul>
                                 <p class="font-semibold">Tahapan Proses:</p>
                                 <ol class="list-decimal list-inside text-sm space-y-1">
-                                    <li>Mulai dari elemen pertama (indeks 0).</li>
-                                    <li>Bandingkan elemen saat ini dengan data yang dicari.</li>
-                                    <li>Jika sama, pencarian selesai dan elemen ditemukan.</li>
-                                    <li>Jika tidak sama, pindah ke elemen berikutnya.</li>
-                                    <li>Ulangi langkah 2-4 sampai elemen ditemukan atau sampai akhir dari kumpulan data.</li>
+                                    <li>Mulai dari data paling pertama.</li>
+                                    <li>"Ini bukan ya?" Bandingkan dengan yang dicari.</li>
+                                    <li>Kalau sama, hore ketemu! Berhenti.</li>
+                                    <li>Kalau beda, geser ke data selanjutnya dan ulangi lagi.</li>
+                                    <li>Kalau sudah sampai ujung tapi belum ketemu, ya sudah, berarti nggak ada.</li>
                                 </ol>
                             </div>
                             <div>
@@ -154,24 +154,23 @@
                     <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Pencarian: Binary Search</h2>
                     <div class="bg-white p-6 rounded-xl shadow-lg border">
                         <h3 class="text-2xl font-bold mb-2">2. Binary Search (Pencarian Biner)</h3>
-                        <p class="mb-4">Ini adalah cara yang jauh lebih cepat, namun punya syarat: <strong class="text-green-500">data harus sudah terurut</strong>. Cara kerjanya adalah dengan terus-menerus membagi dua kumpulan data dan hanya mencari di separuh bagian yang relevan.</p>
+                        <p class="mb-4">Ini adalah jurus rahasia para programmer! Super cepat, tapi ada syaratnya: <strong class="text-green-500">datanya harus sudah rapi berurutan</strong>. Caranya adalah dengan membelah data jadi dua, lalu memutuskan mau cari di separuh bagian yang mana.</p>
                         <div class="grid md:grid-cols-2 gap-8">
                             <div class="space-y-4">
                                 <p class="font-semibold">Analogi:</p>
-                                <p>Mencari kata di kamus. Kamu buka bagian tengah, lihat apakah kata yang kamu cari ada di sebelum atau sesudah halaman itu, lalu kamu abaikan separuh bagian kamus yang salah dan ulangi prosesnya.</p>
-                                <p class="font-semibold">Kapan Digunakan?</p>
+                                <p>Mencari nama teman di buku kontak HP yang sudah urut abjad. Kamu nggak akan cek dari 'A', kan? Kamu langsung lompat ke huruf awal namanya, misalnya 'R'. Dari situ, kamu bisa abaikan semua nama dari 'A' sampai 'Q'. Jenius!</p>
+                                <p class="font-semibold">Kapan Dipakai?</p>
                                 <ul class="list-disc list-inside text-sm">
-                                    <li>Saat kumpulan data <strong class="text-green-500">sudah terurut</strong>.</li>
-                                    <li>Sangat efisien untuk kumpulan data yang besar.</li>
+                                    <li>Saat datanya <strong class="text-green-500">sudah terurut rapi</strong>. Ini wajib!</li>
+                                    <li>Kalau datanya banyak banget, cara ini bisa menghemat banyak waktu.</li>
                                 </ul>
                                 <p class="font-semibold">Tahapan Proses:</p>
                                 <ol class="list-decimal list-inside text-sm space-y-1">
-                                    <li>Tentukan batas kiri (low) dan kanan (high) dari area pencarian.</li>
-                                    <li>Cari elemen tengah (mid).</li>
-                                    <li>Bandingkan elemen tengah dengan data yang dicari.</li>
-                                    <li>Jika sama, pencarian selesai.</li>
-                                    <li>Jika data dicari lebih besar, abaikan sisi kiri, cari di sisi kanan.</li>
-                                    <li>Jika data dicari lebih kecil, abaikan sisi kanan, cari di sisi kiri.</li>
+                                    <li>Lihat seluruh data, lalu tebak data yang ada di posisi paling tengah.</li>
+                                    <li>Bandingkan tebakanmu dengan yang dicari.</li>
+                                    <li>Kalau pas, mantap! Selesai.</li>
+                                    <li>Kalau yang dicari lebih besar, buang saja separuh data yang di sebelah kiri. Ulangi dari awal dengan sisa data.</li>
+                                    <li>Kalau yang dicari lebih kecil, buang separuh data yang di sebelah kanan. Ulangi lagi.</li>
                                 </ol>
                             </div>
                             <div>
@@ -194,27 +193,26 @@
                 <section id="bubble-sort-section">
                     <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Pengurutan: Bubble Sort</h2>
                     <div class="bg-white p-6 rounded-xl shadow-lg border">
-                        <h3 class="text-2xl font-bold mb-2">1. Bubble Sort (Pengurutan Gelembung)</h3>
-                        <p class="mb-4">Algoritma ini berulang kali melewati daftar, membandingkan setiap pasang elemen yang bersebelahan dan menukarnya jika urutannya salah.</p>
+                        <h3 class="text-2xl font-bold mb-2">1. Bubble Sort (Si Santai)</h3>
+                        <p class="mb-4">Ini adalah cara mengurutkan yang paling santai. Dia akan jalan pelan-pelan, membandingkan dua data yang bersebelahan, dan menukar posisinya kalau perlu.</p>
                         <div class="grid md:grid-cols-2 gap-8">
                             <div class="space-y-4">
                                 <p class="font-semibold">Analogi:</p>
-                                <p>Seperti gelembung udara di dalam air, elemen "paling ringan" (angka terkecil) akan perlahan "mengapung" ke atas (posisi awal) setelah setiap putaran.</p>
-                                <p class="font-semibold">Kapan Digunakan?</p>
+                                <p>Bayangkan gelembung udara di dalam air. Gelembung yang paling ringan (angka paling kecil) akan pelan-pelan "naik" ke atas. Prosesnya diulang terus sampai semua gelembung berbaris rapi.</p>
+                                <p class="font-semibold">Kapan Dipakai?</p>
                                 <ul class="list-disc list-inside text-sm">
-                                    <li>Sangat bagus untuk tujuan edukasi karena logikanya sederhana.</li>
-                                    <li>Praktis untuk daftar yang sangat kecil atau hampir terurut.</li>
-                                    <li><strong class="text-red-500">Tidak efisien</strong> untuk kumpulan data yang besar.</li>
+                                    <li>Paling cocok buat belajar, karena gampang banget dimengerti.</li>
+                                    <li>Kalau datanya cuma secuil atau sudah hampir rapi.</li>
+                                    <li><strong class="text-red-500">Jangan pakai ini</strong> kalau datanya ada ribuan, bisa ngantuk nunggunya!</li>
                                 </ul>
                                 <details class="text-sm">
                                     <summary class="font-semibold cursor-pointer">Lihat Tahapan Proses & Pseudocode</summary>
                                     <p class="font-semibold mt-2">Tahapan Proses:</p>
                                     <ol class="list-decimal list-inside space-y-1">
-                                        <li>Mulai dari elemen pertama, bandingkan dengan elemen kedua.</li>
-                                        <li>Jika elemen pertama lebih besar dari yang kedua, tukar posisi mereka.</li>
-                                        <li>Pindah ke pasangan berikutnya (elemen kedua dan ketiga), lalu bandingkan dan tukar jika perlu.</li>
-                                        <li>Lanjutkan proses ini sampai akhir daftar. Ini menyelesaikan satu putaran dan menempatkan elemen terbesar di posisi paling akhir.</li>
-                                        <li>Ulangi seluruh proses dari awal, tetapi abaikan elemen terakhir yang sudah pasti di posisi yang benar. Lakukan ini sampai seluruh daftar terurut.</li>
+                                        <li>Lihat data pertama dan kedua. Mana yang lebih besar? Kalau yang pertama, tukar tempat.</li>
+                                        <li>Geser. Lihat data kedua dan ketiga. Lakukan hal yang sama.</li>
+                                        <li>Terus geser sampai ujung. Setelah satu putaran, angka paling besar pasti sudah ada di posisi paling akhir.</li>
+                                        <li>Ulangi lagi dari awal, tapi cukup sampai sebelum data terakhir yang sudah benar tadi.</li>
                                     </ol>
                                     <p class="font-semibold mt-2">Pseudocode:</p>
                                     <div class="code-block">ULANGI (n-1) KALI
@@ -245,27 +243,27 @@ AKHIR ULANGI</div>
                 <section id="selection-sort-section">
                     <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Pengurutan: Selection Sort</h2>
                     <div class="bg-white p-6 rounded-xl shadow-lg border">
-                        <h3 class="text-2xl font-bold mb-2">2. Selection Sort (Pengurutan Seleksi)</h3>
-                        <p class="mb-4">Algoritma ini membagi daftar menjadi dua bagian: bagian terurut dan tidak terurut. Kemudian, ia berulang kali mencari elemen terkecil dari bagian yang tidak terurut dan memindahkannya ke akhir bagian yang terurut.</p>
+                        <h3 class="text-2xl font-bold mb-2">2. Selection Sort (Si Pemilih)</h3>
+                        <p class="mb-4">Cara ini sangat teliti. Dia akan mencari satu data paling kecil di seluruh tumpukan, lalu menaruhnya di posisi paling depan. Terus diulangi untuk sisa tumpukan.</p>
                         <div class="grid md:grid-cols-2 gap-8">
                             <div class="space-y-4">
                                 <p class="font-semibold">Analogi:</p>
-                                <p>Mengurutkan setumpuk kartu ujian. Kamu cari ujian dengan nilai terendah, ambil, dan letakkan di tumpukan baru. Ulangi terus sampai tumpukan lama habis.</p>
-                                <p class="font-semibold">Kapan Digunakan?</p>
+                                <p>Kamu punya setumpuk kertas ulangan acak. Kamu lihat semua kertas, cari yang nilainya paling rendah, ambil, lalu taruh di tumpukan baru. Ulangi terus: cari lagi yang paling rendah dari sisa tumpukan, taruh di atas tumpukan baru. Rapi, kan?</p>
+                                <p class="font-semibold">Kapan Dipakai?</p>
                                 <ul class="list-disc list-inside text-sm">
-                                    <li>Berguna saat jumlah data kecil.</li>
-                                    <li>Logikanya cukup mudah dipahami.</li>
-                                    <li><strong class="text-red-500">Tidak efisien</strong> untuk data besar.</li>
+                                    <li>Bagus untuk data yang sedikit.</li>
+                                    <li>Mudah dipahami karena metodenya jelas: "pilih yang terkecil, pindahkan".</li>
+                                    <li>Sama seperti Bubble Sort, <strong class="text-red-500">kurang cocok</strong> untuk data yang banyak.</li>
                                 </ul>
                                 <details class="text-sm">
                                     <summary class="font-semibold cursor-pointer">Lihat Tahapan Proses & Pseudocode</summary>
                                     <p class="font-semibold mt-2">Tahapan Proses:</p>
                                     <ol class="list-decimal list-inside space-y-1">
-                                        <li>Cari nilai terkecil di seluruh daftar.</li>
-                                        <li>Tukar nilai terkecil itu dengan elemen di posisi pertama. Sekarang posisi pertama sudah benar.</li>
-                                        <li>Cari nilai terkecil di sisa daftar (mulai dari posisi kedua).</li>
-                                        <li>Tukar dengan elemen di posisi kedua.</li>
-                                        <li>Ulangi proses sampai seluruh daftar terurut.</li>
+                                        <li>Lihat semua data, cari mana yang nilainya paling kecil.</li>
+                                        <li>Tukar posisinya dengan data yang ada di paling depan (posisi 0). Sekarang posisi 0 sudah pasti benar.</li>
+                                        <li>Sekarang, lihat lagi semua data KECUALI yang pertama. Cari lagi yang paling kecil.</li>
+                                        <li>Tukar dengan data di posisi kedua. Sekarang posisi 1 juga sudah benar.</li>
+                                        <li>Ulangi terus sampai semua rapi.</li>
                                     </ol>
                                     <p class="font-semibold mt-2">Pseudocode:</p>
                                     <div class="code-block">UNTUK i DARI 0 SAMPAI n-2
@@ -298,28 +296,25 @@ AKHIR UNTUK</div>
                 <section id="insertion-sort-section">
                     <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Pengurutan: Insertion Sort</h2>
                     <div class="bg-white p-6 rounded-xl shadow-lg border">
-                        <h3 class="text-2xl font-bold mb-2">3. Insertion Sort (Pengurutan Sisip)</h3>
-                        <p class="mb-4">Ia mengambil satu elemen dari bagian tak terurut dan menyisipkannya ke posisi yang benar di bagian yang sudah terurut.</p>
+                        <h3 class="text-2xl font-bold mb-2">3. Insertion Sort (Si Penyisip)</h3>
+                        <p class="mb-4">Algoritma ini cerdas. Dia membangun daftar yang terurut satu per satu. Dia ambil satu data dari tumpukan acak, lalu mencari posisi yang pas untuk "menyisipkannya" di tumpukan yang sudah rapi.</p>
                         <div class="grid md:grid-cols-2 gap-8">
                             <div class="space-y-4">
                                 <p class="font-semibold">Analogi:</p>
-                                <p>Mengurutkan kartu di tangan saat bermain. Kamu ambil satu kartu, lalu kamu geser-geser kartu di tanganmu untuk membuat ruang dan menyisipkan kartu baru itu di posisi yang tepat.</p>
-                                <p class="font-semibold">Kapan Digunakan?</p>
+                                <p>Persis seperti kamu mengurutkan kartu remi di tangan. Kamu ambil satu kartu baru, lalu kamu lihat kartu di tanganmu, geser-geser sedikit untuk bikin ruang, lalu selipkan kartu baru itu di tempat yang seharusnya. Cepat dan intuitif!</p>
+                                <p class="font-semibold">Kapan Dipakai?</p>
                                 <ul class="list-disc list-inside text-sm">
-                                    <li>Sangat efisien untuk daftar kecil dan data yang hampir terurut.</li>
-                                    <li>Lebih efisien dari Bubble dan Selection Sort pada praktiknya.</li>
+                                    <li>Jagoan untuk data kecil dan kalau datanya sudah hampir terurut.</li>
+                                    <li>Dianggap lebih efisien daripada Bubble dan Selection Sort.</li>
                                 </ul>
                                 <details class="text-sm">
                                     <summary class="font-semibold cursor-pointer">Lihat Tahapan Proses & Pseudocode</summary>
                                     <p class="font-semibold mt-2">Tahapan Proses:</p>
                                     <ol class="list-decimal list-inside space-y-1">
-                                        <li>Mulai dari elemen kedua. Anggap elemen pertama sudah terurut.</li>
-                                        <li>Simpan elemen kedua sebagai "kunci" yang akan disisipkan.</li>
-                                        <li>Bandingkan "kunci" dengan elemen di kirinya (di bagian terurut).</li>
-                                        <li>Jika elemen di kiri lebih besar, geser elemen itu ke kanan.</li>
-                                        <li>Ulangi langkah 4 sampai menemukan posisi yang tepat (elemen di kiri lebih kecil atau sudah sampai di awal daftar).</li>
-                                        <li>Sisipkan "kunci" di posisi yang kosong.</li>
-                                        <li>Ambil elemen berikutnya dan ulangi proses.</li>
+                                        <li>Anggap data pertama sudah rapi.</li>
+                                        <li>Ambil data kedua. Bandingkan dengan data pertama. Kalau lebih kecil, sisipkan di depannya.</li>
+                                        <li>Ambil data ketiga. Bandingkan dengan data di bagian rapi (sebelah kiri), geser-geser data yang lebih besar untuk membuat ruang, lalu sisipkan di posisi yang pas.</li>
+                                        <li>Lakukan terus sampai semua kartu di tumpukan acak habis.</li>
                                     </ol>
                                     <p class="font-semibold mt-2">Pseudocode:</p>
                                     <div class="code-block">UNTUK i DARI 1 SAMPAI n-1
@@ -352,25 +347,25 @@ AKHIR UNTUK</div>
                 <section id="quick-sort-section">
                     <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Pengurutan Lanjut: Quick Sort</h2>
                     <div class="bg-white p-6 rounded-xl shadow-lg border">
-                        <h3 class="text-2xl font-bold mb-2">4. Quick Sort (Pengurutan Cepat)</h3>
-                        <p class="mb-4">Ia bekerja dengan memilih satu elemen sebagai "pivot", lalu mempartisi elemen lain di sekitarnya: semua yang lebih kecil dari pivot di kiri, dan yang lebih besar di kanan. Proses ini diulangi secara rekursif.</p>
+                        <h3 class="text-2xl font-bold mb-2">4. Quick Sort (Si Cepat)</h3>
+                        <p class="mb-4">Namanya saja sudah "Cepat", dan memang begitu! Cara kerjanya adalah "Pecah dan Taklukkan". Dia pilih satu "pivot" (patokan), lalu semua data lain diatur di sekelilingnya: yang lebih kecil di kiri, yang lebih besar di kanan.</p>
                         <div class="grid md:grid-cols-2 gap-8">
                              <div class="space-y-4">
                                 <p class="font-semibold">Analogi:</p>
-                                <p>Mengatur barisan siswa. Pilih satu siswa (pivot). Yang lebih pendek ke kiri, yang lebih tinggi ke kanan. Ulangi proses yang sama di sub-barisan kiri dan kanan.</p>
-                                <p class="font-semibold">Kapan Digunakan?</p>
+                                <p>Kamu seorang komandan yang mau mengatur barisan siswa berdasarkan tinggi. Kamu tunjuk satu siswa jadi "pivot". Lalu kamu teriak, "Yang lebih pendek dari pivot, ke kiri! Yang lebih tinggi, ke kanan!". Sekarang kamu punya dua barisan kecil. Kamu tunjuk lagi komandan di masing-masing barisan untuk melakukan hal yang sama. Terus begitu sampai semua rapi.</p>
+                                <p class="font-semibold">Kapan Dipakai?</p>
                                 <ul class="list-disc list-inside text-sm">
-                                    <li>Sangat umum digunakan di dunia nyata karena kecepatannya.</li>
-                                    <li>Pilihan utama untuk mengurutkan data berukuran besar.</li>
+                                    <li>Ini adalah "standar emas" di dunia nyata karena super cepat.</li>
+                                    <li>Pilihan terbaik kalau kamu berurusan dengan data yang banyak.</li>
                                 </ul>
                                 <details class="text-sm">
                                     <summary class="font-semibold cursor-pointer">Lihat Tahapan Proses & Pseudocode</summary>
                                     <p class="font-semibold mt-2">Tahapan Proses:</p>
                                     <ol class="list-decimal list-inside space-y-1">
-                                        <li>Pilih sebuah elemen dari array sebagai "pivot" (misalnya, elemen terakhir).</li>
-                                        <li>Atur ulang array sehingga semua elemen yang lebih kecil dari pivot berada di sebelah kirinya, dan semua elemen yang lebih besar berada di sebelah kanannya. Pivot sekarang berada di posisi akhirnya yang benar. Proses ini disebut partisi.</li>
-                                        <li>Secara rekursif, terapkan langkah 1 dan 2 ke sub-array di sebelah kiri pivot.</li>
-                                        <li>Secara rekursif, terapkan langkah 1 dan 2 ke sub-array di sebelah kanan pivot.</li>
+                                        <li>Pilih satu data sebagai patokan (pivot).</li>
+                                        <li>Pindahkan semua data yang lebih kecil dari pivot ke sebelah kirinya, dan yang lebih besar ke kanannya. Sekarang si pivot sudah ada di posisi finalnya.</li>
+                                        <li>Sekarang kamu punya dua "sub-masalah": mengurutkan bagian kiri dan mengurutkan bagian kanan.</li>
+                                        <li>Ulangi lagi langkah 1-3 untuk masing-masing bagian itu, sampai semua bagian terkecil pun terurut.</li>
                                     </ol>
                                     <p class="font-semibold mt-2">Pseudocode:</p>
                                     <div class="code-block">FUNGSI quickSort(arr, kiri, kanan)
@@ -399,8 +394,8 @@ AKHIR FUNGSI</div>
             <!-- Slide 8: Conclusion -->
             <div class="slide flex items-center justify-center">
                 <section id="conclusion" class="text-center">
-                    <h2 class="text-3xl font-bold mb-4">Algoritma yang Tepat untuk Tugas yang Tepat</h2>
-                    <p class="max-w-3xl mx-auto text-lg text-slate-600">Seperti memilih antara berjalan kaki atau naik pesawat, memilih algoritma yang benar sangatlah penting. Linear Search itu mudah tapi lambat untuk data besar, sementara Binary Search sangat cepat tapi butuh data terurut. Memahami kelebihan dan kekurangan setiap algoritma adalah ciri seorang engineer yang hebat.</p>
+                    <h2 class="text-3xl font-bold mb-4">Pilih "Resep" yang Tepat!</h2>
+                    <p class="max-w-3xl mx-auto text-lg text-slate-600">Nah, sekarang kamu tahu kan? Jadi programmer itu bukan cuma soal coding, tapi juga soal memilih strategi. Setiap algoritma punya kekuatan dan kelemahannya sendiri. Memahami kapan harus pakai cara yang santai (Bubble Sort) dan kapan harus pakai jurus cepat (Quick Sort) adalah yang membedakan programmer biasa dengan programmer hebat. Selamat bereksperimen!</p>
                 </section>
             </div>
 
@@ -408,11 +403,21 @@ AKHIR FUNGSI</div>
     </div>
 
     <!-- Navigation Footer -->
-    <footer class="bg-white shadow-t-lg border-t z-10 p-4 flex-shrink-0">
-        <div class="container mx-auto flex justify-between items-center">
-            <button id="prev-btn" class="bg-slate-600 text-white px-6 py-2 rounded hover:bg-slate-700 disabled:bg-slate-300 disabled:cursor-not-allowed">Sebelumnya</button>
-            <div id="progress-indicator" class="font-semibold text-slate-700"></div>
-            <button id="next-btn" class="bg-teal-600 text-white px-6 py-2 rounded hover:bg-teal-700 disabled:bg-teal-300 disabled:cursor-not-allowed">Berikutnya</button>
+    <footer class="bg-white shadow-t-lg border-t z-10 p-2 sm:p-4 flex-shrink-0">
+        <div class="container mx-auto flex justify-between items-center gap-2">
+            <button id="prev-btn" class="bg-slate-600 text-white px-4 py-2 rounded-lg hover:bg-slate-700 disabled:bg-slate-300 disabled:cursor-not-allowed flex-1 sm:flex-none flex justify-center items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline sm:hidden" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                <span class="hidden sm:inline">Sebelumnya</span>
+            </button>
+            <div id="progress-indicator" class="font-semibold text-slate-700 text-xs sm:text-base whitespace-nowrap"></div>
+            <button id="next-btn" class="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 disabled:bg-teal-300 disabled:cursor-not-allowed flex-1 sm:flex-none flex justify-center items-center">
+                <span class="hidden sm:inline">Berikutnya</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline sm:hidden" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+            </button>
         </div>
     </footer>
 
