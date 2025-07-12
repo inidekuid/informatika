@@ -258,7 +258,7 @@
             const optionsContainer = document.getElementById('options-container');
             optionsContainer.innerHTML = '';
             for (const key in q.options) {
-                const btn = document.createElement('button');
+                const btn = document.createElement('ol');
                 btn.className = 'btn';
                 btn.dataset.option = key;
                 btn.innerHTML = `<span class="font-bold mr-2">${key.toUpperCase()}.</span> ${q.options[key]}`;
