@@ -128,11 +128,13 @@
                 
                 <!-- Visualizations -->
                 <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-8">
-                    <div class="lg:col-span-3 bg-gray-50 p-4 rounded-lg">
+                    <!-- FIXED: Added h-80 to prevent resizing loop -->
+                    <div class="lg:col-span-3 bg-gray-50 p-4 rounded-lg h-80">
                         <h3 class="font-bold text-lg mb-2">Analisis Butir Soal (% Jawaban Benar)</h3>
                         <canvas id="itemAnalysisChart"></canvas>
                     </div>
-                    <div class="lg:col-span-2 bg-gray-50 p-4 rounded-lg">
+                     <!-- FIXED: Added h-80 to prevent resizing loop -->
+                    <div class="lg:col-span-2 bg-gray-50 p-4 rounded-lg h-80">
                         <h3 class="font-bold text-lg mb-2">Distribusi Kelompok Siswa</h3>
                         <canvas id="groupingChart"></canvas>
                     </div>
@@ -209,7 +211,7 @@
         const passwordInput = document.getElementById('password-input');
         let itemAnalysisChartInstance, groupingChartInstance;
 
-        // --- EVENT LISTENERS (Added print button) ---
+        // --- EVENT LISTENERS (No changes) ---
         document.getElementById('start-btn').addEventListener('click', startQuiz);
         document.getElementById('options-container').addEventListener('click', handleOptionClick);
         document.getElementById('restart-btn').addEventListener('click', () => switchScreen(screens.start));
@@ -223,7 +225,7 @@
         document.getElementById('alert-close-btn').addEventListener('click', () => modals.alert.classList.add('hidden'));
         document.getElementById('detail-close-btn').addEventListener('click', () => modals.detail.classList.add('hidden'));
 
-        // --- CORE FUNCTIONS (Quiz logic, no changes) ---
+        // --- CORE FUNCTIONS (No changes) ---
         function switchScreen(activeScreen) { Object.values(screens).forEach(s => s.classList.add('hidden')); if (activeScreen === screens.start) resetQuiz(); activeScreen.classList.remove('hidden'); }
         function startQuiz() { userName = nameInput.value.trim(); if (!userName) return showAlert("Nama tidak boleh kosong!"); if (!db || !auth.currentUser) return showAlert("Layanan belum siap. Mohon tunggu."); document.getElementById('user-info').textContent = `Peserta: ${userName}`; switchScreen(screens.quiz); loadQuestion(); }
         function loadQuestion() { document.getElementById('feedback-text').textContent = ''; const q = quizData[currentQuestionIndex]; document.getElementById('question-number').textContent = currentQuestionIndex + 1; document.getElementById('question-text').textContent = q.question; const optionsContainer = document.getElementById('options-container'); optionsContainer.innerHTML = ''; for (const key in q.options) { const li = document.createElement('li'); const btn = document.createElement('button'); btn.className = 'option-btn'; btn.dataset.option = key; btn.innerHTML = `<span class="font-bold mr-3">${key.toUpperCase()}</span> ${q.options[key]}`; li.appendChild(btn); optionsContainer.appendChild(li); } }
@@ -236,7 +238,7 @@
         function handleAnalysisTableClick(e) { if (e.target.classList.contains('view-details-btn')) { const name = e.target.dataset.name; const answers = JSON.parse(e.target.dataset.answers); showAnswerDetails(name, answers); } }
         function showAnswerDetails(name, answers) { document.getElementById('detail-student-name').textContent = name; const container = document.getElementById('detail-answers-container'); container.innerHTML = ''; answers.forEach((ans, index) => { const isCorrect = ans.isCorrect; const icon = isCorrect ? '<i class="fas fa-check-circle text-green-500"></i>' : '<i class="fas fa-times-circle text-red-500"></i>'; const detailHtml = `<div class="p-3 rounded-lg ${isCorrect ? 'bg-green-50' : 'bg-red-50'}"><p class="font-semibold text-gray-800">Soal ${index + 1}:</p><p class="text-sm text-gray-600 mb-2">${ans.question}</p><p class="text-sm">Jawaban ${name}: <span class="font-bold">${ans.selected.toUpperCase()}</span> ${icon}</p>${!isCorrect ? `<p class="text-sm">Jawaban Benar: <span class="font-bold">${ans.correct.toUpperCase()}</span></p>` : ''}</div>`; container.innerHTML += detailHtml; }); modals.detail.classList.remove('hidden'); }
         
-        // --- NEW & UPDATED ANALYSIS FUNCTIONS ---
+        // --- ANALYSIS FUNCTIONS (No changes in logic) ---
         async function showAnalysis() {
             switchScreen(screens.analysis);
             const analysisTableBody = document.getElementById('analysis-table-body');
