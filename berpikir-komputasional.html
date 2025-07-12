@@ -19,13 +19,81 @@
         }
         /* Style untuk active tab */
         .tab-active {
-            background-color: #4f46e5; /* indigo-600 */
+            background-color: #2563eb; /* blue-600 */
             color: white;
         }
         /* Style untuk active nav link */
         .nav-active {
-            color: #4f46e5;
+            color: #2563eb; /* blue-600 */
             font-weight: 600;
+        }
+        /* Visualisasi Styles */
+        .vis-container {
+            border: 2px dashed #cbd5e1;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1.5rem;
+        }
+        .problem-block {
+            background-color: #ef4444;
+            color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .sub-task-block {
+            background-color: #3b82f6;
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-size: 0.875rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s ease forwards;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .pattern-shape {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .pattern-shape:hover {
+            transform: scale(1.1);
+        }
+        .algorithm-step {
+            background-color: #e2e8f0;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            margin-bottom: 0.5rem;
+            border: 2px solid transparent;
+        }
+        .algorithm-step:hover {
+            border-color: #93c5fd;
+        }
+        .step-correct {
+            background-color: #dcfce7;
+            border-color: #22c55e;
+        }
+        .step-incorrect {
+            animation: shake 0.5s;
+            border-color: #ef4444;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
     </style>
 </head>
@@ -35,12 +103,12 @@
     <nav class="sticky top-0 bg-white/80 backdrop-blur-md shadow-sm z-50">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center py-4">
-                <div class="text-lg font-bold text-indigo-600">Berpikir Komputasional</div>
+                <div class="text-lg font-bold text-blue-600">Berpikir Komputasional</div>
                 <div class="hidden md:flex space-x-6 text-slate-600">
-                    <a href="#definisi" class="nav-link hover:text-indigo-600 transition-colors">Definisi</a>
-                    <a href="#pentingnya" class="nav-link hover:text-indigo-600 transition-colors">Pentingnya</a>
-                    <a href="#pilar" class="nav-link hover:text-indigo-600 transition-colors">4 Pilar Utama</a>
-                    <a href="#kesimpulan" class="nav-link hover:text-indigo-600 transition-colors">Kesimpulan</a>
+                    <a href="#definisi" class="nav-link hover:text-blue-600 transition-colors">Definisi</a>
+                    <a href="#pentingnya" class="nav-link hover:text-blue-600 transition-colors">Pentingnya</a>
+                    <a href="#pilar" class="nav-link hover:text-blue-600 transition-colors">4 Pilar Utama</a>
+                    <a href="#kesimpulan" class="nav-link hover:text-blue-600 transition-colors">Kesimpulan</a>
                 </div>
             </div>
         </div>
@@ -57,7 +125,7 @@
                 <blockquote class="text-xl md:text-2xl font-semibold text-slate-700 italic">
                     "Berpikir komputasional adalah proses pemecahan masalah—baik yang kompleks maupun sederhana—dengan menggunakan teknik dan pendekatan yang digunakan oleh seorang ilmuwan komputer."
                 </blockquote>
-                <p class="mt-4 text-slate-500">Ini bukan tentang berpikir seperti komputer, tapi tentang merumuskan masalah dan solusinya dalam bentuk yang bisa dipahami dan dieksekusi oleh komputer (atau manusia secara sistematis).</p>
+                <p class="mt-4 text-slate-600">Ini bukan tentang berpikir seperti mesin, tapi tentang bagaimana kita <strong class="text-blue-600">menerjemahkan masalah dunia nyata ke dalam bahasa yang bisa dimengerti langkah-langkahnya</strong>, baik oleh komputer maupun oleh manusia lain secara sistematis. Ini adalah sebuah pola pikir untuk merancang solusi.</p>
             </div>
         </section>
 
@@ -71,7 +139,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                     </div>
                     <h3 class="text-xl font-bold mb-2">Memecahkan Masalah Kompleks</h3>
-                    <p class="text-slate-600">Membantu Anda memecah masalah besar yang tampak menakutkan menjadi bagian-bagian kecil yang lebih mudah dikelola.</p>
+                    <p class="text-slate-600">Membantu Anda memecah masalah besar yang tampak menakutkan menjadi bagian-bagian kecil yang lebih mudah dikelola. Anda jadi tahu harus mulai dari mana.</p>
                 </div>
                 <!-- Card 2 -->
                 <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all">
@@ -79,15 +147,15 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.375 3.375 0 0014 18.442V19.5a.5.5 0 01-.5.5h-3a.5.5 0 01-.5-.5v-1.058a3.375 3.375 0 00-.985-2.395l-.548-.547z" /></svg>
                     </div>
                     <h3 class="text-xl font-bold mb-2">Meningkatkan Kreativitas</h3>
-                    <p class="text-slate-600">Memberi Anda kerangka kerja untuk berinovasi dan menemukan solusi yang unik dan efisien untuk berbagai tantangan.</p>
+                    <p class="text-slate-600">Memberi Anda kerangka kerja untuk berinovasi. Dengan memahami inti masalah, Anda bisa menemukan solusi yang unik dan efisien, bukan hanya solusi yang pertama kali terlintas.</p>
                 </div>
                 <!-- Card 3 -->
                 <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all">
-                    <div class="flex items-center justify-center bg-purple-100 rounded-full w-16 h-16 mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                    <div class="flex items-center justify-center bg-sky-100 rounded-full w-16 h-16 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                     </div>
                     <h3 class="text-xl font-bold mb-2">Bekerja Lebih Efisien</h3>
-                    <p class="text-slate-600">Dengan mengidentifikasi pola dan membuat langkah-langkah yang jelas, Anda dapat menyelesaikan tugas lebih cepat dan akurat.</p>
+                    <p class="text-slate-600">Dengan mengidentifikasi pola dan membuat langkah-langkah yang jelas, Anda dapat menyelesaikan tugas lebih cepat, lebih akurat, dan bahkan mengotomatiskan sebagian pekerjaan Anda.</p>
                 </div>
             </div>
         </section>
@@ -111,20 +179,48 @@
                     <!-- Dekomposisi Content -->
                     <div id="dekomposisi" class="tab-content">
                         <div class="flex items-start gap-4 mb-6">
-                            <div class="flex-shrink-0 bg-indigo-100 p-3 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg></div>
+                            <div class="flex-shrink-0 bg-blue-100 p-3 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg></div>
                             <div>
-                                <h3 class="text-2xl font-bold">Dekomposisi</h3>
-                                <p class="text-slate-600">Memecah masalah atau sistem yang kompleks menjadi bagian-bagian yang lebih kecil dan lebih mudah dikelola.</p>
+                                <h3 class="text-2xl font-bold">Dekomposisi: Seni Memecah Masalah</h3>
+                                <p class="text-slate-600">Ini adalah langkah pertama dan paling mendasar: memecah masalah atau sistem yang kompleks menjadi bagian-bagian yang lebih kecil, spesifik, dan lebih mudah dikelola.</p>
                             </div>
                         </div>
                         <div class="grid md:grid-cols-2 gap-6">
                             <div class="bg-slate-100 p-4 rounded-lg">
-                                <h4 class="font-semibold mb-2">Contoh Sehari-hari: Membuat Sarapan</h4>
-                                <p class="text-sm text-slate-700">Anda tidak hanya "membuat sarapan". Anda memecahnya menjadi: mengeluarkan roti, memanggang roti, mengambil selai, mengoleskan selai, membuat kopi, menuang kopi.</p>
+                                <h4 class="font-semibold mb-2">Contoh Kontekstual: Merencanakan Acara Pensi Sekolah</h4>
+                                <p class="text-sm text-slate-700">Tugas "mengadakan pensi" terdengar sangat besar. Dengan dekomposisi, kita memecahnya menjadi:</p>
+                                <ul class="list-disc list-inside text-sm text-slate-700 mt-2 pl-2">
+                                    <li>Membentuk panitia (Seksi Acara, Dana, dll.)</li>
+                                    <li>Menentukan tema dan tanggal acara.</li>
+                                    <li>Mencari sponsor dan mengurus perizinan.</li>
+                                    <li>Memilih dan menghubungi pengisi acara.</li>
+                                    <li>Mengatur panggung, suara, dan pencahayaan.</li>
+                                    <li>Mempromosikan acara ke siswa.</li>
+                                </ul>
+                                <p class="text-sm text-slate-700 mt-2">Setiap tugas kecil ini jauh lebih mudah untuk ditangani daripada satu tugas besar "mengadakan pensi".</p>
                             </div>
                             <div class="bg-slate-100 p-4 rounded-lg">
-                                <h4 class="font-semibold mb-2">Penerapan Teknologi: Membangun Aplikasi</h4>
-                                <p class="text-sm text-slate-700">Seorang developer tidak langsung membuat aplikasi. Mereka memecahnya menjadi: modul login, halaman utama (dashboard), fitur posting, manajemen database, dan antarmuka pengguna (UI).</p>
+                                <h4 class="font-semibold mb-2">Penerapan Teknologi: Halaman Web</h4>
+                                <p class="text-sm text-slate-700">Seorang web developer tidak membuat satu halaman utuh sekaligus. Mereka memecahnya menjadi komponen-komponen:</p>
+                                 <ul class="list-disc list-inside text-sm text-slate-700 mt-2 pl-2">
+                                    <li><b>Header:</b> Berisi logo dan menu navigasi.</li>
+                                    <li><b>Konten Utama:</b> Berisi artikel atau produk.</li>
+                                    <li><b>Sidebar:</b> Berisi link terkait atau iklan.</li>
+                                    <li><b>Footer:</b> Berisi informasi kontak dan hak cipta.</li>
+                                </ul>
+                                <p class="text-sm text-slate-700 mt-2">Setiap komponen ini dikerjakan secara terpisah.</p>
+                            </div>
+                        </div>
+                        <div class="vis-container">
+                            <h4 class="font-semibold text-center mb-4">Visualisasi Interaktif</h4>
+                            <div id="decomposition-vis" class="text-center">
+                                <div id="main-problem" class="problem-block inline-block" onclick="visualizeDecomposition()">
+                                    Mengadakan Pensi Sekolah
+                                    <span class="text-xs block mt-1">(Klik untuk memecah masalah)</span>
+                                </div>
+                                <div id="sub-tasks" class="hidden grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                                    <!-- Sub-tasks will be added by JS -->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -132,41 +228,87 @@
                     <!-- Pengenalan Pola Content -->
                     <div id="pola" class="tab-content hidden">
                         <div class="flex items-start gap-4 mb-6">
-                            <div class="flex-shrink-0 bg-indigo-100 p-3 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg></div>
+                            <div class="flex-shrink-0 bg-blue-100 p-3 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg></div>
                             <div>
-                                <h3 class="text-2xl font-bold">Pengenalan Pola</h3>
-                                <p class="text-slate-600">Mencari kesamaan atau tren di antara dan di dalam masalah untuk membantu menyelesaikannya dengan lebih efisien.</p>
+                                <h3 class="text-2xl font-bold">Pengenalan Pola: Menemukan Kesamaan</h3>
+                                <p class="text-slate-600">Setelah masalah dipecah, kita sering menemukan bahwa beberapa bagian kecil itu memiliki kesamaan atau mengikuti tren tertentu. Mengenali pola ini membantu kita menyelesaikan masalah dengan lebih efisien.</p>
                             </div>
                         </div>
                         <div class="grid md:grid-cols-2 gap-6">
                             <div class="bg-slate-100 p-4 rounded-lg">
-                                <h4 class="font-semibold mb-2">Contoh Sehari-hari: Prediksi Cuaca</h4>
-                                <p class="text-sm text-slate-700">Jika Anda melihat pola: langit gelap, angin kencang, dan suhu turun, Anda dapat memprediksi bahwa hujan akan segera turun. Ini adalah pengenalan pola.</p>
+                                <h4 class="font-semibold mb-2">Contoh Kontekstual: Menganalisis Musik Favorit</h4>
+                                <p class="text-sm text-slate-700">Kamu sadar bahwa semua lagu yang kamu suka punya pola yang sama: ketukan drum yang cepat, suara gitar yang dominan, dan vokal yang bersemangat. Ini adalah pola "musik rock". Dengan mengenali pola ini, saat temanmu merekomendasikan band rock baru, kamu bisa menebak bahwa kemungkinan besar kamu akan menyukainya.</p>
                             </div>
                             <div class="bg-slate-100 p-4 rounded-lg">
-                                <h4 class="font-semibold mb-2">Penerapan Teknologi: Rekomendasi Produk</h4>
-                                <p class="text-sm text-slate-700">Situs e-commerce mengenali pola pembelian Anda (misal: sering membeli buku fiksi ilmiah) dan menggunakannya untuk merekomendasikan produk serupa yang mungkin Anda sukai.</p>
+                                <h4 class="font-semibold mb-2">Penerapan Teknologi: Fitur Autocomplete</h4>
+                                <p class="text-sm text-slate-700">Saat kamu mengetik "selamat pa..." di Google, ia akan menyarankan "selamat pagi". Google mengenali pola dari jutaan pengguna lain yang mengetik hal serupa. Ia tidak menebak secara acak, tetapi menggunakan data pola untuk memprediksi apa yang ingin kamu ketik, sehingga mempercepat pencarianmu.</p>
                             </div>
+                        </div>
+                        <div class="vis-container">
+                            <h4 class="font-semibold text-center mb-4">Temukan Pola yang Berbeda!</h4>
+                            <div id="pattern-vis" class="flex justify-center gap-4 flex-wrap">
+                                <!-- Shapes will be added by JS -->
+                            </div>
+                            <p id="pattern-feedback" class="text-center mt-4 font-semibold h-6"></p>
                         </div>
                     </div>
 
                     <!-- Abstraksi Content -->
                     <div id="abstraksi" class="tab-content hidden">
                         <div class="flex items-start gap-4 mb-6">
-                            <div class="flex-shrink-0 bg-indigo-100 p-3 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.657 7.343A8 8 0 0117.657 18.657z" /><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128z" /></svg></div>
+                            <div class="flex-shrink-0 bg-blue-100 p-3 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.657 7.343A8 8 0 0117.657 18.657z" /><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128z" /></svg></div>
                             <div>
-                                <h3 class="text-2xl font-bold">Abstraksi</h3>
-                                <p class="text-slate-600">Berfokus pada informasi yang penting saja, sambil mengabaikan detail yang tidak relevan atau terlalu rumit.</p>
+                                <h3 class="text-2xl font-bold">Abstraksi: Fokus pada yang Penting</h3>
+                                <p class="text-slate-600">Ini adalah kemampuan untuk menyaring dan mengabaikan detail yang tidak relevan, sehingga kita bisa fokus pada gambaran besar atau inti dari masalah.</p>
                             </div>
                         </div>
                         <div class="grid md:grid-cols-2 gap-6">
                             <div class="bg-slate-100 p-4 rounded-lg">
-                                <h4 class="font-semibold mb-2">Contoh Sehari-hari: Mengemudi Mobil</h4>
-                                <p class="text-sm text-slate-700">Anda hanya perlu tahu cara menggunakan setir, pedal gas, dan rem. Anda mengabaikan detail rumit tentang cara kerja mesin, transmisi, atau sistem kelistrikan. Itulah abstraksi.</p>
+                                <h4 class="font-semibold mb-2">Contoh Kontekstual: Menggunakan Aplikasi Ojek Online</h4>
+                                <p class="text-sm text-slate-700">Untuk memesan ojek, kamu hanya perlu tahu tiga hal penting: titik jemput, titik tujuan, dan metode pembayaran. Kamu tidak perlu tahu (dan tidak peduli) detail rumit seperti: bagaimana algoritma GPS bekerja, bagaimana sistem mencocokkanmu dengan driver terdekat, atau bagaimana data transaksimu diamankan. Semua detail itu telah "diabstraksikan" agar kamu bisa fokus pada tujuan utamamu: memesan ojek.</p>
                             </div>
                             <div class="bg-slate-100 p-4 rounded-lg">
-                                <h4 class="font-semibold mb-2">Penerapan Teknologi: Menggunakan Fungsi</h4>
-                                <p class="text-sm text-slate-700">Saat programmer menggunakan fungsi seperti `print("Hello")`, mereka tidak perlu tahu bagaimana komputer mengubah perintah itu menjadi piksel di layar. Mereka hanya tahu fungsi itu akan menampilkan teks.</p>
+                                <h4 class="font-semibold mb-2">Penerapan Teknologi: Ikon 'Simpan'</h4>
+                                <p class="text-sm text-slate-700">Saat kamu mengklik ikon disket (floppy disk) untuk menyimpan dokumen, kamu melakukan abstraksi. Ikon tersebut mewakili konsep "menyimpan". Kamu tidak perlu tahu detail teknis tentang bagaimana program menulis data biner ke dalam hard drive atau SSD. Kamu hanya perlu tahu bahwa ikon itu = simpan.</p>
+                            </div>
+                        </div>
+                        <div class="vis-container">
+                            <h4 class="font-semibold text-center mb-4">Lihat Abstraksi dalam Aksi</h4>
+                            <div class="text-center">
+                                <div id="complex-view">
+                                    <p class="font-semibold mb-2">Tampilan Rumit (Remote TV Jadul)</p>
+                                    <div class="p-4 bg-gray-200 inline-block rounded-lg grid grid-cols-4 gap-2">
+                                        <button class="p-1 bg-gray-500 text-white rounded text-xs">●</button>
+                                        <button class="p-1 bg-gray-400 text-white rounded text-xs">AV</button>
+                                        <button class="p-1 bg-gray-400 text-white rounded text-xs">1</button>
+                                        <button class="p-1 bg-gray-400 text-white rounded text-xs">2</button>
+                                        <button class="p-1 bg-gray-400 text-white rounded text-xs">3</button>
+                                        <button class="p-1 bg-gray-400 text-white rounded text-xs">CH+</button>
+                                        <button class="p-1 bg-gray-400 text-white rounded text-xs">4</button>
+                                        <button class="p-1 bg-gray-400 text-white rounded text-xs">5</button>
+                                        <button class="p-1 bg-gray-400 text-white rounded text-xs">6</button>
+                                        <button class="p-1 bg-gray-400 text-white rounded text-xs">CH-</button>
+                                        <button class="p-1 bg-gray-400 text-white rounded text-xs">7</button>
+                                        <button class="p-1 bg-gray-400 text-white rounded text-xs">8</button>
+                                        <button class="p-1 bg-gray-400 text-white rounded text-xs">9</button>
+                                        <button class="p-1 bg-gray-400 text-white rounded text-xs">VOL+</button>
+                                        <button class="p-1 bg-gray-400 text-white rounded text-xs">MTS</button>
+                                        <button class="p-1 bg-gray-400 text-white rounded text-xs">0</button>
+                                        <button class="p-1 bg-gray-400 text-white rounded text-xs">JUMP</button>
+                                        <button class="p-1 bg-gray-400 text-white rounded text-xs">VOL-</button>
+                                    </div>
+                                </div>
+                                <div id="simple-view" class="hidden">
+                                    <p class="font-semibold mb-2">Tampilan Sederhana (Remote TV Modern)</p>
+                                     <div class="p-4 bg-gray-200 inline-block rounded-lg grid grid-cols-3 gap-3">
+                                        <button class="p-2 bg-red-500 text-white rounded">●</button>
+                                        <button class="p-2 col-span-2 bg-gray-500 text-white rounded">Netflix</button>
+                                        <button class="p-2 bg-gray-500 text-white rounded">↑</button>
+                                        <button class="p-2 col-span-2 bg-gray-500 text-white rounded">YouTube</button>
+                                        <button class="p-2 bg-gray-500 text-white rounded">↓</button>
+                                    </div>
+                                </div>
+                                <button onclick="toggleAbstraction()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Ubah Tampilan</button>
                             </div>
                         </div>
                     </div>
@@ -174,21 +316,62 @@
                     <!-- Algoritma Content -->
                     <div id="algoritma" class="tab-content hidden">
                         <div class="flex items-start gap-4 mb-6">
-                            <div class="flex-shrink-0 bg-indigo-100 p-3 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7" /></svg></div>
+                            <div class="flex-shrink-0 bg-blue-100 p-3 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7" /></svg></div>
                             <div>
-                                <h3 class="text-2xl font-bold">Desain Algoritma</h3>
-                                <p class="text-slate-600">Mengembangkan solusi langkah-demi-langkah untuk masalah, atau aturan yang harus diikuti untuk menyelesaikan masalah tersebut.</p>
+                                <h3 class="text-2xl font-bold">Desain Algoritma: Membuat Resep Solusi</h3>
+                                <p class="text-slate-600">Ini adalah puncak dari tiga pilar sebelumnya. Algoritma adalah serangkaian instruksi langkah-demi-langkah yang jelas dan tidak ambigu untuk menyelesaikan masalah yang telah kita pecah, polanya kita kenali, dan detailnya kita saring.</p>
                             </div>
                         </div>
                         <div class="grid md:grid-cols-2 gap-6">
                             <div class="bg-slate-100 p-4 rounded-lg">
-                                <h4 class="font-semibold mb-2">Contoh Sehari-hari: Resep Masakan</h4>
-                                <p class="text-sm text-slate-700">Resep adalah algoritma yang sempurna. Ia memberikan daftar bahan (input) dan serangkaian instruksi langkah-demi-langkah yang harus diikuti secara berurutan untuk menghasilkan kue (output).</p>
+                                <h4 class="font-semibold mb-2">Contoh Kontekstual: Algoritma Belajar untuk Ujian</h4>
+                                <p class="text-sm text-slate-700">Masalahnya adalah "mendapat nilai bagus". Algoritmanya bisa seperti ini:</p>
+                                <ol class="list-decimal list-inside text-sm text-slate-700 mt-2 pl-2">
+                                    <li><b>Mulai:</b> Kumpulkan semua materi (buku, catatan).</li>
+                                    <li><b>Ulangi</b> untuk setiap bab:
+                                        <ul class="list-disc list-inside pl-4">
+                                            <li>Baca ringkasan bab.</li>
+                                            <li>Kerjakan 5 soal latihan.</li>
+                                            <li>Jika ada yang salah, baca kembali bagian yang relevan.</li>
+                                        </ul>
+                                    </li>
+                                    <li><b>Jika</b> semua bab selesai, kerjakan soal try-out.</li>
+                                    <li><b>Selesai.</b></li>
+                                </ol>
+                                <p class="text-sm text-slate-700 mt-2">Ini adalah resep yang jelas untuk diikuti.</p>
                             </div>
                             <div class="bg-slate-100 p-4 rounded-lg">
-                                <h4 class="font-semibold mb-2">Penerapan Teknologi: Algoritma Pencarian</h4>
-                                <p class="text-sm text-slate-700">Saat Anda mencari sesuatu di Google, sebuah algoritma yang sangat kompleks bekerja untuk menelusuri miliaran halaman web dan memberikan hasil yang paling relevan dalam hitungan detik.</p>
+                                <h4 class="font-semibold mb-2">Penerapan Teknologi: Algoritma Navigasi GPS</h4>
+                                <p class="text-sm text-slate-700">Saat kamu menggunakan Google Maps, ia menjalankan algoritma yang kompleks:</p>
+                                <ol class="list-decimal list-inside text-sm text-slate-700 mt-2 pl-2">
+                                    <li><b>Input:</b> Lokasi awal dan tujuanmu.</li>
+                                    <li><b>Proses:</b>
+                                        <ul class="list-disc list-inside pl-4">
+                                            <li>Mempertimbangkan semua kemungkinan rute.</li>
+                                            <li>Menganalisis data lalu lintas saat ini (pola).</li>
+                                            <li>Menghitung estimasi waktu untuk setiap rute.</li>
+                                            <li>Memilih rute tercepat.</li>
+                                        </ul>
+                                    </li>
+                                    <li><b>Output:</b> Menampilkan rute terbaik di layarmu.</li>
+                                </ol>
                             </div>
+                        </div>
+                        <div class="vis-container">
+                            <h4 class="font-semibold text-center mb-4">Susun Algoritma Membuat Teh!</h4>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <h5 class="font-medium text-center mb-2">Langkah Acak</h5>
+                                    <div id="jumbled-steps">
+                                        <!-- Steps will be added by JS -->
+                                    </div>
+                                </div>
+                                <div>
+                                    <h5 class="font-medium text-center mb-2">Urutan yang Benar</h5>
+                                    <div id="ordered-steps" class="bg-gray-200 p-2 rounded min-h-[200px]"></div>
+                                </div>
+                            </div>
+                            <p id="algorithm-feedback" class="text-center mt-4 font-semibold h-6"></p>
                         </div>
                     </div>
                 </div>
@@ -199,16 +382,17 @@
         <section id="kesimpulan" class="text-center scroll-mt-24">
             <h2 class="text-3xl font-bold mb-4">Ini Bukan Sekadar Coding</h2>
             <p class="max-w-3xl mx-auto text-lg text-slate-600">Berpikir komputasional adalah tentang cara berpikir yang terstruktur dan logis untuk memecahkan masalah. Ini adalah keterampilan hidup yang berharga di era digital, apa pun profesi Anda.</p>
-            <a href="#definisi" class="mt-8 inline-block bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors">
+            <a href="#definisi" class="mt-8 inline-block bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors">
                 Ulas Kembali dari Awal
             </a>
         </section>
 
     </main>
     
-   <footer class="text-center mt-16 text-slate-500">
-            <p>&copy; 2025 Kelas Informatika Pak Muslih. Dibuat dengan semangat belajar.</p>
+    <footer class="text-center py-8 border-t border-slate-200 text-slate-500">
+        <p>&copy; 2025 Kelas Informatika Pak Muslih. Dibuat dengan semangat belajar.</p>
     </footer>
+
     <script>
         // --- Tab Functionality ---
         const tabButtons = document.querySelectorAll('.tab-button');
@@ -217,20 +401,10 @@
         tabButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const targetTab = button.dataset.tab;
-
-                // Update button styles
-                tabButtons.forEach(btn => {
-                    btn.classList.remove('tab-active');
-                });
+                tabButtons.forEach(btn => btn.classList.remove('tab-active'));
                 button.classList.add('tab-active');
-
-                // Show/hide content
                 tabContents.forEach(content => {
-                    if (content.id === targetTab) {
-                        content.classList.remove('hidden');
-                    } else {
-                        content.classList.add('hidden');
-                    }
+                    content.id === targetTab ? content.classList.remove('hidden') : content.classList.add('hidden');
                 });
             });
         });
@@ -238,14 +412,7 @@
         // --- Active Nav Link on Scroll ---
         const sections = document.querySelectorAll('section');
         const navLinks = document.querySelectorAll('.nav-link');
-
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.5 // 50% of the section must be visible
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
+        const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const id = entry.target.getAttribute('id');
@@ -257,11 +424,125 @@
                     });
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.5 });
+        sections.forEach(section => observer.observe(section));
 
-        sections.forEach(section => {
-            observer.observe(section);
-        });
+        // --- Visualization Logic ---
+
+        // 1. Decomposition
+        function visualizeDecomposition() {
+            const mainProblem = document.getElementById('main-problem');
+            const subTasksContainer = document.getElementById('sub-tasks');
+            if (mainProblem.style.display === 'none') return;
+            
+            mainProblem.style.display = 'none';
+            subTasksContainer.classList.remove('hidden');
+            subTasksContainer.innerHTML = '';
+            const tasks = ['Bentuk Panitia', 'Tentukan Tema', 'Cari Sponsor', 'Pilih Artis', 'Atur Panggung', 'Promosi'];
+            tasks.forEach((task, i) => {
+                const taskEl = document.createElement('div');
+                taskEl.className = 'sub-task-block';
+                taskEl.textContent = task;
+                taskEl.style.animationDelay = `${i * 100}ms`;
+                subTasksContainer.appendChild(taskEl);
+            });
+        }
+
+        // 2. Pattern Recognition
+        const patternContainer = document.getElementById('pattern-vis');
+        const patternFeedback = document.getElementById('pattern-feedback');
+        function setupPatternGame() {
+            patternContainer.innerHTML = '';
+            patternFeedback.textContent = '';
+            const oddOneOutIndex = Math.floor(Math.random() * 9);
+            for (let i = 0; i < 9; i++) {
+                const shape = document.createElement('div');
+                shape.className = 'pattern-shape';
+                if (i === oddOneOutIndex) {
+                    shape.style.backgroundColor = '#ef4444'; // red-500
+                    shape.style.borderRadius = '0.25rem'; // square
+                    shape.dataset.correct = 'true';
+                } else {
+                    shape.style.backgroundColor = '#3b82f6'; // blue-500
+                }
+                shape.onclick = () => checkPattern(shape);
+                patternContainer.appendChild(shape);
+            }
+        }
+        function checkPattern(element) {
+            if (element.dataset.correct) {
+                patternFeedback.textContent = 'Benar! Kamu menemukan polanya.';
+                patternFeedback.style.color = '#22c55e';
+                setTimeout(setupPatternGame, 2000);
+            } else {
+                patternFeedback.textContent = 'Bukan yang itu, coba lagi!';
+                patternFeedback.style.color = '#ef4444';
+            }
+        }
+
+        // 3. Abstraction
+        function toggleAbstraction() {
+            document.getElementById('complex-view').classList.toggle('hidden');
+            document.getElementById('simple-view').classList.toggle('hidden');
+        }
+
+        // 4. Algorithm
+        const jumbledContainer = document.getElementById('jumbled-steps');
+        const orderedContainer = document.getElementById('ordered-steps');
+        const algorithmFeedback = document.getElementById('algorithm-feedback');
+        const correctOrder = [
+            '1. Rebus air hingga mendidih.',
+            '2. Masukkan teh celup ke dalam cangkir.',
+            '3. Tuang air panas ke dalam cangkir.',
+            '4. Tambahkan gula secukupnya.',
+            '5. Aduk hingga merata.'
+        ];
+        let currentStep = 1;
+
+        function setupAlgorithmGame() {
+            jumbledContainer.innerHTML = '';
+            orderedContainer.innerHTML = '';
+            algorithmFeedback.textContent = '';
+            currentStep = 1;
+
+            const shuffled = [...correctOrder].sort(() => Math.random() - 0.5);
+            shuffled.forEach(stepText => {
+                const stepEl = document.createElement('div');
+                stepEl.className = 'algorithm-step';
+                stepEl.textContent = stepText;
+                stepEl.onclick = () => checkStep(stepEl);
+                jumbledContainer.appendChild(stepEl);
+            });
+        }
+
+        function checkStep(element) {
+            const stepNumber = parseInt(element.textContent.split('.')[0]);
+            element.classList.remove('step-incorrect');
+
+            if (stepNumber === currentStep) {
+                element.classList.add('step-correct');
+                orderedContainer.appendChild(element);
+                element.onclick = null; // disable click
+                currentStep++;
+                algorithmFeedback.textContent = 'Langkah Benar!';
+                algorithmFeedback.style.color = '#22c55e';
+
+                if (currentStep > correctOrder.length) {
+                    algorithmFeedback.textContent = 'Selamat! Algoritma selesai!';
+                }
+            } else {
+                element.classList.add('step-incorrect');
+                algorithmFeedback.textContent = 'Urutan salah, coba lagi!';
+                algorithmFeedback.style.color = '#ef4444';
+                setTimeout(() => element.classList.remove('step-incorrect'), 500);
+            }
+        }
+
+        // Initial setup on load
+        window.onload = () => {
+            setupPatternGame();
+            setupAlgorithmGame();
+        };
 
     </script>
 
