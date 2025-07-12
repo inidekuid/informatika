@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dasar Struktur Data untuk SMA</title>
+    <title>Belajar Informatika bersama Pak Muslih</title>
     
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Google Fonts: Inter -->
@@ -14,407 +14,176 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
+        /* Menggunakan font Inter sebagai default */
         body {
             font-family: 'Inter', sans-serif;
         }
-        .data-element {
-            transition: all 0.3s ease-in-out;
-            transform-origin: bottom;
-        }
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .highlight-op {
-            animation: highlight 1s ease-out;
-        }
-        @keyframes highlight {
-            0% { background-color: #a7f3d0; } /* bg-green-200 */
-            100% { background-color: transparent; }
-        }
-        .node-pointer {
-            content: '';
-            position: absolute;
-            right: -24px; /* Adjust based on arrow width */
-            top: 50%;
-            transform: translateY(-50%);
-            width: 24px;
-            height: 2px;
-            background-color: #6b7280; /* gray-500 */
-        }
-        .node-pointer::after {
-            content: '►';
-            position: absolute;
-            right: -8px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 16px;
-            color: #6b7280; /* gray-500 */
+        /* Custom style untuk notifikasi */
+        #notification {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-slate-50 text-slate-800">
 
-    <!-- Header -->
-    <header class="bg-white shadow-md sticky top-0 z-10">
-        <div class="container mx-auto px-6 py-4">
-            <h1 class="text-2xl font-bold text-blue-600">Dunia Struktur Data</h1>
-            <p class="text-gray-600">Mengenal Cara Komputer Mengatur Informasi</p>
-        </div>
-    </header>
+    <!-- Main Container -->
+    <div class="container mx-auto px-4 py-8 md:py-16">
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-6 py-10">
-
-        <!-- Section: Introduction -->
-        <section id="intro" class="mb-16">
-            <h2 class="text-3xl font-extrabold text-gray-900 mb-4">Apa itu Struktur Data?</h2>
-            <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200 text-lg text-gray-700 space-y-4">
-                <p>Bayangkan kamu punya lemari buku yang sangat besar. Jika kamu meletakkan semua buku secara acak, pasti akan susah sekali mencari buku yang kamu mau, kan?</p>
-                <p>Struktur data itu seperti <strong class="text-blue-600">cara kita mengatur buku-buku di lemari</strong>. Ada yang diurutkan berdasarkan abjad (seperti Array), ada yang ditumpuk (seperti Stack), dan ada yang dibuat antrian (seperti Queue).</p>
-                <p class="font-semibold">Intinya, struktur data adalah cara menyimpan dan mengatur data di dalam komputer agar bisa diakses dan digunakan secara efisien. Ini adalah fondasi penting sebelum kita belajar membuat "resep" untuk komputer (algoritma).</p>
+        <!-- Header Section -->
+        <header class="text-center mb-12 md:mb-16">
+            <div class="inline-block bg-blue-100 text-blue-800 text-sm font-semibold px-4 py-1 rounded-full mb-4">
+                Kelas Informatika
             </div>
-        </section>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">Belajar Informatika bersama Pak Muslih</h1>
+            <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">
+                Jelajahi dunia informatika dari konsep dasar hingga penerapan di dunia nyata dengan cara yang mudah dan menyenangkan.
+            </p>
+        </header>
 
-        <!-- Section: Array -->
-        <section id="array" class="mb-16">
-            <h2 class="text-3xl font-bold mb-6">1. Array: Si Rak Buku Bernomor</h2>
-            <div class="grid md:grid-cols-2 gap-8 items-start">
-                <!-- Penjelasan Array -->
-                <div class="space-y-4">
-                    <p>Array adalah struktur data paling dasar. Anggap saja ini seperti rak buku atau loker yang setiap kotaknya punya nomor urut (disebut <strong class="text-green-600">indeks</strong>), yang dimulai dari 0.</p>
-                    <div class="bg-white p-6 rounded-lg shadow-md border">
-                        <h4 class="font-bold mb-2">Analogi:</h4>
-                        <p>Sebuah komplek perumahan di mana setiap rumah punya nomor alamat yang unik dan berurutan.</p>
-                        <h4 class="font-bold mt-4 mb-2">Kapan Pakainya?</h4>
-                        <p>Saat kamu butuh menyimpan data sejenis (misal: daftar nama siswa, daftar nilai) dan ingin mengaksesnya dengan cepat menggunakan nomor urutnya.</p>
+        <!-- Interactive Learning Modules Section -->
+        <main>
+            <h2 class="text-3xl font-bold text-center mb-10">Mulai Petualangan Belajarmu</h2>
+            
+            <!-- Grid for learning cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Card 1: Algoritma Pencarian -->
+                <div class="card bg-white p-6 rounded-xl shadow-lg border border-slate-200 hover:shadow-xl hover:scale-105 transition-all duration-300 flex flex-col">
+                    <div class="flex-shrink-0">
+                        <svg class="w-12 h-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                        </svg>
+                        <h3 class="text-xl font-bold mb-2">Visualisasi Algoritma Pencarian</h3>
+                        <p class="text-slate-600 mb-4 flex-grow">Pelajari cara kerja algoritma seperti Binary Search dan Linear Search melalui visualisasi interaktif.</p>
                     </div>
+                    <a href="simulasi-algoritma-search.html" class="learn-button mt-auto w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                        Lihat Visualisasi
+                    </a>
                 </div>
-                <!-- Visualisasi Array -->
-                <div class="bg-white p-6 rounded-xl shadow-lg border">
-                    <h4 class="font-bold text-center mb-4">Visualisasi Array</h4>
-                    <div id="array-visual" class="flex justify-center items-end space-x-2 h-24 bg-gray-100 p-2 rounded-md">
-                        <!-- Elements will be added here by JS -->
+
+                <!-- Card 2: Berpikir Komputasional -->
+                <div class="card bg-white p-6 rounded-xl shadow-lg border border-slate-200 hover:shadow-xl hover:scale-105 transition-all duration-300 flex flex-col">
+                    <div class="flex-shrink-0">
+                        <svg class="w-12 h-12 text-green-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V8.25a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 8.25v10.5A2.25 2.25 0 006.75 21z" />
+                        </svg>
+                        <h3 class="text-xl font-bold mb-2">Berpikir Komputasional</h3>
+                        <p class="text-slate-600 mb-4 flex-grow">Asah kemampuan problem solving dengan 4 pilar: dekomposisi, abstraksi, pengenalan pola, dan algoritma.</p>
                     </div>
-                    <div class="text-center mt-2">
-                        <span id="array-index-0" class="inline-block w-12 text-sm font-mono">0</span>
-                        <span id="array-index-1" class="inline-block w-12 text-sm font-mono">1</span>
-                        <span id="array-index-2" class="inline-block w-12 text-sm font-mono">2</span>
-                        <span id="array-index-3" class="inline-block w-12 text-sm font-mono">3</span>
-                    </div>
-                    <div class="mt-4 flex justify-center gap-2">
-                        <input id="array-input" type="text" placeholder="Data" class="w-20 text-center border-gray-300 rounded-md shadow-sm">
-                        <button onclick="arrayAdd()" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Tambah</button>
-                        <button onclick="arrayRemove()" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">Hapus</button>
-                    </div>
-                    <p id="array-info" class="text-center text-sm text-gray-500 mt-2 h-4"></p>
+                    <a href="berpikir-komputasional.html" class="learn-button mt-auto w-full bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">
+                        Mulai Belajar
+                    </a>
                 </div>
+
+                <!-- Card 3: Struktur Data -->
+                <div class="card bg-white p-6 rounded-xl shadow-lg border border-slate-200 hover:shadow-xl hover:scale-105 transition-all duration-300 flex flex-col">
+                    <div class="flex-shrink-0">
+                        <svg class="w-12 h-12 text-purple-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
+                        </svg>
+                        <h3 class="text-xl font-bold mb-2">Konsep Struktur Data</h3>
+                        <p class="text-slate-600 mb-4 flex-grow">Pahami konsep dasar penyimpanan data seperti Array, Stack, dan Queue untuk program yang efisien.</p>
+                    </div>
+                    <a href="konsep-struktur-data.html" class="learn-button mt-auto w-full bg-purple-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors">
+                        Mulai Belajar
+                    </a>
+                </div>
+
+                <!-- Card 4: Validasi Sumber Data -->
+                <div class="card bg-white p-6 rounded-xl shadow-lg border border-slate-200 hover:shadow-xl hover:scale-105 transition-all duration-300 flex flex-col">
+                    <div class="flex-shrink-0">
+                        <svg class="w-12 h-12 text-red-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <h3 class="text-xl font-bold mb-2">Validasi Sumber Data</h3>
+                        <p class="text-slate-600 mb-4 flex-grow">Belajar teknik untuk memastikan keakuratan, validitas, dan keandalan data yang Anda gunakan.</p>
+                    </div>
+                    <button class="learn-button mt-auto w-full bg-red-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-700 transition-colors">
+                        Mulai Belajar
+                    </button>
+                </div>
+
+                <!-- Card 5: Penerapan Algoritma -->
+                <div class="card bg-white p-6 rounded-xl shadow-lg border border-slate-200 hover:shadow-xl hover:scale-105 transition-all duration-300 flex flex-col">
+                    <div class="flex-shrink-0">
+                        <svg class="w-12 h-12 text-yellow-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.562L16.25 22.5l-.648-1.938a3.375 3.375 0 00-2.625-2.625L11.25 18l1.938-.648a3.375 3.375 0 002.625-2.625L16.25 13l.648 1.938a3.375 3.375 0 002.625 2.625L21.75 18l-1.938.648a3.375 3.375 0 00-2.625 2.625z" />
+                        </svg>
+                        <h3 class="text-xl font-bold mb-2">Penerapan Algoritma</h3>
+                        <p class="text-slate-600 mb-4 flex-grow">Lihat contoh nyata bagaimana algoritma digunakan untuk menyelesaikan masalah di industri teknologi.</p>
+                    </div>
+                    <button class="learn-button mt-auto w-full bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-yellow-700 transition-colors">
+                        Mulai Belajar
+                    </button>
+                </div>
+
+                <!-- Card 6: Logika & Gerbang Logika -->
+                <div class="card bg-white p-6 rounded-xl shadow-lg border border-slate-200 hover:shadow-xl hover:scale-105 transition-all duration-300 flex flex-col">
+                    <div class="flex-shrink-0">
+                        <svg class="w-12 h-12 text-indigo-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" />
+                        </svg>
+                        <h3 class="text-xl font-bold mb-2">Logika & Gerbang Logika</h3>
+                        <p class="text-slate-600 mb-4 flex-grow">Kuasai dasar-dasar logika boolean dan gerbang logika yang menjadi fondasi utama komputasi modern.</p>
+                    </div>
+                    <button class="learn-button mt-auto w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
+                        Mulai Belajar
+                    </button>
+                </div>
+
             </div>
-        </section>
+        </main>
 
-        <!-- Section: Stack -->
-        <section id="stack" class="mb-16">
-            <h2 class="text-3xl font-bold mb-6">2. Stack: Si Tumpukan Piring</h2>
-            <div class="grid md:grid-cols-2 gap-8 items-start">
-                <!-- Penjelasan Stack -->
-                <div class="space-y-4">
-                    <p>Stack mengikuti prinsip <strong class="text-purple-600">LIFO (Last-In, First-Out)</strong>. Artinya, data yang terakhir masuk adalah data yang pertama kali keluar.</p>
-                    <div class="bg-white p-6 rounded-lg shadow-md border">
-                        <h4 class="font-bold mb-2">Analogi:</h4>
-                        <p>Tumpukan piring kotor. Piring yang terakhir kamu letakkan di atas tumpukan adalah piring yang pertama kamu ambil untuk dicuci.</p>
-                        <h4 class="font-bold mt-4 mb-2">Kapan Pakainya?</h4>
-                        <p>Fitur "Undo" (Ctrl+Z) di editor teks, atau tombol "Back" di browser yang membawamu ke halaman sebelumnya.</p>
-                    </div>
-                </div>
-                <!-- Visualisasi Stack -->
-                <div class="bg-white p-6 rounded-xl shadow-lg border">
-                    <h4 class="font-bold text-center mb-4">Visualisasi Stack</h4>
-                    <div class="flex justify-center">
-                        <div id="stack-visual" class="flex flex-col-reverse items-center w-32 h-48 bg-gray-100 p-2 rounded-md border-b-4 border-gray-400">
-                           <!-- Elements will be added here by JS -->
-                        </div>
-                    </div>
-                    <div class="mt-4 flex justify-center gap-2">
-                        <input id="stack-input" type="text" placeholder="Data" class="w-20 text-center border-gray-300 rounded-md shadow-sm">
-                        <button onclick="stackPush()" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Push (Tambah)</button>
-                        <button onclick="stackPop()" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">Pop (Keluarkan)</button>
-                    </div>
-                    <p id="stack-info" class="text-center text-sm text-gray-500 mt-2 h-4"></p>
-                </div>
-            </div>
-        </section>
+        <!-- Footer Section -->
+        <footer class="text-center mt-16 text-slate-500">
+            <p>&copy; 2025 Kelas Informatika Pak Muslih. Dibuat dengan semangat belajar.</p>
+        </footer>
 
-        <!-- Section: Queue -->
-        <section id="queue" class="mb-16">
-            <h2 class="text-3xl font-bold mb-6">3. Queue: Si Antrian Tiket</h2>
-            <div class="grid md:grid-cols-2 gap-8 items-start">
-                <!-- Penjelasan Queue -->
-                <div class="space-y-4">
-                    <p>Queue mengikuti prinsip <strong class="text-yellow-600">FIFO (First-In, First-Out)</strong>. Artinya, data yang pertama masuk adalah data yang pertama kali keluar.</p>
-                    <div class="bg-white p-6 rounded-lg shadow-md border">
-                        <h4 class="font-bold mb-2">Analogi:</h4>
-                        <p>Antrian di kasir atau loket bioskop. Siapa yang datang duluan, dia yang dilayani duluan.</p>
-                        <h4 class="font-bold mt-4 mb-2">Kapan Pakainya?</h4>
-                        <p>Antrian print dokumen (printer akan mencetak dokumen sesuai urutan masuk), atau chat di aplikasi pesan.</p>
-                    </div>
-                </div>
-                <!-- Visualisasi Queue -->
-                <div class="bg-white p-6 rounded-xl shadow-lg border">
-                    <h4 class="font-bold text-center mb-4">Visualisasi Queue</h4>
-                    <div class="flex justify-center items-center">
-                        <span class="mr-2 font-bold">Depan</span>
-                        <div id="queue-visual" class="flex items-center w-64 h-16 bg-gray-100 p-2 rounded-md">
-                           <!-- Elements will be added here by JS -->
-                        </div>
-                        <span class="ml-2 font-bold">Belakang</span>
-                    </div>
-                    <div class="mt-4 flex justify-center gap-2">
-                        <input id="queue-input" type="text" placeholder="Data" class="w-20 text-center border-gray-300 rounded-md shadow-sm">
-                        <button onclick="queueEnqueue()" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Enqueue (Masuk)</button>
-                        <button onclick="queueDequeue()" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">Dequeue (Keluar)</button>
-                    </div>
-                    <p id="queue-info" class="text-center text-sm text-gray-500 mt-2 h-4"></p>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Section: Linked List -->
-        <section id="linked-list" class="mb-16">
-            <h2 class="text-3xl font-bold mb-6">4. Linked List: Si Rangkaian Gerbong Kereta</h2>
-            <div class="grid md:grid-cols-2 gap-8 items-start">
-                <!-- Penjelasan Linked List -->
-                <div class="space-y-4">
-                    <p>Linked List adalah rangkaian data (disebut <strong class="text-teal-600">node</strong>) di mana setiap node punya "gandengan" atau penunjuk ke node berikutnya.</p>
-                    <div class="bg-white p-6 rounded-lg shadow-md border">
-                        <h4 class="font-bold mb-2">Analogi:</h4>
-                        <p>Gerbong kereta. Setiap gerbong (node) membawa penumpang (data) dan punya sambungan ke gerbong berikutnya. Kita bisa menambah atau melepas gerbong dengan mudah.</p>
-                        <h4 class="font-bold mt-4 mb-2">Kapan Pakainya?</h4>
-                        <p>Saat jumlah data tidak pasti dan sering berubah-ubah (tambah/hapus). Contohnya seperti playlist lagu, di mana kamu bisa menambah lagu di mana saja.</p>
-                    </div>
-                </div>
-                <!-- Visualisasi Linked List -->
-                <div class="bg-white p-6 rounded-xl shadow-lg border">
-                    <h4 class="font-bold text-center mb-4">Visualisasi Linked List</h4>
-                    <div id="linked-list-visual" class="flex justify-center items-center flex-wrap gap-x-10 gap-y-4 min-h-[6rem] bg-gray-100 p-4 rounded-md">
-                       <!-- Nodes will be added here by JS -->
-                    </div>
-                    <div class="mt-4 flex justify-center gap-2">
-                        <input id="linked-list-input" type="text" placeholder="Data" class="w-20 text-center border-gray-300 rounded-md shadow-sm">
-                        <button onclick="linkedListAdd()" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Tambah Depan</button>
-                        <button onclick="linkedListRemove()" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">Hapus Depan</button>
-                    </div>
-                    <p id="linked-list-info" class="text-center text-sm text-gray-500 mt-2 h-4"></p>
-                </div>
-            </div>
-        </section>
+    </div>
 
-        <!-- Conclusion -->
-        <section id="conclusion" class="text-center py-10">
-            <h2 class="text-3xl font-bold mb-4">Langkah Selanjutnya? Algoritma!</h2>
-            <p class="max-w-2xl mx-auto text-lg text-gray-600">Sekarang kamu sudah tahu cara mengatur data. Selanjutnya, kita akan belajar <strong class="text-blue-600">Algoritma</strong>, yaitu resep atau langkah-langkah untuk mengolah data yang sudah kita susun ini. Selamat belajar!</p>
-        </section>
-    </main>
-
-    <footer class="text-center py-6 border-t border-gray-200 bg-white">
-        <p class="text-gray-500">&copy; 2024 Kelas Informatika Pak Muslih. Dibuat dengan semangat belajar..</p>
-    </footer>
+    <!-- Notification Element -->
+    <div id="notification" class="fixed bottom-0 right-0 md:bottom-8 md:right-8 bg-slate-900 text-white py-3 px-6 rounded-lg shadow-xl translate-y-24 opacity-0">
+        <p id="notification-text"></p>
+    </div>
 
     <script>
-        // --- Shared Functions ---
-        function createVisualElement(value, colorClass = 'bg-blue-400') {
-            const el = document.createElement('div');
-            el.className = `data-element w-12 h-12 flex items-center justify-center font-bold text-white rounded-md shadow-sm ${colorClass} fade-in`;
-            el.textContent = value;
-            return el;
-        }
-
-        function showInfo(elementId, message, isError = false) {
-            const infoEl = document.getElementById(elementId);
-            infoEl.textContent = message;
-            infoEl.className = `text-center text-sm mt-2 h-4 ${isError ? 'text-red-500' : 'text-gray-500'}`;
-            setTimeout(() => infoEl.textContent = '', 2000);
-        }
-
-        // --- Array Logic ---
-        const arrayVisual = document.getElementById('array-visual');
-        const arrayInput = document.getElementById('array-input');
-        let dataArray = [];
-
-        function renderArray() {
-            arrayVisual.innerHTML = '';
-            dataArray.forEach(item => {
-                arrayVisual.appendChild(createVisualElement(item, 'bg-green-500'));
-            });
-        }
-
-        function arrayAdd() {
-            if (dataArray.length >= 4) {
-                showInfo('array-info', 'Array sudah penuh!', true);
-                return;
-            }
-            const value = arrayInput.value.trim() || Math.floor(Math.random() * 100);
-            if (value) {
-                dataArray.push(value);
-                renderArray();
-                arrayInput.value = '';
-                showInfo('array-info', `Data ${value} ditambahkan di indeks ${dataArray.length - 1}.`);
-            }
-        }
-
-        function arrayRemove() {
-            if (dataArray.length === 0) {
-                showInfo('array-info', 'Array sudah kosong!', true);
-                return;
-            }
-            const removed = dataArray.pop();
-            renderArray();
-            showInfo('array-info', `Data ${removed} dihapus dari belakang.`);
-        }
+        // Get all the learn buttons
+        const learnButtons = document.querySelectorAll('.learn-button');
         
-        // --- Stack Logic ---
-        const stackVisual = document.getElementById('stack-visual');
-        const stackInput = document.getElementById('stack-input');
-        let dataStack = [];
-
-        function renderStack() {
-            stackVisual.innerHTML = '';
-            dataStack.forEach(item => {
-                const el = createVisualElement(item, 'bg-purple-500');
-                el.style.marginBottom = '4px';
-                stackVisual.appendChild(el);
-            });
-        }
-
-        function stackPush() {
-            if (dataStack.length >= 3) {
-                showInfo('stack-info', 'Tumpukan sudah penuh!', true);
-                return;
-            }
-            const value = stackInput.value.trim() || Math.floor(Math.random() * 100);
-            if (value) {
-                dataStack.push(value);
-                renderStack();
-                stackInput.value = '';
-                showInfo('stack-info', `Data ${value} masuk ke tumpukan.`);
-                stackVisual.lastChild.classList.add('highlight-op');
-            }
-        }
-
-        function stackPop() {
-            if (dataStack.length === 0) {
-                showInfo('stack-info', 'Tumpukan sudah kosong!', true);
-                return;
-            }
-            const removed = dataStack.pop();
-            renderStack();
-            showInfo('stack-info', `Data ${removed} keluar dari tumpukan.`);
-        }
-
-        // --- Queue Logic ---
-        const queueVisual = document.getElementById('queue-visual');
-        const queueInput = document.getElementById('queue-input');
-        let dataQueue = [];
-
-        function renderQueue() {
-            queueVisual.innerHTML = '';
-            queueVisual.classList.add('space-x-2');
-            dataQueue.forEach(item => {
-                queueVisual.appendChild(createVisualElement(item, 'bg-yellow-500'));
-            });
-        }
-
-        function queueEnqueue() {
-            if (dataQueue.length >= 4) {
-                showInfo('queue-info', 'Antrian sudah penuh!', true);
-                return;
-            }
-            const value = queueInput.value.trim() || Math.floor(Math.random() * 100);
-            if (value) {
-                dataQueue.push(value);
-                renderQueue();
-                queueInput.value = '';
-                showInfo('queue-info', `Data ${value} masuk ke antrian.`);
-                queueVisual.lastChild.classList.add('highlight-op');
-            }
-        }
-
-        function queueDequeue() {
-            if (dataQueue.length === 0) {
-                showInfo('queue-info', 'Antrian sudah kosong!', true);
-                return;
-            }
-            const removed = dataQueue.shift();
-            renderQueue();
-            showInfo('queue-info', `Data ${removed} keluar dari antrian.`);
-        }
-
-        // --- Linked List Logic ---
-        const linkedListVisual = document.getElementById('linked-list-visual');
-        const linkedListInput = document.getElementById('linked-list-input');
-        let dataLinkedList = [];
-
-        function renderLinkedList() {
-            linkedListVisual.innerHTML = '';
-            if (dataLinkedList.length === 0) {
-                const nullEl = document.createElement('span');
-                nullEl.textContent = 'NULL';
-                nullEl.className = 'font-mono text-gray-500';
-                linkedListVisual.appendChild(nullEl);
-                return;
-            }
-            dataLinkedList.forEach((item, index) => {
-                const nodeWrapper = document.createElement('div');
-                nodeWrapper.className = 'relative fade-in';
-                const el = createVisualElement(item, 'bg-teal-500');
-                nodeWrapper.appendChild(el);
-
-                // Add pointer if it's not the last element
-                if (index < dataLinkedList.length - 1) {
-                    const pointer = document.createElement('div');
-                    pointer.className = 'node-pointer';
-                    nodeWrapper.appendChild(pointer);
-                }
-                linkedListVisual.appendChild(nodeWrapper);
-            });
-        }
-
-        function linkedListAdd() {
-            if (dataLinkedList.length >= 5) {
-                showInfo('linked-list-info', 'Rangkaian sudah terlalu panjang!', true);
-                return;
-            }
-            const value = linkedListInput.value.trim() || Math.floor(Math.random() * 100);
-            if (value) {
-                dataLinkedList.unshift(value); // Add to the beginning
-                renderLinkedList();
-                linkedListInput.value = '';
-                showInfo('linked-list-info', `Node ${value} ditambahkan di depan.`);
-                linkedListVisual.firstChild.classList.add('highlight-op');
-            }
-        }
-
-        function linkedListRemove() {
-            if (dataLinkedList.length === 0) {
-                showInfo('linked-list-info', 'Rangkaian sudah kosong!', true);
-                return;
-            }
-            const removed = dataLinkedList.shift(); // Remove from the beginning
-            renderLinkedList();
-            showInfo('linked-list-info', `Node ${removed} dihapus dari depan.`);
-        }
-
-        // Initial render
-        function init() {
-            renderArray();
-            renderStack();
-            renderQueue();
-            renderLinkedList();
-        }
+        // Get the notification element and its text
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notification-text');
         
-        init();
+        // Variable to hold the timeout
+        let notificationTimeout;
+
+        // Function to show notification
+        function showNotification(message) {
+            // Clear any existing timeout
+            clearTimeout(notificationTimeout);
+
+            // Set the message and show the notification
+            notificationText.textContent = message;
+            notification.classList.remove('translate-y-24', 'opacity-0');
+            
+            // Set a timeout to hide the notification after 3 seconds
+            notificationTimeout = setTimeout(() => {
+                notification.classList.add('translate-y-24', 'opacity-0');
+            }, 3000);
+        }
+
+        // Add a click event listener to each button
+        learnButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Find the card title associated with the button
+                const card = button.closest('.card');
+                const title = card.querySelector('h3').textContent;
+                
+                // Show a notification message
+                showNotification(`Modul "${title}" akan segera tersedia!`);
+            });
+        });
     </script>
+
 </body>
 </html>
