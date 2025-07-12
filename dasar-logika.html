@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dasar Logika & Pemrograman untuk SMA</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #2563eb; /* blue-600 */
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .light-bulb {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+        .light-off {
+            background-color: #d1d5db; /* gray-300 */
+            box-shadow: inset 4px 4px 10px #9ca3af;
+        }
+        .light-on {
+            background-color: #facc15; /* yellow-400 */
+            box-shadow: 0 0 20px #fde047, 0 0 30px #fde047;
+        }
+        .code-block {
+            background-color: #1e293b; /* slate-800 */
+            color: #e2e8f0; /* slate-200 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-10">
+        <div class="container mx-auto px-6 py-4">
+            <h1 class="text-2xl font-bold text-indigo-600">Logika & Pemrograman Dasar</h1>
+            <p class="text-slate-600">Dari Gerbang Logika ke Kode Pertamamu</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-10">
+
+        <!-- Section: Introduction -->
+        <section id="intro" class="mb-16">
+            <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Bahasa Komputer: 1 dan 0</h2>
+            <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200 text-lg text-slate-700 space-y-4">
+                <p>Pernahkah kamu berpikir bagaimana komputer bisa melakukan hal-hal canggih? Rahasianya ada pada konsep yang sangat sederhana: <strong class="text-indigo-600">Logika Boolean</strong>.</p>
+                <p>Komputer tidak mengerti bahasa manusia. Ia hanya mengerti dua kondisi, seperti saklar lampu: <strong class="text-green-500">NYALA</strong> atau <strong class="text-red-500">MATI</strong>. Dalam dunia komputer, kondisi ini diwakili oleh angka biner:</p>
+                <ul class="list-disc list-inside space-y-2 pl-4">
+                    <li><strong class="text-green-500">1</strong> atau <strong class="text-green-500">TRUE</strong> (Benar / Ada Arus Listrik)</li>
+                    <li><strong class="text-red-500">0</strong> atau <strong class="text-red-500">FALSE</strong> (Salah / Tidak Ada Arus Listrik)</li>
+                </ul>
+                <p class="font-semibold">Gerbang Logika adalah sirkuit elektronik dasar yang menjadi "otak" komputer. Ia menerima satu atau lebih input (berupa 1 atau 0) dan menghasilkan satu output (juga 1 atau 0). Mari kita bedah cara kerjanya.</p>
+            </div>
+        </section>
+
+        <!-- Interactive Gates Section -->
+        <div class="space-y-12 mb-16">
+            <!-- AND Gate -->
+            <div class="bg-white p-6 rounded-xl shadow-lg border">
+                <h3 class="text-2xl font-bold mb-4">Gerbang AND: Si Perfeksionis</h3>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <p class="mb-2">Gerbang AND hanya akan menghasilkan output <strong class="text-green-500">TRUE (1)</strong> jika <strong class="text-indigo-600">SEMUA</strong> inputnya TRUE. Jika salah satu saja inputnya FALSE (0), maka outputnya akan FALSE.</p>
+                        <p class="font-semibold mb-2">Analogi:</p>
+                        <p class="mb-4">Bayangkan dua saklar yang terhubung seri (berderet) untuk menyalakan satu lampu. Agar lampu menyala, kedua saklar (Saklar A DAN Saklar B) harus dalam posisi ON.</p>
+                        <h4 class="font-semibold text-sm mb-1">Penjelasan Contoh:</h4>
+                        <p class="text-sm text-slate-600">Di samping, "Input A" dan "Input B" adalah saklarmu. Lampu di "Output" akan menyala (menjadi 1) hanya jika kedua saklar kamu geser ke posisi ON (biru).</p>
+                    </div>
+                    <div class="border-l-2 pl-8">
+                        <h4 class="font-semibold text-center mb-2">Coba Sendiri!</h4>
+                        <div class="flex justify-around items-center">
+                            <div class="text-center"><label for="and-a">Input A</label><label class="switch block mx-auto mt-1"><input type="checkbox" id="and-a" onchange="updateAnd()"><span class="slider"></span></label></div>
+                            <div class="text-center"><label for="and-b">Input B</label><label class="switch block mx-auto mt-1"><input type="checkbox" id="and-b" onchange="updateAnd()"><span class="slider"></span></label></div>
+                            <div class="text-center"><p>Output</p><div id="and-light" class="light-bulb light-off mx-auto mt-1"></div></div>
+                        </div>
+                        <p class="text-center font-mono mt-2">A AND B = <span id="and-output" class="font-bold">0</span></p>
+                    </div>
+                </div>
+            </div>
+            <!-- OR Gate -->
+            <div class="bg-white p-6 rounded-xl shadow-lg border">
+                <h3 class="text-2xl font-bold mb-4">Gerbang OR: Si Fleksibel</h3>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <p class="mb-2">Gerbang OR akan menghasilkan output <strong class="text-green-500">TRUE (1)</strong> jika <strong class="text-indigo-600">SALAH SATU</strong> atau lebih inputnya TRUE. Ia hanya akan FALSE jika semua inputnya FALSE.</p>
+                        <p class="font-semibold mb-2">Analogi:</p>
+                        <p class="mb-4">Dua saklar yang terhubung paralel (bercabang). Kamu cukup menyalakan Saklar A ATAU Saklar B untuk membuat lampu menyala.</p>
+                        <h4 class="font-semibold text-sm mb-1">Penjelasan Contoh:</h4>
+                        <p class="text-sm text-slate-600">Coba geser salah satu saklar ke posisi ON. Lampu akan langsung menyala! Lampu hanya akan mati jika kedua saklar dalam posisi OFF.</p>
+                    </div>
+                    <div class="border-l-2 pl-8">
+                         <h4 class="font-semibold text-center mb-2">Coba Sendiri!</h4>
+                         <div class="flex justify-around items-center">
+                            <div class="text-center"><label for="or-a">Input A</label><label class="switch block mx-auto mt-1"><input type="checkbox" id="or-a" onchange="updateOr()"><span class="slider"></span></label></div>
+                            <div class="text-center"><label for="or-b">Input B</label><label class="switch block mx-auto mt-1"><input type="checkbox" id="or-b" onchange="updateOr()"><span class="slider"></span></label></div>
+                            <div class="text-center"><p>Output</p><div id="or-light" class="light-bulb light-off mx-auto mt-1"></div></div>
+                        </div>
+                        <p class="text-center font-mono mt-2">A OR B = <span id="or-output" class="font-bold">0</span></p>
+                    </div>
+                </div>
+            </div>
+            <!-- NOT Gate -->
+            <div class="bg-white p-6 rounded-xl shadow-lg border">
+                <h3 class="text-2xl font-bold mb-4">Gerbang NOT: Si Pemberontak</h3>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <p class="mb-2">Gerbang NOT (atau Inverter) adalah yang paling unik. Ia hanya punya satu input dan tugasnya adalah <strong class="text-indigo-600">MEMBALIKKAN</strong> nilainya. Jika inputnya 1, outputnya 0. Jika inputnya 0, outputnya 1.</p>
+                        <p class="font-semibold mb-2">Analogi:</p>
+                        <p class="mb-4">Saklar "aneh". Jika kamu menekan ON, lampu justru mati. Jika kamu menekan OFF, lampu malah menyala.</p>
+                        <h4 class="font-semibold text-sm mb-1">Penjelasan Contoh:</h4>
+                        <p class="text-sm text-slate-600">Perhatikan, lampu sudah menyala (output 1) saat saklar OFF (input 0). Saat kamu menyalakan saklar, lampu justru akan mati.</p>
+                    </div>
+                    <div class="border-l-2 pl-8">
+                        <h4 class="font-semibold text-center mb-2">Coba Sendiri!</h4>
+                        <div class="flex justify-around items-center">
+                            <div class="text-center"><label for="not-a">Input A</label><label class="switch block mx-auto mt-1"><input type="checkbox" id="not-a" onchange="updateNot()"><span class="slider"></span></label></div>
+                            <div class="text-center"><p>Output</p><div id="not-light" class="light-bulb light-on mx-auto mt-1"></div></div>
+                        </div>
+                        <p class="text-center font-mono mt-2">NOT A = <span id="not-output" class="font-bold">1</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Operators Section -->
+        <section id="operators" class="mb-16">
+            <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Peralatan Wajib Programmer: Operator</h2>
+            <p class="text-lg text-slate-600 mb-8">Setelah paham logika dasarnya, kita perlu alat untuk menggunakannya dalam kode. Itulah fungsi Operator. Anggap saja ini adalah "kata kerja" dalam bahasa pemrograman yang memungkinkan kita melakukan aksi, seperti menghitung dan membandingkan.</p>
+            
+            <div class="bg-white p-6 rounded-xl shadow-lg border">
+                <h3 class="text-2xl font-bold mb-4">Operator Aritmatika & Perbandingan</h3>
+                <p class="mb-4">Ini adalah operator paling umum. Aritmatika untuk berhitung (seperti kalkulator) dan perbandingan untuk membandingkan dua nilai yang hasilnya selalu `true` (benar) atau `false` (salah).</p>
+                <div class="grid md:grid-cols-2 gap-6 items-center">
+                    <ul class="list-disc list-inside space-y-1">
+                        <li><b>Penjumlahan:</b> `+`</li>
+                        <li><b>Pengurangan:</b> `-`</li>
+                        <li><b>Perkalian:</b> `*`</li>
+                        <li><b>Pembagian:</b> `/`</li>
+                        <li><b>Sisa Bagi (Modulus):</b> `%` (Contoh: 10 % 3 hasilnya 1)</li>
+                    </ul>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li><b>Sama Dengan:</b> `==`</li>
+                        <li><b>Tidak Sama Dengan:</b> `!=`</li>
+                        <li><b>Lebih Besar:</b> `>`</li>
+                        <li><b>Lebih Kecil:</b> `<`</li>
+                        <li><b>Lebih Besar / Sama Dengan:</b> `>=`</li>
+                    </ul>
+                </div>
+                <div class="mt-6 p-4 bg-slate-100 rounded-lg">
+                    <h4 class="font-semibold text-center mb-2">Kalkulator Mini</h4>
+                    <div class="flex flex-wrap justify-center items-center gap-2">
+                        <input type="number" id="op-val1" class="w-24 p-2 border rounded" value="10" oninput="calculateOp()">
+                        <select id="op-select" class="p-2 border rounded" onchange="calculateOp()">
+                            <option value="+">+</option>
+                            <option value="-">-</option>
+                            <option value="*">*</option>
+                            <option value="/">/</option>
+                            <option value="%">%</option>
+                            <option value="==">==</option>
+                            <option value="!=">!=</option>
+                            <option value=">">></option>
+                            <option value="<"><</option>
+                        </select>
+                        <input type="number" id="op-val2" class="w-24 p-2 border rounded" value="3" oninput="calculateOp()">
+                        <button onclick="calculateOp()" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">=</button>
+                        <span id="op-result" class="text-xl font-bold w-24 text-center">?</span>
+                    </div>
+                    <p class="text-xs text-slate-600 text-center mt-2">Ubah angka atau operator, dan hasilnya akan langsung diperbarui. Ini menunjukkan bagaimana komputer terus-menerus mengevaluasi ekspresi.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conditionals Section -->
+        <section id="conditionals" class="mb-16">
+            <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Membuat Keputusan: `if-else`</h2>
+            <p class="text-lg text-slate-600 mb-4">Bagaimana komputer bisa merespons situasi yang berbeda? Dengan menggunakan kondisional. Ini adalah cara kita memberi instruksi pada komputer untuk mengambil "jalan" yang berbeda tergantung pada kondisi yang terpenuhi.</p>
+            <p class="text-lg text-slate-600 mb-8">Analogi: "<b>JIKA</b> nilai ujian di atas 75, <b>MAKA</b> statusnya 'Lulus'. <b>JIKA TIDAK, JIKA</b> nilainya di atas 60, <b>MAKA</b> statusnya 'Remedial'. <b>JIKA TIDAK</b> (untuk semua kondisi lain), <b>MAKA</b> statusnya 'Tidak Lulus'."</p>
+            
+            <div class="bg-white p-6 rounded-xl shadow-lg border">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="space-y-2">
+                        <h4 class="font-semibold">Struktur Logika:</h4>
+                        <div class="code-block">
+                            <span style="color: #f472b6;">if</span> (nilai >= 75) { <br>
+                            &nbsp;&nbsp;hasil = <span style="color: #a5b4fc;">"Lulus"</span>; <br>
+                            } <span style="color: #f472b6;">else if</span> (nilai >= 60) { <br>
+                            &nbsp;&nbsp;hasil = <span style="color: #a5b4fc;">"Remedial"</span>; <br>
+                            } <span style="color: #f472b6;">else</span> { <br>
+                            &nbsp;&nbsp;hasil = <span style="color: #a5b4fc;">"Tidak Lulus"</span>; <br>
+                            }
+                        </div>
+                        <h4 class="font-semibold text-sm mt-2 mb-1">Penjelasan Kode:</h4>
+                        <p class="text-sm text-slate-600">Komputer akan mengecek kondisi dari atas ke bawah. Begitu satu kondisi `true` (misal: nilai 80, `80 >= 75` adalah `true`), ia akan menjalankan kode di dalamnya dan mengabaikan semua `else if` dan `else` di bawahnya.</p>
+                    </div>
+                    <div class="p-4 bg-slate-100 rounded-lg">
+                        <h4 class="font-semibold text-center mb-2">Cek Kelulusan Siswa</h4>
+                        <label for="student-score" class="block text-center text-sm mb-1">Masukkan Nilai (0-100):</label>
+                        <input type="number" id="student-score" class="w-full p-2 border rounded" min="0" max="100" value="80" oninput="checkGrade()">
+                        <p class="text-center mt-4">Hasil:</p>
+                        <p id="grade-result" class="text-center text-2xl font-bold text-green-600">Lulus</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loops Section -->
+        <section id="loops" class="mb-16">
+            <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Tugas Berulang: Looping</h2>
+            <p class="text-lg text-slate-600 mb-8">Looping atau perulangan adalah salah satu konsep paling kuat dalam pemrograman. Ini adalah cara menyuruh komputer melakukan tugas yang sama berkali-kali secara otomatis, tanpa kita perlu menulis kode yang sama berulang-ulang.</p>
+            
+            <div class="bg-white p-6 rounded-xl shadow-lg border">
+                <div class="grid md:grid-cols-2 gap-10">
+                    <!-- For Loop Column -->
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-bold">Loop `for`</h3>
+                        <p>Digunakan saat kita tahu pasti berapa kali perulangan akan dilakukan. Analogi: "Lakukan push-up sebanyak 10 kali."</p>
+                        <div>
+                            <h4 class="font-semibold">Pseudocode:</h4>
+                            <div class="code-block">ULANGI 5 KALI, mulai dari i = 1
+  CETAK "Menghitung: " + i
+SELESAI ULANGI</div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Contoh Kode (JavaScript):</h4>
+                            <div class="code-block"><span style="color: #f472b6;">for</span> (<span style="color: #67e8f9;">let</span> i = 1; i <= 5; i++) {
+  console.log("Menghitung: " + i);
+}</div>
+                            <p class="text-xs text-slate-600 mt-1"><b>Penjelasan:</b> `let i = 1` (mulai dari 1), `i <= 5` (ulangi selama i kurang dari atau sama dengan 5), `i++` (tambahkan i dengan 1 setiap selesai perulangan).</p>
+                        </div>
+                        <button onclick="runForLoop()" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 w-full">Jalankan `for` loop</button>
+                    </div>
+                    <!-- While Loop Column -->
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-bold">Loop `while`</h3>
+                        <p>Digunakan selama sebuah kondisi masih bernilai `TRUE`, meskipun kita tidak tahu pasti berapa kali akan berulang. Analogi: "Teruslah aduk adonan <b>SELAMA</b> adonan masih cair."</p>
+                        <div>
+                            <h4 class="font-semibold">Pseudocode:</h4>
+                            <div class="code-block">SET hitungMundur = 3
+SELAMA hitungMundur > 0
+  CETAK "Waktu tersisa... " + hitungMundur
+  KURANGI hitungMundur dengan 1
+SELESAI SELAMA
+CETAK "Boom!"</div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Contoh Kode (JavaScript):</h4>
+                            <div class="code-block"><span style="color: #67e8f9;">let</span> hitungMundur = 3;
+<span style="color: #f472b6;">while</span> (hitungMundur > 0) {
+  console.log("Waktu tersisa... " + hitungMundur);
+  hitungMundur--;
+}
+console.log("Boom!");</div>
+                             <p class="text-xs text-slate-600 mt-1"><b>Penjelasan:</b> Komputer akan terus mengecek `while (hitungMundur > 0)`. Jika `true`, kode di dalamnya dijalankan. Jika `false`, loop berhenti.</p>
+                        </div>
+                        <button onclick="runWhileLoop()" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 w-full">Jalankan `while` loop</button>
+                    </div>
+                </div>
+                <div class="mt-6 p-4 bg-slate-800 text-slate-200 rounded-lg min-h-[8rem]">
+                    <p class="font-bold mb-2">Output Interaktif:</p>
+                    <p class="font-mono" id="loop-output">Klik tombol "Jalankan" di atas untuk melihat hasil perulangan di sini...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusion -->
+        <section id="conclusion" class="text-center py-16">
+            <h2 class="text-3xl font-bold mb-4">Anda Siap Menjadi Engineer!</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600">Anda baru saja menyelesaikan perjalanan luar biasa: dari memahami bagaimana listrik bisa membentuk logika `1` dan `0` di dalam sirkuit, hingga bagaimana kita bisa memerintahkan komputer untuk membuat keputusan dan melakukan tugas berulang. Dengan memahami Gerbang Logika, Operator, Kondisional, dan Perulangan, Anda telah memegang kunci dasar untuk membangun program apa pun. Selamat melanjutkan perjalanan belajarmu di dunia teknologi!</p>
+        </section>
+    </main>
+
+    <footer class="text-center py-6 border-t border-slate-200 bg-white">
+        <p class="text-slate-500">&copy; 2025 Kelas Informatika Pak Muslih. Dibuat dengan semangat belajar.</p>
+    </footer>
+
+    <script>
+        // --- Gate Logic ---
+        function updateAnd() {
+            const inputA = document.getElementById('and-a').checked;
+            const inputB = document.getElementById('and-b').checked;
+            const light = document.getElementById('and-light');
+            const outputText = document.getElementById('and-output');
+            const result = inputA && inputB;
+            outputText.textContent = result ? '1' : '0';
+            result ? light.classList.replace('light-off', 'light-on') : light.classList.replace('light-on', 'light-off');
+        }
+
+        function updateOr() {
+            const inputA = document.getElementById('or-a').checked;
+            const inputB = document.getElementById('or-b').checked;
+            const light = document.getElementById('or-light');
+            const outputText = document.getElementById('or-output');
+            const result = inputA || inputB;
+            outputText.textContent = result ? '1' : '0';
+            result ? light.classList.replace('light-off', 'light-on') : light.classList.replace('light-on', 'light-off');
+        }
+
+        function updateNot() {
+            const inputA = document.getElementById('not-a').checked;
+            const light = document.getElementById('not-light');
+            const outputText = document.getElementById('not-output');
+            const result = !inputA;
+            outputText.textContent = result ? '1' : '0';
+            result ? light.classList.replace('light-off', 'light-on') : light.classList.replace('light-on', 'light-off');
+        }
+
+        // --- Operator Logic ---
+        function calculateOp() {
+            const val1 = parseFloat(document.getElementById('op-val1').value) || 0;
+            const val2 = parseFloat(document.getElementById('op-val2').value) || 0;
+            const op = document.getElementById('op-select').value;
+            const resultEl = document.getElementById('op-result');
+            let result;
+
+            switch(op) {
+                case '+': result = val1 + val2; break;
+                case '-': result = val1 - val2; break;
+                case '*': result = val1 * val2; break;
+                case '/': result = val2 !== 0 ? val1 / val2 : 'Error'; break;
+                case '%': result = val2 !== 0 ? val1 % val2 : 'Error'; break;
+                case '==': result = val1 == val2; break;
+                case '!=': result = val1 != val2; break;
+                case '>': result = val1 > val2; break;
+                case '<': result = val1 < val2; break;
+                default: result = '?';
+            }
+            
+            if (typeof result === 'boolean') {
+                resultEl.textContent = result ? 'true' : 'false';
+                resultEl.className = result ? 'text-xl font-bold w-24 text-center text-green-600' : 'text-xl font-bold w-24 text-center text-red-600';
+            } else if (result === 'Error') {
+                 resultEl.textContent = 'Error';
+                 resultEl.className = 'text-xl font-bold w-24 text-center text-red-600';
+            } else {
+                resultEl.textContent = parseFloat(result.toFixed(2));
+                resultEl.className = 'text-xl font-bold w-24 text-center text-slate-800';
+            }
+        }
+
+        // --- Conditional Logic ---
+        function checkGrade() {
+            const score = parseInt(document.getElementById('student-score').value) || 0;
+            const resultEl = document.getElementById('grade-result');
+            
+            if (score > 100) { // handle invalid input
+                resultEl.textContent = "Nilai > 100?";
+                resultEl.className = "text-center text-2xl font-bold text-blue-600";
+                return;
+            }
+
+            if (score >= 75) {
+                resultEl.textContent = "Lulus";
+                resultEl.className = "text-center text-2xl font-bold text-green-600";
+            } else if (score >= 60) {
+                resultEl.textContent = "Remedial";
+                resultEl.className = "text-center text-2xl font-bold text-yellow-600";
+            } else {
+                resultEl.textContent = "Tidak Lulus";
+                resultEl.className = "text-center text-2xl font-bold text-red-600";
+            }
+        }
+        
+        // --- Loop Logic ---
+        const loopOutput = document.getElementById('loop-output');
+
+        function runForLoop() {
+            let output = 'Memulai `for` loop:<br>';
+            for (let i = 1; i <= 5; i++) {
+                output += `&nbsp;&nbsp;Menghitung: ${i}<br>`;
+            }
+            output += '`for` loop selesai.';
+            loopOutput.innerHTML = output;
+        }
+
+        function runWhileLoop() {
+            let countdown = 3;
+            let output = 'Memulai `while` loop:<br>';
+            while (countdown > 0) {
+                output += `&nbsp;&nbsp;Waktu tersisa... ${countdown}<br>`;
+                countdown--; // countdown = countdown - 1
+            }
+            output += '&nbsp;&nbsp;Boom!<br>';
+            output += '`while` loop selesai.';
+            loopOutput.innerHTML = output;
+        }
+
+        // Initial calls to set the correct state on page load
+        window.onload = () => {
+            updateAnd();
+            updateOr();
+            updateNot();
+            calculateOp();
+            checkGrade();
+        };
+    </script>
+</body>
+</html>
