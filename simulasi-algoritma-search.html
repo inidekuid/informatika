@@ -11,6 +11,34 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            background: #f3f4f6;
+        }
+        #fullscreen-container {
+            min-height: 100vh;
+            width: 100vw;
+            max-width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0;
+        }
+        .back-btn {
+            margin: 24px 0 16px 0;
+            padding: 8px 20px;
+            background: #6366f1;
+            color: #fff;
+            border-radius: 8px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .back-btn:hover {
+            background: #4338ca;
         }
         #binary-array-container {
             position: relative
@@ -62,77 +90,79 @@
         
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-6xl bg-white rounded-2xl shadow-lg p-6 md:p-8">
-        <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6">Visualisasi Cara Kerja Pencarian Komputer</h1>
-        <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">Masukkan sebuah angka dari daftar di bawah (contoh: 77), lalu klik "Cari" pada salah satu kolom untuk melihat bagaimana komputer menemukan angka tersebut.</p>
+<body>
+    <div id="fullscreen-container">
+        <button class="back-btn" onclick="window.location.href='index.html'">← Kembali ke Beranda</button>
+        <div class="w-full max-w-6xl bg-white rounded-2xl shadow-lg p-6 md:p-8 flex-1 flex flex-col">
+            <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6">Visualisasi Cara Kerja Pencarian Komputer</h1>
+            <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">Masukkan sebuah angka dari daftar di bawah (contoh: 77), lalu klik "Cari" pada salah satu kolom untuk melihat bagaimana komputer menemukan angka tersebut.</p>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-            <!-- Kolom Pencarian Linear -->
-            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 flex flex-col">
-                <h2 class="text-xl font-bold text-gray-700 mb-2">1. Cara Urut (Linear Search)</h2>
-                <p class="text-sm text-gray-500 mb-4">Cara ini seperti mencari buku di rak yang berantakan. Kita harus memeriksa setiap buku satu per satu dari paling kiri sampai ketemu.</p>
-                
-                <details class="mb-4">
-                    <summary class="cursor-pointer text-sm font-semibold text-blue-600 flex items-center gap-1">
-                        <span class="arrow">&#9654;</span> Lihat Cara Kerjanya
-                    </summary>
-                    <div class="mt-2 text-sm bg-white p-3 rounded-md border">
-                        <h4 class="font-bold mb-1">Langkah-langkah:</h4>
-                        <ol class="list-decimal list-inside space-y-1">
-                            <li>Lihat angka pertama di daftar.</li>
-                            <li>Apakah ini angka yang kita cari?</li>
-                            <li>Jika **YA**, pencarian selesai.</li>
-                            <li>Jika **TIDAK**, pindah ke angka berikutnya dan ulangi langkah 2.</li>
-                            <li>Jika sudah dicek semua dan tidak ada, berarti angka itu tidak ada di daftar.</li>
-                        </ol>
-                        <h4 class="font-bold mt-3 mb-1">Logika Komputer (disederhanakan):</h4>
-                        <pre class="bg-gray-800 text-white p-2 rounded text-xs"><code>UNTUK setiap angka DALAM daftar:
+                <!-- Kolom Pencarian Linear -->
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 flex flex-col">
+                    <h2 class="text-xl font-bold text-gray-700 mb-2">1. Cara Urut (Linear Search)</h2>
+                    <p class="text-sm text-gray-500 mb-4">Cara ini seperti mencari buku di rak yang berantakan. Kita harus memeriksa setiap buku satu per satu dari paling kiri sampai ketemu.</p>
+                    
+                    <details class="mb-4">
+                        <summary class="cursor-pointer text-sm font-semibold text-blue-600 flex items-center gap-1">
+                            <span class="arrow">&#9654;</span> Lihat Cara Kerjanya
+                        </summary>
+                        <div class="mt-2 text-sm bg-white p-3 rounded-md border">
+                            <h4 class="font-bold mb-1">Langkah-langkah:</h4>
+                            <ol class="list-decimal list-inside space-y-1">
+                                <li>Lihat angka pertama di daftar.</li>
+                                <li>Apakah ini angka yang kita cari?</li>
+                                <li>Jika **YA**, pencarian selesai.</li>
+                                <li>Jika **TIDAK**, pindah ke angka berikutnya dan ulangi langkah 2.</li>
+                                <li>Jika sudah dicek semua dan tidak ada, berarti angka itu tidak ada di daftar.</li>
+                            </ol>
+                            <h4 class="font-bold mt-3 mb-1">Logika Komputer (disederhanakan):</h4>
+                            <pre class="bg-gray-800 text-white p-2 rounded text-xs"><code>UNTUK setiap angka DALAM daftar:
   JIKA angka ini == angka yang dicari:
     BILANG "KETEMU!"
     BERHENTI
 
 BILANG "TIDAK KETEMU."</code></pre>
+                        </div>
+                    </details>
+
+                    <div id="linear-array-container" class="flex flex-wrap gap-2 mb-4 min-h-[60px]"></div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <input type="number" id="linear-input" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Masukkan angka...">
+                        <button id="linear-search-btn" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex-shrink-0">Cari</button>
                     </div>
-                </details>
+                    <div>
+                        <p class="text-sm text-gray-600">Status: <span id="linear-status" class="font-semibold text-gray-800">Menunggu input...</span></p>
+                        <p class="text-sm text-gray-600">Jumlah Langkah: <span id="linear-steps" class="font-semibold text-gray-800">0</span></p>
+                    </div>
+                    <h3 class="text-md font-semibold text-gray-700 mt-4 mb-2">Log Proses:</h3>
+                    <div id="linear-log" class="log-container h-48 bg-white border border-gray-300 rounded-lg p-3 overflow-y-auto text-sm flex-grow">
+                        <!-- Log entries will be added here by JS -->
+                    </div>
+                </div>
 
-                <div id="linear-array-container" class="flex flex-wrap gap-2 mb-4 min-h-[60px]"></div>
-                <div class="flex items-center gap-3 mb-4">
-                    <input type="number" id="linear-input" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Masukkan angka...">
-                    <button id="linear-search-btn" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex-shrink-0">Cari</button>
-                </div>
-                <div>
-                    <p class="text-sm text-gray-600">Status: <span id="linear-status" class="font-semibold text-gray-800">Menunggu input...</span></p>
-                    <p class="text-sm text-gray-600">Jumlah Langkah: <span id="linear-steps" class="font-semibold text-gray-800">0</span></p>
-                </div>
-                <h3 class="text-md font-semibold text-gray-700 mt-4 mb-2">Log Proses:</h3>
-                <div id="linear-log" class="log-container h-48 bg-white border border-gray-300 rounded-lg p-3 overflow-y-auto text-sm flex-grow">
-                    <!-- Log entries will be added here by JS -->
-                </div>
-            </div>
-
-            <!-- Kolom Pencarian Biner -->
-            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 flex flex-col">
-                <h2 class="text-xl font-bold text-gray-700 mb-2">2. Cara Potong Kompas (Binary Search)</h2>
-                <p class="text-sm text-gray-500 mb-4">Cara ini seperti mencari kata di kamus. Kita langsung buka ke tengah, lalu memutuskan mau ke arah depan atau belakang. **Syarat: datanya harus sudah urut!**</p>
-                
-                <details class="mb-4">
-                    <summary class="cursor-pointer text-sm font-semibold text-indigo-600 flex items-center gap-1">
-                        <span class="arrow">&#9654;</span> Lihat Cara Kerjanya
-                    </summary>
-                    <div class="mt-2 text-sm bg-white p-3 rounded-md border">
-                        <h4 class="font-bold mb-1">Langkah-langkah:</h4>
-                        <ol class="list-decimal list-inside space-y-1">
-                            <li>Tentukan area pencarian (dari awal sampai akhir).</li>
-                            <li>Ambil angka yang ada persis di tengah area itu.</li>
-                            <li>Bandingkan angka tengah dengan yang kita cari.</li>
-                            <li>Jika **SAMA**, pencarian selesai.</li>
-                            <li>Jika angka tengah **LEBIH KECIL**, abaikan seluruh bagian kiri. Ulangi dari langkah 2 di bagian kanan.</li>
-                            <li>Jika angka tengah **LEBIH BESAR**, abaikan seluruh bagian kanan. Ulangi dari langkah 2 di bagian kiri.</li>
-                        </ol>
-                        <h4 class="font-bold mt-3 mb-1">Logika Komputer (disederhanakan):</h4>
-                        <pre class="bg-gray-800 text-white p-2 rounded text-xs"><code>SELAMA area pencarian masih ada:
+                <!-- Kolom Pencarian Biner -->
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 flex flex-col">
+                    <h2 class="text-xl font-bold text-gray-700 mb-2">2. Cara Potong Kompas (Binary Search)</h2>
+                    <p class="text-sm text-gray-500 mb-4">Cara ini seperti mencari kata di kamus. Kita langsung buka ke tengah, lalu memutuskan mau ke arah depan atau belakang. **Syarat: datanya harus sudah urut!**</p>
+                    
+                    <details class="mb-4">
+                        <summary class="cursor-pointer text-sm font-semibold text-indigo-600 flex items-center gap-1">
+                            <span class="arrow">&#9654;</span> Lihat Cara Kerjanya
+                        </summary>
+                        <div class="mt-2 text-sm bg-white p-3 rounded-md border">
+                            <h4 class="font-bold mb-1">Langkah-langkah:</h4>
+                            <ol class="list-decimal list-inside space-y-1">
+                                <li>Tentukan area pencarian (dari awal sampai akhir).</li>
+                                <li>Ambil angka yang ada persis di tengah area itu.</li>
+                                <li>Bandingkan angka tengah dengan yang kita cari.</li>
+                                <li>Jika **SAMA**, pencarian selesai.</li>
+                                <li>Jika angka tengah **LEBIH KECIL**, abaikan seluruh bagian kiri. Ulangi dari langkah 2 di bagian kanan.</li>
+                                <li>Jika angka tengah **LEBIH BESAR**, abaikan seluruh bagian kanan. Ulangi dari langkah 2 di bagian kiri.</li>
+                            </ol>
+                            <h4 class="font-bold mt-3 mb-1">Logika Komputer (disederhanakan):</h4>
+                            <pre class="bg-gray-800 text-white p-2 rounded text-xs"><code>SELAMA area pencarian masih ada:
   LIHAT angka di tengah area
   JIKA angka tengah == angka yang dicari:
     BILANG "KETEMU!"
@@ -143,24 +173,25 @@ BILANG "TIDAK KETEMU."</code></pre>
     GANTI area pencarian menjadi BAGIAN KIRI
 
 BILANG "TIDAK KETEMU."</code></pre>
+                        </div>
+                    </details>
+
+                    <div id="binary-array-container" class="flex flex-wrap gap-2 mb-4 min-h-[60px]"></div>
+                     <div class="flex items-center gap-3 mb-4">
+                        <input type="number" id="binary-input" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Masukkan angka...">
+                        <button id="binary-search-btn" class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-indigo-700 transition-colors flex-shrink-0">Cari</button>
                     </div>
-                </details>
+                    <div>
+                        <p class="text-sm text-gray-600">Status: <span id="binary-status" class="font-semibold text-gray-800">Menunggu input...</span></p>
+                        <p class="text-sm text-gray-600">Jumlah Langkah: <span id="binary-steps" class="font-semibold text-gray-800">0</span></p>
+                    </div>
+                    <h3 class="text-md font-semibold text-gray-700 mt-4 mb-2">Log Proses:</h3>
+                    <div id="binary-log" class="log-container h-48 bg-white border border-gray-300 rounded-lg p-3 overflow-y-auto text-sm flex-grow">
+                        <!-- Log entries will be added here by JS -->
+                    </div>
+                </div>
 
-                <div id="binary-array-container" class="flex flex-wrap gap-2 mb-4 min-h-[60px]"></div>
-                 <div class="flex items-center gap-3 mb-4">
-                    <input type="number" id="binary-input" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Masukkan angka...">
-                    <button id="binary-search-btn" class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-indigo-700 transition-colors flex-shrink-0">Cari</button>
-                </div>
-                <div>
-                    <p class="text-sm text-gray-600">Status: <span id="binary-status" class="font-semibold text-gray-800">Menunggu input...</span></p>
-                    <p class="text-sm text-gray-600">Jumlah Langkah: <span id="binary-steps" class="font-semibold text-gray-800">0</span></p>
-                </div>
-                <h3 class="text-md font-semibold text-gray-700 mt-4 mb-2">Log Proses:</h3>
-                <div id="binary-log" class="log-container h-48 bg-white border border-gray-300 rounded-lg p-3 overflow-y-auto text-sm flex-grow">
-                    <!-- Log entries will be added here by JS -->
-                </div>
             </div>
-
         </div>
     </div>
 
