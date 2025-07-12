@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dasar Struktur Data untuk SMA</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .data-element {
+            transition: all 0.3s ease-in-out;
+            transform-origin: bottom;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .highlight-op {
+            animation: highlight 1s ease-out;
+        }
+        @keyframes highlight {
+            0% { background-color: #a7f3d0; } /* bg-green-200 */
+            100% { background-color: transparent; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-10">
+        <div class="container mx-auto px-6 py-4">
+            <h1 class="text-2xl font-bold text-blue-600">Dunia Struktur Data</h1>
+            <p class="text-gray-600">Mengenal Cara Komputer Mengatur Informasi</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-10">
+
+        <!-- Section: Introduction -->
+        <section id="intro" class="mb-16">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-4">Apa itu Struktur Data?</h2>
+            <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200 text-lg text-gray-700 space-y-4">
+                <p>Bayangkan kamu punya lemari buku yang sangat besar. Jika kamu meletakkan semua buku secara acak, pasti akan susah sekali mencari buku yang kamu mau, kan?</p>
+                <p>Struktur data itu seperti <strong class="text-blue-600">cara kita mengatur buku-buku di lemari</strong>. Ada yang diurutkan berdasarkan abjad (seperti Array), ada yang ditumpuk (seperti Stack), dan ada yang dibuat antrian (seperti Queue).</p>
+                <p class="font-semibold">Intinya, struktur data adalah cara menyimpan dan mengatur data di dalam komputer agar bisa diakses dan digunakan secara efisien. Ini adalah fondasi penting sebelum kita belajar membuat "resep" untuk komputer (algoritma).</p>
+            </div>
+        </section>
+
+        <!-- Section: Array -->
+        <section id="array" class="mb-16">
+            <h2 class="text-3xl font-bold mb-6">1. Array: Si Rak Buku Bernomor</h2>
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+                <!-- Penjelasan Array -->
+                <div class="space-y-4">
+                    <p>Array adalah struktur data paling dasar. Anggap saja ini seperti rak buku atau loker yang setiap kotaknya punya nomor urut (disebut <strong class="text-green-600">indeks</strong>), yang dimulai dari 0.</p>
+                    <div class="bg-white p-6 rounded-lg shadow-md border">
+                        <h4 class="font-bold mb-2">Analogi:</h4>
+                        <p>Sebuah komplek perumahan di mana setiap rumah punya nomor alamat yang unik dan berurutan.</p>
+                        <h4 class="font-bold mt-4 mb-2">Kapan Pakainya?</h4>
+                        <p>Saat kamu butuh menyimpan data sejenis (misal: daftar nama siswa, daftar nilai) dan ingin mengaksesnya dengan cepat menggunakan nomor urutnya.</p>
+                    </div>
+                </div>
+                <!-- Visualisasi Array -->
+                <div class="bg-white p-6 rounded-xl shadow-lg border">
+                    <h4 class="font-bold text-center mb-4">Visualisasi Array</h4>
+                    <div id="array-visual" class="flex justify-center items-end space-x-2 h-24 bg-gray-100 p-2 rounded-md">
+                        <!-- Elements will be added here by JS -->
+                    </div>
+                    <div class="text-center mt-2">
+                        <span id="array-index-0" class="inline-block w-12 text-sm font-mono">0</span>
+                        <span id="array-index-1" class="inline-block w-12 text-sm font-mono">1</span>
+                        <span id="array-index-2" class="inline-block w-12 text-sm font-mono">2</span>
+                        <span id="array-index-3" class="inline-block w-12 text-sm font-mono">3</span>
+                    </div>
+                    <div class="mt-4 flex justify-center gap-2">
+                        <input id="array-input" type="text" placeholder="Data" class="w-20 text-center border-gray-300 rounded-md shadow-sm">
+                        <button onclick="arrayAdd()" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Tambah</button>
+                        <button onclick="arrayRemove()" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">Hapus</button>
+                    </div>
+                    <p id="array-info" class="text-center text-sm text-gray-500 mt-2 h-4"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Stack -->
+        <section id="stack" class="mb-16">
+            <h2 class="text-3xl font-bold mb-6">2. Stack: Si Tumpukan Piring</h2>
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+                <!-- Penjelasan Stack -->
+                <div class="space-y-4">
+                    <p>Stack mengikuti prinsip <strong class="text-purple-600">LIFO (Last-In, First-Out)</strong>. Artinya, data yang terakhir masuk adalah data yang pertama kali keluar.</p>
+                    <div class="bg-white p-6 rounded-lg shadow-md border">
+                        <h4 class="font-bold mb-2">Analogi:</h4>
+                        <p>Tumpukan piring kotor. Piring yang terakhir kamu letakkan di atas tumpukan adalah piring yang pertama kamu ambil untuk dicuci.</p>
+                        <h4 class="font-bold mt-4 mb-2">Kapan Pakainya?</h4>
+                        <p>Fitur "Undo" (Ctrl+Z) di editor teks, atau tombol "Back" di browser yang membawamu ke halaman sebelumnya.</p>
+                    </div>
+                </div>
+                <!-- Visualisasi Stack -->
+                <div class="bg-white p-6 rounded-xl shadow-lg border">
+                    <h4 class="font-bold text-center mb-4">Visualisasi Stack</h4>
+                    <div class="flex justify-center">
+                        <div id="stack-visual" class="flex flex-col-reverse items-center w-32 h-48 bg-gray-100 p-2 rounded-md border-b-4 border-gray-400">
+                           <!-- Elements will be added here by JS -->
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-center gap-2">
+                        <input id="stack-input" type="text" placeholder="Data" class="w-20 text-center border-gray-300 rounded-md shadow-sm">
+                        <button onclick="stackPush()" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Push (Tambah)</button>
+                        <button onclick="stackPop()" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">Pop (Keluarkan)</button>
+                    </div>
+                    <p id="stack-info" class="text-center text-sm text-gray-500 mt-2 h-4"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Queue -->
+        <section id="queue" class="mb-16">
+            <h2 class="text-3xl font-bold mb-6">3. Queue: Si Antrian Tiket</h2>
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+                <!-- Penjelasan Queue -->
+                <div class="space-y-4">
+                    <p>Queue mengikuti prinsip <strong class="text-yellow-600">FIFO (First-In, First-Out)</strong>. Artinya, data yang pertama masuk adalah data yang pertama kali keluar.</p>
+                    <div class="bg-white p-6 rounded-lg shadow-md border">
+                        <h4 class="font-bold mb-2">Analogi:</h4>
+                        <p>Antrian di kasir atau loket bioskop. Siapa yang datang duluan, dia yang dilayani duluan.</p>
+                        <h4 class="font-bold mt-4 mb-2">Kapan Pakainya?</h4>
+                        <p>Antrian print dokumen (printer akan mencetak dokumen sesuai urutan masuk), atau chat di aplikasi pesan.</p>
+                    </div>
+                </div>
+                <!-- Visualisasi Queue -->
+                <div class="bg-white p-6 rounded-xl shadow-lg border">
+                    <h4 class="font-bold text-center mb-4">Visualisasi Queue</h4>
+                    <div class="flex justify-center items-center">
+                        <span class="mr-2 font-bold">Depan</span>
+                        <div id="queue-visual" class="flex items-center w-64 h-16 bg-gray-100 p-2 rounded-md">
+                           <!-- Elements will be added here by JS -->
+                        </div>
+                        <span class="ml-2 font-bold">Belakang</span>
+                    </div>
+                    <div class="mt-4 flex justify-center gap-2">
+                        <input id="queue-input" type="text" placeholder="Data" class="w-20 text-center border-gray-300 rounded-md shadow-sm">
+                        <button onclick="queueEnqueue()" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Enqueue (Masuk)</button>
+                        <button onclick="queueDequeue()" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">Dequeue (Keluar)</button>
+                    </div>
+                    <p id="queue-info" class="text-center text-sm text-gray-500 mt-2 h-4"></p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Conclusion -->
+        <section id="conclusion" class="text-center py-10">
+            <h2 class="text-3xl font-bold mb-4">Langkah Selanjutnya? Algoritma!</h2>
+            <p class="max-w-2xl mx-auto text-lg text-gray-600">Sekarang kamu sudah tahu cara mengatur data. Selanjutnya, kita akan belajar <strong class="text-blue-600">Algoritma</strong>, yaitu resep atau langkah-langkah untuk mengolah data yang sudah kita susun ini. Selamat belajar!</p>
+        </section>
+    </main>
+
+   <footer class="text-center mt-16 text-slate-500">
+            <p>&copy; 2024 Kelas Informatika Pak Muslih. Dibuat dengan semangat belajar.</p>
+    </footer>
+    <script>
+        // --- Shared Functions ---
+        function createVisualElement(value, colorClass = 'bg-blue-400') {
+            const el = document.createElement('div');
+            el.className = `data-element w-12 h-12 flex items-center justify-center font-bold text-white rounded-md shadow-sm ${colorClass} fade-in`;
+            el.textContent = value;
+            return el;
+        }
+
+        function showInfo(elementId, message, isError = false) {
+            const infoEl = document.getElementById(elementId);
+            infoEl.textContent = message;
+            infoEl.className = `text-center text-sm mt-2 h-4 ${isError ? 'text-red-500' : 'text-gray-500'}`;
+            setTimeout(() => infoEl.textContent = '', 2000);
+        }
+
+        // --- Array Logic ---
+        const arrayVisual = document.getElementById('array-visual');
+        const arrayInput = document.getElementById('array-input');
+        const arrayInfo = document.getElementById('array-info');
+        let dataArray = [];
+
+        function renderArray() {
+            arrayVisual.innerHTML = '';
+            dataArray.forEach(item => {
+                arrayVisual.appendChild(createVisualElement(item, 'bg-green-500'));
+            });
+        }
+
+        function arrayAdd() {
+            if (dataArray.length >= 4) {
+                showInfo('array-info', 'Array sudah penuh!', true);
+                return;
+            }
+            const value = arrayInput.value.trim() || Math.floor(Math.random() * 100);
+            if (value) {
+                dataArray.push(value);
+                renderArray();
+                arrayInput.value = '';
+                showInfo('array-info', `Data ${value} ditambahkan di indeks ${dataArray.length - 1}.`);
+            }
+        }
+
+        function arrayRemove() {
+            if (dataArray.length === 0) {
+                showInfo('array-info', 'Array sudah kosong!', true);
+                return;
+            }
+            const removed = dataArray.pop();
+            renderArray();
+            showInfo('array-info', `Data ${removed} dihapus dari belakang.`);
+        }
+        
+        // --- Stack Logic ---
+        const stackVisual = document.getElementById('stack-visual');
+        const stackInput = document.getElementById('stack-input');
+        const stackInfo = document.getElementById('stack-info');
+        let dataStack = [];
+
+        function renderStack() {
+            stackVisual.innerHTML = '';
+            dataStack.forEach(item => {
+                const el = createVisualElement(item, 'bg-purple-500');
+                el.style.marginBottom = '4px';
+                stackVisual.appendChild(el);
+            });
+        }
+
+        function stackPush() {
+            if (dataStack.length >= 3) {
+                showInfo('stack-info', 'Tumpukan sudah penuh!', true);
+                return;
+            }
+            const value = stackInput.value.trim() || Math.floor(Math.random() * 100);
+            if (value) {
+                dataStack.push(value);
+                renderStack();
+                stackInput.value = '';
+                showInfo('stack-info', `Data ${value} masuk ke tumpukan.`);
+                stackVisual.lastChild.classList.add('highlight-op');
+            }
+        }
+
+        function stackPop() {
+            if (dataStack.length === 0) {
+                showInfo('stack-info', 'Tumpukan sudah kosong!', true);
+                return;
+            }
+            const removed = dataStack.pop();
+            renderStack();
+            showInfo('stack-info', `Data ${removed} keluar dari tumpukan.`);
+        }
+
+        // --- Queue Logic ---
+        const queueVisual = document.getElementById('queue-visual');
+        const queueInput = document.getElementById('queue-input');
+        const queueInfo = document.getElementById('queue-info');
+        let dataQueue = [];
+
+        function renderQueue() {
+            queueVisual.innerHTML = '';
+            queueVisual.classList.add('space-x-2');
+            dataQueue.forEach(item => {
+                queueVisual.appendChild(createVisualElement(item, 'bg-yellow-500'));
+            });
+        }
+
+        function queueEnqueue() {
+            if (dataQueue.length >= 4) {
+                showInfo('queue-info', 'Antrian sudah penuh!', true);
+                return;
+            }
+            const value = queueInput.value.trim() || Math.floor(Math.random() * 100);
+            if (value) {
+                dataQueue.push(value);
+                renderQueue();
+                queueInput.value = '';
+                showInfo('queue-info', `Data ${value} masuk ke antrian.`);
+                queueVisual.lastChild.classList.add('highlight-op');
+            }
+        }
+
+        function queueDequeue() {
+            if (dataQueue.length === 0) {
+                showInfo('queue-info', 'Antrian sudah kosong!', true);
+                return;
+            }
+            const removed = dataQueue.shift();
+            renderQueue();
+            showInfo('queue-info', `Data ${removed} keluar dari antrian.`);
+        }
+
+        // Initial render
+        renderArray();
+        renderStack();
+        renderQueue();
+    </script>
+</body>
+</html>

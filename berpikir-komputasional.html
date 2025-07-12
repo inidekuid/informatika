@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Berpikir Komputasional</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Style untuk active tab */
+        .tab-active {
+            background-color: #4f46e5; /* indigo-600 */
+            color: white;
+        }
+        /* Style untuk active nav link */
+        .nav-active {
+            color: #4f46e5;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Sticky Navigation -->
+    <nav class="sticky top-0 bg-white/80 backdrop-blur-md shadow-sm z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="text-lg font-bold text-indigo-600">Berpikir Komputasional</div>
+                <div class="hidden md:flex space-x-6 text-slate-600">
+                    <a href="#definisi" class="nav-link hover:text-indigo-600 transition-colors">Definisi</a>
+                    <a href="#pentingnya" class="nav-link hover:text-indigo-600 transition-colors">Pentingnya</a>
+                    <a href="#pilar" class="nav-link hover:text-indigo-600 transition-colors">4 Pilar Utama</a>
+                    <a href="#kesimpulan" class="nav-link hover:text-indigo-600 transition-colors">Kesimpulan</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12 md:py-16">
+
+        <!-- Section: Definisi -->
+        <section id="definisi" class="text-center mb-20 scroll-mt-24">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">Mari Selami Berpikir Komputasional</h1>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 mb-8">Sebuah keahlian universal untuk semua orang, bukan hanya untuk programmer.</p>
+            <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                <blockquote class="text-xl md:text-2xl font-semibold text-slate-700 italic">
+                    "Berpikir komputasional adalah proses pemecahan masalah—baik yang kompleks maupun sederhana—dengan menggunakan teknik dan pendekatan yang digunakan oleh seorang ilmuwan komputer."
+                </blockquote>
+                <p class="mt-4 text-slate-500">Ini bukan tentang berpikir seperti komputer, tapi tentang merumuskan masalah dan solusinya dalam bentuk yang bisa dipahami dan dieksekusi oleh komputer (atau manusia secara sistematis).</p>
+            </div>
+        </section>
+
+        <!-- Section: Kenapa Penting? -->
+        <section id="pentingnya" class="mb-20 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-10">Mengapa Ini Penting Untuk Anda?</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all">
+                    <div class="flex items-center justify-center bg-blue-100 rounded-full w-16 h-16 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Memecahkan Masalah Kompleks</h3>
+                    <p class="text-slate-600">Membantu Anda memecah masalah besar yang tampak menakutkan menjadi bagian-bagian kecil yang lebih mudah dikelola.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all">
+                    <div class="flex items-center justify-center bg-green-100 rounded-full w-16 h-16 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.375 3.375 0 0014 18.442V19.5a.5.5 0 01-.5.5h-3a.5.5 0 01-.5-.5v-1.058a3.375 3.375 0 00-.985-2.395l-.548-.547z" /></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Meningkatkan Kreativitas</h3>
+                    <p class="text-slate-600">Memberi Anda kerangka kerja untuk berinovasi dan menemukan solusi yang unik dan efisien untuk berbagai tantangan.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all">
+                    <div class="flex items-center justify-center bg-purple-100 rounded-full w-16 h-16 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Bekerja Lebih Efisien</h3>
+                    <p class="text-slate-600">Dengan mengidentifikasi pola dan membuat langkah-langkah yang jelas, Anda dapat menyelesaikan tugas lebih cepat dan akurat.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: 4 Pilar (Cornerstones) -->
+        <section id="pilar" class="mb-20 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-2">4 Pilar Utama (Cornerstones)</h2>
+            <p class="text-center text-slate-600 mb-10 max-w-2xl mx-auto">Ini adalah fondasi yang membangun kemampuan berpikir komputasional Anda. Klik setiap pilar untuk mempelajarinya.</p>
+
+            <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+                <!-- Tab Buttons -->
+                <div class="flex flex-wrap border-b border-slate-200">
+                    <button data-tab="dekomposisi" class="tab-button flex-1 p-4 font-semibold text-slate-700 hover:bg-slate-100 transition-colors tab-active">Dekomposisi</button>
+                    <button data-tab="pola" class="tab-button flex-1 p-4 font-semibold text-slate-700 hover:bg-slate-100 transition-colors">Pengenalan Pola</button>
+                    <button data-tab="abstraksi" class="tab-button flex-1 p-4 font-semibold text-slate-700 hover:bg-slate-100 transition-colors">Abstraksi</button>
+                    <button data-tab="algoritma" class="tab-button flex-1 p-4 font-semibold text-slate-700 hover:bg-slate-100 transition-colors">Algoritma</button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="p-8">
+                    <!-- Dekomposisi Content -->
+                    <div id="dekomposisi" class="tab-content">
+                        <div class="flex items-start gap-4 mb-6">
+                            <div class="flex-shrink-0 bg-indigo-100 p-3 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg></div>
+                            <div>
+                                <h3 class="text-2xl font-bold">Dekomposisi</h3>
+                                <p class="text-slate-600">Memecah masalah atau sistem yang kompleks menjadi bagian-bagian yang lebih kecil dan lebih mudah dikelola.</p>
+                            </div>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-slate-100 p-4 rounded-lg">
+                                <h4 class="font-semibold mb-2">Contoh Sehari-hari: Membuat Sarapan</h4>
+                                <p class="text-sm text-slate-700">Anda tidak hanya "membuat sarapan". Anda memecahnya menjadi: mengeluarkan roti, memanggang roti, mengambil selai, mengoleskan selai, membuat kopi, menuang kopi.</p>
+                            </div>
+                            <div class="bg-slate-100 p-4 rounded-lg">
+                                <h4 class="font-semibold mb-2">Penerapan Teknologi: Membangun Aplikasi</h4>
+                                <p class="text-sm text-slate-700">Seorang developer tidak langsung membuat aplikasi. Mereka memecahnya menjadi: modul login, halaman utama (dashboard), fitur posting, manajemen database, dan antarmuka pengguna (UI).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pengenalan Pola Content -->
+                    <div id="pola" class="tab-content hidden">
+                        <div class="flex items-start gap-4 mb-6">
+                            <div class="flex-shrink-0 bg-indigo-100 p-3 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg></div>
+                            <div>
+                                <h3 class="text-2xl font-bold">Pengenalan Pola</h3>
+                                <p class="text-slate-600">Mencari kesamaan atau tren di antara dan di dalam masalah untuk membantu menyelesaikannya dengan lebih efisien.</p>
+                            </div>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-slate-100 p-4 rounded-lg">
+                                <h4 class="font-semibold mb-2">Contoh Sehari-hari: Prediksi Cuaca</h4>
+                                <p class="text-sm text-slate-700">Jika Anda melihat pola: langit gelap, angin kencang, dan suhu turun, Anda dapat memprediksi bahwa hujan akan segera turun. Ini adalah pengenalan pola.</p>
+                            </div>
+                            <div class="bg-slate-100 p-4 rounded-lg">
+                                <h4 class="font-semibold mb-2">Penerapan Teknologi: Rekomendasi Produk</h4>
+                                <p class="text-sm text-slate-700">Situs e-commerce mengenali pola pembelian Anda (misal: sering membeli buku fiksi ilmiah) dan menggunakannya untuk merekomendasikan produk serupa yang mungkin Anda sukai.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Abstraksi Content -->
+                    <div id="abstraksi" class="tab-content hidden">
+                        <div class="flex items-start gap-4 mb-6">
+                            <div class="flex-shrink-0 bg-indigo-100 p-3 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.657 7.343A8 8 0 0117.657 18.657z" /><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128z" /></svg></div>
+                            <div>
+                                <h3 class="text-2xl font-bold">Abstraksi</h3>
+                                <p class="text-slate-600">Berfokus pada informasi yang penting saja, sambil mengabaikan detail yang tidak relevan atau terlalu rumit.</p>
+                            </div>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-slate-100 p-4 rounded-lg">
+                                <h4 class="font-semibold mb-2">Contoh Sehari-hari: Mengemudi Mobil</h4>
+                                <p class="text-sm text-slate-700">Anda hanya perlu tahu cara menggunakan setir, pedal gas, dan rem. Anda mengabaikan detail rumit tentang cara kerja mesin, transmisi, atau sistem kelistrikan. Itulah abstraksi.</p>
+                            </div>
+                            <div class="bg-slate-100 p-4 rounded-lg">
+                                <h4 class="font-semibold mb-2">Penerapan Teknologi: Menggunakan Fungsi</h4>
+                                <p class="text-sm text-slate-700">Saat programmer menggunakan fungsi seperti `print("Hello")`, mereka tidak perlu tahu bagaimana komputer mengubah perintah itu menjadi piksel di layar. Mereka hanya tahu fungsi itu akan menampilkan teks.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Algoritma Content -->
+                    <div id="algoritma" class="tab-content hidden">
+                        <div class="flex items-start gap-4 mb-6">
+                            <div class="flex-shrink-0 bg-indigo-100 p-3 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7" /></svg></div>
+                            <div>
+                                <h3 class="text-2xl font-bold">Desain Algoritma</h3>
+                                <p class="text-slate-600">Mengembangkan solusi langkah-demi-langkah untuk masalah, atau aturan yang harus diikuti untuk menyelesaikan masalah tersebut.</p>
+                            </div>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-slate-100 p-4 rounded-lg">
+                                <h4 class="font-semibold mb-2">Contoh Sehari-hari: Resep Masakan</h4>
+                                <p class="text-sm text-slate-700">Resep adalah algoritma yang sempurna. Ia memberikan daftar bahan (input) dan serangkaian instruksi langkah-demi-langkah yang harus diikuti secara berurutan untuk menghasilkan kue (output).</p>
+                            </div>
+                            <div class="bg-slate-100 p-4 rounded-lg">
+                                <h4 class="font-semibold mb-2">Penerapan Teknologi: Algoritma Pencarian</h4>
+                                <p class="text-sm text-slate-700">Saat Anda mencari sesuatu di Google, sebuah algoritma yang sangat kompleks bekerja untuk menelusuri miliaran halaman web dan memberikan hasil yang paling relevan dalam hitungan detik.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Kesimpulan -->
+        <section id="kesimpulan" class="text-center scroll-mt-24">
+            <h2 class="text-3xl font-bold mb-4">Ini Bukan Sekadar Coding</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600">Berpikir komputasional adalah tentang cara berpikir yang terstruktur dan logis untuk memecahkan masalah. Ini adalah keterampilan hidup yang berharga di era digital, apa pun profesi Anda.</p>
+            <a href="#definisi" class="mt-8 inline-block bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors">
+                Ulas Kembali dari Awal
+            </a>
+        </section>
+
+    </main>
+    
+   <footer class="text-center mt-16 text-slate-500">
+            <p>&copy; 2024 Kelas Informatika Pak Muslih. Dibuat dengan semangat belajar.</p>
+    </footer>
+    <script>
+        // --- Tab Functionality ---
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.dataset.tab;
+
+                // Update button styles
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('tab-active');
+                });
+                button.classList.add('tab-active');
+
+                // Show/hide content
+                tabContents.forEach(content => {
+                    if (content.id === targetTab) {
+                        content.classList.remove('hidden');
+                    } else {
+                        content.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // --- Active Nav Link on Scroll ---
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5 // 50% of the section must be visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => {
+                        link.classList.remove('nav-active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('nav-active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+    </script>
+
+</body>
+</html>
