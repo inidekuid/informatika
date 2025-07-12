@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Informatika bersama Pak Muslih</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Menggunakan font Inter sebagai default */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom style untuk notifikasi */
+        #notification {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Main Container -->
+    <div class="container mx-auto px-4 py-8 md:py-16">
+
+        <!-- Header Section -->
+        <header class="text-center mb-12 md:mb-16">
+            <div class="inline-block bg-blue-100 text-blue-800 text-sm font-semibold px-4 py-1 rounded-full mb-4">
+                Kelas Informatika
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">Belajar Informatika bersama Pak Muslih</h1>
+            <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">
+                Jelajahi dunia informatika dari konsep dasar hingga penerapan di dunia nyata dengan cara yang mudah dan menyenangkan.
+            </p>
+        </header>
+
+        <!-- Interactive Learning Modules Section -->
+        <main>
+            <h2 class="text-3xl font-bold text-center mb-10">Mulai Petualangan Belajarmu</h2>
+            
+            <!-- Grid for learning cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Card 1: Algoritma Pencarian -->
+                <div class="card bg-white p-6 rounded-xl shadow-lg border border-slate-200 hover:shadow-xl hover:scale-105 transition-all duration-300 flex flex-col">
+                    <div class="flex-shrink-0">
+                        <svg class="w-12 h-12 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                        </svg>
+                        <h3 class="text-xl font-bold mb-2">Visualisasi Algoritma Pencarian</h3>
+                        <p class="text-slate-600 mb-4 flex-grow">Pelajari cara kerja algoritma seperti Binary Search dan Linear Search melalui visualisasi interaktif.</p>
+                    </div>
+                    <a href="simulasi-algoritma-search.html" class="learn-button mt-auto w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                        Lihat Visualisasi
+                    </a>
+                </div>
+
+                <!-- Card 2: Berpikir Komputasional -->
+                <div class="card bg-white p-6 rounded-xl shadow-lg border border-slate-200 hover:shadow-xl hover:scale-105 transition-all duration-300 flex flex-col">
+                    <div class="flex-shrink-0">
+                        <svg class="w-12 h-12 text-green-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V8.25a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 8.25v10.5A2.25 2.25 0 006.75 21z" />
+                        </svg>
+                        <h3 class="text-xl font-bold mb-2">Berpikir Komputasional</h3>
+                        <p class="text-slate-600 mb-4 flex-grow">Asah kemampuan problem solving dengan 4 pilar: dekomposisi, abstraksi, pengenalan pola, dan algoritma.</p>
+                    </div>
+                    <button class="learn-button mt-auto w-full bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">
+                        Mulai Belajar
+                    </button>
+                </div>
+
+                <!-- Card 3: Struktur Data -->
+                <div class="card bg-white p-6 rounded-xl shadow-lg border border-slate-200 hover:shadow-xl hover:scale-105 transition-all duration-300 flex flex-col">
+                    <div class="flex-shrink-0">
+                        <svg class="w-12 h-12 text-purple-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
+                        </svg>
+                        <h3 class="text-xl font-bold mb-2">Konsep Struktur Data</h3>
+                        <p class="text-slate-600 mb-4 flex-grow">Pahami konsep dasar penyimpanan data seperti Array, Stack, dan Queue untuk program yang efisien.</p>
+                    </div>
+                    <button class="learn-button mt-auto w-full bg-purple-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors">
+                        Mulai Belajar
+                    </button>
+                </div>
+
+                <!-- Card 4: Validasi Sumber Data -->
+                <div class="card bg-white p-6 rounded-xl shadow-lg border border-slate-200 hover:shadow-xl hover:scale-105 transition-all duration-300 flex flex-col">
+                    <div class="flex-shrink-0">
+                        <svg class="w-12 h-12 text-red-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <h3 class="text-xl font-bold mb-2">Validasi Sumber Data</h3>
+                        <p class="text-slate-600 mb-4 flex-grow">Belajar teknik untuk memastikan keakuratan, validitas, dan keandalan data yang Anda gunakan.</p>
+                    </div>
+                    <button class="learn-button mt-auto w-full bg-red-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-700 transition-colors">
+                        Mulai Belajar
+                    </button>
+                </div>
+
+                <!-- Card 5: Penerapan Algoritma -->
+                <div class="card bg-white p-6 rounded-xl shadow-lg border border-slate-200 hover:shadow-xl hover:scale-105 transition-all duration-300 flex flex-col">
+                    <div class="flex-shrink-0">
+                        <svg class="w-12 h-12 text-yellow-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.562L16.25 22.5l-.648-1.938a3.375 3.375 0 00-2.625-2.625L11.25 18l1.938-.648a3.375 3.375 0 002.625-2.625L16.25 13l.648 1.938a3.375 3.375 0 002.625 2.625L21.75 18l-1.938.648a3.375 3.375 0 00-2.625 2.625z" />
+                        </svg>
+                        <h3 class="text-xl font-bold mb-2">Penerapan Algoritma</h3>
+                        <p class="text-slate-600 mb-4 flex-grow">Lihat contoh nyata bagaimana algoritma digunakan untuk menyelesaikan masalah di industri teknologi.</p>
+                    </div>
+                    <button class="learn-button mt-auto w-full bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-yellow-700 transition-colors">
+                        Mulai Belajar
+                    </button>
+                </div>
+
+                <!-- Card 6: Logika & Gerbang Logika -->
+                <div class="card bg-white p-6 rounded-xl shadow-lg border border-slate-200 hover:shadow-xl hover:scale-105 transition-all duration-300 flex flex-col">
+                    <div class="flex-shrink-0">
+                        <svg class="w-12 h-12 text-indigo-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" />
+                        </svg>
+                        <h3 class="text-xl font-bold mb-2">Logika & Gerbang Logika</h3>
+                        <p class="text-slate-600 mb-4 flex-grow">Kuasai dasar-dasar logika boolean dan gerbang logika yang menjadi fondasi utama komputasi modern.</p>
+                    </div>
+                    <button class="learn-button mt-auto w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
+                        Mulai Belajar
+                    </button>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Footer Section -->
+        <footer class="text-center mt-16 text-slate-500">
+            <p>&copy; 2024 Kelas Informatika Pak Muslih. Dibuat dengan semangat belajar.</p>
+        </footer>
+
+    </div>
+
+    <!-- Notification Element -->
+    <div id="notification" class="fixed bottom-0 right-0 md:bottom-8 md:right-8 bg-slate-900 text-white py-3 px-6 rounded-lg shadow-xl translate-y-24 opacity-0">
+        <p id="notification-text"></p>
+    </div>
+
+    <script>
+        // Get all the learn buttons
+        const learnButtons = document.querySelectorAll('.learn-button');
+        
+        // Get the notification element and its text
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notification-text');
+        
+        // Variable to hold the timeout
+        let notificationTimeout;
+
+        // Function to show notification
+        function showNotification(message) {
+            // Clear any existing timeout
+            clearTimeout(notificationTimeout);
+
+            // Set the message and show the notification
+            notificationText.textContent = message;
+            notification.classList.remove('translate-y-24', 'opacity-0');
+            
+            // Set a timeout to hide the notification after 3 seconds
+            notificationTimeout = setTimeout(() => {
+                notification.classList.add('translate-y-24', 'opacity-0');
+            }, 3000);
+        }
+
+        // Add a click event listener to each button
+        learnButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Find the card title associated with the button
+                const card = button.closest('.card');
+                const title = card.querySelector('h3').textContent;
+                
+                // Show a notification message
+                showNotification(`Modul "${title}" akan segera tersedia!`);
+            });
+        });
+    </script>
+
+</body>
+</html>
