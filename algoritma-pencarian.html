@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materi dan Simulasi sederhana Algoritma Pencarian</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .content-section h2 {
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem; /* mb-4 */
+            padding-bottom: 0.5rem; /* pb-2 */
+            border-bottom: 2px solid #e2e8f0; /* border-b-2 border-slate-200 */
+        }
+        .content-section h3 {
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 600; /* font-semibold */
+            margin-top: 1.5rem; /* mt-6 */
+            margin-bottom: 0.75rem; /* mb-3 */
+            color: #1e293b; /* text-slate-800 */
+        }
+        .content-section p, .content-section li {
+            line-height: 1.75;
+            margin-bottom: 1rem;
+            color: #475569; /* text-slate-600 */
+        }
+        .content-section ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+        }
+        .content-section ol {
+            list-style-type: decimal;
+            padding-left: 1.5rem;
+        }
+        /* Perbaikan untuk kode inline */
+        .content-section code {
+            background-color: #e2e8f0; /* bg-slate-200 */
+            color: #1e40af; /* text-blue-800 */
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.375rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        /* Perbaikan untuk blok kode */
+        .content-section pre {
+            background-color: #0f172a; /* bg-slate-900 */
+            color: #f1f5f9; /* text-slate-100 (lebih terang) */
+            font-family: 'Courier New', Courier, monospace;
+            padding: 1rem;
+            border-radius: 0.5rem; /* rounded-lg */
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+        /* Memastikan kode di dalam pre mewarisi warna yang benar */
+        .content-section pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+            font-size: 1em;
+            font-weight: normal;
+        }
+        .content-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+        .content-section th, .content-section td {
+            border: 1px solid #cbd5e1; /* border-slate-300 */
+            padding: 0.75rem;
+            text-align: left;
+        }
+        .content-section th {
+            background-color: #f1f5f9; /* bg-slate-100 */
+            font-weight: 600;
+        }
+        .box {
+            transition: all 0.3s ease-in-out;
+        }
+        .checking {
+            border-color: #fbbf24; /* amber-400 */
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.6);
+        }
+        .found {
+            background-color: #4ade80; /* green-400 */
+            border-color: #22c55e; /* green-600 */
+            color: white;
+            transform: scale(1.2);
+        }
+        .discarded {
+            background-color: #f1f5f9; /* slate-100 */
+            border-color: #cbd5e1; /* slate-300 */
+            color: #94a3b8; /* slate-400 */
+            opacity: 0.6;
+        }
+        .boundary {
+            border-color: #60a5fa; /* blue-400 */
+            box-shadow: 0 0 10px rgba(96, 165, 250, 0.7);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900">Materi Ajar & Simulasi: Algoritma Pencarian</h1>
+            <p class="mt-3 text-lg text-slate-600">Sebuah panduan lengkap untuk memahami Linear dan Binary Search.</p>
+        </header>
+
+        <main class="bg-white p-6 sm:p-8 md:p-10 rounded-2xl shadow-xl border border-slate-200">
+            
+            <!-- Materi Section -->
+            <article class="content-section">
+                <!-- Bab 1 -->
+                <section id="bab1">
+                    <h2>Bab 1: Pengantar Algoritma</h2>
+                    <h3>Apa Itu Algoritma?</h3>
+                    <p>
+                        Bayangkan kamu ingin membuat mi instan. Pasti ada langkah-langkah yang harus kamu ikuti, kan?
+                    </p>
+                    <ol>
+                        <li>Rebus air hingga mendidih.</li>
+                        <li>Masukkan mi ke dalam air mendidih.</li>
+                        <li>Sambil menunggu, siapkan bumbu di mangkuk.</li>
+                        <li>Setelah mi matang, tiriskan dan tuang ke mangkuk.</li>
+                        <li>Aduk hingga rata dan mi siap dimakan.</li>
+                    </ol>
+                    <p>
+                        Langkah-langkah yang berurutan dan logis untuk menyelesaikan suatu masalah inilah yang disebut <strong>algoritma</strong>. Dalam dunia komputer, algoritma adalah "resep" yang kita berikan kepada komputer untuk melakukan suatu tugas.
+                    </p>
+                </section>
+
+                <!-- Bab 2 -->
+                <section id="bab2" class="mt-12">
+                    <h2>Bab 2: Fokus Kita: Algoritma Pencarian</h2>
+                    <h3>Apa Itu Algoritma Pencarian?</h3>
+                    <p>
+                        <strong>Algoritma Pencarian (Search Algorithm)</strong> adalah serangkaian langkah sistematis yang digunakan untuk menemukan informasi atau data tertentu dari sekumpulan data.
+                    </p>
+                    <h3>Mengapa Ini Penting?</h3>
+                    <p>
+                        Setiap hari, kita melakukan pencarian. Efisiensi dalam menemukan sesuatu sangat menghemat waktu dan tenaga.
+                    </p>
+                    <ul>
+                        <li><strong>Contoh Kehidupan Sehari-hari (Unplugged):</strong>
+                            <ul>
+                                <li>Mencari nama teman di daftar absen kelas.</li>
+                                <li>Mencari kata di kamus.</li>
+                                <li>Mencari buku di rak perpustakaan yang sudah diurutkan berdasarkan kategori.</li>
+                            </ul>
+                        </li>
+                        <li class="mt-2"><strong>Contoh di Dunia Digital (Plugged):</strong>
+                            <ul>
+                                <li>Mencari kontak di ponsel.</li>
+                                <li>Menggunakan fitur "Find" (Ctrl+F) di dokumen.</li>
+                                <li>Mencari produk di toko online.</li>
+                                <li>Mesin pencari seperti Google menggunakan algoritma pencarian yang sangat kompleks untuk menemukan halaman web yang relevan.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p>
+                        Tanpa algoritma pencarian yang efisien, tugas-tugas di atas akan memakan waktu sangat lama!
+                    </p>
+                </section>
+                
+                <!-- Bab 3 -->
+                <section id="bab3" class="mt-12">
+                    <h2>Bab 3: Linear Search (Pencarian Lurus)</h2>
+                    <h3>Pengertian</h3>
+                    <p>
+                        <strong>Linear Search</strong> adalah metode pencarian paling dasar. Cara kerjanya adalah dengan memeriksa setiap elemen dalam kumpulan data satu per satu, dari awal sampai akhir, hingga elemen yang dicari ditemukan atau sampai seluruh data selesai diperiksa.
+                    </p>
+                    <p><strong>Analogi:</strong> Kamu kehilangan kunci di dalam tas. Kamu akan mengeluarkan isi tas satu per satu sampai kunci itu ketemu.</p>
+                    
+                    <h3>Langkah Kerja Algoritma</h3>
+                    <p>Misalkan kita punya daftar angka: <code>[12, 5, 33, 29, 8, 41]</code> dan kita ingin mencari angka <code>29</code>.</p>
+                    <ol>
+                        <li>Mulai dari elemen pertama (indeks 0), yaitu <code>12</code>. Apakah <code>12</code> sama dengan <code>29</code>? <strong>Bukan.</strong></li>
+                        <li>Lanjut ke elemen kedua (indeks 1), yaitu <code>5</code>. Apakah <code>5</code> sama dengan <code>29</code>? <strong>Bukan.</strong></li>
+                        <li>Lanjut ke elemen ketiga (indeks 2), yaitu <code>33</code>. Apakah <code>33</code> sama dengan <code>29</code>? <strong>Bukan.</strong></li>
+                        <li>Lanjut ke elemen keempat (indeks 3), yaitu <code>29</code>. Apakah <code>29</code> sama dengan <code>29</code>? <strong>YA!</strong></li>
+                        <li>Pencarian berhenti. Angka <code>29</code> ditemukan pada indeks ke-3.</li>
+                    </ol>
+
+                    <h3>Pseudocode</h3>
+                    <pre><code>FUNCTION linearSearch(data, target)
+  UNTUK setiap elemen DALAM data:
+    JIKA elemen == target MAKA
+      KEMBALIKAN "Data ditemukan pada posisi" + posisi saat ini
+    AKHIR JIKA
+  AKHIR UNTUK
+
+  KEMBALIKAN "Data tidak ditemukan"
+AKHIR FUNCTION</code></pre>
+
+                    <h3>Kelebihan dan Kekurangan</h3>
+                    <ul>
+                        <li><strong>Kelebihan:</strong> Sangat sederhana, mudah dipahami, dan tidak memerlukan data terurut.</li>
+                        <li><strong>Kekurangan:</strong> Sangat tidak efisien untuk data besar.</li>
+                    </ul>
+
+                    <h3>Contoh Kode (Python)</h3>
+                    <pre><code>def linear_search(data_list, target):
+  """Mencari target dalam list menggunakan Linear Search."""
+  for i in range(len(data_list)):
+    if data_list[i] == target:
+      return f"Angka {target} ditemukan di indeks {i}."
+  return f"Angka {target} tidak ditemukan dalam daftar."
+
+# Contoh penggunaan
+angka = [12, 5, 33, 29, 8, 41]
+print(linear_search(angka, 29)) # Output: Angka 29 ditemukan di indeks 3.</code></pre>
+                </section>
+
+                <!-- Bab 4 -->
+                 <section id="bab4" class="mt-12">
+                    <h2>Bab 4: Binary Search (Pencarian Biner)</h2>
+                    <h3>Pengertian dan Syarat Utama</h3>
+                    <p>
+                        <strong>Binary Search</strong> adalah algoritma pencarian yang jauh lebih cepat, tetapi memiliki satu syarat mutlak: <strong>DATA HARUS SUDAH TERURUT</strong> (dari kecil ke besar atau sebaliknya).
+                    </p>
+                    <p><strong>Analogi:</strong> Mencari nama "Rudi" di kamus. Kamu tidak akan mulai dari huruf A. Kamu akan langsung membuka kira-kira di tengah (huruf M), lalu memutuskan mencari di separuh awal atau akhir kamus, dan mengulangi prosesnya.</p>
+                    
+                    <h3>Langkah Kerja Algoritma</h3>
+                    <p>Misalkan kita punya daftar angka <strong>yang sudah terurut</strong>: <code>[4, 8, 12, 16, 23, 28, 35, 41]</code> dan kita ingin mencari angka <code>12</code>.</p>
+                    <ol>
+                        <li>Tentukan batas <code>kiri</code> (indeks 0) dan <code>kanan</code> (indeks 7).</li>
+                        <li>Cari posisi <code>tengah</code>: <code>(0 + 7) / 2</code> -> indeks <code>3</code> (nilai <code>16</code>).</li>
+                        <li>Bandingkan target (<code>12</code>) dengan nilai tengah (<code>16</code>). Karena <code>12 < 16</code>, buang bagian kanan. Batas <code>kanan</code> sekarang menjadi indeks <code>2</code>.</li>
+                        <li>Data sisa: <code>[4, 8, 12]</code>. Cari <code>tengah</code> baru: <code>(0 + 2) / 2</code> -> indeks <code>1</code> (nilai <code>8</code>).</li>
+                        <li>Bandingkan target (<code>12</code>) dengan nilai tengah (<code>8</code>). Karena <code>12 > 8</code>, buang bagian kiri. Batas <code>kiri</code> sekarang menjadi indeks <code>2</code>.</li>
+                        <li>Data sisa: <code>[12]</code>. Cari <code>tengah</code> baru: <code>(2 + 2) / 2</code> -> indeks <code>2</code> (nilai <code>12</code>).</li>
+                        <li>Bandingkan target (<code>12</code>) dengan nilai tengah (<code>12</code>). <strong>SAMA!</strong> Data ditemukan.</li>
+                    </ol>
+
+                    <h3>Pseudocode</h3>
+                    <pre><code>FUNCTION binarySearch(data, target)
+  kiri = 0
+  kanan = panjang(data) - 1
+
+  SELAMA kiri <= kanan:
+    tengah = (kiri + kanan) / 2
+    
+    JIKA data[tengah] == target MAKA
+      KEMBALIKAN "Data ditemukan"
+    JIKA data[tengah] < target MAKA
+      kiri = tengah + 1  // Cari di kanan
+    LAIN
+      kanan = tengah - 1 // Cari di kiri
+    AKHIR JIKA
+  AKHIR SELAMA
+
+  KEMBALIKAN "Data tidak ditemukan"
+AKHIR FUNCTION</code></pre>
+
+                    <h3>Kelebihan dan Kekurangan</h3>
+                    <ul>
+                        <li><strong>Kelebihan:</strong> Sangat cepat dan efisien untuk data besar.</li>
+                        <li><strong>Kekurangan:</strong> Wajib data terurut, implementasi sedikit lebih kompleks.</li>
+                    </ul>
+
+                    <h3>Contoh Kode (Python)</h3>
+                    <pre><code>def binary_search(data_list, target):
+  """Mencari target dalam list terurut menggunakan Binary Search."""
+  kiri, kanan = 0, len(data_list) - 1
+
+  while kiri <= kanan:
+    tengah = (kiri + kanan) // 2
+    nilai_tengah = data_list[tengah]
+
+    if nilai_tengah == target:
+      return f"Angka {target} ditemukan di indeks {tengah}."
+    elif nilai_tengah < target:
+      kiri = tengah + 1
+    else:
+      kanan = tengah - 1
+      
+  return f"Angka {target} tidak ditemukan."
+
+# Contoh penggunaan
+angka_urut = [4, 8, 12, 16, 23, 28, 35, 41]
+print(binary_search(angka_urut, 12)) # Output: Angka 12 ditemukan di indeks 2.</code></pre>
+                </section>
+
+                <!-- Bab 5 -->
+                <section id="bab5" class="mt-12">
+                    <h2>Bab 5: Kesimpulan - Linear vs. Binary</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Kriteria</th>
+                                <th>Linear Search</th>
+                                <th>Binary Search</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Kecepatan</strong></td>
+                                <td>Lambat pada data besar</td>
+                                <td>Sangat Cepat pada data besar</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Syarat Data</strong></td>
+                                <td>Tidak perlu diurutkan</td>
+                                <td><strong>Wajib</strong> sudah terurut</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Kompleksitas</strong></td>
+                                <td>Sederhana</td>
+                                <td>Sedang</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Kapan Digunakan?</strong></td>
+                                <td>Saat data sedikit, acak, atau ketika kita tidak yakin data sudah terurut.</td>
+                                <td>Saat data sangat besar dan kita yakin data sudah dalam keadaan terurut.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </article>
+
+            <!-- Simulasi Section -->
+            <section id="simulasi" class="mt-16 pt-10 border-t-4 border-dashed border-slate-300">
+                <header class="text-center mb-10">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Simulasi Interaktif</h2>
+                    <p class="mt-2 text-slate-600">Ayo coba langsung cara kerja kedua algoritma!</p>
+                </header>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Linear Search Simulator -->
+                    <div class="bg-slate-50 p-6 rounded-xl shadow-lg border border-slate-200">
+                        <h3 class="text-2xl font-bold mb-4 text-sky-600 !mt-0">1. Simulasi Linear Search</h3>
+                        <div id="linear-array-container" class="flex flex-wrap gap-2 mb-4 justify-center min-h-[64px] items-center"></div>
+                        <div class="flex flex-col sm:flex-row gap-2 mb-4">
+                            <input type="number" id="linear-target" placeholder="Cari angka..." class="w-full flex-grow px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500">
+                            <button id="linear-search-btn" class="w-full sm:w-auto bg-sky-500 text-white px-4 py-2 rounded-md hover:bg-sky-600 transition-colors font-semibold">Cari</button>
+                            <button id="linear-reset-btn" class="w-full sm:w-auto bg-slate-200 text-slate-700 px-4 py-2 rounded-md hover:bg-slate-300 transition-colors">Reset</button>
+                        </div>
+                        <div id="linear-log" class="mt-4 p-4 bg-white rounded-md h-48 overflow-y-auto text-sm border">
+                            <p class="text-slate-400">Log proses pencarian akan muncul di sini...</p>
+                        </div>
+                    </div>
+
+                    <!-- Binary Search Simulator -->
+                    <div class="bg-slate-50 p-6 rounded-xl shadow-lg border border-slate-200">
+                        <h3 class="text-2xl font-bold mb-4 text-violet-600 !mt-0">2. Simulasi Binary Search</h3>
+                        <div id="binary-array-container" class="flex flex-wrap gap-2 mb-4 justify-center min-h-[64px] items-center"></div>
+                        <div class="flex flex-col sm:flex-row gap-2 mb-4">
+                            <input type="number" id="binary-target" placeholder="Cari angka..." class="w-full flex-grow px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500">
+                            <button id="binary-search-btn" class="w-full sm:w-auto bg-violet-500 text-white px-4 py-2 rounded-md hover:bg-violet-600 transition-colors font-semibold">Cari</button>
+                            <button id="binary-reset-btn" class="w-full sm:w-auto bg-slate-200 text-slate-700 px-4 py-2 rounded-md hover:bg-slate-300 transition-colors">Reset</button>
+                        </div>
+                        <div id="binary-log" class="mt-4 p-4 bg-white rounded-md h-48 overflow-y-auto text-sm border">
+                            <p class="text-slate-400">Log proses pencarian akan muncul di sini...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Data untuk simulasi (diperkecil menjadi 10)
+        const linearData = [25, 7, 51, 19, 4, 33, 47, 12, 9, 28];
+        const binaryData = [5, 9, 13, 21, 28, 34, 45, 50, 58, 64];
+
+        // Elemen DOM
+        const linearArrayContainer = document.getElementById('linear-array-container');
+        const linearTargetInput = document.getElementById('linear-target');
+        const linearSearchBtn = document.getElementById('linear-search-btn');
+        const linearResetBtn = document.getElementById('linear-reset-btn');
+        const linearLog = document.getElementById('linear-log');
+
+        const binaryArrayContainer = document.getElementById('binary-array-container');
+        const binaryTargetInput = document.getElementById('binary-target');
+        const binarySearchBtn = document.getElementById('binary-search-btn');
+        const binaryResetBtn = document.getElementById('binary-reset-btn');
+        const binaryLog = document.getElementById('binary-log');
+        
+        const delay = 800; // ms
+
+        // Fungsi utilitas
+        function createBoxes(container, data) {
+            container.innerHTML = '';
+            data.forEach((value, index) => {
+                const box = document.createElement('div');
+                box.className = 'box w-12 h-12 flex items-center justify-center font-semibold text-lg bg-white border-2 border-slate-300 rounded-md';
+                box.textContent = value;
+                box.id = `${container.id}-box-${index}`;
+                container.appendChild(box);
+            });
+        }
+        
+        function logMessage(logElement, message, type = 'info') {
+            const p = document.createElement('p');
+            if (type === 'success') p.className = 'text-green-600 font-semibold';
+            if (type === 'error') p.className = 'text-red-600 font-semibold';
+            if (type === 'step') p.className = 'text-slate-700';
+            p.innerHTML = message;
+            logElement.appendChild(p);
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+
+        function disableButtons(disabled) {
+            linearSearchBtn.disabled = disabled;
+            binarySearchBtn.disabled = disabled;
+            linearResetBtn.disabled = disabled;
+            binaryResetBtn.disabled = disabled;
+        }
+
+        // --- Logika Linear Search ---
+        function resetLinear() {
+            createBoxes(linearArrayContainer, linearData);
+            linearLog.innerHTML = '<p class="text-slate-400">Log proses pencarian akan muncul di sini...</p>';
+            linearTargetInput.value = '';
+            disableButtons(false);
+        }
+
+        async function startLinearSearch() {
+            const target = parseInt(linearTargetInput.value);
+            if (isNaN(target)) {
+                alert('Masukkan angka yang valid untuk dicari.');
+                return;
+            }
+
+            disableButtons(true);
+            linearLog.innerHTML = '';
+            logMessage(linearLog, `Mulai Linear Search untuk mencari <strong>${target}</strong>...`);
+            await new Promise(r => setTimeout(r, delay));
+
+            let found = false;
+            for (let i = 0; i < linearData.length; i++) {
+                const box = document.getElementById(`linear-array-container-box-${i}`);
+                box.classList.add('checking');
+                logMessage(linearLog, `Langkah ${i + 1}: Cek indeks ${i}, nilai <strong>${linearData[i]}</strong>.`);
+                
+                await new Promise(r => setTimeout(r, delay));
+
+                if (linearData[i] === target) {
+                    logMessage(linearLog, `DITEMUKAN! Angka <strong>${target}</strong> ada di indeks ${i}.`, 'success');
+                    box.classList.remove('checking');
+                    box.classList.add('found');
+                    found = true;
+                    break;
+                } else {
+                    logMessage(linearLog, `Bukan ${target}. Lanjut...`, 'step');
+                    box.classList.remove('checking');
+                }
+            }
+
+            if (!found) {
+                logMessage(linearLog, `SELESAI. Angka <strong>${target}</strong> tidak ditemukan.`, 'error');
+            }
+            disableButtons(false);
+        }
+
+        // --- Logika Binary Search ---
+        function resetBinary() {
+            createBoxes(binaryArrayContainer, binaryData);
+            binaryLog.innerHTML = '<p class="text-slate-400">Log proses pencarian akan muncul di sini...</p>';
+            binaryTargetInput.value = '';
+            disableButtons(false);
+        }
+
+        async function startBinarySearch() {
+            const target = parseInt(binaryTargetInput.value);
+            if (isNaN(target)) {
+                alert('Masukkan angka yang valid untuk dicari.');
+                return;
+            }
+
+            disableButtons(true);
+            binaryLog.innerHTML = '';
+            logMessage(binaryLog, `Mulai Binary Search untuk mencari <strong>${target}</strong>.`);
+            
+            let low = 0;
+            let high = binaryData.length - 1;
+            let step = 0;
+            let found = false;
+
+            while (low <= high) {
+                step++;
+                resetBinaryHighlights();
+                
+                // Highlight boundaries
+                if (document.getElementById(`binary-array-container-box-${low}`)) {
+                    document.getElementById(`binary-array-container-box-${low}`).classList.add('boundary');
+                }
+                if (document.getElementById(`binary-array-container-box-${high}`)) {
+                    document.getElementById(`binary-array-container-box-${high}`).classList.add('boundary');
+                }
+
+                logMessage(binaryLog, `<b>Langkah ${step}</b>: Batas [${low}..${high}].`);
+                await new Promise(r => setTimeout(r, delay));
+
+                let mid = Math.floor((low + high) / 2);
+                const midBox = document.getElementById(`binary-array-container-box-${mid}`);
+                
+                midBox.classList.add('checking');
+                logMessage(binaryLog, `→ Tengah di indeks ${mid}, nilai <strong>${binaryData[mid]}</strong>.`);
+                await new Promise(r => setTimeout(r, delay));
+
+                if (binaryData[mid] === target) {
+                    logMessage(binaryLog, `DITEMUKAN! Angka <strong>${target}</strong> ada di indeks ${mid}.`, 'success');
+                    midBox.classList.remove('checking', 'boundary');
+                    midBox.classList.add('found');
+                    found = true;
+                    break;
+                } else if (binaryData[mid] < target) {
+                    logMessage(binaryLog, `→ ${target} > ${binaryData[mid]}, abaikan bagian kiri.`);
+                    for(let i = low; i <= mid; i++) {
+                        document.getElementById(`binary-array-container-box-${i}`).classList.add('discarded');
+                    }
+                    low = mid + 1;
+                } else {
+                    logMessage(binaryLog, `→ ${target} < ${binaryData[mid]}, abaikan bagian kanan.`);
+                    for(let i = mid; i <= high; i++) {
+                        document.getElementById(`binary-array-container-box-${i}`).classList.add('discarded');
+                    }
+                    high = mid - 1;
+                }
+                await new Promise(r => setTimeout(r, delay));
+            }
+
+            if (!found) {
+                logMessage(binaryLog, `SELESAI. Angka <strong>${target}</strong> tidak ditemukan.`, 'error');
+            }
+            disableButtons(false);
+        }
+        
+        function resetBinaryHighlights() {
+            for(let i = 0; i < binaryData.length; i++) {
+                const box = document.getElementById(`binary-array-container-box-${i}`);
+                if (box) {
+                    box.classList.remove('checking', 'found', 'boundary', 'discarded');
+                }
+            }
+        }
+
+        // --- Event Listeners ---
+        linearSearchBtn.addEventListener('click', startLinearSearch);
+        linearResetBtn.addEventListener('click', resetLinear);
+        linearTargetInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') startLinearSearch();
+        });
+
+        binarySearchBtn.addEventListener('click', startBinarySearch);
+        binaryResetBtn.addEventListener('click', resetBinary);
+        binaryTargetInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') startBinarySearch();
+        });
+
+        // --- Initial Setup ---
+        window.onload = () => {
+            resetLinear();
+            resetBinary();
+        };
+    </script>
+</body>
+</html>

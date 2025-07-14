@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentasi Algoritma Pencarian</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* bg-slate-50 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        .presentation-container {
+            width: 100%;
+            max-width: 1000px;
+            aspect-ratio: 16 / 9;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            border-radius: 1rem;
+            overflow: hidden;
+            background-color: white;
+        }
+        .slides-viewport {
+            flex-grow: 1;
+            position: relative;
+        }
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            padding: 2rem 3rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+        h1, h2, h3 {
+            font-weight: 800; /* font-extrabold */
+            color: #0f172a; /* text-slate-900 */
+        }
+        .navigation {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #f1f5f9; /* bg-slate-100 */
+            border-top: 1px solid #e2e8f0; /* border-slate-200 */
+        }
+        .nav-button {
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+            cursor: pointer;
+            user-select: none;
+        }
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slides-viewport">
+            <!-- Slide 1: Judul -->
+            <div class="slide active text-center">
+                <h2 class="text-2xl md:text-3xl font-semibold text-sky-600">Algoritma Sederhana</h2>
+                <h1 class="text-4xl md:text-6xl my-4">Algoritma Pencarian</h1>
+                <p class="text-2xl md:text-3xl text-slate-700 font-semibold">(Linear Search dan Binary Search)</p>
+                <div class="mt-12 border-t pt-4 w-full max-w-md">
+                    <p class="text-lg text-slate-500">Disusun Oleh</p>
+                    <p class="text-xl font-bold text-slate-800">Muhammad Taufiq Muslih, S.Kom</p>
+                </div>
+            </div>
+
+            <!-- Slide 2: Tujuan Pembelajaran -->
+            <div class="slide">
+                <h2 class="text-3xl md:text-4xl mb-6 w-full text-left">Tujuan Pembelajaran</h2>
+                <ol class="list-decimal list-inside text-slate-600 text-lg md:text-xl space-y-4 w-full">
+                    <li>Peserta didik dapat <strong>menjelaskan perbedaan</strong> cara kerja Linear Search dan Binary Search.</li>
+                    <li>Peserta didik dapat <strong>menganalisis jalannya kode program</strong> untuk membandingkan jumlah langkah operasi.</li>
+                    <li>Peserta didik dapat <strong>menganalisis dan menyimpulkan</strong> algoritma mana yang lebih efisien.</li>
+                </ol>
+            </div>
+
+            <!-- Slide 3: Agenda Pembelajaran -->
+            <div class="slide">
+                <h2 class="text-3xl md:text-4xl mb-6 w-full text-left">Agenda Pembelajaran</h2>
+                <ol class="list-decimal list-inside text-slate-600 text-lg md:text-xl space-y-4 w-full">
+                    <li>Apa itu Algoritma sederhana?</li>
+                    <li>Algoritma Pencarian</li>
+                    <li>Linear Search dan Binary Search</li>
+                    <li>Diskusi dan LKPD</li>
+                    <li>Kesimpulan dan Refleksi</li>
+                </ol>
+            </div>
+
+            <!-- Slide 4: Pertanyaan Pemantik -->
+            <div class="slide bg-sky-50">
+                <h2 class="text-3xl md:text-4xl mb-6 text-sky-800">Mari Kita Mulai!</h2>
+                <blockquote class="text-xl md:text-2xl text-sky-900 italic border-l-4 border-sky-500 pl-6 max-w-3xl">
+                    "Saat kalian mencari kontak di HP atau lagu di Spotify, prosesnya terasa instan. Bagaimana komputer bisa melakukannya secepat itu? Mari kita selidiki rahasianya hari ini!"
+                </blockquote>
+            </div>
+
+            <!-- Slide 5: Pengertian Algoritma -->
+            <div class="slide">
+                <h2 class="text-3xl md:text-4xl mb-6 w-full text-left">Jadi, Apa itu Algoritma?</h2>
+                <div class="text-lg md:text-xl text-slate-700 space-y-5 w-full">
+                    <p>Secara sederhana, <strong>algoritma adalah serangkaian langkah logis dan berurutan</strong> untuk menyelesaikan suatu masalah.</p>
+                    <p>Anggap saja seperti <strong class="text-sky-600">resep membuat mi instan</strong>: ada urutan yang jelas untuk mendapatkan hasil yang sama setiap saat.</p>
+                    <p class="p-4 bg-slate-100 rounded-lg">Hari ini, kita akan fokus pada "resep" yang digunakan komputer untuk <strong class="text-sky-600">mencari data</strong>.</p>
+                </div>
+            </div>
+
+            <!-- Slide 6: Pengertian Algoritma Pencarian -->
+            <div class="slide">
+                <h2 class="text-3xl md:text-4xl mb-6 w-full text-left">Fokus Kita: Algoritma Pencarian</h2>
+                <div class="text-lg md:text-xl text-slate-700 space-y-5 w-full">
+                    <p><strong>Algoritma Pencarian</strong> adalah "resep" khusus untuk menemukan sebuah data spesifik di dalam sekumpulan data yang besar.</p>
+                    <p class="p-4 bg-amber-50 border border-amber-200 rounded-lg">Tujuannya sederhana: <strong class="text-amber-700">menemukan apa yang kita cari secepat dan seefisien mungkin.</strong></p>
+                    <p>Ini seperti mencari satu buku di perpustakaan raksasa. Kita butuh cara yang cerdas!</p>
+                </div>
+            </div>
+
+            <!-- Slide 7: Dua Resep Utama -->
+            <div class="slide">
+                <h2 class="text-3xl md:text-4xl mb-8 text-center">Dua "Resep" Utama Mencari Data</h2>
+                <div class="grid md:grid-cols-2 gap-8 w-full max-w-4xl">
+                    <div class="bg-slate-100 p-6 rounded-lg text-center">
+                        <h3 class="text-2xl mb-3">Linear Search</h3>
+                        <p class="text-slate-600 h-24">Memeriksa data <strong>satu per satu</strong> dari awal. Sederhana tapi bisa lambat.</p>
+                        <p class="text-5xl mt-4">🔎</p>
+                        <p class="font-semibold mt-2">Analogi: Mencari kunci di tas berantakan.</p>
+                    </div>
+                    <div class="bg-slate-100 p-6 rounded-lg text-center">
+                        <h3 class="text-2xl mb-3">Binary Search</h3>
+                        <p class="text-slate-600 h-24"><strong>Memotong data jadi dua</strong> berulang kali. Super cepat, tapi data <strong class="text-red-600">harus urut</strong>.</p>
+                        <p class="text-5xl mt-4">📖</p>
+                        <p class="font-semibold mt-2">Analogi: Mencari kata di kamus.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 8: Perbedaan Utama -->
+            <div class="slide">
+                <h2 class="text-3xl md:text-4xl mb-8 text-center">Perbedaan Utama</h2>
+                <div class="grid md:grid-cols-2 gap-6 w-full max-w-4xl">
+                    <div class="border-2 border-sky-200 p-6 rounded-lg">
+                        <h3 class="text-2xl mb-4 text-sky-600">Linear Search</h3>
+                        <ul class="text-left list-disc list-inside text-slate-600 space-y-3 text-lg">
+                            <li><strong>Kecepatan:</strong> Lambat pada data besar.</li>
+                            <li><strong>Syarat:</strong> Data tidak perlu terurut.</li>
+                            <li><strong>Kekuatan:</strong> Kesederhanaannya.</li>
+                        </ul>
+                    </div>
+                    <div class="border-2 border-violet-200 p-6 rounded-lg">
+                        <h3 class="text-2xl mb-4 text-violet-600">Binary Search</h3>
+                        <ul class="text-left list-disc list-inside text-slate-600 space-y-3 text-lg">
+                            <li><strong>Kecepatan:</strong> Sangat cepat.</li>
+                            <li><strong>Syarat:</strong> Data <strong class="text-red-600">WAJIB</strong> terurut.</li>
+                            <li><strong>Kekuatan:</strong> Efisiensinya.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 9: Contoh Penggunaan (BARU) -->
+            <div class="slide">
+                <h2 class="text-3xl md:text-4xl mb-8 text-center">Kapan Menggunakannya?</h2>
+                <div class="grid md:grid-cols-2 gap-8 w-full max-w-4xl">
+                    <div class="bg-sky-50 p-6 rounded-lg">
+                        <h3 class="text-2xl mb-4 text-sky-700">Gunakan Linear Search jika...</h3>
+                        <ul class="text-left list-disc list-inside text-slate-600 space-y-3 text-lg">
+                            <li>Datanya <strong class="text-sky-800">sedikit</strong>.</li>
+                            <li>Datanya <strong class="text-sky-800">acak</strong> / tidak terurut.</li>
+                            <li class="mt-4 pt-4 border-t"><strong>Contoh:</strong> Mencari baju di tumpukan lemari.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-violet-50 p-6 rounded-lg">
+                        <h3 class="text-2xl mb-4 text-violet-700">Gunakan Binary Search jika...</h3>
+                        <ul class="text-left list-disc list-inside text-slate-600 space-y-3 text-lg">
+                            <li>Datanya <strong class="text-violet-800">sangat banyak</strong>.</li>
+                            <li>Datanya <strong class="text-violet-800">pasti terurut</strong>.</li>
+                            <li class="mt-4 pt-4 border-t"><strong>Contoh:</strong> Mencari kontak di HP atau lagu di Spotify.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 10: Penutup -->
+            <div class="slide text-center bg-gray-800 text-white">
+                <h2 class="text-3xl md:text-4xl text-white">Siap untuk Menyelam Lebih Dalam?</h2>
+                <p class="mt-4 text-lg text-gray-300 max-w-3xl">Materi singkat ini hanyalah pemanasan. Rahasia lengkap, detail langkah, kode program, dan simulasi interaktif sudah menanti untuk kalian jelajahi.</p>
+                <p class="mt-8 font-bold text-2xl text-amber-400">Mari kita mulai diskusi dan kerjakan LKPD!</p>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button id="prev-btn" class="nav-button bg-white border border-slate-300 text-slate-700 hover:bg-slate-200">Sebelumnya</button>
+            <div id="slide-counter" class="text-slate-600 font-semibold"></div>
+            <button id="next-btn" class="nav-button bg-sky-500 text-white hover:bg-sky-600">Berikutnya</button>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const slideCounter = document.getElementById('slide-counter');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            // Sembunyikan semua slide
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+            });
+
+            // Tampilkan slide yang dipilih
+            slides[index].classList.add('active');
+
+            // Update counter
+            slideCounter.textContent = `Slide ${index + 1} dari ${slides.length}`;
+
+            // Atur status tombol navigasi
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === slides.length - 1;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        });
+        
+        // Inisialisasi slide pertama
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
