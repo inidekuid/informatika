@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Materi dan Simulasi sederhana Algoritma Pencarian</title>
+    <title>Materi dan Simulasi Algoritma Pencarian</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -110,8 +110,8 @@
 
     <div class="container mx-auto p-4 md:p-8">
         <header class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900">Materi Ajar & Simulasi: Algoritma Pencarian</h1>
-            <p class="mt-3 text-lg text-slate-600">Sebuah panduan lengkap untuk memahami Linear dan Binary Search.</p>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900">Algoritma Pencarian</h1>
+            <p class="mt-3 text-lg text-slate-600">Bahan belajar untuk memahami Linear dan Binary Search.</p>
         </header>
 
         <main class="bg-white p-6 sm:p-8 md:p-10 rounded-2xl shadow-xl border border-slate-200">
@@ -363,6 +363,41 @@ print(binary_search(angka_urut, 12)) # Output: Angka 12 ditemukan di indeks 2.</
                     </div>
                 </div>
             </section>
+
+            <!-- Diskusi Kelompok Section (BARU) -->
+            <section id="diskusi-kelompok" class="mt-16 pt-10 border-t-4 border-dashed border-slate-300">
+                <header class="text-center mb-10">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Diskusi Kelompok</h2>
+                    <p class="mt-2 text-slate-600">Diskusikan dengan teman kelompokmu untuk menemukan jawaban dari pertanyaan-pertanyaan ini!</p>
+                </header>
+
+                <div class="content-section space-y-12">
+                    <div>
+                        <h3>Tentang Proses</h3>
+                        <ol class="list-decimal list-inside space-y-4">
+                            <li>Menurut kalian, apa satu kata yang paling tepat untuk menggambarkan cara kerja <strong>Linear Search</strong>? Dan satu kata untuk <strong>Binary Search</strong>? Jelaskan kenapa kalian memilih kata itu.</li>
+                            <li>Jika kita mencari angka yang ternyata <strong>tidak ada</strong> dalam daftar, algoritma mana yang akan 'sadar' lebih dulu bahwa datanya tidak ada? Mengapa?</li>
+                        </ol>
+                    </div>
+
+                    <div>
+                        <h3>Tentang Efisiensi (Jumlah Langkah)</h3>
+                        <ol class="list-decimal list-inside space-y-4">
+                            <li>Kira-kira, jika ada 1000 data, berapa langkah maksimal yang dibutuhkan Linear Search? Bagaimana dengan Binary Search? (Tidak perlu jawaban pasti, cukup perkiraan logis).</li>
+                            <li>Apakah ada situasi di mana Linear Search bisa <strong>lebih cepat</strong> daripada Binary Search? Jika ada, kapan? <em class="text-slate-500">(Petunjuk: Pikirkan posisi data yang dicari).</em></li>
+                        </ol>
+                    </div>
+
+                    <div>
+                        <h3>Tentang Syarat & Kondisi</h3>
+                        <ol class="list-decimal list-inside space-y-4">
+                            <li>Mengapa Binary Search <strong>wajib</strong> membutuhkan data yang terurut? Apa yang akan terjadi jika kita nekat memakai Binary Search pada data yang acak? Coba simulasikan!</li>
+                            <li>Dalam kehidupan nyata, kapan kita lebih sering menemukan data yang sudah terurut, dan kapan kita menemukan data yang acak?</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
         </main>
     </div>
 
