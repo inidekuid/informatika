@@ -69,15 +69,16 @@
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
     <div class="w-full max-w-6xl bg-white rounded-2xl shadow-lg p-6 md:p-8">
-        <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-2">Visualisasi Cara Kerja Pencarian Komputer</h1>
-        <p class="text-center text-gray-600 mb-6 max-w-3xl mx-auto">Alat interaktif untuk memahami perbedaan antara dua cara pencarian data.</p>
+        <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-2">Eksperimen Kecil Cara Kerja Algoritma Pencarian</h1>
+        <p class="text-center text-gray-600 mb-6 max-w-3xl mx-auto">Alat interaktif untuk memahami perbedaan antara dua algoritma pencarian data.</p>
+        <p class="text-center text-gray-600 mb-6 max-w-3xl mx-auto">Panduan Eksperimen ada di LKPD yang dibagikan</p>
         
         <!-- Bagian Pengaturan Data -->
         <div class="bg-slate-100 p-4 rounded-xl border border-slate-200 mb-8">
             <h3 class="text-lg font-bold text-gray-700 mb-2 text-center">Pengaturan Data</h3>
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <div class="flex items-center gap-2">
-                    <label for="data-size" class="text-sm font-medium text-gray-700">Jumlah Data:</label>
+                    <label for="data-size" class="text-sm font-medium text-gray-700">Tentukan Jumlah Data Eksperimen:</label>
                     <input type="number" id="data-size" class="w-24 px-3 py-1 border border-gray-300 rounded-lg" value="20" min="5" max="150">
                 </div>
                 <button id="generate-data-btn" class="bg-green-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-green-700 transition-colors">Buat Data Baru</button>
@@ -89,7 +90,7 @@
 
             <!-- Kolom Pencarian Linear -->
             <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 flex flex-col">
-                <h2 class="text-xl font-bold text-gray-700 mb-2">1. Cara Urut (Linear Search)</h2>
+                <h2 class="text-xl font-bold text-gray-700 mb-2">1. Cara Urut (Linear Search/Sequential Search)</h2>
                 <p class="text-sm text-gray-500 mb-4">Cara ini seperti mencari buku di rak yang berantakan. Kita harus memeriksa setiap buku satu per satu dari paling kiri sampai ketemu.</p>
                 
                 <details class="mb-4">
@@ -101,8 +102,8 @@
                         <ol class="list-decimal list-inside space-y-1">
                             <li>Lihat angka pertama di daftar.</li>
                             <li>Apakah ini angka yang kita cari?</li>
-                            <li>Jika **YA**, pencarian selesai.</li>
-                            <li>Jika **TIDAK**, pindah ke angka berikutnya dan ulangi langkah 2.</li>
+                            <li>Jika <b>**YA**</b>, pencarian selesai.</li>
+                            <li>Jika <b>**TIDAK**</b>, pindah ke angka berikutnya dan ulangi langkah 2.</li>
                             <li>Jika sudah dicek semua dan tidak ada, berarti angka itu tidak ada di daftar.</li>
                         </ol>
                         <h4 class="font-bold mt-3 mb-1">Logika Komputer (disederhanakan):</h4>
@@ -133,7 +134,7 @@ BILANG "TIDAK KETEMU."</code></pre>
             <!-- Kolom Pencarian Biner -->
             <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 flex flex-col">
                 <h2 class="text-xl font-bold text-gray-700 mb-2">2. Cara Potong Kompas (Binary Search)</h2>
-                <p class="text-sm text-gray-500 mb-4">Cara ini seperti mencari kata di kamus. Kita langsung buka ke tengah, lalu memutuskan mau ke arah depan atau belakang. **Syarat: datanya harus sudah urut!**</p>
+                <p class="text-sm text-gray-500 mb-4">Cara ini seperti mencari kata di kamus. Kita langsung buka ke tengah, lalu memutuskan mau ke arah depan atau belakang. <b>**Syarat: datanya harus sudah urut!**</b></p>
                 
                 <details class="mb-4">
                     <summary class="cursor-pointer text-sm font-semibold text-indigo-600 flex items-center gap-1">
@@ -145,9 +146,9 @@ BILANG "TIDAK KETEMU."</code></pre>
                             <li>Tentukan area pencarian (dari awal sampai akhir).</li>
                             <li>Ambil angka yang ada persis di tengah area itu.</li>
                             <li>Bandingkan angka tengah dengan yang kita cari.</li>
-                            <li>Jika **SAMA**, pencarian selesai.</li>
-                            <li>Jika angka tengah **LEBIH KECIL**, abaikan seluruh bagian kiri. Ulangi dari langkah 2 di bagian kanan.</li>
-                            <li>Jika angka tengah **LEBIH BESAR**, abaikan seluruh bagian kanan. Ulangi dari langkah 2 di bagian kiri.</li>
+                            <li>Jika <b>**SAMA**</b>, pencarian selesai.</li>
+                            <li>Jika angka tengah <b>**LEBIH KECIL**</b>, abaikan seluruh bagian kiri. Ulangi dari langkah 2 di bagian kanan.</li>
+                            <li>Jika angka tengah <b>**LEBIH BESAR**</b>, abaikan seluruh bagian kanan. Ulangi dari langkah 2 di bagian kiri.</li>
                         </ol>
                         <h4 class="font-bold mt-3 mb-1">Logika Komputer (disederhanakan):</h4>
                         <pre class="bg-gray-800 text-white p-2 rounded text-xs"><code>SELAMA area pencarian masih ada:
