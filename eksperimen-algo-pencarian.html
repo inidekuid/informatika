@@ -65,6 +65,38 @@
         .shake {
           animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
         }
+        /* Gaya untuk Tab Kode */
+        .tab-btn {
+            padding: 8px 16px;
+            cursor: pointer;
+            border: none;
+            background-color: transparent;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            color: #6b7280;
+        }
+        .tab-btn.active {
+            color: #3b82f6; /* blue-600 */
+            border-bottom-color: #3b82f6;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        pre.code-block {
+             background-color: #1f2937; /* gray-800 */
+             color: white;
+             padding: 12px;
+             border-radius: 6px;
+             font-size: 0.8rem;
+             margin-top: -1px; /* Menyatu dengan border tab */
+             border: 1px solid #374151; /* gray-700 */
+             border-top: none;
+             border-top-left-radius: 0;
+             border-top-right-radius: 0;
+        }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
@@ -113,6 +145,48 @@
     BERHENTI
 
 BILANG "TIDAK KETEMU."</code></pre>
+
+                        <!-- CONTOH KODE DITAMBAHKAN DI SINI -->
+                        <h4 class="font-bold mt-4 mb-2">Contoh Kode Nyata:</h4>
+                        <div class="code-tabs">
+                            <div class="flex border-b border-gray-300">
+                                <button class="tab-btn active" onclick="showTab(this, 'linear-python')">Python</button>
+                                <button class="tab-btn" onclick="showTab(this, 'linear-js')">JavaScript</button>
+                            </div>
+                            <div id="linear-python" class="tab-content active">
+<pre class="code-block"><code>def linear_search(data_list, target):
+    # Periksa setiap item satu per satu
+    for i in range(len(data_list)):
+        if data_list[i] == target:
+            # Kembalikan indeks jika ditemukan
+            return i
+    # Kembalikan -1 jika tidak ditemukan
+    return -1
+
+# Contoh penggunaan:
+angka = [4, 22, 25, 30, 48, 50, 67, 71, 85, 99]
+posisi = linear_search(angka, 30)
+print(f"Angka ditemukan di posisi: {posisi}")</code></pre>
+                            </div>
+                            <div id="linear-js" class="tab-content">
+<pre class="code-block"><code>function linearSearch(dataArray, target) {
+  // Periksa setiap item satu per satu
+  for (let i = 0; i < dataArray.length; i++) {
+    if (dataArray[i] === target) {
+      // Kembalikan indeks jika ditemukan
+      return i;
+    }
+  }
+  // Kembalikan -1 jika tidak ditemukan
+  return -1;
+}
+
+// Contoh penggunaan:
+const angka = [4, 22, 25, 30, 48, 50, 67, 71, 85, 99];
+const posisi = linearSearch(angka, 30);
+console.log(`Angka ditemukan di posisi: ${posisi}`);</code></pre>
+                            </div>
+                        </div>
                     </div>
                 </details>
 
@@ -127,7 +201,6 @@ BILANG "TIDAK KETEMU."</code></pre>
                 </div>
                 <h3 class="text-md font-semibold text-gray-700 mt-4 mb-2">Log Proses:</h3>
                 <div id="linear-log" class="log-container h-48 bg-white border border-gray-300 rounded-lg p-3 overflow-y-auto text-sm flex-grow">
-                    <!-- Log entries will be added here by JS -->
                 </div>
             </div>
 
@@ -162,6 +235,69 @@ BILANG "TIDAK KETEMU."</code></pre>
     GANTI area pencarian menjadi BAGIAN KIRI
 
 BILANG "TIDAK KETEMU."</code></pre>
+                        <!-- CONTOH KODE DITAMBAHKAN DI SINI -->
+                        <h4 class="font-bold mt-4 mb-2">Contoh Kode Nyata:</h4>
+                        <div class="code-tabs">
+                            <div class="flex border-b border-gray-300">
+                                <button class="tab-btn active" onclick="showTab(this, 'binary-python')">Python</button>
+                                <button class="tab-btn" onclick="showTab(this, 'binary-js')">JavaScript</button>
+                            </div>
+                            <div id="binary-python" class="tab-content active">
+<pre class="code-block"><code>def binary_search(sorted_list, target):
+    low = 0
+    high = len(sorted_list) - 1
+
+    while low <= high:
+        # Temukan elemen tengah
+        mid = (low + high) // 2
+        guess = sorted_list[mid]
+        
+        if guess == target:
+            return mid
+        # Jika tebakan terlalu kecil, cari di kanan
+        if guess < target:
+            low = mid + 1
+        # Jika tebakan terlalu besar, cari di kiri
+        else:
+            high = mid - 1
+    return -1
+
+# Contoh penggunaan:
+angka = [4, 22, 25, 30, 48, 50, 67, 71, 85, 99]
+posisi = binary_search(angka, 67)
+print(f"Angka ditemukan di posisi: {posisi}")</code></pre>
+                            </div>
+                            <div id="binary-js" class="tab-content">
+<pre class="code-block"><code>function binarySearch(sortedArray, target) {
+  let low = 0;
+  let high = sortedArray.length - 1;
+
+  while (low <= high) {
+    // Temukan elemen tengah
+    const mid = Math.floor((low + high) / 2);
+    const guess = sortedArray[mid];
+
+    if (guess === target) {
+      return mid;
+    }
+    // Jika tebakan terlalu kecil, cari di kanan
+    if (guess < target) {
+      low = mid + 1;
+    } 
+    // Jika tebakan terlalu besar, cari di kiri
+    else {
+      high = mid - 1;
+    }
+  }
+  return -1;
+}
+
+// Contoh penggunaan:
+const angka = [4, 22, 25, 30, 48, 50, 67, 71, 85, 99];
+const posisi = binarySearch(angka, 67);
+console.log(`Angka ditemukan di posisi: ${posisi}`);</code></pre>
+                            </div>
+                        </div>
                     </div>
                 </details>
 
@@ -176,7 +312,6 @@ BILANG "TIDAK KETEMU."</code></pre>
                 </div>
                 <h3 class="text-md font-semibold text-gray-700 mt-4 mb-2">Log Proses:</h3>
                 <div id="binary-log" class="log-container h-48 bg-white border border-gray-300 rounded-lg p-3 overflow-y-auto text-sm flex-grow">
-                    <!-- Log entries will be added here by JS -->
                 </div>
             </div>
 
@@ -206,7 +341,6 @@ BILANG "TIDAK KETEMU."</code></pre>
         // Fungsi untuk membuat data acak baru
         function generateData(size) {
             const tempSet = new Set();
-            // PERUBAHAN: Rentang angka random diperluas menjadi 300
             while(tempSet.size < size) {
                 tempSet.add(Math.floor(Math.random() * 300) + 1);
             }
@@ -266,24 +400,26 @@ BILANG "TIDAK KETEMU."</code></pre>
             linearSearchBtn.disabled = true;
             binarySearchBtn.disabled = true;
             generateDataBtn.disabled = true;
-            linearSearchBtn.classList.add('opacity-50');
-            binarySearchBtn.classList.add('opacity-50');
-            generateDataBtn.classList.add('opacity-50');
+            linearSearchBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            binarySearchBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            generateDataBtn.classList.add('opacity-50', 'cursor-not-allowed');
         }
         
         function enableButtons() {
             linearSearchBtn.disabled = false;
             binarySearchBtn.disabled = false;
             generateDataBtn.disabled = false;
-            linearSearchBtn.classList.remove('opacity-50');
-            binarySearchBtn.classList.remove('opacity-50');
-            generateDataBtn.classList.remove('opacity-50');
+            linearSearchBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            binarySearchBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            generateDataBtn.classList.remove('opacity-50', 'cursor-not-allowed');
         }
 
         // Visualisasi Pencarian Linear
         async function visualizeLinearSearch() {
             const target = parseInt(linearInput.value);
             if (isNaN(target)) {
+                linearInput.classList.add('shake', 'border-red-500');
+                setTimeout(() => linearInput.classList.remove('shake', 'border-red-500'), 820);
                 linearStatus.textContent = 'Input tidak valid.';
                 return;
             }
@@ -332,6 +468,8 @@ BILANG "TIDAK KETEMU."</code></pre>
         async function visualizeBinarySearch() {
             const target = parseInt(binaryInput.value);
             if (isNaN(target)) {
+                binaryInput.classList.add('shake', 'border-red-500');
+                setTimeout(() => binaryInput.classList.remove('shake', 'border-red-500'), 820);
                 binaryStatus.textContent = 'Input tidak valid.';
                 return;
             }
@@ -399,7 +537,6 @@ BILANG "TIDAK KETEMU."</code></pre>
         
         function setupNewData() {
             const size = parseInt(dataSizeInput.value);
-            // PERUBAHAN: Batas maksimal validasi diubah menjadi 150
             if (size < 5 || size > 150) {
                 dataSizeInput.classList.add('border-red-500', 'ring-2', 'ring-red-500', 'shake');
                 setTimeout(() => {
@@ -422,6 +559,23 @@ BILANG "TIDAK KETEMU."</code></pre>
             binaryInput.value = '';
         }
 
+        // Fungsi untuk mengontrol tab kode
+        function showTab(button, tabId) {
+            const tabContainer = button.closest('.code-tabs');
+            
+            // Sembunyikan semua konten tab
+            const contents = tabContainer.querySelectorAll('.tab-content');
+            contents.forEach(c => c.classList.remove('active'));
+            
+            // Nonaktifkan semua tombol tab
+            const buttons = tabContainer.querySelectorAll('.tab-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+            
+            // Tampilkan tab yang dipilih
+            document.getElementById(tabId).classList.add('active');
+            button.classList.add('active');
+        }
+
         // Event Listeners
         linearSearchBtn.addEventListener('click', visualizeLinearSearch);
         binarySearchBtn.addEventListener('click', visualizeBinarySearch);
@@ -430,6 +584,20 @@ BILANG "TIDAK KETEMU."</code></pre>
         // Sinkronisasi input
         linearInput.addEventListener('input', () => binaryInput.value = linearInput.value);
         binaryInput.addEventListener('input', () => linearInput.value = linearInput.value);
+        
+        // Menambahkan listener untuk tombol Enter
+        linearInput.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') {
+                visualizeLinearSearch();
+                visualizeBinarySearch();
+            }
+        });
+        binaryInput.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') {
+                visualizeLinearSearch();
+                visualizeBinarySearch();
+            }
+        });
 
         // Inisialisasi
         setupNewData();
