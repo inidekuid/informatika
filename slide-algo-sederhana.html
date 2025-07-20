@@ -77,6 +77,23 @@
             opacity: 0.5;
             cursor: not-allowed;
         }
+        .array-box {
+            width: 60px;
+            height: 60px;
+            border: 2px solid #94a3b8; /* slate-400 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            position: relative;
+        }
+        .array-index {
+            position: absolute;
+            top: -25px;
+            font-size: 0.8rem;
+            color: #64748b; /* slate-500 */
+        }
     </style>
 </head>
 <body>
@@ -114,25 +131,20 @@
 
             <!-- Slide 3: Ice Breaking -->
             <div class="slide text-center bg-sky-50">
-                <h2 class="text-3xl md:text-4xl mb-4 font-extrabold text-sky-700">Pemanasan Dulu, Yuk!</h2>
-                <p class="text-xl font-semibold text-slate-800 max-w-3xl mb-6">
-                    Menurutmu, mana yang paling sering hilang dan paling susah dicari?
-                </p>
-                <div class="grid grid-cols-3 gap-6 text-center">
-                    <div class="p-4 bg-white rounded-lg shadow">
-                        <p class="text-6xl">🔑</p>
-                        <p class="font-semibold mt-2">Kunci Motor</p>
+                <h2 class="text-3xl md:text-4xl mb-4 font-extrabold text-sky-700">Ice Breaking: Rangkai Kata Semangat!</h2>
+                <p class="text-lg text-slate-600 mb-6">Dua orang maju dan ucapkan kalimat ini secara bergantian dan beruntun!</p>
+                <div class="space-y-4 text-2xl md:text-3xl font-bold">
+                    <div class="p-4 bg-white rounded-lg shadow-md">
+                        <span class="text-sky-600">AKU BISA</span> ... <span class="text-violet-600">KAMU BISA</span>
                     </div>
-                    <div class="p-4 bg-white rounded-lg shadow">
-                        <p class="text-6xl">🧦</p>
-                        <p class="font-semibold mt-2">Kaos Kaki</p>
+                    <div class="p-4 bg-white rounded-lg shadow-md">
+                        <span class="text-sky-600">BELAJAR ITU</span> ... <span class="text-violet-600">MENYENANGKAN</span>
                     </div>
-                    <div class="p-4 bg-white rounded-lg shadow">
-                        <p class="text-6xl">🖊️</p>
-                        <p class="font-semibold mt-2">Pena</p>
+                    <div class="p-4 bg-white rounded-lg shadow-md">
+                        <span class="text-sky-600">GAGAL SEKALI</span> ... <span class="text-violet-600">BANGKIT KEMBALI</span>
                     </div>
                 </div>
-                 <p class="text-md text-slate-500 mt-8">Nah, hari ini kita akan belajar cara komputer "mencari" sesuatu!</p>
+                 <p class="text-md text-slate-500 mt-8">Ayo kita mulai pelajaran dengan penuh semangat!</p>
             </div>
 
             <!-- Slide 4: Tujuan Pembelajaran -->
@@ -148,11 +160,10 @@
             <!-- Slide 5: Agenda Pembelajaran -->
             <div class="slide">
                 <h2 class="text-3xl md:text-4xl mb-6 w-full text-left">Agenda Pembelajaran</h2>
-                <ol class="list-decimal list-inside text-slate-600 text-lg md:text-xl space-y-4 w-full">
-                    <li>Apa itu Algoritma sederhana?</li>
-                    <li>Algoritma Pencarian</li>
-                    <li>Linear Search dan Binary Search</li>
-                    <li>Diskusi dan LKPD</li>
+                <ol class="list-decimal list-inside text-slate-700 text-xl md:text-2xl space-y-6 w-full font-semibold">
+                    <li>Asesmen Awal</li>
+                    <li>Pengantar Algoritma dan Algoritma Pencarian</li>
+                    <li>Diskusi Kelompok dan Mengerjakan LKPD</li>
                     <li>Kesimpulan dan Refleksi</li>
                 </ol>
             </div>
@@ -199,7 +210,7 @@
                 </div>
             </div>
 
-            <!-- SLIDE BARU: Konsep Indeks Array -->
+            <!-- Slide 10: Konsep Indeks Array -->
             <div class="slide">
                 <h2 class="text-3xl md:text-4xl mb-6 w-full text-left">Konsep Kunci: Array & Indeks</h2>
                 <div class="text-lg md:text-xl text-slate-700 space-y-4 w-full">
@@ -256,8 +267,48 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- SLIDE BARU 12: Visualisasi Linear Search -->
+            <div class="slide">
+                 <h2 class="text-3xl md:text-4xl mb-6 w-full text-left">Contoh: Mencari Angka 25 dengan <span class="text-sky-600">Linear Search</span></h2>
+                 <p class="text-lg text-slate-600 w-full text-left mb-6">Kita cek setiap kotak satu per satu dari indeks 0.</p>
+                 <div class="flex space-x-2">
+                    <div class="array-box bg-sky-100 border-sky-400"><span class="array-index">0</span>10</div>
+                    <div class="array-box bg-sky-100 border-sky-400"><span class="array-index">1</span>5</div>
+                    <div class="array-box bg-sky-100 border-sky-400"><span class="array-index">2</span>30</div>
+                    <div class="array-box bg-sky-100 border-sky-400"><span class="array-index">3</span>15</div>
+                    <div class="array-box bg-green-300 border-green-500"><span class="array-index">4</span>25</div>
+                    <div class="array-box"><span class="array-index">5</span>20</div>
+                 </div>
+                 <div class="mt-8 text-lg w-full text-left space-y-2">
+                    <p><strong>Langkah 1:</strong> Cek indeks 0 (nilai 10). Bukan 25.</p>
+                    <p><strong>Langkah 2:</strong> Cek indeks 1 (nilai 5). Bukan 25.</p>
+                    <p><strong>Langkah 3:</strong> Cek indeks 2 (nilai 30). Bukan 25.</p>
+                    <p><strong>Langkah 4:</strong> Cek indeks 3 (nilai 15). Bukan 25.</p>
+                    <p class="font-bold text-green-600"><strong>Langkah 5:</strong> Cek indeks 4 (nilai 25). Ditemukan!</p>
+                 </div>
+            </div>
 
-            <!-- Slide 12: Perbedaan Utama -->
+            <!-- SLIDE BARU 13: Visualisasi Binary Search -->
+            <div class="slide">
+                 <h2 class="text-3xl md:text-4xl mb-6 w-full text-left">Contoh: Mencari Angka 25 dengan <span class="text-violet-600">Binary Search</span></h2>
+                 <p class="text-lg text-slate-600 w-full text-left mb-6">Data <strong class="text-red-600">wajib urut!</strong> Kita mulai dari tengah.</p>
+                 <div class="flex space-x-2 mb-8">
+                    <div class="array-box"><span class="array-index">0</span>5</div>
+                    <div class="array-box"><span class="array-index">1</span>10</div>
+                    <div class="array-box bg-violet-100 border-violet-400"><span class="array-index">2</span>15</div>
+                    <div class="array-box"><span class="array-index">3</span>20</div>
+                    <div class="array-box bg-green-300 border-green-500"><span class="array-index">4</span>25</div>
+                    <div class="array-box"><span class="array-index">5</span>30</div>
+                 </div>
+                 <div class="mt-4 text-lg w-full text-left space-y-2">
+                    <p><strong>Langkah 1:</strong> Cek nilai tengah (indeks 2, nilai 15). Karena 25 > 15, kita buang separuh bagian kiri dan hanya mencari di bagian kanan.</p>
+                    <p class="font-bold text-green-600"><strong>Langkah 2:</strong> Cek nilai tengah dari sisa data (indeks 4, nilai 25). Ditemukan!</p>
+                    <p class="mt-4 font-semibold text-slate-800">Jauh lebih sedikit langkah dibandingkan Linear Search!</p>
+                 </div>
+            </div>
+
+            <!-- Slide 14: Perbedaan Utama -->
             <div class="slide">
                 <h2 class="text-3xl md:text-4xl mb-8 text-center">Perbedaan Utama</h2>
                 <div class="grid md:grid-cols-2 gap-6 w-full max-w-4xl">
@@ -280,7 +331,7 @@
                 </div>
             </div>
 
-            <!-- Slide 13: Contoh Penggunaan -->
+            <!-- Slide 15: Contoh Penggunaan -->
             <div class="slide">
                 <h2 class="text-3xl md:text-4xl mb-8 text-center">Kapan Menggunakannya?</h2>
                 <div class="grid md:grid-cols-2 gap-8 w-full max-w-4xl">
@@ -303,8 +354,8 @@
                 </div>
             </div>
 
-            <!-- Slide 14: Penutup -->
-            <div class="slide text-center bg-gray-800 text-white">
+            <!-- Slide 16: Penutup (untuk LKPD) -->
+           <div class="slide text-center bg-gray-800 text-white">
                 <h2 class="text-3xl md:text-4xl text-white">Siap untuk Menyelam Lebih Dalam?</h2>
                 <p class="mt-4 text-lg text-gray-300 max-w-3xl">Materi singkat ini hanyalah pemanasan. Rahasia lengkap, detail langkah, kode program, dan simulasi interaktif sudah menanti untuk kalian jelajahi.</p>
                 <p>Pelajari secara mandiri dahulu secara mendalam, Referensi Bahan Belajar dapat diakses di:</p>
@@ -319,6 +370,48 @@
                 </p>
                 <p class="mt-8 font-bold text-2xl text-amber-400">Mari kita mulai diskusi dan kerjakan LKPD! <a href="https://s.id/eksperimenAlgoritmaCari">https://s.id/eksperimenAlgoritmaCari</a></p>
             </div>
+
+            <!-- SLIDE 17: Penguatan Konsep -->
+            <div class="slide">
+                <h2 class="text-3xl md:text-4xl mb-8 text-center">Penguatan Konsep</h2>
+                <div class="grid md:grid-cols-2 gap-8 w-full max-w-4xl">
+                    <div class="bg-sky-50 p-6 rounded-lg text-center border-2 border-sky-200">
+                        <p class="text-6xl">🔎</p>
+                        <h3 class="text-2xl my-3 text-sky-700">Linear Search</h3>
+                        <p class="text-slate-600">Gunakan untuk data <strong class="text-sky-800">acak</strong> atau <strong class="text-sky-800">sedikit</strong>. Cek satu per satu dari awal.</p>
+                    </div>
+                    <div class="bg-violet-50 p-6 rounded-lg text-center border-2 border-violet-200">
+                        <p class="text-6xl">📖</p>
+                        <h3 class="text-2xl my-3 text-violet-700">Binary Search</h3>
+                        <p class="text-slate-600">Gunakan untuk data <strong class="text-violet-800">terurut</strong> dan <strong class="text-violet-800">banyak</strong>. Bagi dua dan taklukkan!</p>
+                    </div>
+                </div>
+                <p class="mt-8 text-xl font-semibold text-slate-700">Memilih algoritma yang tepat adalah kunci efisiensi!</p>
+            </div>
+
+            <!-- SLIDE 18: Refleksi -->
+            <div class="slide text-center">
+                <h2 class="text-3xl md:text-4xl mb-6">Saatnya Refleksi</h2>
+                <p class="text-lg text-slate-600 mb-2">Apa satu hal terpenting yang kamu pelajari hari ini?</p>
+                <p class="text-lg text-slate-600 mb-4">Sampaikan refleksimu melalui:</p>
+                <p class="text-4xl font-bold text-sky-600 mb-6">menti.com</p>
+                <p class="text-xl text-slate-600 mb-4">Gunakan kode:</p>
+                <div class="bg-slate-200 p-4 rounded-lg inline-block">
+                    <p class="text-5xl font-extrabold tracking-widest text-slate-800">4811 7082</p>
+                </div>
+            </div>
+
+            <!-- SLIDE 19: Terima Kasih -->
+            <div class="slide text-center bg-slate-800 text-white">
+                <h1 class="text-6xl md:text-8xl font-bold">Terima Kasih!</h1>
+                <p class="text-2xl mt-4 text-slate-300">Sampai Jumpa di Pertemuan Berikutnya!</p>
+                <div class="mt-12 border-t border-slate-600 pt-8 max-w-3xl">
+                    <blockquote class="text-xl italic text-slate-400">
+                        "Belajar adalah sebuah perjalanan, bukan tujuan akhir. Teruslah bertanya dan mencari!"
+                    </blockquote>
+                </div>
+            </div>
+
         </div>
 
         <div class="navigation">
