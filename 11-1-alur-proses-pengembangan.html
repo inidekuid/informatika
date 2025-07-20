@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul Interaktif: Pola Pikir Pencipta Solusi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .slide-content {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .draggable {
+            cursor: grab;
+            user-select: none;
+        }
+        .drop-zone {
+            border: 2px dashed #ccc;
+            min-height: 100px;
+        }
+        .drop-zone.over {
+            border-color: #60a5fa;
+            background-color: #eff6ff;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .version-tab {
+            transition: all 0.3s ease;
+        }
+        .version-tab.active {
+            background-color: #4f46e5;
+            color: white;
+            font-weight: bold;
+        }
+        .version-content {
+            display: none;
+        }
+        .version-content.active {
+            display: block;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-sky-100 to-indigo-200 min-h-screen flex items-center justify-center p-4">
+
+    <div id="app-container" class="w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-500">
+        <!-- Progress Bar (akan muncul setelah path dipilih) -->
+        <div id="progress-container" class="w-full bg-gray-200 rounded-t-2xl hidden">
+            <div id="progress-bar" class="bg-indigo-600 text-xs font-medium text-blue-100 text-center p-1 leading-none rounded-tl-2xl" style="width: 0%">0%</div>
+        </div>
+
+        <div class="p-6 sm:p-10">
+            <!-- Content Area -->
+            <div id="content-area" class="min-h-[500px]">
+                <!-- Konten Awal: Pilihan Jenjang -->
+                 <div class="slide-content text-center">
+                    <h1 class="text-4xl font-bold text-slate-800 mb-4">Selamat Datang!</h1>
+                    <p class="text-xl text-slate-600 mb-12">Modul ini akan membantumu melatih pola pikir untuk memecahkan masalah secara terstruktur. Silakan pilih jenjang kelasmu untuk memulai.</p>
+                    <div class="flex flex-col md:flex-row justify-center gap-8">
+                        <button onclick="loadAndStart('xi')" class="block w-full md:w-64 p-8 bg-sky-500 text-white rounded-xl shadow-lg hover:bg-sky-600 transition-transform hover:scale-105">
+                            <span class="text-5xl">XI</span>
+                            <h3 class="text-2xl font-bold mt-4">Kelas XI</h3>
+                            <p class="mt-2">Fokus pada dasar-dasar pemecahan masalah.</p>
+                        </button>
+                        <button onclick="loadAndStart('xii')" class="block w-full md:w-64 p-8 bg-indigo-500 text-white rounded-xl shadow-lg hover:bg-indigo-600 transition-transform hover:scale-105">
+                            <span class="text-5xl">XII</span>
+                            <h3 class="text-2xl font-bold mt-4">Kelas XII</h3>
+                            <p class="mt-2">Fokus pada pengembangan solusi bertahap & refleksi.</p>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation (akan muncul setelah path dipilih) -->
+            <div id="navigation" class="mt-8 flex justify-between items-center hidden">
+                <button id="prev-btn" class="px-6 py-3 bg-gray-300 text-gray-700 font-semibold rounded-lg shadow-md hover:bg-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    Kembali
+                </button>
+                <button id="next-btn" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-colors disabled:opacity-50">
+                    Lanjut
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for feedback -->
+    <div id="feedback-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-8 rounded-xl shadow-lg text-center max-w-sm">
+            <p id="modal-text" class="text-xl font-bold"></p>
+            <button id="modal-close-btn" class="mt-6 bg-indigo-600 text-white px-6 py-2 rounded-lg">Tutup</button>
+        </div>
+    </div>
+
+<script>
+    // --- STATE MANAGEMENT ---
+    let currentSlide = 0;
+    let slides = []; // Will be populated based on path selection
+
+    // --- DOM ELEMENTS ---
+    const contentArea = document.getElementById('content-area');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const navigation = document.getElementById('navigation');
+    const progressContainer = document.getElementById('progress-container');
+    const progressBar = document.getElementById('progress-bar');
+    const feedbackModal = document.getElementById('feedback-modal');
+    const modalText = document.getElementById('modal-text');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+
+    // --- SLIDE CONTENT DEFINITIONS ---
+
+    const commonSlides = {
+        intro: {
+            title: "Bagaimana Sebuah Ide Lahir?",
+            content: `
+                <h2 class="text-3xl font-bold text-slate-800 mb-6 text-center">Pernahkah kamu berpikir... 🤔</h2>
+                <p class="text-lg text-slate-600 mb-8 text-center">Setiap alat, aplikasi, atau solusi yang kita gunakan berawal dari sebuah masalah. Proses mengubah masalah menjadi solusi adalah sebuah keterampilan penting di era digital.</p>
+                <div class="bg-amber-50 p-6 rounded-lg border border-amber-200">
+                    <p class="text-center text-xl font-semibold text-amber-800">"Bagaimana sebuah ide bisa diwujudkan menjadi sesuatu yang nyata dan bermanfaat?"</p>
+                </div>
+            `
+        },
+        video: {
+            title: "Melihat Proses di Balik Layar",
+            content: `
+                <h2 class="text-3xl font-bold text-slate-800 mb-6 text-center">Dari Ide ke Kenyataan</h2>
+                <p class="text-lg text-slate-600 mb-8 text-center">Video singkat ini memberikan gambaran umum bagaimana para pencipta solusi mengubah ide mereka menjadi aplikasi. Perhatikan langkah-langkah yang mereka lalui.</p>
+                <div class="video-container rounded-lg shadow-lg overflow-hidden">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/Fi3_BjVzpqk?si=YNXcr79WoTUnbQpC" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <p class="text-center text-sm text-slate-500 mt-4">Video oleh: Simplilearn</p>
+                <p class="text-center text-sm text-slate-500">referensi lain:</p>
+                p class="text-center text-sm text-slate-500 mb-4">
+                <ul>
+                    <li><a href="https://www.youtube.com/watch?v=OgYuHtmpEjI" target="_blank" class="text-indigo-600 hover:underline">Mengenal Alur Proses Pengembangan Software (Waterfall)</a></li>
+                    <li><a href="https://www.youtube.com/watch?v=5m1nkWP8a3g" target="_blank" class="text-indigo-600 hover:underline">Mengenal Alur Proses Pengembangan Software (Scrum)</a></li>
+                </ul>
+                </p
+            `
+        },
+        fourSteps: {
+            title: "4 Langkah Kunci Menciptakan Solusi",
+            content: `
+                 <h2 class="text-3xl font-bold text-slate-800 mb-8 text-center">Pola Pikir Penyelesaian Masalah</h2>
+                <p class="text-lg text-slate-600 mb-8 text-center">Untuk memecahkan masalah secara efektif, terutama yang kompleks, kita bisa menggunakan empat langkah terstruktur. Pola pikir ini sangat berguna, tidak hanya di bidang teknologi, tapi juga dalam kehidupan sehari-hari.</p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 p-6 rounded-lg border">
+                        <h3 class="text-xl font-bold text-slate-700 mb-2">Menganalisis Permasalahan</h3>
+                        <p class="text-slate-600">Memahami akar masalah. Apa tujuannya? Siapa yang akan terbantu? Apa saja batasannya?</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg border">
+                        <h3 class="text-xl font-bold text-slate-700 mb-2">Mendesain Solusi</h3>
+                        <p class="text-slate-600">Merancang langkah-langkah (algoritma) untuk menyelesaikan masalah tersebut secara logis dan runtut.</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg border">
+                        <h3 class="text-xl font-bold text-slate-700 mb-2">Mengimplementasikan Solusi</h3>
+                        <p class="text-slate-600">Mewujudkan desain menjadi bentuk nyata. Dalam konteks digital, ini adalah saatnya menulis kode.</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg border">
+                        <h3 class="text-xl font-bold text-slate-700 mb-2">Menguji Solusi</h3>
+                        <p class="text-slate-600">Memastikan solusi berjalan sesuai harapan, menemukan kesalahan, dan memperbaikinya.</p>
+                    </div>
+                </div>
+            `
+        },
+        quiz: {
+            title: "Uji Pemahaman: Susun Langkahnya!",
+            content: `
+                <h2 class="text-3xl font-bold text-slate-800 mb-4 text-center">Saatnya Uji Ingatan!</h2>
+                <p class="text-lg text-slate-600 mb-8 text-center">Seret dan lepas (drag and drop) langkah-langkah berikut ke dalam kotak di sebelah kanan sesuai urutan yang benar.</p>
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div id="source-elements" class="w-full md:w-1/2 space-y-4">
+                        <!-- Items will be populated by JS -->
+                    </div>
+                    <div id="drop-zone" class="w-full md:w-1/2 p-4 rounded-lg drop-zone">
+                        <!-- Drop items here -->
+                    </div>
+                </div>
+                <div class="text-center mt-6">
+                   <button id="check-answer-btn" class="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition-colors">Cek Jawaban</button>
+                </div>
+            `,
+            setup: setupDragAndDrop
+        },
+        cycle: {
+            title: "Bukan Akhir, Tapi Siklus!",
+            content: `
+                 <div class="slide-content text-center">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-4">Proses yang Terus Berputar</h2>
+                    <p class="text-lg text-slate-600 mb-8">Keempat langkah tadi bukanlah garis lurus. Di dunia nyata, proses ini berputar seperti siklus. Setelah pengujian, kita kembali menganalisis masukan baru, mendesain perbaikan, mengimplementasikannya, dan tes lagi. Inilah mengapa aplikasi favoritmu terus mendapatkan pembaruan!</p>
+                    <div class="flex justify-center">
+                        <img src="https://placehold.co/600x350/e0e7ff/4338ca?text=Analisis+Masalah%0A%E2%86%97+%E2%86%98%0AMenguji+Solusi+%E2%86%94+Mendesain+Solusi%0A%E2%86%96+%E2%86%99%0AImplementasi" alt="Diagram Siklus Pemecahan Masalah" class="rounded-lg shadow-md">
+                    </div>
+                </div>
+            `
+        },
+        reflection: {
+             title: "Ayo Renungkan!",
+             content: `
+                <h2 class="text-3xl font-bold text-slate-800 mb-6">Refleksi Pembelajaran</h2>
+                <p class="text-lg text-slate-600 mb-8">Setelah mengikuti seluruh materi, jawablah pertanyaan berikut untuk mengukur pemahamanmu.</p>
+                <div class="space-y-6">
+                    <div>
+                        <label for="refleksi1" class="block text-lg font-semibold text-slate-700 mb-2">1. Tahap mana yang menurutmu paling menarik untuk dilakukan? Mengapa?</label>
+                        <textarea id="refleksi1" rows="2" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                    </div>
+                    <div>
+                        <label for="refleksi2" class="block text-lg font-semibold text-slate-700 mb-2">2. Tahap mana yang menurutmu paling sulit untuk dilakukan? Mengapa?</label>
+                        <textarea id="refleksi2" rows="2" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                    </div>
+                    <div>
+                        <label for="refleksi3" class="block text-lg font-semibold text-slate-700 mb-2">3. Pelajaran paling berkesan apa yang kamu dapatkan dari latihan ini?</label>
+                        <textarea id="refleksi3" rows="2" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                    </div>
+                </div>
+            `
+        },
+        // NEW SLIDE for extra resources
+        references: {
+            title: "Jelajahi Lebih Lanjut",
+            content: `
+                <h2 class="text-3xl font-bold text-slate-800 mb-6 text-center">Sumber Belajar Tambahan</h2>
+                <p class="text-lg text-slate-600 mb-8 text-center">Jika kamu tertarik untuk mendalami lebih jauh, berikut adalah beberapa sumber daya yang bisa kamu eksplorasi.</p>
+                <div class="space-y-6">
+                    <div class="bg-gray-50 p-5 rounded-lg border">
+                        <h3 class="text-xl font-semibold text-slate-700 mb-2">Platform Belajar Interaktif</h3>
+                        <ul class="list-disc list-inside space-y-3 pl-2">
+                            <li><a href="https://www.khanacademy.org/computing/computer-science/algorithms" target="_blank" class="text-indigo-600 hover:underline font-medium">Khan Academy (Algoritma):</a> Belajar konsep dasar algoritma dengan penjelasan yang mudah dipahami.</li>
+                            <li><a href="https://code.org/learn" target="_blank" class="text-indigo-600 hover:underline font-medium">Code.org:</a> Latihan coding yang menyenangkan dan interaktif untuk pemula.</li>
+                            <li><a href="https://www.petanikode.com/" target="_blank" class="text-indigo-600 hover:underline font-medium">Petani Kode:</a> Tutorial pemrograman dalam Bahasa Indonesia yang lengkap.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-50 p-5 rounded-lg border">
+                        <h3 class="text-xl font-semibold text-slate-700 mb-2">Video Penjelasan Konsep</h3>
+                        <ul class="list-disc list-inside space-y-3 pl-2">
+                            <li><a href="https://www.youtube.com/@dea.afrizal" target="_blank" class="text-indigo-600 hover:underline font-medium">Dea Afrizal (YouTube):</a> Kanal dengan banyak penjelasan tentang teknologi dan pemrograman dalam Bahasa Indonesia.</li>
+                            <li><a href="https://www.youtube.com/watch?v=kqtD5dpn9C8" target="_blank" class="text-indigo-600 hover:underline font-medium">CrashCourse Computer Science (YouTube):</a> Video animasi yang menjelaskan konsep-konsep dasar ilmu komputer secara menarik (tersedia subtitle).</li>
+                        </ul>
+                    </div>
+                </div>
+            `
+        }
+    };
+
+    const slidesXI = [
+        commonSlides.intro,
+        commonSlides.video,
+        commonSlides.fourSteps,
+        commonSlides.quiz,
+        {
+            title: "Studi Kasus: Identifikasi Jenis Segitiga",
+            content: `
+                <h2 class="text-3xl font-bold text-slate-800 mb-6">Kasus: Membuat Alat Penentu Jenis Segitiga</h2>
+                <p class="text-lg text-slate-600 mb-6">Bayangkan kita ingin membuat alat sederhana yang bisa menentukan jenis segitiga jika diberi 3 panjang sisi. Mari kita bedah menggunakan 4 langkah tadi.</p>
+                <div class="space-y-4" id="accordion-container">
+                    ${createAccordionItem('Menganalisis Permasalahan', `
+                        <b>Tujuan:</b> Membuat alat yang menerima 3 angka dan menampilkan jenis segitiganya.<br><br>
+                        <b>Masukan:</b> Tiga buah bilangan positif (sisi a, sisi b, sisi c).<br><br>
+                        <b>Keluaran:</b> Teks "Segitiga Sama Sisi", "Segitiga Sama Kaki", "Segitiga Sembarang", atau "Bukan Segitiga".
+                    `)}
+                    ${createAccordionItem('Mendesain Solusi', `
+                        <b>Langkah 1: Cek Validitas.</b> Sebuah segitiga valid jika jumlah dua sisinya selalu lebih besar dari sisi ketiga. Jadi, kita harus cek: (a+b > c), (a+c > b), DAN (b+c > a). Jika tidak, langsung simpulkan "Bukan Segitiga".<br><br>
+                        <b>Langkah 2: Cek Jenis.</b> Jika valid, maka: JIKA a=b dan b=c, maka "Sama Sisi". JIKA hanya dua sisi yang sama, maka "Sama Kaki". JIKA semua sisi berbeda, maka "Sembarang".
+                    `)}
+                    ${createAccordionItem('Mengimplementasikan Solusi (Contoh Logika)', `
+                        Ini adalah bagian di mana kita "memberi tahu" komputer cara berpikir kita. Logikanya bisa ditulis seperti ini:<br>
+                        <pre class="bg-gray-100 p-4 rounded-md mt-2 text-sm"><code>JIKA (a+b > c) DAN (a+c > b) DAN (b+c > a) MAKA
+  JIKA a == b DAN b == c MAKA
+    Tampilkan "Segitiga Sama Sisi"
+  LAIN JIKA a == b ATAU b == c ATAU a == c MAKA
+    Tampilkan "Segitiga Sama Kaki"
+  LAIN
+    Tampilkan "Segitiga Sembarang"
+LAIN
+  Tampilkan "Bukan Segitiga"
+</code></pre>
+                    `)}
+                    ${createAccordionItem('Menguji Solusi', `
+                        Kita harus mencoba berbagai kemungkinan untuk memastikan alat kita benar.<br>
+                        - Coba: 5, 5, 5. Harusnya keluar: "Segitiga Sama Sisi".<br>
+                        - Coba: 7, 10, 7. Harusnya keluar: "Segitiga Sama Kaki".<br>
+                        - Coba: 1, 2, 4. Harusnya keluar: "Bukan Segitiga".
+                    `)}
+                </div>
+            `,
+            setup: setupAccordion
+        },
+        commonSlides.reflection,
+        commonSlides.references, // Added here
+        {
+            title: "Aktivitas: Rancang Solusimu!",
+            content: `
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-4">Saatnya Kamu Mencoba!</h2>
+                    <p class="text-lg text-slate-600 mb-8">Pola pikir 4 langkah ini bisa diterapkan untuk masalah apa saja. Sekarang, giliranmu!</p>
+                    <div class="bg-sky-50 p-8 rounded-lg border border-sky-200 text-left">
+                        <h3 class="text-2xl font-bold text-sky-800 mb-4">Tugas Proyek Mini:</h3>
+                        <p class="mb-4">Pilih satu masalah sederhana dalam kehidupan sehari-hari. Contoh: "Sulit bangun pagi", "Memilih menu makan siang", "Menentukan giliran piket kelas".</p>
+                        <p>Kemudian, tuliskan rencana solusimu menggunakan 4 langkah yang sudah dipelajari:</p>
+                        <ul class="list-decimal list-inside mt-4 space-y-3 text-slate-700">
+                            <li><b>Analisis Masalah:</b> Jelaskan masalahnya, apa tujuanmu, dan apa saja kendalanya.</li>
+                            <li><b>Desain Solusi:</b> Tuliskan langkah-langkah yang akan kamu ambil untuk menyelesaikan masalah itu.</li>
+                            <li><b>Implementasi:</b> Bagaimana kamu akan menjalankan solusi itu? Alat apa yang kamu butuhkan?</li>
+                            <li><b>Pengujian:</b> Bagaimana kamu tahu kalau solusimu berhasil? Apa tolok ukurnya?</li>
+                        </ul>
+                    </div>
+                </div>
+            `
+        }
+    ];
+
+    const slidesXII = [
+        commonSlides.intro,
+        commonSlides.video,
+        commonSlides.fourSteps,
+        commonSlides.quiz,
+        {
+            title: "Studi Kasus: Evolusi Aplikasi (Iterasi)",
+            content: `
+                 <div class="slide-content">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-2">Kasus: Evolusi Aplikasi Prediksi Cuaca</h2>
+                    <p class="text-lg text-slate-600 mb-6">Aplikasi hebat tidak dibuat dalam satu malam. Mereka berkembang secara bertahap (iteratif). Mari lihat contoh bagaimana sebuah aplikasi prediksi cuaca bisa berevolusi.</p>
+                    <div id="version-tabs" class="flex border-b mb-4">
+                        <button class="version-tab p-4 text-center flex-1 bg-gray-200 hover:bg-gray-300 active" data-version="1">Versi 1</button>
+                        <button class="version-tab p-4 text-center flex-1 bg-gray-200 hover:bg-gray-300" data-version="2">Versi 2</button>
+                        <button class="version-tab p-4 text-center flex-1 bg-gray-200 hover:bg-gray-300" data-version="3">Versi 3</button>
+                    </div>
+                    <div id="version-contents">
+                        <div id="content-1" class="version-content active p-4 bg-gray-50 rounded-b-lg">
+                            <h3 class="font-bold text-xl text-indigo-700 mb-2">Versi 1: Info Cuaca Dasar</h3>
+                            <p><b>Tujuan:</b> Menampilkan suhu hari ini di lokasi pengguna.</p>
+                            <p class="mt-2"><b>Proses:</b> Analisis (butuh data suhu & lokasi), Desain (tampilan suhu yang jelas), Implementasi (mengambil data dari sensor/internet), Pengujian (apakah suhunya akurat?).</p>
+                        </div>
+                        <div id="content-2" class="version-content p-4 bg-gray-50 rounded-b-lg">
+                            <h3 class="font-bold text-xl text-indigo-700 mb-2">Versi 2: Tambah Prediksi & Grafik</h3>
+                            <p><b>Tujuan:</b> Menampilkan prediksi cuaca 3 hari ke depan dan grafik tren suhu.</p>
+                            <p class="mt-2"><b>Proses (Iterasi):</b> Analisis (pengguna ingin tahu cuaca besok), Desain (tampilan prediksi & grafik yang mudah dibaca), Implementasi (menambah logika prediksi & library grafik), Pengujian (apakah prediksinya cukup akurat?).</p>
+                        </div>
+                        <div id="content-3" class="version-content p-4 bg-gray-50 rounded-b-lg">
+                            <h3 class="font-bold text-xl text-indigo-700 mb-2">Versi 3: Notifikasi Peringatan Dini</h3>
+                            <p><b>Tujuan:</b> Memberi notifikasi jika akan ada cuaca buruk (hujan deras, badai).</p>
+                            <p class="mt-2"><b>Proses (Iterasi):</b> Analisis (pengguna butuh peringatan agar bisa bersiap), Desain (pesan notifikasi yang jelas & waktu pengiriman), Implementasi (sistem notifikasi), Pengujian (apakah notifikasi muncul tepat waktu?).</p>
+                        </div>
+                    </div>
+                </div>
+            `,
+            setup: setupVersionTabs
+        },
+        commonSlides.cycle,
+        commonSlides.reflection,
+        commonSlides.references, // Added here
+        {
+            title: "Aktivitas: Telusuri Evolusi Aplikasimu!",
+            content: `
+                 <div class="text-center">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-4">Menjadi Detektif Digital!</h2>
+                    <p class="text-lg text-slate-600 mb-8">Sekarang giliranmu untuk menelusuri jejak evolusi dari aplikasi yang sering kamu gunakan.</p>
+                    <div class="bg-indigo-50 p-8 rounded-lg border border-indigo-200 text-left">
+                        <h3 class="text-2xl font-bold text-indigo-800 mb-4">Tugas Investigasi:</h3>
+                        <p class="mb-4">Pilih satu aplikasi favoritmu (contoh: Instagram, TikTok, Gojek, Spotify).</p>
+                        <p>Lakukan riset kecil untuk menemukan:</p>
+                        <ul class="list-decimal list-inside mt-4 space-y-3 text-slate-700">
+                            <li><b>Versi Awal:</b> Seperti apa tampilannya saat pertama kali dirilis? Apa satu-satunya fitur utama yang dimilikinya?</li>
+                            <li><b>Perkembangan:</b> Sebutkan minimal 3 fitur besar yang ditambahkan setelahnya. Kapan kira-kira fitur itu muncul?</li>
+                            <li><b>Analisis:</b> Menurutmu, mengapa para pembuatnya menambahkan fitur-fitur tersebut? Masalah apa yang ingin mereka selesaikan untuk penggunanya?</li>
+                        </ul>
+                        <p class="mt-4">Sajikan temuanmu dalam bentuk linimasa (timeline) infografis yang menarik. Kamu bisa gunakan <b>web.archive.org</b> untuk web atau pencarian Google dengan kata kunci "Instagram version 1.0" untuk membantumu.</p>
+                    </div>
+                </div>
+            `
+        }
+    ];
+
+    // --- RENDER & NAVIGATION LOGIC ---
+    function loadAndStart(path) {
+        if (path === 'xi') {
+            slides = slidesXI;
+        } else if (path === 'xii') {
+            slides = slidesXII;
+        }
+        
+        currentSlide = 0;
+        navigation.classList.remove('hidden');
+        progressContainer.classList.remove('hidden');
+        renderSlide();
+    }
+
+    function renderSlide() {
+        if (slides.length === 0) return;
+        const slide = slides[currentSlide];
+        contentArea.innerHTML = `<div class="slide-content">${slide.content}</div>`;
+        
+        setTimeout(() => {
+            if (slide.setup) {
+                slide.setup();
+            }
+        }, 0);
+
+        updateNavigation();
+        updateProgressBar();
+    }
+
+    function updateNavigation() {
+        prevBtn.disabled = currentSlide === 0;
+        nextBtn.disabled = currentSlide >= slides.length - 1;
+        
+        if (currentSlide >= slides.length - 1) {
+            nextBtn.innerText = "Selesai";
+        } else {
+            nextBtn.innerText = "Lanjut";
+        }
+    }
+    
+    function updateProgressBar() {
+        const progressPercentage = slides.length > 1 ? (currentSlide / (slides.length - 1)) * 100 : 100;
+        progressBar.style.width = `${progressPercentage}%`;
+        progressBar.innerText = `${Math.round(progressPercentage)}%`;
+    }
+
+    function goToNext() {
+        if (currentSlide < slides.length - 1) {
+            currentSlide++;
+            renderSlide();
+        }
+    }
+
+    function goToPrev() {
+        if (currentSlide > 0) {
+            currentSlide--;
+            renderSlide();
+        }
+    }
+    
+    // --- INTERACTIVITY SETUP FUNCTIONS ---
+    function setupVersionTabs() {
+        const tabsContainer = document.getElementById('version-tabs');
+        if (!tabsContainer) return;
+
+        tabsContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('version-tab')) {
+                const version = e.target.dataset.version;
+                tabsContainer.querySelectorAll('.version-tab').forEach(tab => tab.classList.remove('active'));
+                e.target.classList.add('active');
+                document.querySelectorAll('.version-content').forEach(content => content.classList.remove('active'));
+                document.getElementById(`content-${version}`).classList.add('active');
+            }
+        });
+    }
+
+    function setupDragAndDrop() {
+        const sourceElements = document.getElementById('source-elements');
+        const dropZone = document.getElementById('drop-zone');
+        const checkBtn = document.getElementById('check-answer-btn');
+
+        const items = [
+            { id: 'item-3', text: 'Mengimplementasikan Solusi' },
+            { id: 'item-1', text: 'Menganalisis Permasalahan' },
+            { id: 'item-4', text: 'Menguji Solusi' },
+            { id: 'item-2', text: 'Mendesain Solusi' }
+        ];
+
+        sourceElements.innerHTML = ''; // Clear previous
+        items.sort(() => Math.random() - 0.5).forEach(item => {
+            const div = document.createElement('div');
+            div.id = item.id;
+            div.textContent = item.text;
+            div.className = 'p-4 bg-white border rounded-lg shadow-sm draggable';
+            div.draggable = true;
+            sourceElements.appendChild(div);
+        });
+        
+        let draggedItem = null;
+
+        sourceElements.addEventListener('dragstart', e => {
+            if (e.target.classList.contains('draggable')) {
+                draggedItem = e.target;
+                setTimeout(() => { e.target.style.opacity = '0.5'; }, 0);
+            }
+        });
+        sourceElements.addEventListener('dragend', e => {
+            if (draggedItem) {
+                setTimeout(() => { e.target.style.opacity = '1'; draggedItem = null; }, 0);
+            }
+        });
+        dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('over'); });
+        dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('over'); });
+        dropZone.addEventListener('drop', e => {
+            e.preventDefault();
+            if (draggedItem && !dropZone.contains(draggedItem)) {
+                dropZone.appendChild(draggedItem);
+            }
+            dropZone.classList.remove('over');
+        });
+        
+        checkBtn.addEventListener('click', () => {
+            const children = Array.from(dropZone.children);
+            const correctOrder = ['item-1', 'item-2', 'item-3', 'item-4'];
+            const isCorrect = children.length === correctOrder.length && children.every((child, index) => child.id === correctOrder[index]);
+            
+            showModal(isCorrect ? "🎉 Jawaban Benar! Kamu Hebat!" : "🤔 Belum Tepat. Coba susun lagi urutannya!");
+            dropZone.style.borderColor = isCorrect ? '#22c55e' : '#ef4444';
+        });
+    }
+    
+    function createAccordionItem(title, content) {
+        return `
+            <div class="border rounded-lg overflow-hidden">
+                <h2>
+                    <button type="button" class="flex items-center justify-between w-full p-5 font-semibold text-left text-gray-800 bg-gray-50 hover:bg-gray-100 accordion-button">
+                        <span>${title}</span>
+                        <svg class="w-6 h-6 shrink-0 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                </h2>
+                <div class="accordion-content">
+                    <div class="p-5 border-t border-gray-200">
+                        <div class="text-gray-600">${content}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function setupAccordion() {
+        const accordionContainer = document.getElementById('accordion-container');
+        if (!accordionContainer) return;
+        
+        accordionContainer.addEventListener('click', function(e) {
+            const button = e.target.closest('.accordion-button');
+            if (!button) return;
+            const content = button.parentElement.nextElementSibling;
+            const icon = button.querySelector('svg');
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+                icon.style.transform = 'rotate(180deg)';
+            }
+        });
+    }
+
+    function showModal(message) {
+        modalText.textContent = message;
+        feedbackModal.classList.remove('hidden');
+    }
+
+    // --- INITIALIZATION ---
+    function init() {
+        // Event listeners are set directly in the HTML via onclick for the initial choice.
+        prevBtn.addEventListener('click', goToPrev);
+        nextBtn.addEventListener('click', goToNext);
+        modalCloseBtn.addEventListener('click', () => feedbackModal.classList.add('hidden'));
+    }
+
+    init();
+</script>
+</body>
+</html>
