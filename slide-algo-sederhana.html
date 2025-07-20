@@ -292,19 +292,21 @@
             <!-- SLIDE BARU 13: Visualisasi Binary Search -->
             <div class="slide">
                  <h2 class="text-3xl md:text-4xl mb-6 w-full text-left">Contoh: Mencari Angka 25 dengan <span class="text-violet-600">Binary Search</span></h2>
-                 <p class="text-lg text-slate-600 w-full text-left mb-6">Data <strong class="text-red-600">wajib urut!</strong> Kita mulai dari tengah.</p>
-                 <div class="flex space-x-2 mb-8">
+                 <p class="text-lg text-slate-600 w-full text-left mb-4">Data <strong class="text-red-600">wajib urut!</strong> Kita mulai dari tengah.</p>
+                 <div class="flex space-x-2 mb-6">
                     <div class="array-box"><span class="array-index">0</span>5</div>
                     <div class="array-box"><span class="array-index">1</span>10</div>
                     <div class="array-box bg-violet-100 border-violet-400"><span class="array-index">2</span>15</div>
                     <div class="array-box"><span class="array-index">3</span>20</div>
-                    <div class="array-box bg-green-300 border-green-500"><span class="array-index">4</span>25</div>
+                    <div class="array-box"><span class="array-index">4</span>25</div>
                     <div class="array-box"><span class="array-index">5</span>30</div>
                  </div>
-                 <div class="mt-4 text-lg w-full text-left space-y-2">
-                    <p><strong>Langkah 1:</strong> Cek nilai tengah (indeks 2, nilai 15). Karena 25 > 15, kita buang separuh bagian kiri dan hanya mencari di bagian kanan.</p>
-                    <p class="font-bold text-green-600"><strong>Langkah 2:</strong> Cek nilai tengah dari sisa data (indeks 4, nilai 25). Ditemukan!</p>
-                    <p class="mt-4 font-semibold text-slate-800">Jauh lebih sedikit langkah dibandingkan Linear Search!</p>
+                 <div class="text-lg w-full text-left space-y-3">
+                    <p><strong>Langkah 1:</strong> Cari indeks tengah. Rumus: <code class="bg-slate-200 px-2 py-1 rounded">tengah = (kiri + kanan) / 2</code>.
+                    <br>Awalnya: <code class="bg-slate-200 px-2 py-1 rounded">(0 + 5) / 2 = 2.5</code>, dibulatkan ke bawah jadi <strong>indeks 2</strong>. Nilainya 15.</p>
+                    <p><strong>Analisis:</strong> Karena 25 > 15, abaikan semua data di sebelah kiri. Area pencarian baru adalah indeks 3 sampai 5.</p>
+                    <p><strong>Langkah 2:</strong> Cari tengah lagi. <code class="bg-slate-200 px-2 py-1 rounded">(3 + 5) / 2 = 4</code>. Cek <strong>indeks 4</strong>. Nilainya 25.</p>
+                    <p class="font-bold text-green-600 text-xl"><strong>Hasil:</strong> Ditemukan! Hanya butuh 2 langkah.</p>
                  </div>
             </div>
 
