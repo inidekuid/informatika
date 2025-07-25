@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bahan Ajar Interaktif: Alur Pengembangan Produk Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-touch-callout: none;
+            /* iOS Safari */
+            -webkit-user-select: none;
+            /* Safari, Chrome, Opera, Edge */
+            -khtml-user-select: none;
+            /* Konqueror HTML */
+            -moz-user-select: none;
+            /* Old versions of Firefox */
+            -ms-user-select: none;
+            /* Internet Explorer/Edge */
+            user-select: none;
+            /* Non-prefixed version */
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .draggable {
+            cursor: move;
+            touch-action: none;
+            /* Mencegah aksi sentuh default seperti scrolling */
+        }
+
+        .dragging {
+            opacity: 0.5;
+            transform: scale(1.05);
+            z-index: 1000;
+        }
+
+        .dropzone {
+            border: 2px dashed #ccc;
+            min-height: 150px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .dropzone.drag-over {
+            background-color: #e0f7fa;
+            border-color: #06b6d4;
+        }
+
+        .bug-target {
+            cursor: pointer;
+            position: absolute;
+            border: 2px dashed red;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .bug-target.found,
+        .bug-target:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 text-gray-800 flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-cyan-500 to-blue-600 text-white p-4 sm:p-6 shadow-md">
+            <h1 class="text-2xl sm:text-3xl font-bold text-center">Dari Ide Jadi Aplikasi: Alur Pengembangan Produk
+                Digital</h1>
+            <div class="mt-4 w-full bg-gray-200 rounded-full h-2.5">
+                <div id="progress-bar" class="bg-yellow-400 h-2.5 rounded-full" style="width: 5%"></div>
+            </div>
+        </header>
+
+        <main class="p-6 sm:p-8">
+            <!-- Slide Container -->
+            <div id="slide-container">
+                <!-- Slide 1: Pembukaan -->
+                <div id="slide-1" class="slide active">
+                    <h2 class="text-2xl font-bold text-blue-700 mb-4">Pertemuan 1: Dari Masalah Jadi Ide</h2>
+                    <p class="mb-4">Selamat datang! Pernahkah kamu berpikir bagaimana aplikasi favoritmu dibuat?
+                        Prosesnya mirip seperti membuat kue yang lezat, lho!</p>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 text-center">
+                        <div class="bg-blue-100 p-4 rounded-lg">
+                            <i class="fas fa-question-circle text-3xl text-blue-500 mb-2"></i>
+                            <h3 class="font-bold">1. Analisis</h3>
+                            <p class="text-sm">Tanya sana-sini, kue apa yang disukai?</p>
+                        </div>
+                        <div class="bg-green-100 p-4 rounded-lg">
+                            <i class="fas fa-pencil-ruler text-3xl text-green-500 mb-2"></i>
+                            <h3 class="font-bold">2. Desain</h3>
+                            <p class="text-sm">Tulis resep & gambar bentuk kuenya.</p>
+                        </div>
+                        <div class="bg-yellow-100 p-4 rounded-lg">
+                            <i class="fas fa-code text-3xl text-yellow-500 mb-2"></i>
+                            <h3 class="font-bold">3. Implementasi</h3>
+                            <p class="text-sm">Mulai memasak sesuai resep!</p>
+                        </div>
+                        <div class="bg-red-100 p-4 rounded-lg">
+                            <i class="fas fa-bug text-3xl text-red-500 mb-2"></i>
+                            <h3 class="font-bold">4. Pengujian</h3>
+                            <p class="text-sm">Cicipi, apakah rasanya sudah pas?</p>
+                        </div>
+                        <div class="bg-purple-100 p-4 rounded-lg">
+                            <i class="fas fa-wrench text-3xl text-purple-500 mb-2"></i>
+                            <h3 class="font-bold">5. Pemeliharaan</h3>
+                            <p class="text-sm">Simpan di kulkas agar tetap enak.</p>
+                        </div>
+                    </div>
+                    <p class="mt-6 text-center text-gray-600">Proses ini disebut **SDLC (Software Development Life
+                        Cycle)**. Yuk kita mulai petualangannya!</p>
+                </div>
+
+                <!-- Slide 2: Aktivitas Analisis -->
+                <div id="slide-2" class="slide">
+                    <h2 class="text-2xl font-bold text-blue-700 mb-2">Misi 1: Detektif Masalah Perpus</h2>
+                    <p class="mb-4">Perpustakaan sekolah kita punya masalah. Seret dan letakkan kartu masalah yang kamu
+                        temukan ke dalam kotak di bawah ini!</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="font-semibold mb-2 text-center">Kartu Masalah</h3>
+                            <div id="problem-cards" class="grid grid-cols-2 gap-2">
+                                <div class="draggable bg-yellow-200 p-3 rounded-md shadow" draggable="true"
+                                    data-problem="Antre panjang saat pinjam buku.">Antre panjang</div>
+                                <div class="draggable bg-yellow-200 p-3 rounded-md shadow" draggable="true"
+                                    data-problem="Sulit cek buku tersedia atau tidak.">Sulit cek buku</div>
+                                <div class="draggable bg-yellow-200 p-3 rounded-md shadow" draggable="true"
+                                    data-problem="Data peminjam kadang hilang.">Data hilang</div>
+                                <div class="draggable bg-yellow-200 p-3 rounded-md shadow" draggable="true"
+                                    data-problem="Lupa kapan harus mengembalikan.">Lupa jadwal kembali</div>
+                                <div class="draggable bg-yellow-200 p-3 rounded-md shadow" draggable="true"
+                                    data-problem="Buku rusak tidak tercatat.">Buku rusak</div>
+                                <div class="draggable bg-yellow-200 p-3 rounded-md shadow" draggable="true"
+                                    data-problem="Denda dihitung manual.">Denda manual</div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold mb-2 text-center">Kanvas Masalah</h3>
+                            <div id="dropzone"
+                                class="dropzone p-4 rounded-lg flex flex-col items-center justify-center bg-gray-50">
+                                <p class="text-gray-400">Letakkan masalah di sini</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3: Konsep Desain -->
+                <div id="slide-3" class="slide">
+                    <h2 class="text-2xl font-bold text-green-700 mb-4">Pertemuan 2: Dari Ide Jadi Rancangan</h2>
+                    <p class="mb-4">Setelah tahu masalahnya, saatnya jadi arsitek! Kita akan gunakan dua alat ajaib:</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                            <h3 class="font-bold text-green-800">1. Flowchart (Peta Logika)</h3>
+                            <p class="text-sm mb-2">Menggambarkan alur kerja program, langkah demi langkah.</p>
+                            <img src="https://placehold.co/400x200/a7f3d0/166534?text=Contoh+Flowchart\n(Mulai->Input->Proses->Output->Selesai)"
+                                alt="Contoh Flowchart" class="rounded-md w-full">
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                            <h3 class="font-bold text-green-800">2. Wireframe (Sketsa Tampilan)</h3>
+                            <p class="text-sm mb-2">Coretan kasar tata letak aplikasi, tanpa pusingin warna.</p>
+                            <img src="https://placehold.co/400x200/a7f3d0/166534?text=Contoh+Wireframe\n(Kotak+Garis+Teks)"
+                                alt="Contoh Wireframe" class="rounded-md w-full">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 4: Aktivitas Desain -->
+                <div id="slide-4" class="slide">
+                    <h2 class="text-2xl font-bold text-green-700 mb-2">Misi 2: Arsitek Solusi Perpus</h2>
+                    <p class="mb-4">Mari kita rancang alur untuk proses "Meminjam Buku". Susun blok di bawah ini ke
+                        dalam urutan yang benar!</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div id="flowchart-blocks"
+                            class="flex flex-col gap-2 p-2 border rounded-lg bg-gray-50 min-h-[150px]">
+                            <div class="draggable bg-green-200 p-3 rounded-md shadow" draggable="true" data-order="5">
+                                Selesai</div>
+                            <div class="draggable bg-green-200 p-3 rounded-md shadow" draggable="true" data-order="1">
+                                Mulai</div>
+                            <div class="draggable bg-green-200 p-3 rounded-md shadow" draggable="true" data-order="3">
+                                Tunjukkan ke Pustakawan</div>
+                            <div class="draggable bg-green-200 p-3 rounded-md shadow" draggable="true" data-order="4">
+                                Pustakawan scan & catat data</div>
+                            <div class="draggable bg-green-200 p-3 rounded-md shadow" draggable="true" data-order="2">
+                                Siswa mencari buku</div>
+                        </div>
+                        <div id="flowchart-dropzone" class="dropzone p-4 rounded-lg bg-gray-50 flex flex-col gap-2">
+                            <p id="flowchart-placeholder" class="text-gray-400 m-auto">Susun alur di sini</p>
+                        </div>
+                    </div>
+                    <button id="check-flowchart"
+                        class="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Cek Urutan</button>
+                    <p id="flowchart-result" class="mt-2 font-semibold"></p>
+                </div>
+
+                <!-- Slide 5: Konsep Akhir -->
+                <div id="slide-5" class="slide">
+                    <h2 class="text-2xl font-bold text-red-700 mb-4">Pertemuan 3: Dari Rancangan Jadi Simulasi</h2>
+                    <p class="mb-2">Rancangan sudah jadi! Sekarang saatnya 'menghidupkan' aplikasi. Tapi awas, ada
+                        monster kecil bernama 'Bug'!</p>
+                    <div class="relative bg-gray-100 p-4 rounded-lg border">
+                        <h3 class="text-lg font-bold mb-2">Aplikasi Perpustakaan v0.1</h3>
+                        <div class="flex items-center mb-4">
+                            <input type="text" placeholder="Cari buku..." class="border rounded-l-md p-2 w-full">
+                            <button class="bg-blue-500 text-white p-2 rounded-r-md">Cari</button>
+                        </div>
+                        <h4 class="font-semibold">Hasil Pencarian:</h4>
+                        <p>1. Laskar Pelangi</p>
+                        <p>2. Bumi Manusia</p>
+                        <button class="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg">Pinjam Buku Terplih</button>
+
+                        <!-- Bug Targets -->
+                        <div id="bug1" class="bug-target" style="top: 100px; left: 180px; width: 150px; height: 40px;">
+                        </div>
+                        <p id="bug1-feedback" class="absolute text-red-600 font-bold"
+                            style="top: 145px; left: 180px; display:none;">Typo! Seharusnya 'Terpilih'</p>
+                    </div>
+                    <p class="mt-4">**Interaksi "Temukan Bug":** Klik pada bagian yang menurutmu aneh atau salah pada
+                        gambar di atas!</p>
+                </div>
+
+                <!-- Slide 6: Simulasi -->
+                <div id="slide-6" class="slide">
+                    <h2 class="text-2xl font-bold text-purple-700 mb-2">Misi Final: Project Manager Challenge!</h2>
+                    <p id="sim-intro" class="mb-4">Wali kelas memintamu membuat aplikasi **Jadwal Piket Kelas**. Mari
+                        kelola proyek ini dari awal sampai akhir!</p>
+                    <div id="sim-container"
+                        class="bg-purple-50 p-6 rounded-lg border border-purple-200 min-h-[300px] flex flex-col justify-center">
+                        <!-- Konten Simulasi akan di-generate oleh JavaScript -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Navigation -->
+            <footer class="mt-8 flex justify-between items-center">
+                <button id="prev-btn"
+                    class="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled>Kembali</button>
+                <span id="slide-counter" class="text-gray-500">1 / 6</span>
+                <button id="next-btn"
+                    class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Lanjut</button>
+            </footer>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const slideCounter = document.getElementById('slide-counter');
+            const progressBar = document.getElementById('progress-bar');
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+
+            function updateSlide() {
+                slides.forEach((slide, index) => {
+                    slide.classList.toggle('active', index === currentSlide);
+                });
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === totalSlides - 1;
+                slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+                progressBar.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+
+                if (currentSlide === 1) setupMisi1Interaction();
+                if (currentSlide === 3) setupMisi2Interaction();
+                if (currentSlide === 4) initBugHunt();
+                if (currentSlide === 5) initSimulation();
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentSlide < totalSlides - 1) {
+                    currentSlide++;
+                    updateSlide();
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateSlide();
+                }
+            });
+
+            // --- REVISED DRAG AND DROP HANDLER ---
+            function activateDragAndDrop(containerSelector, onDropCallback) {
+                const container = document.querySelector(containerSelector);
+                if (!container || container.dataset.dragInit === 'true') {
+                    return;
+                }
+                container.dataset.dragInit = 'true';
+
+                let draggedItem = null;
+
+                const handleDragStart = (e) => {
+                    draggedItem = e.target;
+                    setTimeout(() => {
+                        draggedItem.classList.add('dragging');
+                    }, 0);
+                };
+
+                const handleDragEnd = (e) => {
+                    if (draggedItem) {
+                        draggedItem.classList.remove('dragging');
+                    }
+                    draggedItem = null;
+                };
+
+                const handleDragOver = (e) => {
+                    e.preventDefault();
+                    const dropzone = e.target.closest('.dropzone');
+                    if (dropzone) {
+                        dropzone.classList.add('drag-over');
+                    }
+                };
+
+                const handleDragLeave = (e) => {
+                    const dropzone = e.target.closest('.dropzone');
+                    if (dropzone) {
+                        dropzone.classList.remove('drag-over');
+                    }
+                };
+
+                const handleDrop = (e) => {
+                    e.preventDefault();
+                    const dropzone = e.target.closest('.dropzone');
+                    if (dropzone && draggedItem) {
+                        onDropCallback(draggedItem, dropzone);
+                        dropzone.classList.remove('drag-over');
+                    }
+                };
+
+                // Attach events to all draggable items in the container
+                container.querySelectorAll('.draggable').forEach(item => {
+                    // Mouse events
+                    item.addEventListener('dragstart', handleDragStart);
+                    item.addEventListener('dragend', handleDragEnd);
+
+                    // Touch events simulation
+                    item.addEventListener('touchstart', (e) => {
+                        item.setAttribute('draggable', 'true');
+                        handleDragStart(e);
+                    }, { passive: true });
+
+                    item.addEventListener('touchend', (e) => {
+                        item.setAttribute('draggable', 'false');
+                        handleDragEnd(e);
+                    });
+                });
+
+                // Attach events to all dropzones on the page
+                document.querySelectorAll('.dropzone').forEach(dropzone => {
+                    dropzone.addEventListener('dragover', handleDragOver);
+                    dropzone.addEventListener('dragleave', handleDragLeave);
+                    dropzone.addEventListener('drop', handleDrop);
+                });
+            }
+
+            // Setup for Misi 1
+            function setupMisi1Interaction() {
+                activateDragAndDrop('#problem-cards', (draggedItem, dropzone) => {
+                    const placeholder = dropzone.querySelector('p');
+                    if (placeholder) placeholder.style.display = 'none';
+
+                    const newElem = document.createElement('div');
+                    newElem.className = 'bg-yellow-400 p-2 my-1 rounded-md text-sm';
+                    newElem.textContent = draggedItem.dataset.problem;
+                    dropzone.appendChild(newElem);
+                    draggedItem.style.display = 'none'; // Hide original
+                });
+            }
+
+            // Setup for Misi 2
+            function setupMisi2Interaction() {
+                // Activate dragging for both containers
+                activateDragAndDrop('#flowchart-blocks', (draggedItem, dropzone) => {
+                    dropzone.appendChild(draggedItem);
+                    const placeholder = dropzone.querySelector('#flowchart-placeholder');
+                    if (placeholder) placeholder.style.display = 'none';
+                });
+                activateDragAndDrop('#flowchart-dropzone', (draggedItem, dropzone) => {
+                    dropzone.appendChild(draggedItem);
+                });
+
+                const checkBtn = document.getElementById('check-flowchart');
+                if (checkBtn.dataset.listener) return;
+                checkBtn.dataset.listener = 'true';
+
+                checkBtn.addEventListener('click', () => {
+                    const resultText = document.getElementById('flowchart-result');
+                    const dropzone = document.getElementById('flowchart-dropzone');
+                    const children = Array.from(dropzone.children).filter(el => el.classList.contains('draggable'));
+                    let isCorrect = true;
+                    if (children.length !== 5) {
+                        isCorrect = false;
+                    } else {
+                        for (let i = 0; i < children.length; i++) {
+                            if (parseInt(children[i].dataset.order) !== i + 1) {
+                                isCorrect = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (isCorrect) {
+                        resultText.textContent = "Kerja bagus! Urutannya benar.";
+                        resultText.className = "mt-2 font-semibold text-green-600";
+                    } else {
+                        resultText.textContent = "Hmm, coba periksa lagi urutannya.";
+                        resultText.className = "mt-2 font-semibold text-red-600";
+                    }
+                });
+            }
+
+            // --- Fitur Bug Hunt ---
+            function initBugHunt() {
+                const bug1 = document.getElementById('bug1');
+                const bug1Feedback = document.getElementById('bug1-feedback');
+                if (!bug1 || bug1.dataset.initialized) return;
+                bug1.dataset.initialized = true;
+
+                bug1.addEventListener('click', () => {
+                    bug1.classList.add('found');
+                    bug1Feedback.style.display = 'block';
+                    setTimeout(() => { bug1Feedback.style.display = 'none'; }, 2000);
+                });
+            }
+
+            // --- Fitur Simulasi ---
+            function initSimulation() {
+                const simContainer = document.getElementById('sim-container');
+                if (!simContainer || simContainer.dataset.initialized) {
+                    simContainer.dataset.initialized = 'true';
+                } else {
+                    // Reset if re-initializing
+                }
+
+                const stages = [
+                    {
+                        question: "Tahap 1: ANALISIS. Fitur apa yang paling penting untuk aplikasi Jadwal Piket?",
+                        options: [
+                            { text: "Melihat jadwal hari ini & notifikasi pengingat.", correct: true, feedback: "Tepat! Ini adalah fitur inti yang paling dibutuhkan pengguna." },
+                            { text: "Fitur chat antar siswa dan game.", correct: false, feedback: "Kurang tepat. Fitur ini menarik tapi bukan kebutuhan utama. Fokus pada yang esensial dulu." }
+                        ]
+                    },
+                    {
+                        question: "Tahap 2: DESAIN. Manakah desain antarmuka yang lebih baik?",
+                        options: [
+                            { text: "Tampilan simpel, langsung menunjukkan jadwal hari ini.", correct: true, feedback: "Pilihan cerdas! Pengguna bisa langsung melihat info penting tanpa bingung." },
+                            { text: "Tampilan keren dengan banyak berita sekolah, jadwal tersembunyi di menu.", correct: false, feedback: "Desain ini mungkin terlihat bagus, tapi menyulitkan pengguna. Prioritaskan kemudahan akses." }
+                        ]
+                    },
+                    {
+                        question: "Tahap 4: PENGUJIAN. Tim penguji menemukan bug: Aplikasi crash jika dibuka di hari Minggu. Apa yang harus dilakukan?",
+                        options: [
+                            { text: "Abaikan saja, toh hari Minggu libur.", correct: false, feedback: "Tidak boleh begitu! Bug sekecil apapun harus diperbaiki untuk keandalan aplikasi." },
+                            { text: "Segera perbaiki bug tersebut sebelum aplikasi dirilis.", correct: true, feedback: "Sangat benar! Kualitas adalah kunci kepercayaan pengguna." }
+                        ]
+                    },
+                    {
+                        question: "Tahap 5: PEMELIHARAAN. Setelah rilis, wali kelas minta tambahan fitur laporan untuk guru. Apa tindakanmu?",
+                        options: [
+                            { text: "Lakukan pemeliharaan dan tambahkan fitur baru di update berikutnya.", correct: true, feedback: "Tepat! Aplikasi yang baik selalu berkembang sesuai kebutuhan." },
+                            { text: "Menolak karena aplikasi sudah jadi.", correct: false, feedback: "Kurang bijak. Mendengarkan masukan pengguna (termasuk guru) penting untuk pengembangan jangka panjang." }
+                        ]
+                    }
+                ];
+                let currentStage = 0;
+                let score = 0;
+
+                function renderStage() {
+                    if (currentStage >= stages.length) {
+                        simContainer.innerHTML = `
+                            <h3 class="text-xl font-bold text-center text-purple-800">Simulasi Selesai!</h3>
+                            <p class="text-center my-4">Kamu berhasil mengelola proyek dengan skor:</p>
+                            <p class="text-4xl font-bold text-center text-green-600">${score} / ${stages.length}</p>
+                            <p class="text-center mt-4">Kamu telah belajar bagaimana sebuah produk digital dikembangkan, dari ide hingga pemeliharaan. Kerja bagus!</p>
+                             <button id="restart-sim" class="mt-4 mx-auto block bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600">Ulangi Simulasi</button>
+                        `;
+                        document.getElementById('restart-sim').addEventListener('click', initSimulation);
+                        return;
+                    }
+
+                    const stage = stages[currentStage];
+                    let optionsHTML = '';
+                    stage.options.forEach((opt, index) => {
+                        optionsHTML += `<button class="sim-option w-full text-left bg-white p-3 rounded-lg hover:bg-purple-200 border border-purple-300" data-correct="${opt.correct}" data-feedback="${opt.feedback}">${opt.text}</button>`;
+                    });
+
+                    simContainer.innerHTML = `
+                        <p class="font-semibold mb-4">${stage.question}</p>
+                        <div class="flex flex-col gap-2">${optionsHTML}</div>
+                        <p id="sim-feedback" class="mt-4 font-semibold"></p>
+                    `;
+
+                    document.querySelectorAll('.sim-option').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const isCorrect = e.target.dataset.correct === 'true';
+                            const feedback = e.target.dataset.feedback;
+                            const feedbackEl = document.getElementById('sim-feedback');
+
+                            if (isCorrect) {
+                                score++;
+                                feedbackEl.className = 'mt-4 font-semibold text-green-600';
+                            } else {
+                                feedbackEl.className = 'mt-4 font-semibold text-red-600';
+                            }
+                            feedbackEl.textContent = feedback;
+
+                            document.querySelectorAll('.sim-option').forEach(b => b.disabled = true);
+                            setTimeout(() => {
+                                currentStage++;
+                                renderStage();
+                            }, 2500);
+                        });
+                    });
+                }
+
+                simContainer.innerHTML = ''; // Clear container before rendering
+                renderStage();
+            }
+
+            // Initialize first slide
+            updateSlide();
+        });
+    </script>
+</body>
+
+</html>
