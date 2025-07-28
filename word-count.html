@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Penghitung Kata</title>
+
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Custom transition for better visual feedback */
+        .stat-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Penghitung Kata & Karakter</h1>
+            <p class="text-gray-500 mt-2">Masukkan teks di bawah untuk menghitung statistik secara otomatis.</p>
+        </div>
+
+        <!-- Textarea for input -->
+        <div class="mb-6">
+            <textarea id="text-input"
+                class="w-full h-48 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                placeholder="Ketik atau tempel teks Anda di sini..."></textarea>
+        </div>
+
+        <!-- Statistics Display Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8 text-center">
+            <!-- Words -->
+            <div class="stat-card bg-blue-50 p-4 rounded-lg">
+                <h3 class="text-sm font-semibold text-blue-800 uppercase">Kata</h3>
+                <p id="word-count" class="text-3xl font-bold text-blue-600">0</p>
+            </div>
+            <!-- Characters (with spaces) -->
+            <div class="stat-card bg-purple-50 p-4 rounded-lg">
+                <h3 class="text-sm font-semibold text-purple-800 uppercase">Karakter</h3>
+                <p id="char-count" class="text-3xl font-bold text-purple-600">0</p>
+            </div>
+            <!-- Characters (without spaces) -->
+            <div class="stat-card bg-green-50 p-4 rounded-lg">
+                <h3 class="text-sm font-semibold text-green-800 uppercase">Tanpa Spasi</h3>
+                <p id="char-nospaces-count" class="text-3xl font-bold text-green-600">0</p>
+            </div>
+            <!-- Sentences -->
+            <div class="stat-card bg-yellow-50 p-4 rounded-lg">
+                <h3 class="text-sm font-semibold text-yellow-800 uppercase">Kalimat</h3>
+                <p id="sentence-count" class="text-3xl font-bold text-yellow-600">0</p>
+            </div>
+            <!-- Paragraphs -->
+            <div class="stat-card bg-red-50 p-4 rounded-lg">
+                <h3 class="text-sm font-semibold text-red-800 uppercase">Paragraf</h3>
+                <p id="paragraph-count" class="text-3xl font-bold text-red-600">0</p>
+            </div>
+        </div>
+
+        <!-- Action Button -->
+        <div class="text-center">
+            <button id="clear-btn"
+                class="bg-gray-600 text-white px-8 py-3 rounded-full hover:bg-gray-700 transition font-semibold">
+                Bersihkan
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript for counting logic -->
+    <script>
+        const textInput = document.getElementById('text-input');
+        const wordCountEl = document.getElementById('word-count');
+        const charCountEl = document.getElementById('char-count');
+        const charNoSpacesCountEl = document.getElementById('char-nospaces-count');
+        const sentenceCountEl = document.getElementById('sentence-count');
+        const paragraphCountEl = document.getElementById('paragraph-count');
+        const clearBtn = document.getElementById('clear-btn');
+
+        // Function to update all counts
+        function updateCounts() {
+            const text = textInput.value.trim();
+
+            // 1. Word Count
+            const words = text.split(/\s+/).filter(word => word.length > 0);
+            wordCountEl.textContent = words.length;
+
+            // 2. Character Count (with spaces)
+            charCountEl.textContent = text.length;
+
+            // 3. Character Count (without spaces)
+            const charsWithoutSpaces = text.replace(/\s/g, '');
+            charNoSpacesCountEl.textContent = charsWithoutSpaces.length;
+
+            // 4. Sentence Count
+            // Matches sentences ending with ., !, ? followed by a space or end of string.
+            const sentences = text.match(/[^.!?]+[.!?]\s*|[^.!?]+$/g);
+            sentenceCountEl.textContent = sentences ? sentences.length : 0;
+            
+            // 5. Paragraph Count
+            // Splits by one or more newlines.
+            const paragraphs = text.split(/\n+/).filter(p => p.trim().length > 0);
+            paragraphCountEl.textContent = paragraphs.length;
+        }
+
+        // Event listener for input
+        textInput.addEventListener('input', updateCounts);
+
+        // Event listener for clear button
+        clearBtn.addEventListener('click', () => {
+            textInput.value = '';
+            updateCounts(); // Reset all counts to 0
+        });
+
+        // Initial count on page load (in case of cached text)
+        updateCounts();
+    </script>
+</body>
+
+</html>
