@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materi Kelas X - Belajar Informatika</title>
+
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .tab-active {
+            border-bottom-color: #3B82F6;
+            /* blue-500 */
+            color: #3B82F6;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header (sama seperti homepage) -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-blue-600">
+                <a href="/">BelajarYuk</a>
+            </div>
+            <ul class="hidden md:flex items-center space-x-8 text-gray-600">
+                <li><a href="/" class="hover:text-blue-600 transition">Beranda</a></li>
+                <li><a href="/#pilih-kelas" class="hover:text-blue-600 transition">Kelas</a></li>
+                <li><a href="#" class="hover:text-blue-600 transition">Tentang Kami</a></li>
+            </ul>
+            <a href="#"
+                class="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition font-semibold">
+                Masuk
+            </a>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-16">
+        <!-- Page Title and Breadcrumbs -->
+        <div>
+            <nav class="text-sm text-gray-500 mb-2">
+                <a href="/" class="hover:underline">Beranda</a>
+                <span class="mx-2">&gt;</span>
+                <span>Kelas X</span>
+            </nav>
+            <h1 class="text-4xl font-bold text-gray-800">Materi Pembelajaran Kelas X</h1>
+        </div>
+
+        <!-- Tab Navigation System -->
+        <div class="mt-12">
+            <!-- Tab Buttons -->
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8" aria-label="Tabs" role="tablist">
+                    <button role="tab"
+                        class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 tab-active"
+                        data-tab-target="#bk">
+                        Berpikir Komputasional (BK)
+                    </button>
+                    <button role="tab"
+                        class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                        data-tab-target="#ld">
+                        Literasi Digital (LD)
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Tab Content Panels -->
+            <div class="mt-8">
+                <!-- Panel for Berpikir Komputasional -->
+                <div role="tabpanel" id="bk" class="tab-content">
+                    <!-- Box Capaian Pembelajaran -->
+                    <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500 mb-8">
+                        <h3 class="text-xl font-bold text-blue-800 mb-2">Capaian Pembelajaran: Berpikir Komputasional
+                        </h3>
+                        <p class="text-blue-900">Pada akhir fase ini, siswa mampu menerapkan strategi algoritmik standar
+                            untuk menghasilkan beberapa solusi persoalan dengan data diskrit bervolume tidak kecil pada
+                            kehidupan sehari-hari maupun implementasinya dalam program komputer.</p>
+                    </div>
+
+                    <!-- Topics Grid -->
+                    <h4 class="text-2xl font-semibold mb-6">Topik Pembelajaran</h4>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <a href="bk.html"
+                            class="block bg-white p-6 rounded-lg shadow-md hover:shadow-lg hover:border-blue-500 border-2 border-transparent transition">
+                            <h5 class="font-bold text-lg mb-2">Berpikir Komputasional</h5>
+                            <p class="text-gray-500 text-sm">Memahami 4 Prinsip (Dekomposisi, Abstraksi, Pola dan
+                                Algoritma).</p>
+                        </a>
+                        <a href="#"
+                            class="block bg-white p-6 rounded-lg shadow-md hover:shadow-lg hover:border-blue-500 border-2 border-transparent transition">
+                            <h5 class="font-bold text-lg mb-2">Dekomposisi Masalah</h5>
+                            <p class="text-gray-500 text-sm">Memecah masalah kompleks menjadi lebih sederhana.</p>
+                        </a>
+                        <a href="#"
+                            class="block bg-white p-6 rounded-lg shadow-md hover:shadow-lg hover:border-blue-500 border-2 border-transparent transition">
+                            <h5 class="font-bold text-lg mb-2">Pengenalan Pola dan Abstraksi</h5>
+                            <p class="text-gray-500 text-sm">Menemukan kesamaan dan menyederhanakan detail.</p>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Panel for Literasi Digital -->
+                <div role="tabpanel" id="ld" class="tab-content hidden">
+                    <!-- Box Capaian Pembelajaran -->
+                    <div class="bg-green-50 p-6 rounded-lg border-l-4 border-green-500 mb-8">
+                        <h3 class="text-xl font-bold text-green-800 mb-2">Capaian Pembelajaran: Literasi Digital</h3>
+                        <p class="text-green-900">Pada akhir fase ini, siswa mampu menggunakan berbagai aplikasi secara
+                            bersamaan dan optimal untuk berkomunikasi, mencari sumber data, serta mengelola dan
+                            mempublikasikan konten.</p>
+                    </div>
+
+                    <!-- Topics Grid -->
+                    <h4 class="text-2xl font-semibold mb-6">Topik Pembelajaran</h4>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <a href="#"
+                            class="block bg-white p-6 rounded-lg shadow-md hover:shadow-lg hover:border-green-500 border-2 border-transparent transition">
+                            <h5 class="font-bold text-lg mb-2">Etika Dunia Maya</h5>
+                            <p class="text-gray-500 text-sm">Menjadi warga digital yang bertanggung jawab.</p>
+                        </a>
+                        <a href="#"
+                            class="block bg-white p-6 rounded-lg shadow-md hover:shadow-lg hover:border-green-500 border-2 border-transparent transition">
+                            <h5 class="font-bold text-lg mb-2">Kolaborasi Online</h5>
+                            <p class="text-gray-500 text-sm">Menggunakan tools untuk kerja kelompok.</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="container mx-auto px-6 py-12">
+            <div class="text-center text-gray-500">
+                &copy; 2024 BelajarYuk. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript untuk Fungsi Tab -->
+    <script>
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetSelector = button.dataset.tabTarget;
+                const targetContent = document.querySelector(targetSelector);
+
+                // Update style tombol tab
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('tab-active');
+                });
+                button.classList.add('tab-active');
+
+                // Sembunyikan semua konten tab
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+
+                // Tampilkan konten tab yang sesuai
+                if (targetContent) {
+                    targetContent.classList.remove('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
