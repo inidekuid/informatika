@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penjelasan Logika: Alat Penentu Jenis Segitiga</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Source+Code+Pro&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .code-block {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Style untuk section agar lebih menonjol */
+        .content-section {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            border-left: 4px solid #3B82F6;
+            /* blue-500 */
+        }
+
+        .result-display {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header Utama Website -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-blue-600">
+                <a href="/">BelajarYuk</a>
+            </div>
+            <ul class="hidden md:flex items-center space-x-8 text-gray-600">
+                <li><a href="/" class="hover:text-blue-600 transition">Beranda</a></li>
+                <li><a href="/#pilih-kelas" class="hover:text-blue-600 transition">Kelas</a></li>
+            </ul>
+            <a href="#"
+                class="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition font-semibold">
+                Masuk
+            </a>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-16">
+        <!-- Judul Halaman dan Breadcrumb -->
+        <div>
+            <nav class="text-sm text-gray-500 mb-2">
+                <a href="/" class="hover:underline">Beranda</a>
+                <span class="mx-2">&gt;</span>
+                <a href="/kelas-xi/" class="hover:underline">Kelas XI</a>
+                <span class="mx-2">&gt;</span>
+                <span>Penjelasan Logika Segitiga</span>
+            </nav>
+            <h1 class="text-4xl font-bold text-gray-800">Membedah Logika di Balik Alat Penentu Jenis Segitiga</h1>
+            <p class="mt-2 text-lg text-gray-600">Memahami alur berpikir dari masalah hingga menjadi program.</p>
+        </div>
+
+        <div class="mt-10 space-y-10">
+
+            <!-- 1. Input -->
+            <section class="content-section">
+                <h2 class="text-2xl font-bold mb-4 text-blue-700">1. Input: Apa yang Kita Butuhkan?</h2>
+                <p class="text-gray-700">Setiap program dimulai dengan data masukan. Untuk masalah ini, data yang kita
+                    butuhkan sederhana:</p>
+                <ul class="list-disc list-inside mt-3 text-gray-700 bg-gray-50 p-4 rounded-md">
+                    <li><strong>Tiga buah angka</strong> yang merepresentasikan panjang dari masing-masing sisi
+                        segitiga. Kita sebut saja sisi `a`, `b`, dan `c`.</li>
+                </ul>
+                <div class="mt-6 border-t pt-6">
+                    <h3 class="font-semibold text-gray-800 mb-3">Demonstrasi Langsung</h3>
+                    <div class="bg-white border p-6 rounded-lg shadow-inner">
+                        <div class="space-y-4">
+                            <div>
+                                <label for="demo-a" class="block font-medium text-gray-700">Panjang Sisi A</label>
+                                <input type="number" id="demo-a" value="10"
+                                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="demo-b" class="block font-medium text-gray-700">Panjang Sisi B</label>
+                                <input type="number" id="demo-b" value="10"
+                                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="demo-c" class="block font-medium text-gray-700">Panjang Sisi C</label>
+                                <input type="number" id="demo-c" value="10"
+                                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+                        <button id="demo-check-btn"
+                            class="mt-6 w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                            Cek Jenis Segitiga
+                        </button>
+                        <div id="demo-output" class="result-display p-4 rounded mt-4 font-bold text-center">
+                            <!-- Hasil akan ditampilkan di sini -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Validasi -->
+            <section class="content-section">
+                <h2 class="text-2xl font-bold mb-4 text-blue-700">2. Proses #1: Validasi - "Apakah ini Segitiga?"</h2>
+                <p class="text-gray-700 mb-4">Ini adalah langkah paling penting yang sering terlewat. Sebelum menentukan
+                    jenisnya, kita harus memastikan apakah ketiga sisi yang diberikan <strong>bisa membentuk sebuah
+                        segitiga</strong>.</p>
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-md">
+                    <p class="font-semibold">Aturan: Dalil Pertidaksamaan Segitiga</p>
+                    <blockquote class="mt-1 italic text-gray-600">"Jumlah panjang dua sisi manapun dari sebuah segitiga
+                        <strong>harus lebih besar</strong> dari panjang sisi yang ketiga."</blockquote>
+                </div>
+                <p class="mt-4 text-gray-700">Artinya, tiga kondisi berikut <strong>semuanya harus terpenuhi</strong>:
+                </p>
+                <ol class="list-decimal list-inside mt-3 space-y-1 text-gray-700">
+                    <li>`a + b > c`</li>
+                    <li>`a + c > b`</li>
+                    <li>`b + c > a`</li>
+                </ol>
+                <p class="mt-4 text-gray-700">Selain itu, kita juga perlu memastikan bahwa panjang setiap sisi adalah
+                    angka positif (`a > 0`, `b > 0`, `c > 0`).</p>
+            </section>
+
+            <!-- 3. Logika Kondisi -->
+            <section class="content-section">
+                <h2 class="text-2xl font-bold mb-4 text-blue-700">3. Proses #2: Logika Kondisi - "Segitiga Jenis Apa
+                    Ini?"</h2>
+                <p class="text-gray-700 mb-4">Setelah kita yakin bahwa sisinya valid, barulah kita bisa menentukan
+                    jenisnya menggunakan serangkaian kondisi `if-else`. Urutan pengecekan ini penting agar logikanya
+                    benar.</p>
+                <p class="mb-2 text-gray-700">Kita periksa dari kondisi yang paling spesifik ke yang paling umum.
+                    Berikut adalah langkah logikanya:</p>
+                <div class="bg-slate-800 text-white p-4 rounded-lg code-block overflow-x-auto">
+                    <pre><code>
+JIKA (sisi a, b, dan c adalah segitiga yang valid) MAKA:
+
+    <span class="text-green-400">// Kondisi 1: Paling spesifik</span>
+    JIKA (a sama dengan b) DAN (b sama dengan c) MAKA:
+        Hasilnya adalah "Segitiga Sama Sisi"
+
+    <span class="text-green-400">// Kondisi 2: Jika bukan sama sisi, cek kemungkinan ini</span>
+    LAIN JIKA (a sama dengan b) ATAU (a sama dengan c) ATAU (b sama dengan c) MAKA:
+        Hasilnya adalah "Segitiga Sama Kaki"
+
+    <span class="text-green-400">// Kondisi 3: Jika bukan keduanya, pasti ini</span>
+    LAIN:
+        Hasilnya adalah "Segitiga Sembarang"
+
+LAIN (jika tidak valid dari awal):
+    Hasilnya adalah "Bukan Segitiga"
+</code></pre>
+                </div>
+                <p class="mt-4 text-gray-700"><strong>Mengapa urutannya seperti itu?</strong> Kita harus mengecek
+                    <strong>Sama Sisi</strong> terlebih dahulu. Sebuah segitiga sama sisi (misal: 5,5,5) juga memenuhi
+                    kondisi sama kaki. Jika kita mengecek sama kaki lebih dulu, segitiga sama sisi akan salah
+                    teridentifikasi sebagai sama kaki.</p>
+            </section>
+
+            <!-- 4. Output -->
+            <section class="content-section">
+                <h2 class="text-2xl font-bold mb-4 text-blue-700">4. Output: Menampilkan Hasil</h2>
+                <p class="text-gray-700">Langkah terakhir adalah menampilkan hasil dari proses logika di atas kepada
+                    pengguna. Hasilnya bisa berupa salah satu dari empat kemungkinan:</p>
+                <ul class="list-disc list-inside mt-3 space-y-2 text-gray-700">
+                    <li><span class="font-semibold">Segitiga Sama Sisi</span></li>
+                    <li><span class="font-semibold">Segitiga Sama Kaki</span></li>
+                    <li><span class="font-semibold">Segitiga Sembarang</span></li>
+                    <li><span class="font-semibold text-red-600">Bukan Segitiga</span></li>
+                </ul>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer Utama Website -->
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="container mx-auto px-6 py-12">
+            <div class="text-center text-gray-500">
+                &copy; 2024 BelajarYuk. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- Fungsionalitas untuk Demonstrasi Input ---
+        const sisiA_input = document.getElementById('demo-a');
+        const sisiB_input = document.getElementById('demo-b');
+        const sisiC_input = document.getElementById('demo-c');
+        const checkBtn = document.getElementById('demo-check-btn');
+        const outputDiv = document.getElementById('demo-output');
+
+        function checkTriangleDemo() {
+            // Mengambil nilai dari input dan mengubahnya menjadi angka
+            const a = parseFloat(sisiA_input.value);
+            const b = parseFloat(sisiB_input.value);
+            const c = parseFloat(sisiC_input.value);
+
+            // Menghapus style warna sebelumnya
+            outputDiv.className = 'result-display p-4 rounded mt-4 font-bold text-center';
+
+            // Proses Validasi dan Logika Kondisi
+            if (a > 0 && b > 0 && c > 0 && (a + b > c) && (a + c > b) && (b + c > a)) {
+                // Jika valid, tentukan jenisnya
+                if (a === b && b === c) {
+                    outputDiv.textContent = 'Hasil: Segitiga Sama Sisi';
+                    outputDiv.classList.add('bg-green-100', 'text-green-800');
+                } else if (a === b || a === c || b === c) {
+                    outputDiv.textContent = 'Hasil: Segitiga Sama Kaki';
+                    outputDiv.classList.add('bg-blue-100', 'text-blue-800');
+                } else {
+                    outputDiv.textContent = 'Hasil: Segitiga Sembarang';
+                    outputDiv.classList.add('bg-yellow-100', 'text-yellow-800');
+                }
+            } else {
+                // Jika tidak valid
+                outputDiv.textContent = 'Hasil: Bukan Segitiga';
+                outputDiv.classList.add('bg-red-100', 'text-red-800');
+            }
+        }
+
+        // Menambahkan event listener ke tombol
+        checkBtn.addEventListener('click', checkTriangleDemo);
+
+        // Menjalankan fungsi saat halaman pertama kali dimuat
+        document.addEventListener('DOMContentLoaded', checkTriangleDemo);
+    </script>
+
+</body>
+
+</html>
