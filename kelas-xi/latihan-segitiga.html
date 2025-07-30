@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Latihan: Alat Penentu Jenis Segitiga</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Source+Code+Pro&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .code-block {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .code-block .comment {
+            color: #9ca3af;
+            /* gray-400 */
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header Utama Website -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-blue-600">
+                <a href="/">BelajarYuk</a>
+            </div>
+            <ul class="hidden md:flex items-center space-x-8 text-gray-600">
+                <li><a href="/" class="hover:text-blue-600 transition">Beranda</a></li>
+                <li><a href="/#pilih-kelas" class="hover:text-blue-600 transition">Kelas</a></li>
+            </ul>
+            <a href="#"
+                class="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition font-semibold">
+                Masuk
+            </a>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-16">
+        <!-- Judul Halaman dan Breadcrumb -->
+        <div>
+            <nav class="text-sm text-gray-500 mb-2">
+                <a href="/" class="hover:underline">Beranda</a>
+                <span class="mx-2">&gt;</span>
+                <a href="/kelas-xi/" class="hover:underline">Kelas XI</a>
+                <span class="mx-2">&gt;</span>
+                <span>Latihan: Alat Penentu Jenis Segitiga</span>
+            </nav>
+            <h1 class="text-4xl font-bold text-gray-800">Panduan Praktik: Membuat Aplikasi Sendiri</h1>
+            <p class="mt-2 text-lg text-gray-600">Ikuti tahapan berikut untuk membuat dan menguji program pertamamu.</p>
+        </div>
+
+        <div class="mt-10 space-y-12">
+
+            <!-- Tahap 1: Persiapan Lingkungan -->
+            <div class="bg-white p-8 rounded-lg shadow-md border-l-4 border-blue-500">
+                <h2 class="text-2xl font-bold mb-4">Tahap 1: Pilih dan Siapkan Lingkungan Coding</h2>
+                <p class="mb-4 text-gray-700">Anda bisa memilih salah satu dari platform online gratis ini. Keduanya
+                    tidak memerlukan instalasi dan bisa diakses dari komputer atau ponsel.</p>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-gray-50 p-4 rounded-lg border">
+                        <h3 class="font-bold text-lg">Opsi A: Replit (Web)</h3>
+                        <p class="text-sm text-gray-600 mb-3">Pilihan terbaik jika Anda ingin membuat aplikasi dengan
+                            tampilan visual (tombol, input, dll).</p>
+                        <a href="https://replit.com/new/html" target="_blank"
+                            class="inline-block bg-blue-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700">Buka
+                            Replit HTML</a>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg border">
+                        <h3 class="font-bold text-lg">Opsi B: Google Colab (Python)</h3>
+                        <p class="text-sm text-gray-600 mb-3">Pilihan bagus untuk fokus pada logika pemrogramannya saja,
+                            tanpa antarmuka visual.</p>
+                        <a href="https://colab.research.google.com/" target="_blank"
+                            class="inline-block bg-orange-500 text-white px-4 py-2 rounded-md font-semibold hover:bg-orange-600">Buka
+                            Google Colab</a>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg border">
+                        <h3 class="font-bold text-lg">Opsi C: Online C Compiler</h3>
+                        <p class="text-sm text-gray-600 mb-3">Pilihan klasik untuk memahami dasar-dasar pemrograman
+                            prosedural yang kuat.</p>
+                        <a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank"
+                            class="inline-block bg-gray-700 text-white px-4 py-2 rounded-md font-semibold hover:bg-gray-800">Buka
+                            Online C Compiler</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tahap 2: Salin dan Pahami Kode -->
+            <div class="bg-white p-8 rounded-lg shadow-md border-l-4 border-green-500">
+                <h2 class="text-2xl font-bold mb-4">Tahap 2: Salin dan Tempel Kode Awal</h2>
+                <p class="mb-4 text-gray-700">Pilih salah satu blok kode di bawah sesuai platform yang Anda gunakan,
+                    lalu salin seluruh isinya dan tempel ke editor di platform tersebut.</p>
+
+                <!-- Kode untuk Opsi A: Replit -->
+                <div>
+                    <h3 class="font-bold text-xl mb-2">Kode untuk Replit (HTML, CSS, JavaScript)</h3>
+                    <div class="bg-slate-800 text-white p-4 rounded-lg code-block overflow-x-auto">
+                        <pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Alat Segitiga&lt;/title&gt;
+    &lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body class="font-sans p-8 bg-gray-100"&gt;
+    &lt;h1 class="text-2xl font-bold mb-4"&gt;Alat Penentu Jenis Segitiga&lt;/h1&gt;
+    &lt;div class="space-y-2"&gt;
+        &lt;div&gt;&lt;label&gt;Sisi A: &lt;/label&gt;&lt;input type="number" id="sisiA" value="5" class="border rounded p-1"&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;label&gt;Sisi B: &lt;/label&gt;&lt;input type="number" id="sisiB" value="5" class="border rounded p-1"&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;label&gt;Sisi C: &lt;/label&gt;&lt;input type="number" id="sisiC" value="5" class="border rounded p-1"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;button id="check-btn" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded"&gt;Cek&lt;/button&gt;
+    &lt;div id="output" class="p-4 rounded mt-4 font-bold bg-gray-200"&gt;Hasil akan muncul di sini...&lt;/div&gt;
+    &lt;script&gt;
+        const sisiA = document.getElementById('sisiA');
+        const sisiB = document.getElementById('sisiB');
+        const sisiC = document.getElementById('sisiC');
+        const checkBtn = document.getElementById('check-btn');
+        const output = document.getElementById('output');
+
+        function checkTriangle() {
+            const a = parseFloat(sisiA.value);
+            const b = parseFloat(sisiB.value);
+            const c = parseFloat(sisiC.value);
+
+            if (a > 0 && b > 0 && c > 0 && (a + b > c) && (a + c > b) && (b + c > a)) {
+                if (a === b && b === c) {
+                    output.textContent = 'Segitiga Sama Sisi';
+                } else if (a === b || a === c || b === c) {
+                    output.textContent = 'Segitiga Sama Kaki';
+                } else {
+                    output.textContent = 'Segitiga Sembarang';
+                }
+            } else {
+                output.textContent = 'Bukan Segitiga';
+            }
+        }
+        checkBtn.addEventListener('click', checkTriangle);
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+                    </div>
+                </div>
+
+                <!-- Kode untuk Opsi B: Colab -->
+                <div class="mt-8">
+                    <h3 class="font-bold text-xl mb-2">Kode untuk Google Colab (Python)</h3>
+                    <div class="bg-slate-800 text-white p-4 rounded-lg code-block overflow-x-auto">
+                        <pre><code>
+def cek_segitiga(a, b, c):
+  <span class="comment"># Cek validitas segitiga</span>
+  if (a + b > c) and (a + c > b) and (b + c > a):
+    <span class="comment"># Tentukan jenisnya</span>
+    if a == b and b == c:
+      return "Segitiga Sama Sisi"
+    elif a == b or a == c or b == c:
+      return "Segitiga Sama Kaki"
+    else:
+      return "Segitiga Sembarang"
+  else:
+    return "Bukan Segitiga"
+
+<span class="comment"># --- Area Uji Coba ---</span>
+<span class="comment"># Ganti angka di bawah ini untuk menguji</span>
+sisi_a = 10
+sisi_b = 10
+sisi_c = 10
+
+<span class="comment"># Memanggil fungsi dan mencetak hasilnya</span>
+hasil = cek_segitiga(sisi_a, sisi_b, sisi_c)
+print(f"Dengan sisi {sisi_a}, {sisi_b}, {sisi_c}, hasilnya adalah: {hasil}")
+</code></pre>
+                    </div>
+                </div>
+
+                <!-- Kode untuk Opsi C: C -->
+                <div class="mt-8">
+                    <h3 class="font-bold text-xl mb-2">Kode untuk Online C Compiler</h3>
+                    <div class="bg-slate-800 text-white p-4 rounded-lg code-block overflow-x-auto">
+                        <pre><code>
+#include &lt;stdio.h&gt;
+
+int main() {
+    <span class="comment">// Deklarasi variabel untuk menampung panjang sisi</span>
+    int a, b, c;
+
+    <span class="comment">// Meminta input dari pengguna</span>
+    printf("Masukkan panjang sisi A: ");
+    scanf("%d", &a);
+
+    printf("Masukkan panjang sisi B: ");
+    scanf("%d", &b);
+
+    printf("Masukkan panjang sisi C: ");
+    scanf("%d", &c);
+
+    <span class="comment">// Cek apakah input valid (semua lebih dari 0)</span>
+    if (a > 0 && b > 0 && c > 0) {
+        <span class="comment">// Cek validitas segitiga</span>
+        if ((a + b > c) && (a + c > b) && (b + c > a)) {
+            <span class="comment">// Tentukan jenisnya</span>
+            if (a == b && b == c) {
+                printf("Hasil: Segitiga Sama Sisi\n");
+            } else if (a == b || a == c || b == c) {
+                printf("Hasil: Segitiga Sama Kaki\n");
+            } else {
+                printf("Hasil: Segitiga Sembarang\n");
+            }
+        } else {
+            printf("Hasil: Bukan Segitiga (sisi tidak valid)\n");
+        }
+    } else {
+        printf("Hasil: Sisi harus lebih dari 0\n");
+    }
+
+    return 0;
+}
+</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tahap 3: Jalankan dan Catat Hasil -->
+            <div class="bg-white p-8 rounded-lg shadow-md border-l-4 border-yellow-500">
+                <h2 class="text-2xl font-bold mb-4">Tahap 3: Jalankan, Uji, dan Catat Hasil</h2>
+                <p class="mb-4 text-gray-700">Setelah kode siap, jalankan program Anda:</p>
+                <ul class="list-disc list-inside space-y-3 mb-6">
+                    <li><b>Di Replit:</b> Tekan tombol "Run" berwarna hijau di bagian atas. Pratinjau web akan muncul di
+                        sebelah kanan. Masukkan angka di kotak input lalu klik "Cek".</li>
+                    <li><b>Di Google Colab:</b> Tekan ikon "Play" (segitiga) di sebelah kiri "Code Cell". Hasil akan
+                        tercetak di bawahnya. Untuk menguji angka lain, ubah nilai variabel `sisi_a`, `sisi_b`, `sisi_c`
+                        lalu jalankan lagi.</li>
+                    <li><b>Di Online C Compiler:</b> Tekan tombol "Run". Program akan meminta Anda memasukkan angka satu
+                        per satu di area "Input" atau "Terminal". Ketik angka lalu tekan Enter.</li>
+                </ul>
+                <p class="mb-4 text-gray-700">Lakukan beberapa percobaan dengan kombinasi angka yang berbeda (contoh:
+                    5,5,5 atau 7,8,9 atau 1,2,4). Catat hasil pengujian Anda pada tabel di bawah ini secara manual.</p>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border">
+                        <thead class="border-b bg-gray-50">
+                            <tr>
+                                <th class="p-3 border-r">Sisi A</th>
+                                <th class="p-3 border-r">Sisi B</th>
+                                <th class="p-3 border-r">Sisi C</th>
+                                <th class="p-3">Hasil yang Didapat</th>
+                            </tr>
+                        </thead>
+                        <tbody id="results-table-body">
+                            <!-- Contoh baris untuk diisi siswa -->
+                            <tr class="border-b">
+                                <td class="p-3 border-r">5</td>
+                                <td class="p-3 border-r">5</td>
+                                <td class="p-3 border-r">5</td>
+                                <td class="p-3">Segitiga Sama Sisi</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3 border-r">7</td>
+                                <td class="p-3 border-r">7</td>
+                                <td class="p-3 border-r">10</td>
+                                <td class="p-3">Segitiga Sama Kaki</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3 border-r"></td>
+                                <td class="p-3 border-r"></td>
+                                <td class="p-3 border-r"></td>
+                                <td class="p-3"></td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3 border-r"></td>
+                                <td class="p-3 border-r"></td>
+                                <td class="p-3 border-r"></td>
+                                <td class="p-3"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button onclick="window.print()"
+                    class="mt-6 bg-gray-600 text-white font-semibold py-2 px-5 rounded-lg shadow-md hover:bg-gray-700 transition-colors">
+                    Cetak Halaman Catatan
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+
+</html>
