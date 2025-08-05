@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Praktik Pemrograman: Klasifikasi Jenis Segitiga</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        details > summary {
+            cursor: pointer;
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        pre[class*="language-"] {
+            padding: 1.5em;
+            margin: .5em 0;
+            overflow: auto;
+            border-radius: 0.5rem;
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background-color: #4A5568;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        .copy-btn:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl">
+        
+        <!-- Header Utama -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-blue-600">Praktik Pemrograman: Dari Logika ke Kode</h1>
+            <p class="text-lg text-gray-600 mt-2">Materi: Memahami & Menguji Kode Klasifikasi Segitiga</p>
+        </header>
+
+        <!-- Petunjuk Umum -->
+        <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-md mb-8" role="alert">
+            <p class="font-bold">Selamat Datang, Siswa!</p>
+            <p>Kerjakan setiap tahapan secara berpasangan. Gunakan halaman ini sebagai panduan dan salin hasilnya ke buku catatanmu.</p>
+        </div>
+
+        <!-- JP 1: Analisis Masalah dan Perancangan -->
+        <section id="jp1" class="mb-12">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">⏱ JP 1: Analisis Masalah & Desain (40 Menit)</h2>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">🎯 Aktivitas: Memahami Masalah</h3>
+                        <p class="text-gray-600">Diskusikan dengan pasanganmu: Bagaimana sebuah program bisa mengidentifikasi jenis segitiga dari 3 sisi? Di akhir sesi ini, guru akan menunjukkan contoh kode yang akan kita uji bersama.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">✍️ Lembar Kerja 1: Tulis di Buku Catatan</h3>
+                        <p class="text-gray-600 mb-4">Salin dan isi template di bawah ini di buku catatanmu berdasarkan hasil diskusi.</p>
+                        <div class="border-2 border-dashed border-gray-300 p-4 rounded-lg bg-gray-50">
+                            <h4 class="font-bold text-gray-700">Template Analisis Masalah</h4>
+                            <p><strong>Masukan (Input):</strong> Apa saja data yang dibutuhkan?</p>
+                            <p class="text-gray-500 italic mb-2">diskusikan</p>
+                            
+                            <p><strong>Proses (Process):</strong> Langkah-langkah apa yang harus dilakukan? (Buat dalam bentuk algoritma atau flowchart)</p>
+                            <p class="text-gray-500 italic mb-2">IPO</p>
+
+                            <p><strong>Keluaran (Output):</strong> Apa hasil yang ditampilkan?</p>
+                            <p class="text-gray-500 italic">diskusikan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- JP 2: Praktik Coding di Google Colab -->
+        <section id="jp2" class="mb-12">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">⏱ JP 2: Praktik Coding di Google Colab (40 Menit)</h2>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">💻 Aktivitas: Mengetik & Menguji Kode</h3>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-600">
+                            <li>Buka Google Colab di browser ponselmu: <a href="https://colab.research.google.com/" target="_blank" class="text-blue-600 hover:underline font-semibold">colab.research.google.com</a>.</li>
+                            <li>Buat Notebook baru.</li>
+                            <li>Salin atau ketik ulang kode Python di bawah ini ke dalam sel kode di Colab.</li>
+                            <li>Jalankan kode dengan menekan tombol "Play" (▶️). Program akan memintamu memasukkan 3 angka.</li>
+                            <li>Uji program dengan beberapa kasus uji (contoh: 5,5,5 atau 1,2,4) dan catat hasilnya di bukumu.</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">🐍 Kode Program Python</h3>
+                        <div class="relative">
+                            <button onclick="copyCode(this)" class="copy-btn">Salin</button>
+                            <pre><code id="python-code" class="language-python">
+# Program klasifikasi jenis segitiga
+a = int(input("Masukkan sisi pertama: "))
+b = int(input("Masukkan sisi kedua: "))
+c = int(input("Masukkan sisi ketiga: "))
+
+# Memeriksa apakah sisi-sisi dapat membentuk segitiga
+if a + b > c and a + c > b and b + c > a:
+    # Jika bisa, periksa jenisnya
+    if a == b == c:
+        print("Segitiga Sama Sisi")
+    elif a == b or b == c or a == c:
+        print("Segitiga Sama Kaki")
+    else:
+        print("Segitiga Sembarang")
+else:
+    # Jika tidak, beri tahu pengguna
+    print("Bukan Segitiga")
+                        </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- JP 3: Review Hasil & Refleksi -->
+        <section id="jp3" class="mb-12">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">⏱ JP 3: Review Hasil & Refleksi (40 Menit)</h2>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">📢 Aktivitas: Diskusi & Refleksi</h3>
+                        <p class="text-gray-600">Diskusikan hasil uji cobamu dengan teman sebangku dan kelas. Setelah itu, salin template refleksi di bawah ini ke buku catatan dan isilah secara individu.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">✍️ Template Refleksi untuk Buku Catatan</h3>
+                        <div class="border-2 border-dashed border-gray-300 p-4 rounded-lg bg-gray-50 mt-2">
+                             <h4 class="font-bold text-gray-700">Lembar Refleksi Individu</h4>
+                             <ul class="list-disc list-inside space-y-2 mt-2">
+                                 <li>Apakah hasil program di Colab sesuai dengan harapanmu saat melakukan analisis di JP 1?</li>
+                                 <li>Baris mana dari kode di atas yang menurutmu paling sulit untuk dipahami? Mengapa?</li>
+                                 <li>Apa fungsi dari `int(input(...))` pada program tersebut?</li>
+                             </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bagian Panduan Guru -->
+        <section id="teacher-guide">
+             <details class="bg-yellow-100 rounded-lg p-4">
+                <summary class="font-bold text-yellow-800 flex justify-between items-center">
+                    <span>⭐ Panduan & Rubrik Penilaian untuk Guru (Klik untuk Buka)</span>
+                    <svg class="w-5 h-5 transition-transform transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </summary>
+                <div class="mt-4 text-yellow-900 space-y-4">
+                    <p><strong>Catatan Pedagogis:</strong> Rancangan ini berfokus pada **pemahaman kode (code comprehension)**. Siswa tidak dituntut untuk membuat solusi, melainkan memverifikasi dan memahami solusi yang sudah ada. Ini efektif untuk memperkenalkan sintaksis dasar (`if/elif/else`, `input`, `print`) dan menghubungkannya dengan logika yang sudah mereka rancang di JP 1.</p>
+                    <div>
+                        <h4 class="font-semibold">Rubrik Penilaian Formatif:</h4>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white border mt-2 rounded">
+                                <thead class="bg-yellow-200">
+                                    <tr>
+                                        <th class="py-2 px-4 border">Aspek</th>
+                                        <th class="py-2 px-4 border">Indikator</th>
+                                        <th class="py-2 px-4 border">Skor Maks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="py-2 px-4 border">Analisis Masalah</td>
+                                        <td class="py-2 px-4 border">Siswa mampu menyusun algoritma/flowchart di buku catatan.</td>
+                                        <td class="py-2 px-4 border text-center">20</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-4 border">Verifikasi Kode</td>
+                                        <td class="py-2 px-4 border">Siswa mampu menjalankan kode di Colab dan mencatat hasil uji coba dengan benar.</td>
+                                        <td class="py-2 px-4 border text-center">30</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-4 border">Pemahaman Konsep</td>
+                                        <td class="py-2 px-4 border">Siswa mampu menjelaskan fungsi baris kode tertentu saat diskusi.</td>
+                                        <td class="py-2 px-4 border text-center">30</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-4 border">Komunikasi & Refleksi</td>
+                                        <td class="py-2 px-4 border">Siswa berpartisipasi dalam diskusi dan mengisi refleksi.</td>
+                                        <td class="py-2 px-4 border text-center">20</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </details>
+        </section>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-python.min.js"></script>
+    <script>
+        // Fungsi untuk menyalin kode ke clipboard
+        function copyCode(button) {
+            const pre = button.parentElement;
+            const code = pre.querySelector('code').innerText;
+            
+            const textarea = document.createElement('textarea');
+            textarea.value = code;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                button.innerText = 'Tersalin!';
+                setTimeout(() => {
+                    button.innerText = 'Salin';
+                }, 2000);
+            } catch (err) {
+                // Fallback untuk browser yang tidak mendukung execCommand
+                navigator.clipboard.writeText(code).then(() => {
+                    button.innerText = 'Tersalin!';
+                    setTimeout(() => {
+                        button.innerText = 'Salin';
+                    }, 2000);
+                }).catch(err => {
+                    alert('Gagal menyalin kode.');
+                });
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // Menambahkan animasi pada dropdown panduan guru
+        const details = document.querySelector('details');
+        details.addEventListener('toggle', function() {
+            const icon = this.querySelector('svg');
+            if (details.open) {
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                icon.style.transform = 'rotate(0deg)';
+            }
+        });
+    </script>
+
+</body>
+</html>
