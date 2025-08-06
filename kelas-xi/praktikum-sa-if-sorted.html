@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengurutan Nilai Tryout Siswa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        details>summary {
+            cursor: pointer;
+            list-style: none;
+        }
+
+        details>summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details[open] summary svg {
+            transform: rotate(180deg);
+        }
+
+        pre[class*="language-"] {
+            padding: 1.5em;
+            margin: .5em 0;
+            overflow: auto;
+            border-radius: 0.5rem;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background-color: #4A5568;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .copy-btn:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl">
+
+        <!-- Header Utama -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-indigo-600">Pengurutan Nilai Tryout Siswa</h1>
+            <p class="text-lg text-gray-600 mt-2">Strategi Algoritmik dan Implementasi</p>
+        </header>
+
+        <!-- Petunjuk Umum -->
+        <div class="bg-indigo-100 border-l-4 border-indigo-500 text-indigo-700 p-4 rounded-md mb-8" role="alert">
+            <p class="font-bold">Selamat Datang, Siswa!</p>
+            <p>Hari ini kita akan memecahkan masalah nyata menggunakan dua strategi pemrograman yang berbeda.</p>
+        </div>
+
+        <!-- JP 1: Kontekstualisasi & Perancangan Solusi -->
+        <section id="jp1" class="mb-12">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">⏱ JP 1: Kontekstualisasi & Perancangan
+                    Solusi (45 Menit)</h2>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">🎯 Skenario Masalah</h3>
+                        <p class="text-gray-600 bg-gray-100 p-4 rounded-lg">Bayangkan kamu adalah panitia tryout di
+                            kelas. Kamu diberi data nilai dari 3 siswa: <strong>Ali (85)</strong>, <strong>Budi
+                                (70)</strong>, dan <strong>Citra (95)</strong>. Tugasmu adalah membuat urutan peringkat
+                            dari nilai tertinggi ke terendah untuk diumumkan di papan tulis.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">✍️ Tugas Pasangan: Rancang Solusinya di
+                            Buku Catatan</h3>
+                        <p class="text-gray-600 mb-4">Diskusikan dengan teman sebangkumu dan tuliskan rancangan dua
+                            strategi berbeda untuk menyelesaikan masalah ini.</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Strategi 1 -->
+                            <div class="border-2 border-dashed border-gray-300 p-4 rounded-lg">
+                                <h4 class="font-bold text-gray-700">Strategi 1: Logika Manual (If-Else Bertingkat)</h4>
+                                <p class="text-sm text-gray-500 mt-1">Buat pseudocode (langkah-langkah logis) untuk
+                                    membandingkan ketiga nilai secara manual untuk menemukan yang terbesar, kedua, dan
+                                    terkecil.</p>
+                                <p class="text-sm text-gray-500 mt-2 italic">Contoh awal: "JIKA nilai Ali lebih besar
+                                    dari Budi DAN Ali lebih besar dari Citra, MAKA Ali peringkat 1..."</p>
+                            </div>
+                            <!-- Strategi 2 -->
+                            <div class="border-2 border-dashed border-gray-300 p-4 rounded-lg">
+                                <h4 class="font-bold text-gray-700">Strategi 2: Menggunakan Fitur Bawaan (List + Sort)
+                                </h4>
+                                <p class="text-sm text-gray-500 mt-1">Buat pseudocode yang memanfaatkan fitur pengurutan
+                                    otomatis. Bagaimana caranya?</p>
+                                <p class="text-sm text-gray-500 mt-2 italic">Contoh awal: "1. Masukkan semua nilai ke
+                                    dalam sebuah daftar. 2. Gunakan perintah SORT untuk mengurutkan daftar dari besar ke
+                                    kecil. 3. Tampilkan hasilnya."</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                            <h4 class="font-bold text-gray-700">Analisis Singkat:</h4>
+                            <p class="text-gray-600">Menurutmu, strategi mana yang pseudocode-nya lebih ringkas dan
+                                mudah ditulis? Berikan alasan singkat di buku catatanmu.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bacaan Materi -->
+        <section id="materi" class="mb-12">
+            <details class="bg-white p-6 rounded-xl shadow-md">
+                <summary class="font-bold text-lg text-indigo-600 flex justify-between items-center">
+                    <span>📚 Bacaan Materi: Membedah Kode Strategi 2 (Klik untuk Buka)</span>
+                    <svg class="w-6 h-6 transition-transform transform" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </summary>
+                <div class="mt-4 text-gray-700 space-y-4 border-t pt-4">
+                    <p>Sebelum lanjut ke implementasi, mari kita pahami beberapa konsep kunci yang digunakan pada kode
+                        Strategi 2.</p>
+                    <div>
+                        <h4 class="font-semibold text-gray-800">1. `dictionary`</h4>
+                        <p class="mt-1">Anggap saja <strong>dictionary</strong> seperti kamus kontak di ponsel. Kamu
+                            menyimpan data dalam format <strong>`key: value`</strong> (kunci: nilai). Dalam kasus ini,
+                            `key`-nya adalah nama siswa (contoh: "Ali") dan `value`-nya adalah nilainya (contoh: 85).
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-800">2. `sorted(data_siswa.items(), ...)`</h4>
+                        <p class="mt-1">Ini adalah inti dari pengurutan. Mari kita pecah:</p>
+                        <ul class="list-disc list-inside ml-4 mt-2 space-y-1">
+                            <li><strong>`.items()`</strong>: Perintah ini mengubah `dictionary` menjadi sebuah daftar
+                                (`list`) yang berisi pasangan `(key, value)`. Jadi, `data_siswa.items()` akan
+                                menghasilkan `[('Ali', 85), ('Budi', 70), ('Citra', 95)]`.</li>
+                            <li><strong>`sorted()`</strong>: Ini adalah fungsi bawaan Python untuk mengurutkan. Fungsi
+                                ini akan mengambil daftar dari `.items()` dan mengurutkannya.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-800">3. `key=lambda item: item[1]`</h4>
+                        <p class="mt-1">Ini adalah instruksi untuk fungsi `sorted()`. Ini memberi tahu `sorted()`: "Saat
+                            kamu membandingkan item, lihatlah <strong>elemen dengan index 1</strong> (yaitu nilai) saja,
+                            bukan namanya (index 0)".</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-800">4. `reverse=True`</h4>
+                        <p class="mt-1">Secara default, `sorted()` mengurutkan dari kecil ke besar. Perintah
+                            <strong>`reverse=True`</strong> membalik urutannya menjadi dari <strong>besar ke
+                                kecil</strong>, sesuai yang kita butuhkan untuk membuat peringkat.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-800">5. `enumerate(data_urut, start=1)`</h4>
+                        <p class="mt-1">Fungsi <strong>`enumerate()`</strong> secara otomatis memberikan nomor urut
+                            untuk setiap item dalam daftar. <strong>`start=1`</strong> berarti penomoran dimulai dari
+                            angka 1, bukan 0.</p>
+                    </div>
+                </div>
+            </details>
+        </section>
+
+        <!-- JP 2: Implementasi Teknis di Google Colab -->
+        <section id="jp2" class="mb-12">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">⏱ JP 2: Implementasi Teknis di Google
+                    Colab (45 Menit)</h2>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">💻 Aktivitas: Implementasi & Perbandingan
+                        </h3>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-600">
+                            <li>Buka Google Colab di ponselmu: <a href="https://colab.research.google.com/"
+                                    target="_blank"
+                                    class="text-indigo-600 hover:underline font-semibold">colab.research.google.com</a>.
+                            </li>
+                            <li>Buat Notebook baru.</li>
+                            <li>Implementasikan kedua strategi yang sudah kalian rancang menjadi kode Python. Gunakan
+                                template di bawah sebagai panduan.</li>
+                            <li>Jalankan kedua kode dan bandingkan hasilnya. Apakah sama?</li>
+                        </ol>
+                    </div>
+
+                    <!-- Implementasi Strategi 1 -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">🐍 Strategi 1: Kode If-Else Bertingkat</h3>
+                        <p class="text-gray-600 text-sm mb-2">Lengkapi logika `if-elif-else` di bawah ini untuk mencakup
+                            semua kemungkinan urutan.</p>
+                        <div class="relative">
+                            <button onclick="copyCode(this)" class="copy-btn">Salin</button>
+                            <pre><code class="language-python">
+ali = 85
+budi = 70
+citra = 95
+
+print("--- Hasil Strategi 1 (Manual If-Else) ---")
+# Tantangan: Lengkapi logika ini!
+if ali >= budi and ali >= citra:
+    # Jika Ali terbesar
+    if budi >= citra:
+        print("1. Ali (85)\n2. Budi (70)\n3. Citra (95)") # Ini belum benar, perbaiki urutannya!
+    else:
+        print("1. Ali (85)\n2. Citra (95)\n3. Budi (70)")
+# Tambahkan kondisi ELIF untuk jika Budi terbesar
+# elif ...
+# Tambahkan kondisi ELIF untuk jika Citra terbesar
+# elif ...
+                            </code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Implementasi Strategi 2 -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">🚀 Strategi 2: Kode List & Sort</h3>
+                        <p class="text-gray-600 text-sm mb-2">Salin dan jalankan kode ini. Coba pahami setiap barisnya
+                            berdasarkan bacaan materi di atas.</p>
+                        <div class="relative">
+                            <button onclick="copyCode(this)" class="copy-btn">Salin</button>
+                            <pre><code class="language-python">
+# Membuat data dalam bentuk dictionary
+data_siswa = {
+    "Ali": 85,
+    "Budi": 70,
+    "Citra": 95
+}
+
+# Mengurutkan data berdasarkan nilai (elemen ke-1), dari terbesar (reverse=True)
+data_urut = sorted(data_siswa.items(), key=lambda item: item[1], reverse=True)
+
+print("\n--- Hasil Strategi 2 (List & Sort) ---")
+# Menampilkan hasil yang sudah terurut
+for i, (nama, nilai) in enumerate(data_urut, start=1):
+    print(f"{i}. {nama} ({nilai})")
+                            </code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">🤔 Refleksi Teknis</h3>
+                        <p class="text-gray-600">Setelah mencoba keduanya, tulis kesimpulan di bukumu: Jika datanya
+                            bukan 3 siswa, tapi 100 siswa, strategi mana yang akan kamu pilih? Mengapa?</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Bagian Panduan Guru -->
+        <section id="teacher-guide">
+            <details class="bg-yellow-100 rounded-lg p-4">
+                <summary class="font-bold text-yellow-800 flex justify-between items-center">
+                    <span>⭐ Panduan & Rubrik Penilaian untuk Guru (Klik untuk Buka)</span>
+                    <svg class="w-5 h-5 transition-transform transform" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </summary>
+                <div class="mt-4 text-yellow-900 space-y-4">
+                    <p><strong>Tujuan Pedagogis:</strong> Aktivitas ini dirancang untuk menunjukkan secara kontras
+                        antara solusi algoritmik yang 'brute-force' (if-else) dengan solusi yang elegan dan scalable
+                        (menggunakan `sorted`). Siswa akan merasakan langsung betapa tidak efisiennya if-else bertingkat
+                        jika data bertambah, dan menghargai kekuatan fungsi bawaan.</p>
+                    <p><strong>Poin Kunci untuk Diskusi:</strong> Tekankan bahwa `key=lambda item: item[1]` adalah
+                        instruksi untuk `sorted` agar melihat elemen kedua (nilai) dari setiap `item` saat mengurutkan.
+                    </p>
+                    <div>
+                        <h4 class="font-semibold">Rubrik Penilaian Formatif:</h4>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white border mt-2 rounded">
+                                <thead class="bg-yellow-200">
+                                    <tr>
+                                        <th class="py-2 px-4 border">Aspek</th>
+                                        <th class="py-2 px-4 border">Kriteria Penilaian</th>
+                                        <th class="py-2 px-4 border">Skor Maks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="py-2 px-4 border">Pemahaman Masalah</td>
+                                        <td class="py-2 px-4 border">Dapat menjelaskan input, proses, dan output dengan
+                                            benar.</td>
+                                        <td class="py-2 px-4 border text-center">25</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-4 border">Strategi Algoritma</td>
+                                        <td class="py-2 px-4 border">Mampu menyusun pseudocode untuk kedua pendekatan.
+                                        </td>
+                                        <td class="py-2 px-4 border text-center">25</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-4 border">Implementasi</td>
+                                        <td class="py-2 px-4 border">Kode Python untuk kedua strategi berhasil
+                                            dijalankan.</td>
+                                        <td class="py-2 px-4 border text-center">25</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-4 border">Analisis Efisiensi</td>
+                                        <td class="py-2 px-4 border">Mampu menyimpulkan kelebihan strategi `sort` untuk
+                                            data besar.</td>
+                                        <td class="py-2 px-4 border text-center">25</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </details>
+        </section>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-python.min.js"></script>
+    <script>
+        function copyCode(button) {
+            const pre = button.closest('div.relative');
+            const code = pre.querySelector('code').innerText;
+
+            const textarea = document.createElement('textarea');
+            textarea.value = code;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                button.innerText = 'Tersalin!';
+                setTimeout(() => {
+                    button.innerText = 'Salin';
+                }, 2000);
+            } catch (err) {
+                navigator.clipboard.writeText(code).then(() => {
+                    button.innerText = 'Tersalin!';
+                    setTimeout(() => {
+                        button.innerText = 'Salin';
+                    }, 2000);
+                }).catch(err => {
+                    alert('Gagal menyalin kode.');
+                });
+            }
+            document.body.removeChild(textarea);
+        }
+
+        const detailsElements = document.querySelectorAll('details');
+        detailsElements.forEach(details => {
+            const icon = details.querySelector('svg');
+            details.addEventListener('toggle', function () {
+                if (details.open) {
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
