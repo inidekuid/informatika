@@ -1,219 +1,112 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Belajar Informatika - Beranda</title>
-
-    <!-- Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Google Fonts: Poppins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
-    <!-- Custom Styles -->
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Materi Informatika SMA - Hybrid</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
 
-<body class="bg-gray-50 text-gray-800">
+  <!-- Navbar -->
+  <nav class="bg-blue-600 text-white shadow-md">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+      <h1 class="text-xl font-bold">Materi Informatika SMA</h1>
+    </div>
+  </nav>
 
-    <!-- Header Section -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-2xl font-bold text-blue-600">
-                <a href="/">BelajarYuk</a>
-            </div>
-            <ul class="hidden md:flex items-center space-x-8 text-gray-600">
-                <li><a href="/" class="hover:text-blue-600 transition">Beranda</a></li>
-                <li><a href="#pilih-kelas" class="hover:text-blue-600 transition">Kelas</a></li>
-                <li><a href="#" class="hover:text-blue-600 transition">Tentang Kami</a></li>
-            </ul>
-            <a href="#"
-                class="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition font-semibold">
-                Masuk
-            </a>
-        </nav>
-    </header>
+  <!-- Main Content -->
+  <main class="flex-grow">
+    <!-- Hero -->
+    <section class="text-center py-12 bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
+      <h2 class="text-3xl font-bold mb-2">Selamat Datang di Bank Materi Informatika</h2>
+      <p class="text-lg">Pilih kelas untuk melihat daftar materi & aktivitas pembelajaran.</p>
+    </section>
 
-    <main>
-        <!-- Hero/Tagline Section -->
-        <section class="text-center py-20 md:py-28 bg-white">
-            <div class="container mx-auto px-6">
-                <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4 leading-tight">
-                    Belajar Informatika Jadi Lebih Mudah
-                </h1>
-                <p class="text-lg text-gray-500 max-w-2xl mx-auto mb-8">
-                    Jelajahi materi, kuasai konsep, dan siapkan dirimu untuk masa depan dunia digital.
-                </p>
-                <a href="#pilih-kelas"
-                    class="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition font-bold text-lg">
-                    Mulai Belajar
-                </a>
-            </div>
-        </section>
-
-        <!-- Highlight Section (Pilihan Kelas) -->
-        <section id="pilih-kelas" class="py-20">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center mb-12">Pilih Tingkat Kelas Anda</h2>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <!-- Box Kelas X -->
-                    <a href="./kelas-x/"
-                        class="group block bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
-                        <div
-                            class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M5 12h14" />
-                                <path d="M12 5v14" />
-                            </svg>
-                        </div>
-                        <h3 class="text-2xl font-bold mb-2">Kelas X</h3>
-                        <p class="text-gray-500 mb-4">Mulai perjalananmu dengan konsep dasar Berpikir Komputasional dan
-                            Literasi Digital.</p>
-                        <span class="font-semibold text-blue-600 group-hover:underline">Lihat Materi &rarr;</span>
-                    </a>
-                    <!-- Box Kelas XI -->
-                    <a href="./kelas-xi/"
-                        class="group block bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
-                        <div
-                            class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="m12 19-7-7 7-7" />
-                                <path d="m19 19-7-7 7-7" />
-                            </svg>
-                        </div>
-                        <h3 class="text-2xl font-bold mb-2">Kelas XI</h3>
-                        <p class="text-gray-500 mb-4">Perdalam pemahaman Analisis Data, Algoritma, dan konsep lanjutan
-                            lainnya.</p>
-                        <span class="font-semibold text-blue-600 group-hover:underline">Lihat Materi &rarr;</span>
-                    </a>
-                    <!-- Box Kelas XII -->
-                    <a href="./kelas-xii/"
-                        class="group block bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
-                        <div
-                            class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                            </svg>
-                        </div>
-                        <h3 class="text-2xl font-bold mb-2">Kelas XII</h3>
-                        <p class="text-gray-500 mb-4">Mantapkan keahlian Pemrograman dan Analisis Data untuk persiapan
-                            tingkat lanjut.</p>
-                        <span class="font-semibold text-blue-600 group-hover:underline">Lihat Materi &rarr;</span>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Content Grid (Tools Belajar) -->
-        <section class="py-20 bg-white">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center mb-12">Jelajahi Alat Belajar Kami</h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                    <div class="p-6">
-                        <div
-                            class="w-20 h-20 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="m9 12-2 2 4 4 6-6-2-2-4 4-2-2z" />
-                                <path d="M20 6 9 17l-5-5" />
-                            </svg>
-                        </div>
-                        <h4 class="text-xl font-semibold">Kuis Interaktif</h4>
-                    </div>
-                    <div class="p-6">
-                        <div
-                            class="w-20 h-20 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                            </svg>
-                        </div>
-                        <h4 class="text-xl font-semibold">Video Pembelajaran</h4>
-                    </div>
-                    <div class="p-6">
-                        <div
-                            class="w-20 h-20 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <polyline points="16 18 22 12 16 6" />
-                                <polyline points="8 6 2 12 8 18" />
-                            </svg>
-                        </div>
-                        <h4 class="text-xl font-semibold">Simulasi Algoritma</h4>
-                    </div>
-                    <div class="p-6">
-                        <div
-                            class="w-20 h-20 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-                            </svg>
-                        </div>
-                        <h4 class="text-xl font-semibold">Glosarium Digital</h4>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white">
-        <div class="container mx-auto px-6 py-12">
-            <div class="grid md:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="text-xl font-bold mb-4">BelajarYuk</h3>
-                    <p class="text-gray-400">Platform pembelajaran modern untuk membantu siswa menguasai informatika
-                        dengan cara yang menyenangkan.</p>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Navigasi</h4>
-                    <ul class="space-y-2">
-                        <li><a href="/" class="text-gray-400 hover:text-white">Beranda</a></li>
-                        <li><a href="./kelas-x/" class="text-gray-400 hover:text-white">Kelas X</a></li>
-                        <li><a href="./kelas-xi/" class="text-gray-400 hover:text-white">Kelas XI</a></li>
-                        <li><a href="./kelas-xii/" class="text-gray-400 hover:text-white">Kelas XII</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Hubungi Kami</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">info@belajaryuk.com</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Pusat Bantuan</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Ikuti Kami</h4>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white">...</a>
-                        <a href="#" class="text-gray-400 hover:text-white">...</a>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-500">
-                &copy; 2024 BelajarYuk. All rights reserved.
-            </div>
+    <!-- Kartu Kelas -->
+    <section class="max-w-6xl mx-auto py-12 px-4 grid md:grid-cols-2 gap-6">
+      <!-- Kelas XI -->
+      <div class="bg-white rounded-2xl shadow p-6 cursor-pointer hover:shadow-lg transition"
+           onclick="toggleList('kelas-xi')">
+        <div class="flex items-center gap-2">
+          <i data-lucide="layers" class="w-7 h-7 text-blue-600"></i>
+          <h3 class="text-xl font-semibold">Kelas XI</h3>
         </div>
-    </footer>
+        <p class="text-sm text-gray-600 mt-2">Berpikir Komputasional, Literasi Digital, Analisis Data, Algoritma Pemrograman</p>
+      </div>
+
+      <!-- Kelas XII -->
+      <div class="bg-white rounded-2xl shadow p-6 cursor-pointer hover:shadow-lg transition"
+           onclick="toggleList('kelas-xii')">
+        <div class="flex items-center gap-2">
+          <i data-lucide="layers" class="w-7 h-7 text-green-600"></i>
+          <h3 class="text-xl font-semibold">Kelas XII</h3>
+        </div>
+        <p class="text-sm text-gray-600 mt-2">Pendalaman konsep & penerapan lanjut.</p>
+      </div>
+    </section>
+
+    <!-- Direktori Kelas XI -->
+    <div id="kelas-xi" class="max-w-4xl mx-auto hidden bg-white rounded-xl shadow p-6 mb-6">
+      <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+        <i data-lucide="folder" class="w-5 h-5 text-yellow-500"></i> Direktori Kelas XI
+      </h3>
+
+      <div class="ml-4 space-y-3">
+        <!-- Berpikir Komputasional -->
+        <div>
+          <div class="flex items-center cursor-pointer" onclick="toggleList('xi-bk')">
+            <i data-lucide="folder" class="w-5 h-5 text-blue-500 mr-2"></i>
+            <span>Berpikir Komputasional</span>
+          </div>
+          <ul id="xi-bk" class="ml-6 mt-1 hidden space-y-1 text-sm">
+            <li class="flex items-center"><i data-lucide="file" class="w-4 h-4 mr-1"></i>
+              <a href="kelas-xi/bk1.html" class="hover:underline">Materi 1: Konsep Dasar</a></li>
+            <li class="flex items-center"><i data-lucide="file" class="w-4 h-4 mr-1"></i>
+              <a href="kelas-xi/bk2.html" class="hover:underline">Materi 2: Abstraksi</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Direktori Kelas XII -->
+    <div id="kelas-xii" class="max-w-4xl mx-auto hidden bg-white rounded-xl shadow p-6 mb-6">
+      <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+        <i data-lucide="folder" class="w-5 h-5 text-yellow-500"></i> Direktori Kelas XII
+      </h3>
+
+      <div class="ml-4 space-y-3">
+        <div>
+          <div class="flex items-center cursor-pointer" onclick="toggleList('xii-ap')">
+            <i data-lucide="folder" class="w-5 h-5 text-red-500 mr-2"></i>
+            <span>Algoritma & Pemrograman</span>
+          </div>
+          <ul id="xii-ap" class="ml-6 mt-1 hidden space-y-1 text-sm">
+            <li class="flex items-center"><i data-lucide="file" class="w-4 h-4 mr-1"></i>
+              <a href="kelas-xii/ap1.html" class="hover:underline">Materi 1: Struktur Kontrol</a></li>
+            <li class="flex items-center"><i data-lucide="file" class="w-4 h-4 mr-1"></i>
+              <a href="kelas-xii/ap2.html" class="hover:underline">Materi 2: Fungsi</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer (sticky di bawah) -->
+  <footer class="bg-gray-800 text-gray-300 py-6 mt-12">
+    <div class="max-w-6xl mx-auto text-center text-sm">
+      &copy; 2025 Materi Informatika SMA | Dibuat dengan ❤ untuk siswa
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+
+    function toggleList(id) {
+      document.getElementById(id).classList.toggle('hidden');
+    }
+  </script>
 
 </body>
-
 </html>
