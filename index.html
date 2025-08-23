@@ -25,10 +25,10 @@
     </section>
 
     <!-- Card Kelas -->
-    <section class="max-w-6xl mx-auto py-12 px-4 grid md:grid-cols-3 gap-6">
+    <section class="max-w-6xl mx-auto py-12 px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <!-- Kelas X -->
       <div class="bg-white rounded-2xl shadow p-6 cursor-pointer hover:shadow-lg transition"
-           onclick="toggleList('kelas-x')">
+           onclick="toggleList('dir-kelas-x')">
         <div class="flex items-center gap-2">
           <i data-lucide="layers" class="w-7 h-7 text-blue-600"></i>
           <h3 class="text-xl font-semibold">Kelas X</h3>
@@ -38,7 +38,7 @@
 
       <!-- Kelas XI -->
       <div class="bg-white rounded-2xl shadow p-6 cursor-pointer hover:shadow-lg transition"
-           onclick="toggleList('kelas-xi')">
+           onclick="toggleList('dir-kelas-xi')">
         <div class="flex items-center gap-2">
           <i data-lucide="layers" class="w-7 h-7 text-blue-600"></i>
           <h3 class="text-xl font-semibold">Kelas XI</h3>
@@ -48,41 +48,27 @@
 
       <!-- Kelas XII -->
       <div class="bg-white rounded-2xl shadow p-6 cursor-pointer hover:shadow-lg transition"
-           onclick="toggleList('kelas-xii')">
+           onclick="toggleList('dir-kelas-xii')">
         <div class="flex items-center gap-2">
           <i data-lucide="layers" class="w-7 h-7 text-green-600"></i>
           <h3 class="text-xl font-semibold">Kelas XII</h3>
         </div>
-        <p class="text-sm text-gray-600 mt-2">Berpikir Komputasional, Literasi Digital, Analisis Data, Algoritma Pemrograman (Pendalaman konsep & penerapan lanjut)</p>
+        <p class="text-sm text-gray-600 mt-2">Pendalaman konsep & penerapan lanjut</p>
       </div>
     </section>
-<!-- Direktori Kelas -->
+
     <!-- Direktori Kelas X -->
-    <div id="kelas-xi" class="max-w-4xl mx-auto hidden bg-white rounded-xl shadow p-6 mb-6">
+    <div id="dir-kelas-x" class="max-w-4xl mx-auto hidden bg-white rounded-xl shadow p-6 mb-6">
       <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
         <i data-lucide="folder" class="w-5 h-5 text-yellow-500"></i> Direktori Kelas X
       </h3>
-
       <div class="ml-4 space-y-3">
-        <!-- Berpikir Komputasional -->
         <div>
-          <div class="flex items-center cursor-pointer" onclick="toggleList('xi-bk')">
+          <div class="flex items-center cursor-pointer" onclick="toggleList('x-bk')">
             <i data-lucide="folder" class="w-5 h-5 text-blue-500 mr-2"></i>
             <span>Berpikir Komputasional</span>
           </div>
-          <ul id="xi-bk" class="ml-6 mt-1 hidden space-y-1 text-sm">
-            <li class="flex items-center"><i data-lucide="file" class="w-4 h-4 mr-1"></i>
-              <a href="kelas-xi/bk1.html" class="hover:underline">Materi 1: Konsep Dasar</a></li>
-            <li class="flex items-center"><i data-lucide="file" class="w-4 h-4 mr-1"></i>
-              <a href="kelas-xi/bk2.html" class="hover:underline">Materi 2: Abstraksi</a></li>
-          </ul>
-        </div>
-        <div>
-          <div class="flex items-center cursor-pointer" onclick="toggleList('xi-bk')">
-            <i data-lucide="folder" class="w-5 h-5 text-blue-500 mr-2"></i>
-            <span>Literasi Digital</span>
-          </div>
-          <ul id="xi-bk" class="ml-6 mt-1 hidden space-y-1 text-sm">
+          <ul id="x-bk" class="ml-6 mt-1 hidden space-y-1 text-sm">
             <li class="flex items-center"><i data-lucide="file" class="w-4 h-4 mr-1"></i>
               <a href="kelas-x/bk1.html" class="hover:underline">Materi 1: Konsep Dasar</a></li>
             <li class="flex items-center"><i data-lucide="file" class="w-4 h-4 mr-1"></i>
@@ -93,13 +79,11 @@
     </div>
 
     <!-- Direktori Kelas XI -->
-    <div id="kelas-xi" class="max-w-4xl mx-auto hidden bg-white rounded-xl shadow p-6 mb-6">
+    <div id="dir-kelas-xi" class="max-w-4xl mx-auto hidden bg-white rounded-xl shadow p-6 mb-6">
       <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
         <i data-lucide="folder" class="w-5 h-5 text-yellow-500"></i> Direktori Kelas XI
       </h3>
-
       <div class="ml-4 space-y-3">
-        <!-- Berpikir Komputasional -->
         <div>
           <div class="flex items-center cursor-pointer" onclick="toggleList('xi-bk')">
             <i data-lucide="folder" class="w-5 h-5 text-blue-500 mr-2"></i>
@@ -116,11 +100,10 @@
     </div>
 
     <!-- Direktori Kelas XII -->
-    <div id="kelas-xii" class="max-w-4xl mx-auto hidden bg-white rounded-xl shadow p-6 mb-6">
+    <div id="dir-kelas-xii" class="max-w-4xl mx-auto hidden bg-white rounded-xl shadow p-6 mb-6">
       <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
         <i data-lucide="folder" class="w-5 h-5 text-yellow-500"></i> Direktori Kelas XII
       </h3>
-
       <div class="ml-4 space-y-3">
         <div>
           <div class="flex items-center cursor-pointer" onclick="toggleList('xii-ap')">
@@ -138,7 +121,7 @@
     </div>
   </main>
 
-  <!-- Footer (sticky di bawah) -->
+  <!-- Footer -->
   <footer class="bg-gray-800 text-gray-300 py-6 mt-12">
     <div class="max-w-6xl mx-auto text-center text-sm">
       &copy; 2025 Materi Informatika SMA | Dibuat dengan ❤ untuk siswa
