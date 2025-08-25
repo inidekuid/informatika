@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satu Masalah, Banyak Solusi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        details>summary {
+            cursor: pointer;
+            list-style: none;
+        }
+
+        details>summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details[open] summary svg {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl">
+
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-rose-600">Satu Masalah, Banyak Solusi</h1>
+            <p class="text-lg text-gray-600 mt-2">Berpikir Komputasional dalam Aksi</p>
+        </header>
+
+        <!-- Tujuan Pembelajaran -->
+        <section id="tujuan" class="mb-8">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-2xl font-bold text-gray-800 mb-3">🎯 Tujuan Pembelajaran</h2>
+                <p class="text-gray-600 mb-4">Di akhir sesi pembelajaran ini, kalian diharapkan mampu:</p>
+                <ul class="list-disc list-inside space-y-2 text-gray-700">
+                    <li>Melakukan <strong>dekomposisi</strong> atau memecah persoalan nyata menjadi bagian-bagian yang
+                        lebih kecil dan mudah dikelola.</li>
+                    <li>Merancang dan <strong>menghasilkan beberapa alternatif solusi</strong> algoritmik dari satu
+                        persoalan yang sama menggunakan "peralatan" yang sudah dipelajari.</li>
+                    <li><strong>Mengevaluasi</strong> kelebihan dan kekurangan dari setiap solusi untuk menentukan mana
+                        yang paling tepat berdasarkan konteks dan asumsi masalah.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Pengantar -->
+        <div class="bg-rose-100 border-l-4 border-rose-500 text-rose-700 p-4 rounded-md mb-8" role="alert">
+            <p class="font-bold">Pengantar: Koleksi Peralatan Pemrograman</p>
+            <p>Kalian sudah belajar tentang `if`, `sort`, `loop`, `greedy`, dan `rekursi`. Anggap semua itu adalah
+                "peralatan" di kotak perkakas kalian. Hari ini, kita akan belajar menjadi arsitek yang bisa memilih
+                peralatan yang tepat untuk membangun berbagai jenis solusi dari satu masalah yang sama.</p>
+        </div>
+
+        <!-- Pertemuan 1 (2 JP) -->
+        <section id="pertemuan1" class="mb-12">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">🗓️ Pertemuan 1 (2 JP): Dekomposisi &
+                    Desain Alternatif Solusi</h2>
+
+                <div class="space-y-8">
+                    <!-- JP 1 -->
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-700 mb-2">JP 1: Membedah Masalah & Brainstorming Strategi
+                        </h3>
+
+                        <h4 class="font-semibold text-gray-800">🎯 Skenario Masalah Kontekstual</h4>
+                        <p class="text-gray-600 mt-2 bg-gray-100 p-4 rounded-lg">Sekolah akan mengikuti lomba Cerdas
+                            Cermat. Ada 6 calon siswa yang sudah diseleksi dengan nilai di tiga bidang: Matematika
+                            IPA dan Sosial. Kita harus membentuk tim terbaik yang berisi **3 orang**. Tugas kalian
+                            adalah merancang strategi untuk memilih tim tersebut.</p>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Data Calon Siswa:</h4>
+                        <div class="overflow-x-auto mt-2">
+                            <table class="min-w-full bg-white border rounded-lg">
+                                <thead class="bg-gray-200">
+                                    <tr>
+                                        <th class="py-2 px-4 border">Nama Siswa</th>
+                                        <th class="py-2 px-4 border">Matematika</th>
+                                        <th class="py-2 px-4 border">IPA</th>
+                                        <th class="py-2 px-4 border">Sosial</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                    <tr>
+                                        <td class="py-2 px-4 border">Grace</td>
+                                        <td class="py-2 px-4 border">85</td>
+                                        <td class="py-2 px-4 border">70</td>
+                                        <td class="py-2 px-4 border">90</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-4 border">Kirania</td>
+                                        <td class="py-2 px-4 border">95</td>
+                                        <td class="py-2 px-4 border">80</td>
+                                        <td class="py-2 px-4 border">75</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-4 border">Magfiro</td>
+                                        <td class="py-2 px-4 border">70</td>
+                                        <td class="py-2 px-4 border">95</td>
+                                        <td class="py-2 px-4 border">80</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-4 border">Raihan</td>
+                                        <td class="py-2 px-4 border">80</td>
+                                        <td class="py-2 px-4 border">85</td>
+                                        <td class="py-2 px-4 border">85</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-4 border">Rhedea</td>
+                                        <td class="py-2 px-4 border">90</td>
+                                        <td class="py-2 px-4 border">75</td>
+                                        <td class="py-2 px-4 border">80</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-4 border">Ridho</td>
+                                        <td class="py-2 px-4 border">75</td>
+                                        <td class="py-2 px-4 border">90</td>
+                                        <td class="py-2 px-4 border">95</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-4 border">Nejad</td>
+                                        <td class="py-2 px-4 border">80</td>
+                                        <td class="py-2 px-4 border">85</td>
+                                        <td class="py-2 px-4 border">95</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4 class="font-semibold text-gray-800 mt-4">Aktivitas Brainstorming (Kelompok):</h4>
+                        <div class="border-2 border-dashed border-rose-300 p-4 rounded-lg bg-rose-50 mt-2">
+                            <p class="font-bold">Pertanyaan Pemicu:</p>
+                            <p>Apa definisi "tim terbaik"? Diskusikan dan tuliskan minimal **3 strategi berbeda** untuk
+                                memilih tim. Contoh:</p>
+                            <ul class="list-disc list-inside ml-4 mt-2 text-sm">
+                                <li><strong>Strategi A (Total Nilai Tertinggi):</strong> Pilih 3 siswa dengan jumlah
+                                    total nilai tertinggi.</li>
+                                <li><strong>Strategi B (Tim Spesialis):</strong> Pilih 1 siswa jagoan Matematika, 1
+                                    jagoan IPA, dan 1 jagoan Sosial.</li>
+                                <li><strong>Strategi C (Tim Seimbang):</strong> Pilih 3 siswa yang nilainya paling
+                                    stabil di semua bidang.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- JP 2 -->
+                    <div class="border-t pt-8">
+                        <h3 class="text-xl font-bold text-gray-700 mb-2">JP 2: Merancang Algoritma dari Setiap Strategi
+                        </h3>
+                        <h4 class="font-semibold text-gray-800">Aktivitas Desain Algoritma (Kelompok):</h4>
+                        <div class="border-2 border-dashed border-rose-300 p-4 rounded-lg bg-rose-50 mt-2">
+                            <p class="font-bold">Tugas:</p>
+                            <ol class="list-decimal list-inside ml-4 mt-2 space-y-2">
+                                <li>Pilih **dua strategi** dari hasil brainstorming kalian.</li>
+                                <li>Untuk setiap strategi, tuliskan **pseudocode** atau **flowchart**-nya di buku
+                                    catatan.</li>
+                                <li>Hubungkan dengan "peralatan" yang sudah dipelajari. <br>
+                                    <span class="text-sm italic">Contoh: "Untuk Strategi A, kita butuh **Loop** untuk
+                                        menghitung total nilai, lalu **Sort** untuk mengurutkan hasilnya."</span>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pertemuan 2 (1 JP) -->
+        <section id="pertemuan2" class="mb-12">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">🗓️ Pertemuan 2 (1 JP): Presentasi &
+                    Refleksi</h2>
+
+                <div>
+                    <h3 class="text-xl font-bold text-gray-700 mb-2">📢 Aktivitas Presentasi & Diskusi</h3>
+                    <p class="text-gray-600 mb-4">Setiap kelompok mempresentasikan satu strategi yang telah dirancang.
+                        Jelaskan algoritma dan hasil tim yang terbentuk. Setelah itu, kita akan berdiskusi bersama.</p>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <p class="font-semibold">Pertanyaan untuk Diskusi Kelas:</p>
+                        <ul class="list-disc list-inside ml-4 mt-2 text-sm space-y-1">
+                            <li>Tim dari Strategi A berbeda dengan tim dari Strategi B. Manakah yang lebih baik?
+                                Mengapa?</li>
+                            <li>Jika soal lomba 70% adalah IPA, strategi mana yang paling menguntungkan?</li>
+                            <li>Jika soalnya merata, strategi mana yang paling aman?</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="border-t pt-8 mt-8">
+                    <h3 class="text-xl font-bold text-gray-700 mb-2">🤔 Refleksi Akhir (Individu)</h3>
+                    <p class="text-gray-600 mb-4">Tuliskan jawaban dari pertanyaan-pertanyaan berikut di buku catatanmu.
+                    </p>
+                    <div class="border-2 border-dashed border-rose-300 p-4 rounded-lg bg-rose-50 space-y-3">
+                        <p><strong>1. Proses:</strong> Dari semua strategi yang kamu diskusikan, strategi mana yang
+                            algoritmanya paling mudah dibuat? Strategi mana yang paling rumit? Mengapa?</p>
+                        <p><strong>2. Konsep Inti:</strong> Mengapa satu masalah yang sama bisa menghasilkan beberapa
+                            "jawaban" tim yang berbeda dan semuanya bisa dianggap "benar"? Apa yang menentukannya?</p>
+                        <p><strong>3. Aplikasi:</strong> Berikan satu contoh masalah dalam kehidupan sehari-hari (selain
+                            memilih tim) yang juga bisa diselesaikan dengan beberapa cara berbeda. Jelaskan singkat
+                            cara-caranya.</p>
+                        <p><strong>4. Evaluasi:</strong> Apa yang kamu pelajari tentang cara berpikir komputasional dari
+                            aktivitas ini?</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Panduan Guru -->
+        <section id="teacher-guide">
+            <details class="bg-yellow-100 rounded-lg p-4">
+                <summary class="font-bold text-yellow-800 flex justify-between items-center">
+                    <span>⭐ Panduan untuk Guru (Klik untuk Buka)</span>
+                    <svg class="w-5 h-5 transition-transform transform" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </summary>
+                <div class="mt-4 text-yellow-900 space-y-4">
+                    <p><strong>Fokus Pedagogis:</strong> Tujuan utama bukanlah menemukan tim yang "paling benar",
+                        melainkan agar siswa menyadari bahwa **definisi masalah dan asumsi yang dibuat akan menentukan
+                        solusi algoritmik yang paling tepat**. Tekankan pada proses berpikir dan justifikasi pilihan
+                        mereka.</p>
+                    <p><strong>Adaptasi Waktu:</strong></p>
+                    <ul class="list-disc list-inside ml-4 text-sm">
+                        <li><strong>2 JP:</strong> Fokus pada Pertemuan 1. Bagian refleksi bisa dijadikan tugas rumah
+                            atau diskusi singkat di akhir sesi.</li>
+                        <li><strong>3 JP:</strong> Laksanakan semua sesi. Pertemuan kedua bisa digunakan untuk
+                            presentasi kelompok dan diskusi mendalam, yang akan sangat memperkuat pemahaman.</li>
+                    </ul>
+                </div>
+            </details>
+        </section>
+
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll("body, body *:not(script):not(style)").forEach(function (node) {
+                if (node.childNodes.length === 1 && node.childNodes[0].nodeType === 3) {
+                    node.innerHTML = node.innerHTML.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
