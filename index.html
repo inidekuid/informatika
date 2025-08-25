@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
+
 <body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
 
   <!-- Navbar -->
@@ -28,7 +30,7 @@
     <section class="max-w-6xl mx-auto py-12 px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <!-- Kelas X -->
       <div class="bg-white rounded-2xl shadow p-6 cursor-pointer hover:shadow-lg transition"
-           onclick="toggleList('dir-kelas-x')">
+        onclick="toggleList('dir-kelas-x')">
         <div class="flex items-center gap-2">
           <i data-lucide="layers" class="w-7 h-7 text-blue-600"></i>
           <h3 class="text-xl font-semibold">Kelas X</h3>
@@ -38,17 +40,18 @@
 
       <!-- Kelas XI -->
       <div class="bg-white rounded-2xl shadow p-6 cursor-pointer hover:shadow-lg transition"
-           onclick="toggleList('dir-kelas-xi')">
+        onclick="toggleList('dir-kelas-xi')">
         <div class="flex items-center gap-2">
           <i data-lucide="layers" class="w-7 h-7 text-blue-600"></i>
           <h3 class="text-xl font-semibold">Kelas XI</h3>
         </div>
-        <p class="text-sm text-gray-600 mt-2">Berpikir Komputasional, Literasi Digital, Analisis Data, Algoritma Pemrograman</p>
+        <p class="text-sm text-gray-600 mt-2">Berpikir Komputasional, Literasi Digital, Analisis Data, Algoritma
+          Pemrograman</p>
       </div>
 
       <!-- Kelas XII -->
       <div class="bg-white rounded-2xl shadow p-6 cursor-pointer hover:shadow-lg transition"
-           onclick="toggleList('dir-kelas-xii')">
+        onclick="toggleList('dir-kelas-xii')">
         <div class="flex items-center gap-2">
           <i data-lucide="layers" class="w-7 h-7 text-green-600"></i>
           <h3 class="text-xl font-semibold">Kelas XII</h3>
@@ -70,9 +73,11 @@
           </div>
           <ul id="x-bk" class="ml-6 mt-1 hidden space-y-1 text-sm">
             <li class="flex items-center"><i data-lucide="file" class="w-4 h-4 mr-1"></i>
-              <a href="kelas-x/bk1.html" class="hover:underline">Materi 1: Konsep Dasar</a></li>
+              <a href="kelas-x/bk1.html" class="hover:underline">Materi 1: Konsep Dasar</a>
+            </li>
             <li class="flex items-center"><i data-lucide="file" class="w-4 h-4 mr-1"></i>
-              <a href="kelas-x/bk2.html" class="hover:underline">Materi 2: Abstraksi</a></li>
+              <a href="kelas-x/bk2.html" class="hover:underline">Materi 2: Abstraksi</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -91,9 +96,25 @@
           </div>
           <ul id="xi-bk" class="ml-6 mt-1 hidden space-y-1 text-sm">
             <li class="flex items-center"><i data-lucide="file" class="w-4 h-4 mr-1"></i>
-              <a href="kelas-xi/bk1.html" class="hover:underline">Materi 1: Konsep Dasar</a></li>
+              <a href="kelas-xi/3.1.1.alur-proses-pengembangan.html" class="hover:underline">3.1.1. Memahami alur proses
+                pengembangan program atau produk teknologi digital dari awal hingga akhir</a>
+            </li>
             <li class="flex items-center"><i data-lucide="file" class="w-4 h-4 mr-1"></i>
-              <a href="kelas-xi/bk2.html" class="hover:underline">Materi 2: Abstraksi</a></li>
+              <a href="kelas-xi/praktikum-sa-if-sorted.html" class="hover:underline">3.1.2.1 menganalisis persoalan yang
+                dapat diselesaikan dengan berbagai strategi algoritmik (If dan Sort)</a>
+            </li>
+            <li class="flex items-center"><i data-lucide="file" class="w-4 h-4 mr-1"></i>
+              <a href="kelas-xi/praktikum-sa-gredy-rekursi.html" class="hover:underline">3.1.2.2 menganalisis persoalan
+                yang dapat diselesaikan dengan berbagai strategi algoritmik (Loop, Greedy, Rekursi)</a>
+            </li>
+            <li class="flex items-center"><i data-lucide="file" class="w-4 h-4 mr-1"></i>
+              <a href="kelas-xi/praktikum-solusi.html" class="hover:underline">3.1.3. menghasilkan beberapa alternatif
+                solusi dari satu persoalan</a>
+            </li>
+            <li class="flex items-center"><i data-lucide="file" class="w-4 h-4 mr-1"></i>
+              <a href="kelas-xi/bk2.html" class="hover:underline">3.1.4. menganalisis efisiensi, kelebihan, dan
+                keterbatasan setiap alternatif solusi.</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -112,9 +133,11 @@
           </div>
           <ul id="xii-ap" class="ml-6 mt-1 hidden space-y-1 text-sm">
             <li class="flex items-center"><i data-lucide="file" class="w-4 h-4 mr-1"></i>
-              <a href="kelas-xii/ap1.html" class="hover:underline">Materi 1: Struktur Kontrol</a></li>
+              <a href="kelas-xii/ap1.html" class="hover:underline">Materi 1: Struktur Kontrol</a>
+            </li>
             <li class="flex items-center"><i data-lucide="file" class="w-4 h-4 mr-1"></i>
-              <a href="kelas-xii/ap2.html" class="hover:underline">Materi 2: Fungsi</a></li>
+              <a href="kelas-xii/ap2.html" class="hover:underline">Materi 2: Fungsi</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -137,4 +160,5 @@
   </script>
 
 </body>
+
 </html>
