@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,16 +14,20 @@
         body {
             font-family: 'Inter', sans-serif;
         }
-        details > summary {
+
+        details>summary {
             cursor: pointer;
             list-style: none;
         }
-        details > summary::-webkit-details-marker {
+
+        details>summary::-webkit-details-marker {
             display: none;
         }
+
         details[open] summary svg {
             transform: rotate(180deg);
         }
+
         pre[class*="language-"] {
             padding: 1.5em;
             margin: .5em 0;
@@ -30,6 +35,7 @@
             border-radius: 0.5rem;
             position: relative;
         }
+
         .copy-btn {
             position: absolute;
             top: 12px;
@@ -43,15 +49,17 @@
             opacity: 0.8;
             transition: opacity 0.2s;
         }
+
         .copy-btn:hover {
             opacity: 1;
         }
     </style>
 </head>
+
 <body class="bg-gray-50 text-gray-800">
 
     <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl">
-        
+
         <header class="text-center mb-8">
             <h1 class="text-3xl sm:text-4xl font-bold text-teal-600">Strategi Lanjutan: Loop, Greedy, dan Rekursi</h1>
             <p class="text-lg text-gray-600 mt-2">Memecahkan Masalah Secara Efisien</p>
@@ -60,20 +68,29 @@
         <!-- JP 1: Loop (Perulangan) -->
         <section id="jp1" class="mb-12">
             <div class="bg-white p-6 rounded-xl shadow-md">
-                <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">⏱ JP 1: Mengotomatiskan Tugas dengan Loop</h2>
+                <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">⏱ JP 1: Mengotomatiskan Tugas dengan
+                    Loop</h2>
                 <div class="space-y-6">
                     <div>
                         <h3 class="text-lg font-semibold text-gray-700 mb-2">🎯 Analogi: Menyapu Lantai Kelas</h3>
-                        <p class="text-gray-600">Bayangkan kamu diminta menyapu seluruh lantai kelas. Kamu tidak akan membuat instruksi terpisah untuk setiap ubin, seperti "Sapu ubin 1, sapu ubin 2, sapu ubin 3...". Kamu hanya punya satu set instruksi: "Ayunkan sapu", dan kamu **mengulanginya** terus-menerus sampai seluruh lantai bersih. Itulah inti dari **Loop**.</p>
+                        <p class="text-gray-600">Bayangkan kamu diminta menyapu seluruh lantai kelas. Kamu tidak akan
+                            membuat instruksi terpisah untuk setiap ubin, seperti "Sapu ubin 1, sapu ubin 2, sapu ubin
+                            3...". Kamu hanya punya satu set instruksi: "Ayunkan sapu", dan kamu **mengulanginya**
+                            terus-menerus sampai seluruh lantai bersih. Itulah inti dari **Loop**.</p>
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-700 mb-2">Konsep Teknis: Kerja Berulang</h3>
-                        <p class="text-gray-600">Pada pelajaran sebelumnya, kita menyimpulkan bahwa `if-else` tidak efisien untuk 1000 data karena kita harus melakukan **kerja berulang**. Dalam pemrograman, solusi untuk kerja berulang adalah **Loop (Perulangan)**.</p>
-                        <p class="text-gray-600 mt-2 bg-gray-100 p-4 rounded-lg"><strong>Loop</strong> adalah instruksi untuk menjalankan blok kode yang sama berulang kali sampai sebuah kondisi terpenuhi. `for loop` adalah salah satu jenis loop yang paling umum.</p>
+                        <p class="text-gray-600">Pada pelajaran sebelumnya, kita menyimpulkan bahwa `if-else` tidak
+                            efisien untuk 1000 data karena kita harus melakukan **kerja berulang**. Dalam pemrograman,
+                            solusi untuk kerja berulang adalah **Loop (Perulangan)**.</p>
+                        <p class="text-gray-600 mt-2 bg-gray-100 p-4 rounded-lg"><strong>Loop</strong> adalah instruksi
+                            untuk menjalankan blok kode yang sama berulang kali sampai sebuah kondisi terpenuhi. `for
+                            loop` adalah salah satu jenis loop yang paling umum.</p>
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-700 mb-2">💻 Aktivitas: Membedah Kode Pengurutan</h3>
-                        <p class="text-gray-600 mb-2">Perhatikan kembali kode Strategi 2 dari pelajaran sebelumnya. Bagian `for ... in ...:` adalah sebuah loop!</p>
+                        <p class="text-gray-600 mb-2">Perhatikan kembali kode Strategi 2 dari pelajaran sebelumnya.
+                            Bagian `for ... in ...:` adalah sebuah loop!</p>
                         <div class="relative">
                             <pre><code class="language-python">
 # data_urut adalah list berisi: [('Citra', 95), ('Ali', 85), ('Budi', 70)]
@@ -84,7 +101,8 @@ for i, (nama, nilai) in enumerate(data_urut, start=1):
     print(f"{i}. {nama} ({nilai})")
                             </code></pre>
                         </div>
-                        <p class="font-semibold mt-2">Tugas: Diskusikan dengan temanmu, apa yang akan terjadi jika `start=1` dihapus dari `enumerate`?</p>
+                        <p class="font-semibold mt-2">Tugas: Diskusikan dengan temanmu, apa yang akan terjadi jika
+                            `start=1` dihapus dari `enumerate`?</p>
                     </div>
                 </div>
             </div>
@@ -93,23 +111,34 @@ for i, (nama, nilai) in enumerate(data_urut, start=1):
         <!-- JP 2: Algoritma Greedy -->
         <section id="jp2" class="mb-12">
             <div class="bg-white p-6 rounded-xl shadow-md">
-                <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">⏱ JP 2: Strategi Cerdas dengan Algoritma Greedy</h2>
+                <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">⏱ JP 2: Strategi Cerdas dengan Algoritma
+                    Greedy</h2>
                 <div class="space-y-6">
-                     <div>
+                    <div>
                         <h3 class="text-lg font-semibold text-gray-700 mb-2">🎯 Analogi: Memilih Jajanan di Kantin</h3>
-                        <p class="text-gray-600">Uangmu tinggal Rp 5.000, dan kamu sangat lapar. Di kantin ada banyak jajanan. Tanpa pikir panjang, kamu akan langsung memilih jajanan yang paling besar dan paling mengenyangkan dengan uangmu itu, misalnya bakwan atau lontong. Kamu membuat pilihan terbaik **saat ini** untuk mengatasi laparmu. Inilah pendekatan **Greedy**.</p>
+                        <p class="text-gray-600">Uangmu tinggal Rp 5.000, dan kamu sangat lapar. Di kantin ada banyak
+                            jajanan. Tanpa pikir panjang, kamu akan langsung memilih jajanan yang paling besar dan
+                            paling mengenyangkan dengan uangmu itu, misalnya bakwan atau lontong. Kamu membuat pilihan
+                            terbaik **saat ini** untuk mengatasi laparmu. Inilah pendekatan **Greedy**.</p>
                     </div>
                     <div>
-                        <h3 class="text-lg font-semibold text-gray-700 mb-2">Konsep Teknis: Selalu Ambil yang Terbaik</h3>
-                        <p class="text-gray-600 bg-gray-100 p-4 rounded-lg"><strong>Algoritma Greedy</strong> (rakus) adalah strategi pemecahan masalah dengan cara membuat pilihan terbaik (paling optimal) yang bisa diambil pada setiap langkah, tanpa memikirkan konsekuensi di masa depan.</p>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">Konsep Teknis: Selalu Ambil yang Terbaik
+                        </h3>
+                        <p class="text-gray-600 bg-gray-100 p-4 rounded-lg"><strong>Algoritma Greedy</strong> (rakus)
+                            adalah strategi pemecahan masalah dengan cara membuat pilihan terbaik (paling optimal) yang
+                            bisa diambil pada setiap langkah, tanpa memikirkan konsekuensi di masa depan.</p>
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-700 mb-2">💰 Skenario: Masalah Kembalian Uang</h3>
-                        <p class="text-gray-600">Seorang kasir harus memberikan kembalian sebesar <strong>Rp 48.000</strong> dengan jumlah lembar uang paling sedikit. Pecahan yang tersedia: Rp 20.000, Rp 10.000, Rp 5.000, Rp 2.000, dan Rp 1.000. Pendekatan Greedy: "Pada setiap langkah, ambil pecahan uang terbesar yang nilainya tidak melebihi sisa kembalian."</p>
+                        <p class="text-gray-600">Seorang kasir harus memberikan kembalian sebesar <strong>Rp
+                                48.000</strong> dengan jumlah lembar uang paling sedikit. Pecahan yang tersedia: Rp
+                            20.000, Rp 10.000, Rp 5.000, Rp 2.000, dan Rp 1.000. Pendekatan Greedy: "Pada setiap
+                            langkah, ambil pecahan uang terbesar yang nilainya tidak melebihi sisa kembalian."</p>
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-700 mb-2">💻 Aktivitas: Telusuri Kode Greedy</h3>
-                        <p class="text-gray-600 mb-2">Salin kode ini ke Google Colab. Sebelum dijalankan, coba telusuri (trace) alur kerjanya di buku catatan untuk menebak hasilnya.</p>
+                        <p class="text-gray-600 mb-2">Salin kode ini ke Google Colab. Sebelum dijalankan, coba telusuri
+                            (trace) alur kerjanya di buku catatan untuk menebak hasilnya.</p>
                         <div class="relative">
                             <button onclick="copyCode(this)" class="copy-btn">Salin</button>
                             <pre><code class="language-python">
@@ -139,35 +168,51 @@ print(kembalian_greedy(kembalian, pecahan_tersedia))
         <!-- JP 3: Rekursi -->
         <section id="jp3" class="mb-12">
             <div class="bg-white p-6 rounded-xl shadow-md">
-                <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">⏱ JP 3: Memecah Masalah dengan Rekursi</h2>
+                <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">⏱ JP 3: Memecah Masalah dengan Rekursi
+                </h2>
                 <div class="space-y-6">
                     <div>
-                        <h3 class="text-lg font-semibold text-gray-700 mb-2">🎯 Analogi: Boneka Matryoshka (Boneka Rusia)</h3>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">🎯 Analogi: Boneka Matryoshka (Boneka
+                            Rusia)</h3>
                         <div class="flex flex-col md:flex-row items-center gap-4">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Russian-Matroshka_no_bg.jpg/500px-Russian-Matroshka_no_bg.jpg" alt="Boneka Matryoshka" class="w-40 h-auto rounded-lg" onerror="this.onerror=null;this.src='https://placehold.co/200x200/e2e8f0/4a5568?text=Gambar+Boneka';">
-                            <p class="text-gray-600 flex-1">Bayangkan kamu membuka sebuah boneka Matryoshka. Di dalamnya, ada boneka lain yang lebih kecil, yang bentuknya persis sama. Kamu buka lagi, ada lagi yang lebih kecil. Kamu terus melakukan **tugas yang sama (membuka boneka)** pada **versi yang lebih kecil**, sampai kamu menemukan boneka terkecil yang tidak bisa dibuka lagi. Itulah cara kerja **Rekursi**.</p>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Russian-Matroshka_no_bg.jpg/500px-Russian-Matroshka_no_bg.jpg"
+                                alt="Boneka Matryoshka" class="w-40 h-auto rounded-lg"
+                                onerror="this.onerror=null;this.src='https://placehold.co/200x200/e2e8f0/4a5568?text=Gambar+Boneka';">
+                            <p class="text-gray-600 flex-1">Bayangkan kamu membuka sebuah boneka Matryoshka. Di
+                                dalamnya, ada boneka lain yang lebih kecil, yang bentuknya persis sama. Kamu buka lagi,
+                                ada lagi yang lebih kecil. Kamu terus melakukan **tugas yang sama (membuka boneka)**
+                                pada **versi yang lebih kecil**, sampai kamu menemukan boneka terkecil yang tidak bisa
+                                dibuka lagi. Itulah cara kerja **Rekursi**.</p>
                         </div>
                     </div>
                     <div>
-                        <h3 class="text-lg font-semibold text-gray-700 mb-2">Konsep Teknis: Fungsi Memanggil Dirinya Sendiri</h3>
-                        <p class="text-gray-600 bg-gray-100 p-4 rounded-lg"><strong>Rekursi</strong> adalah teknik di mana sebuah fungsi menyelesaikan masalah dengan cara memanggil dirinya sendiri, tetapi dengan input yang lebih kecil/sederhana, hingga mencapai sebuah **kasus dasar (base case)** yang bisa langsung diselesaikan.</p>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">Konsep Teknis: Fungsi Memanggil Dirinya
+                            Sendiri</h3>
+                        <p class="text-gray-600 bg-gray-100 p-4 rounded-lg"><strong>Rekursi</strong> adalah teknik di
+                            mana sebuah fungsi menyelesaikan masalah dengan cara memanggil dirinya sendiri, tetapi
+                            dengan input yang lebih kecil/sederhana, hingga mencapai sebuah **kasus dasar (base case)**
+                            yang bisa langsung diselesaikan.</p>
                     </div>
-                    
+
                     <!-- Skenario 1: Faktorial -->
                     <div class="border-t pt-6 mt-6">
                         <h3 class="text-xl font-bold text-teal-600 mb-2">Skenario 1: Faktorial</h3>
                         <p class="text-gray-600 mb-4">Menghitung `5!` (5 × 4 × 3 × 2 × 1).</p>
-                        
+
                         <h4 class="font-semibold text-gray-800">a. Perhitungan Manual</h4>
                         <p class="font-mono bg-gray-100 p-3 rounded-md text-sm">5! = 5 * 4 * 3 * 2 * 1 = 120</p>
-                        
+
                         <h4 class="font-semibold text-gray-800 mt-4">b. Simulasi Panggilan Rekursif (Interaktif)</h4>
-                        <p class="text-gray-600 mb-2 text-sm">Masukkan angka dan lihat bagaimana fungsi memecah masalah hingga ke `base case`, lalu menggabungkan hasilnya kembali.</p>
+                        <p class="text-gray-600 mb-2 text-sm">Masukkan angka dan lihat bagaimana fungsi memecah masalah
+                            hingga ke `base case`, lalu menggabungkan hasilnya kembali.</p>
                         <div class="flex items-center gap-2">
-                            <input type="number" id="factorialInput" min="1" max="15" class="w-24 p-2 border border-gray-300 rounded-md" placeholder="Angka..." value="5">
-                            <button onclick="calculateFactorial()" class="bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-600 transition">Visualisasikan!</button>
+                            <input type="number" id="factorialInput" min="1" max="15"
+                                class="w-24 p-2 border border-gray-300 rounded-md" placeholder="Angka..." value="5">
+                            <button onclick="calculateFactorial()"
+                                class="bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-600 transition">Visualisasikan!</button>
                         </div>
-                        <div id="factorialSteps" class="mt-4 p-4 bg-gray-100 rounded-lg text-sm font-mono">Klik "Visualisasikan!" untuk melihat alur...</div>
+                        <div id="factorialSteps" class="mt-4 p-4 bg-gray-100 rounded-lg text-sm font-mono">Klik
+                            "Visualisasikan!" untuk melihat alur...</div>
 
                         <h4 class="font-semibold text-gray-800 mt-4">c. Kode Program</h4>
                         <div class="relative">
@@ -189,30 +234,32 @@ print(f"Hasil dari 5! adalah: {faktorial(5)}")
                     <!-- Skenario 2: Fibonacci -->
                     <div class="border-t pt-6 mt-6">
                         <h3 class="text-xl font-bold text-teal-600 mb-2">Skenario 2: Deret Fibonacci</h3>
-                        <p class="text-gray-600 mb-4">Mencari angka ke-5 dalam deret Fibonacci (1, 1, 2, 3, **5**, 8, ...). Aturan: `F(n) = F(n-1) + F(n-2)`.</p>
-                        
+                        <p class="text-gray-600 mb-4">Mencari angka ke-5 dalam deret Fibonacci (1, 1, 2, 3, **5**, 8,
+                            ...). Aturan: `F(n) = F(n-1) + F(n-2)`.</p>
+
                         <h4 class="font-semibold text-gray-800">a. Perhitungan Manual</h4>
                         <p class="font-mono bg-gray-100 p-3 rounded-md text-sm">
-                        F(5) = F(4) + F(3)<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp; = (F(3) + F(2)) + (F(2) + F(1))<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp; = ((F(2) + F(1)) + 1) + (1 + 1)<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp; = ((1 + 1) + 1) + 2<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp; = (2 + 1) + 2<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp; = 3 + 2 = 5
+                            F(5) = F(4) + F(3)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; = (F(3) + F(2)) + (F(2) + F(1))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; = ((F(2) + F(1)) + 1) + (1 + 1)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; = ((1 + 1) + 1) + 2<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; = (2 + 1) + 2<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; = 3 + 2 = 5
                         </p>
 
                         <h4 class="font-semibold text-gray-800 mt-4">b. Simulasi Panggilan Rekursif</h4>
-                        <p class="text-gray-600 mb-2 text-sm">Setiap panggilan akan bercabang menjadi dua panggilan baru, membentuk struktur seperti pohon.</p>
+                        <p class="text-gray-600 mb-2 text-sm">Setiap panggilan akan bercabang menjadi dua panggilan
+                            baru, membentuk struktur seperti pohon.</p>
                         <div class="p-4 bg-gray-100 rounded-lg text-sm font-mono">
                             fib(5)<br>
                             ├── fib(4)<br>
-                            │   ├── fib(3)<br>
-                            │   │   ├── fib(2) -> 1<br>
-                            │   │   └── fib(1) -> 1<br>
-                            │   └── fib(2) -> 1<br>
+                            │ ├── fib(3)<br>
+                            │ │ ├── fib(2) -> 1<br>
+                            │ │ └── fib(1) -> 1<br>
+                            │ └── fib(2) -> 1<br>
                             └── fib(3)<br>
-                                ├── fib(2) -> 1<br>
-                                └── fib(1) -> 1<br>
+                            ├── fib(2) -> 1<br>
+                            └── fib(1) -> 1<br>
                         </div>
 
                         <h4 class="font-semibold text-gray-800 mt-4">c. Kode Program</h4>
@@ -238,21 +285,26 @@ print(f"Angka Fibonacci ke-5 adalah: {fibonacci(5)}")
 
         <!-- Refleksi Akhir -->
         <section id="refleksi">
-             <div class="border-t-4 border-teal-500 p-6 rounded-xl shadow-md bg-white">
+            <div class="border-t-4 border-teal-500 p-6 rounded-xl shadow-md bg-white">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4">🤔 Refleksi Akhir</h2>
-                <p class="text-gray-600 mb-4">Diskusikan dan jawab pertanyaan-pertanyaan ini di buku catatanmu untuk menyimpulkan pembelajaran kita.</p>
+                <p class="text-gray-600 mb-4">Diskusikan dan jawab pertanyaan-pertanyaan ini di buku catatanmu untuk
+                    menyimpulkan pembelajaran kita.</p>
                 <div class="space-y-4">
                     <div class="border-l-4 border-teal-300 pl-4">
                         <p class="font-semibold">1. Kapan Menggunakannya?</p>
-                        <p class="text-gray-700">Menurutmu, untuk masalah apa kita sebaiknya menggunakan **Loop**? Dan untuk masalah seperti apa **Rekursi** lebih cocok?</p>
+                        <p class="text-gray-700">Menurutmu, untuk masalah apa kita sebaiknya menggunakan **Loop**? Dan
+                            untuk masalah seperti apa **Rekursi** lebih cocok?</p>
                     </div>
                     <div class="border-l-4 border-teal-300 pl-4">
                         <p class="font-semibold">2. Strategi Pilihan</p>
-                        <p class="text-gray-700">Dari ketiga konsep (Loop, Greedy, Rekursi), strategi mana yang menurutmu paling kuat dan sering terpakai untuk menyelesaikan masalah sehari-hari? Berikan alasanmu.</p>
+                        <p class="text-gray-700">Dari ketiga konsep (Loop, Greedy, Rekursi), strategi mana yang
+                            menurutmu paling kuat dan sering terpakai untuk menyelesaikan masalah sehari-hari? Berikan
+                            alasanmu.</p>
                     </div>
-                     <div class="border-l-4 border-teal-300 pl-4">
+                    <div class="border-l-4 border-teal-300 pl-4">
                         <p class="font-semibold">3. Tantangan Terbesar</p>
-                        <p class="text-gray-700">Konsep mana yang paling menantang untuk kamu pahami? Apa yang membuatnya sulit?</p>
+                        <p class="text-gray-700">Konsep mana yang paling menantang untuk kamu pahami? Apa yang
+                            membuatnya sulit?</p>
                     </div>
                 </div>
             </div>
@@ -266,7 +318,7 @@ print(f"Angka Fibonacci ke-5 adalah: {fibonacci(5)}")
         function copyCode(button) {
             const pre = button.closest('div.relative');
             const code = pre.querySelector('code').innerText;
-            
+
             const textarea = document.createElement('textarea');
             textarea.value = code;
             document.body.appendChild(textarea);
@@ -294,18 +346,18 @@ print(f"Angka Fibonacci ke-5 adalah: {fibonacci(5)}")
             const inputElement = document.getElementById('factorialInput');
             const stepsElement = document.getElementById('factorialSteps');
             const n = parseInt(inputElement.value);
-            
+
             if (isNaN(n) || n <= 0 || n > 15) {
                 stepsElement.innerHTML = "Masukkan bilangan bulat positif (antara 1-15).";
                 return;
             }
 
             let steps = [];
-            
+
             function factorialRecursive(num) {
                 const indent = '  '.repeat(n - num);
                 steps.push(`${indent}faktorial(${num}) dipanggil...`);
-                
+
                 if (num === 1) {
                     steps.push(`${indent}--> Base Case tercapai. Mengembalikan 1.`);
                     return 1;
@@ -317,7 +369,7 @@ print(f"Angka Fibonacci ke-5 adalah: {fibonacci(5)}")
             }
 
             const finalResult = factorialRecursive(n);
-            
+
             let outputHtml = `<h4>Alur Panggilan untuk faktorial(${n}):</h4>`;
             outputHtml += '<ul class="list-none">';
             steps.forEach(step => {
@@ -325,10 +377,19 @@ print(f"Angka Fibonacci ke-5 adalah: {fibonacci(5)}")
             });
             outputHtml += '</ul>';
             outputHtml += `<p class="font-bold mt-2">Hasil Akhir: ${finalResult}</p>`;
-            
+
             stepsElement.innerHTML = outputHtml;
         }
     </script>
-
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll("body, body *:not(script):not(style)").forEach(function (node) {
+                if (node.childNodes.length === 1 && node.childNodes[0].nodeType === 3) {
+                    node.innerHTML = node.innerHTML.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>
