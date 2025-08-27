@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisis dan Debat Solusi Algoritmik</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        details>summary {
+            cursor: pointer;
+            list-style: none;
+        }
+
+        details>summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details[open] summary svg {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl">
+
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-purple-600">Analisis dan Debat Solusi Algoritmik</h1>
+            <p class="text-lg text-gray-600 mt-2">Dari Analisis Efisiensi hingga Argumentasi Kritis</p>
+        </header>
+
+        <!-- Tujuan Pembelajaran -->
+        <section id="tujuan" class="mb-8">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-2xl font-bold text-gray-800 mb-3">Tujuan Pembelajaran</h2>
+                <p class="text-gray-600">Setelah menyelesaikan sesi ini, kalian akan mampu menganalisis efisiensi
+                    berbagai solusi, membangun argumen yang kuat, dan mempertahankan pilihan solusi terbaik berdasarkan
+                    konteks dan batasan masalah.</p>
+            </div>
+        </section>
+
+        <!-- Pertemuan 1 (3 JP) -->
+        <section id="pertemuan1" class="mb-12">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">Pertemuan 1 (3 JP): Analisis
+                    Mendalam & Persiapan Argumen</h2>
+
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-700 mb-2">Memahami Konsep Efisiensi</h3>
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <p class="font-semibold">Analogi Kontekstual: Antrian Kasir</p>
+                            <ul class="list-disc list-inside ml-4 mt-2 text-sm space-y-1">
+                                <li><strong>Antrian Tunggal (seperti di bank):</strong> Terlihat adil, tapi jika ada
+                                    satu transaksi yang sangat lama, semua orang di belakangnya harus menunggu. Ini
+                                    mirip algoritma yang "biayanya" bertambah banyak secara drastis.</li>
+                                <li><strong>Banyak Kasir (seperti di supermarket):</strong> Kamu bisa memilih antrian
+                                    terpendek. Sistem ini lebih **scalable**, bisa menangani lebih banyak orang dengan
+                                    efisien.</li>
+                            </ul>
+                            <p class="mt-2 font-semibold text-purple-700">Efisiensi bukan hanya cepat, tapi seberapa
+                                baik sebuah solusi menangani penambahan beban kerja.</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-700 mb-2">Aktivitas Kelompok: Analisis & Persiapan Debat
+                        </h3>
+                        <p class="text-gray-600 mb-2">Kembali ke kelompokmu. Tugas kalian adalah melakukan analisis
+                            mendalam terhadap solusi yang sudah kalian buat dan mempersiapkan argumen untuk debat di
+                            pertemuan berikutnya.</p>
+
+                        <div class="border-2 border-dashed border-purple-300 p-4 rounded-lg bg-purple-50 mt-2">
+                            <p class="font-bold">Langkah 1: Analisis Efisiensi (di Buku Catatan)</p>
+                            <ol class="list-decimal list-inside ml-4 mt-2 space-y-2 text-sm">
+                                <li>Ambil **dua algoritma** yang sudah kalian rancang.</li>
+                                <li>Hitung perkiraan **jumlah langkah operasi** (penjumlahan, perbandingan) untuk setiap
+                                    algoritma pada data 6 siswa.</li>
+                                <li>Prediksi apa yang terjadi pada jumlah langkah jika datanya menjadi 100 siswa
+                                    (**analisis skalabilitas**).</li>
+                                <li>Gunakan format tabel di bawah ini untuk merangkum hasil analisismu di buku catatan.
+                                </li>
+                            </ol>
+                        </div>
+
+                        <h4 class="font-semibold text-gray-800 mt-6">Format Tabel Analisis (untuk diisi di buku):</h4>
+                        <div class="overflow-x-auto mt-2">
+                            <table class="min-w-full bg-white border rounded-lg text-sm">
+                                <thead class="bg-gray-200">
+                                    <tr>
+                                        <th class="py-2 px-3 border text-left">Kriteria Analisis</th>
+                                        <th class="py-2 px-3 border">Strategi A: Total Nilai</th>
+                                        <th class="py-2 px-3 border">Strategi B: Spesialis</th>
+                                        <th class="py-2 px-3 border">Strategi C: Seimbang</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="py-2 px-3 border font-semibold">Perkiraan Jumlah Langkah (7 siswa)
+                                        </td>
+                                        <td class="py-2 px-3 border align-top"><i>~18 penjumlahan + 15 perbandingan</i>
+                                        </td>
+                                        <td class="py-2 px-3 border"></td>
+                                        <td class="py-2 px-3 border"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-3 border font-semibold">Prediksi Skalabilitas (100 siswa)
+                                        </td>
+                                        <td class="py-2 px-3 border align-top"><i>Naik drastis, tapi masih bisa
+                                                dikelola</i></td>
+                                        <td class="py-2 px-3 border"></td>
+                                        <td class="py-2 px-3 border"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-3 border font-semibold">Kelebihan Utama</td>
+                                        <td class="py-2 px-3 border align-top"><i>Menghasilkan tim dengan total kekuatan
+                                                paling tinggi</i></td>
+                                        <td class="py-2 px-3 border"></td>
+                                        <td class="py-2 px-3 border"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-3 border font-semibold">Keterbatasan Utama</td>
+                                        <td class="py-2 px-3 border align-top"><i>Bisa jadi ada siswa dengan nilai IPA
+                                                sangat rendah yang terpilih</i></td>
+                                        <td class="py-2 px-3 border"></td>
+                                        <td class="py-2 px-3 border"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-3 border font-semibold">Kapan Sebaiknya Digunakan?</td>
+                                        <td class="py-2 px-3 border align-top"><i>Saat soal lomba diprediksi merata</i>
+                                        </td>
+                                        <td class="py-2 px-3 border"></td>
+                                        <td class="py-2 px-3 border"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="border-2 border-dashed border-purple-300 p-4 rounded-lg bg-purple-50 mt-4">
+                            <p class="font-bold">Langkah 2: Membangun Argumen untuk Debat</p>
+                            <p class="text-sm">Baca dua skenario debat di bawah. Untuk setiap skenario, pilih satu
+                                strategi yang menurut kelompokmu paling cocok. Siapkan argumen yang kuat berdasarkan
+                                hasil analisismu.</p>
+                        </div>
+
+                        <div class="mt-6 bg-gray-100 p-4 rounded-lg">
+                            <p class="font-bold">Skenario Debat:</p>
+                            <ul class="list-decimal list-inside ml-4 mt-2 space-y-2">
+                                <li><strong>Kondisi A (Butuh Cepat):</strong> Seleksi harus selesai dalam **30 menit**.
+                                    Strategi mana yang paling masuk akal? Mengapa kecepatan menjadi prioritas utama di
+                                    sini? Apa risikonya?</li>
+                                <li><strong>Kondisi B (Butuh Akurat):</strong> Tim yang terpilih harus **benar-benar
+                                    yang paling kuat** secara data, tidak peduli berapa lama waktu seleksinya. Strategi
+                                    mana yang paling bisa diandalkan? Mengapa akurasi lebih penting daripada waktu dalam
+                                    kasus ini?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pertemuan 2 (2 JP) -->
+        <section id="pertemuan2" class="mb-12">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">Pertemuan 2 (2 JP): Debat Solusi &
+                    Refleksi</h2>
+
+                <div>
+                    <h3 class="text-xl font-bold text-gray-700 mb-2">📢 Aturan Main & Pertanyaan Panduan Diskusi</h3>
+                    <p class="text-gray-600 mb-4">Setiap kelompok akan mempresentasikan argumennya. Kelompok lain
+                        **wajib** memberikan tanggapan. Gunakan pertanyaan di bawah untuk memandu diskusimu, baik saat
+                        presentasi maupun saat menanggapi.</p>
+
+                    <details class="bg-gray-50 p-4 rounded-lg mb-4">
+                        <summary class="font-bold text-gray-800 flex justify-between items-center">
+                            <span>Panduan untuk Kelompok Presenter</span>
+                            <svg class="w-5 h-5 transition-transform transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </summary>
+                        <div class="mt-4 text-gray-700 space-y-2 border-t pt-4 text-sm">
+                            <p><strong>1. Klaim Utama:</strong> Apa strategi yang kelompok kami pilih untuk skenario
+                                ini?</p>
+                            <p><strong>2. Bukti:</strong> Data apa dari analisis kami (jumlah langkah, skalabilitas,
+                                kelebihan) yang mendukung pilihan ini?</p>
+                            <p><strong>3. Justifikasi:</strong> Mengapa bukti tersebut relevan dengan batasan skenario
+                                (misal: batasan waktu 30 menit)?</p>
+                            <p><strong>4. Antisipasi Sanggahan:</strong> Apa kelemahan terbesar dari strategi kami?
+                                Bagaimana kami akan menjawab jika kelompok lain menanyakannya?</p>
+                        </div>
+                    </details>
+
+                    <details class="bg-gray-50 p-4 rounded-lg">
+                        <summary class="font-bold text-gray-800 flex justify-between items-center">
+                            <span>Panduan untuk Kelompok Penanggap</span>
+                            <svg class="w-5 h-5 transition-transform transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </summary>
+                        <div class="mt-4 text-gray-700 space-y-2 border-t pt-4 text-sm">
+                            <p><strong>1. Klarifikasi:</strong> "Kami belum sepenuhnya paham mengapa Anda menganggap
+                                [aspek X] sebagai kelebihan utama. Bisakah dijelaskan lebih lanjut?"</p>
+                            <p><strong>2. Tantangan pada Asumsi:</strong> "Strategi Anda tampaknya berasumsi bahwa
+                                [asumsi Y]. Bagaimana jika asumsi itu salah? Apakah solusi Anda masih valid?"</p>
+                            <p><strong>3. Perbandingan Alternatif:</strong> "Kelompok kami memilih strategi yang berbeda
+                                karena kami lebih memprioritaskan [faktor Z]. Menurut Anda, mengapa prioritas Anda lebih
+                                baik dalam skenario ini?"</p>
+                            <p><strong>4. Keterbatasan Tersembunyi:</strong> "Apakah Anda sudah mempertimbangkan
+                                keterbatasan [misalnya: kesulitan implementasi, kebutuhan data spesifik] dari solusi
+                                yang Anda tawarkan?"</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="border-t pt-8 mt-8">
+                    <h3 class="text-xl font-bold text-gray-700 mb-2">🤔 Refleksi Membangun (Individu)</h3>
+                    <p class="text-gray-600 mb-4">Tuliskan jawaban dari pertanyaan-pertanyaan berikut di buku catatanmu.
+                    </p>
+                    <div class="border-2 border-dashed border-purple-300 p-4 rounded-lg bg-purple-50 space-y-4">
+                        <p><strong>1. Perasaan & Pengalaman 🧠:</strong> Bagian mana dari aktivitas hari ini
+                            (menganalisis, berdebat, menanggapi) yang paling membuatmu tertarik atau tertantang?
+                            Ceritakan perasaanmu saat melakukannya.</p>
+                        <p><strong>2. Tingkat Pemahaman 📈:</strong> Seberapa yakin kamu sekarang dalam menjelaskan
+                            mengapa satu solusi bisa lebih baik dari yang lain dalam kondisi tertentu? Beri nilai untuk
+                            dirimu sendiri (1 = Masih Bingung, 5 = Sangat Paham) dan jelaskan singkat alasannya.</p>
+                        <p><strong>3. Saran & Masukan 💡:</strong> Adakah saran darimu agar pembelajaran tentang
+                            analisis dan debat seperti ini bisa lebih menarik atau lebih mudah dipahami di kemudian
+                            hari?</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll("body, body *:not(script):not(style)").forEach(function (node) {
+                if (node.childNodes.length === 1 && node.childNodes[0].nodeType === 3) {
+                    node.innerHTML = node.innerHTML.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
