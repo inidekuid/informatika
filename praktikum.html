@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Login (HTTP) - Praktik Forensik</title>
+    <!-- Memuat Tailwind CSS untuk styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Menggunakan font Inter */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
+
+        <h1 class="text-2xl font-bold text-center mb-4 text-gray-800">Halaman Login (HTTP)</h1>
+        <p class="text-center text-gray-600 mb-6">Gunakan halaman ini untuk **Misi 1** (Praktik HTTP).</p>
+
+        <!-- 
+            CATATAN UNTUK PRAKTIK:
+            Formulir ini diatur untuk mengirim (method="POST") data ke 'http://httpbin.org/post'.
+            Ini adalah server HTTP (TIDAK AMAN) yang sengaja dibuat untuk menerima
+            dan menampilkan kembali data yang dikirimkan padanya.
+
+            Saat Anda menekan "Login", Analis Wireshark akan dapat melihat paket
+            dengan filter 'http.request.method == "POST"' dan menemukan
+            username serta password dalam bentuk teks biasa (clear text).
+        -->
+        <form action="http://httpbin.org/post" method="POST">
+            <div class="mb-4">
+                <label for="username" class="block text-gray-700 font-medium mb-2">Username</label>
+                <input type="text" id="username" name="username"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Contoh: siswa_tes">
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
+                <input type="password" id="password" name="password"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Contoh: rahasiaku123">
+            </div>
+            <button type="submit"
+                class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition duration-200">
+                Login
+            </button>
+        </form>
+
+        <!-- Kotak Peringatan -->
+        <div class="mt-6 p-4 bg-yellow-100 border-l-4 border-yellow-500 rounded-lg text-yellow-800">
+            <h3 class="font-bold">PERHATIAN!</h3>
+            <p class="text-sm">Koneksi ini **TIDAK AMAN** (HTTP). Jangan pernah gunakan password asli Anda di sini.
+                Halaman ini hanya untuk simulasi pembelajaran.</p>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
