@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sebelum Mulai: Kenalan dengan Informatika — Kelas X</title>
+<meta name="description" content="Bacaan pembuka mata pelajaran Informatika Kelas X (Fase E): apa itu Informatika, kenapa penting, seberapa berguna, dan sudah sejauh mana kamu menerapkannya.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F1F4F1;
+    --bg-grid: rgba(43,76,126,0.07);
+    --paper:#FFFFFF;
+    --ink:#1B2430;
+    --muted:#5B6570;
+    --line:#DDE3DE;
+    --process:#2B4C7E;
+    --process-soft:#E7ECF4;
+    --input-c:#1F8F5F;
+    --input-soft:#E3F3EA;
+    --output-c:#C77B18;
+    --output-soft:#FBEDDA;
+    --danger:#B4472E;
+    --radius:14px;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--bg-grid) 1px, transparent 1px) 0 0/100% 42px,
+      linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px) 0 0/42px 100%,
+      var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a{ color: var(--process); }
+
+  /* ---------- progress bar ---------- */
+  .progress-rail{
+    position: fixed; top:0; left:0; height:4px; width:100%;
+    background: transparent; z-index: 50;
+  }
+  .progress-fill{
+    height:100%; width:0%;
+    background: linear-gradient(90deg, var(--input-c), var(--process), var(--output-c));
+    transition: width .08s linear;
+  }
+
+  .wrap{ max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- eyebrow / labels ---------- */
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--process);
+    display:flex; align-items:center; gap:8px;
+    margin-bottom: 10px;
+  }
+  .eyebrow::before{ content:"//"; color: var(--muted); }
+
+  h1,h2,h3{ font-family: var(--font-display); font-weight:700; line-height:1.15; margin: 0 0 12px; }
+  h2{ font-size: clamp(24px, 3.4vw, 32px); }
+  h3{ font-size: 19px; }
+  p{ margin: 0 0 16px; color: var(--ink); }
+  .muted{ color: var(--muted); }
+
+  /* ---------- hero ---------- */
+  header.hero{ padding: 88px 0 56px; }
+  .hero h1{ font-size: clamp(32px, 5.4vw, 52px); max-width: 15ch; }
+  .hero .lede{ font-size: 18px; max-width: 60ch; color: var(--muted); }
+
+  /* ---------- IPO demo card ---------- */
+  .ipo-card{
+    margin-top: 40px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: 0 1px 0 rgba(27,36,48,.03), 0 12px 30px -18px rgba(27,36,48,.25);
+    overflow: hidden;
+  }
+  .ipo-card__top{
+    padding: 18px 22px;
+    border-bottom: 1px dashed var(--line);
+    display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap: wrap;
+  }
+  .ipo-card__top .eyebrow{ margin:0; }
+  .ipo-card__hint{ font-size: 13px; color: var(--muted); }
+
+  .ipo-grid{
+    display:grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    gap: 14px;
+    align-items: stretch;
+    padding: 22px;
+  }
+  @media (max-width: 720px){
+    .ipo-grid{ grid-template-columns: 1fr; }
+    .ipo-arrow{ transform: rotate(90deg); margin: 0 auto; }
+  }
+
+  .ipo-block{ display:flex; flex-direction:column; gap:8px; }
+  .ipo-block__label{
+    font-family: var(--font-mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    display:flex; align-items:center; gap:6px;
+  }
+  .dot{ width:8px; height:8px; border-radius:50%; display:inline-block; }
+  .dot--input{ background: var(--input-c); }
+  .dot--process{ background: var(--process); }
+  .dot--output{ background: var(--output-c); }
+
+  .ipo-input textarea{
+    width:100%; min-height:96px; resize: vertical;
+    border: 1.5px solid var(--input-c); background: var(--input-soft);
+    border-radius: 10px; padding: 12px; font-family: var(--font-mono); font-size: 14px; color: var(--ink);
+  }
+  .ipo-input textarea:focus-visible{ outline: 3px solid var(--input-c); outline-offset:2px; }
+
+  .ipo-process{ background: var(--process-soft); border: 1.5px solid var(--process); border-radius:10px; padding:12px; display:flex; flex-direction:column; gap:8px; }
+  .ipo-process select{
+    width:100%; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--process);
+    font-family: var(--font-mono); font-size: 13px; background: var(--paper); color: var(--ink);
+  }
+  .ipo-process select:focus-visible{ outline: 3px solid var(--process); outline-offset: 2px; }
+  .ipo-process p{ font-size: 12.5px; color: var(--muted); margin:0; }
+
+  .ipo-output{ background: var(--output-soft); border: 1.5px solid var(--output-c); border-radius:10px; padding:12px; min-height: 96px; }
+  .ipo-output pre{ margin:0; white-space: pre-wrap; word-break: break-word; font-family: var(--font-mono); font-size: 14px; }
+
+  .ipo-arrow{ display:flex; align-items:center; justify-content:center; color: var(--muted); font-size:22px; }
+
+  .ipo-card__foot{ padding: 14px 22px; background: #FAFBFA; border-top:1px dashed var(--line); font-size: 13px; color: var(--muted); }
+
+  /* ---------- sections ---------- */
+  section{ padding: 64px 0; border-top: 1px solid var(--line); }
+  section:first-of-type{ border-top:none; }
+
+  .lead-q{ font-size: 18px; color: var(--muted); max-width: 62ch; }
+
+  /* two-card element toggle */
+  .elemen-toggle{ display:flex; gap:10px; margin: 22px 0 18px; flex-wrap:wrap; }
+  .elemen-btn{
+    font-family: var(--font-mono); font-size: 13px; padding: 9px 16px; border-radius: 999px;
+    border: 1.5px solid var(--line); background: var(--paper); color: var(--ink); cursor:pointer;
+  }
+  .elemen-btn[aria-selected="true"]{ border-color: var(--process); background: var(--process-soft); color: var(--process); font-weight:600; }
+  .elemen-btn:focus-visible{ outline: 3px solid var(--process); outline-offset: 2px; }
+  .elemen-panel{ display:none; background: var(--paper); border:1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+  .elemen-panel.active{ display:block; }
+  .elemen-panel ul{ margin: 10px 0 0; padding-left: 20px; }
+  .elemen-panel li{ margin-bottom: 6px; }
+
+  /* accordion */
+  .accordion-item{ border: 1px solid var(--line); border-radius: 12px; background: var(--paper); margin-bottom: 12px; overflow:hidden; }
+  .accordion-item summary{
+    list-style:none; cursor:pointer; padding: 16px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px;
+    font-family: var(--font-display); font-weight:600; font-size: 16px;
+  }
+  .accordion-item summary::-webkit-details-marker{ display:none; }
+  .accordion-item summary .plus{ font-family: var(--font-mono); color: var(--process); font-size: 20px; flex-shrink:0; transition: transform .15s ease; }
+  .accordion-item[open] summary .plus{ transform: rotate(45deg); }
+  .accordion-item summary:focus-visible{ outline: 3px solid var(--process); outline-offset: -3px; }
+  .accordion-body{ padding: 0 20px 18px; color: var(--muted); }
+  .accordion-body .tag{
+    display:inline-block; font-family: var(--font-mono); font-size: 11.5px; color: var(--process);
+    background: var(--process-soft); border-radius: 6px; padding: 2px 8px; margin-bottom: 8px;
+  }
+
+  /* subject grid */
+  .subject-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 20px; }
+  @media (max-width: 640px){ .subject-grid{ grid-template-columns: 1fr; } }
+  .subject-card{ border:1px solid var(--line); background: var(--paper); border-radius: 12px; padding: 18px; }
+  .subject-card .eyebrow{ margin-bottom: 6px; font-size:12px; }
+  .subject-card p{ margin:0; font-size: 14.5px; color: var(--muted); }
+
+  /* checklist */
+  .progress-summary{
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+    background: var(--paper); border:1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; margin: 22px 0;
+  }
+  .ring{ position:relative; width:64px; height:64px; flex-shrink:0; }
+  .ring svg{ transform: rotate(-90deg); width:64px; height:64px; }
+  .ring circle{ fill:none; stroke-width:7; }
+  .ring .bg{ stroke: var(--line); }
+  .ring .fg{ stroke: var(--process); stroke-linecap: round; transition: stroke-dashoffset .3s ease; }
+  .ring-label{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family: var(--font-mono); font-size: 13px; font-weight:600; }
+  .progress-text strong{ font-family: var(--font-display); }
+  .reset-btn{
+    margin-left:auto; font-family: var(--font-mono); font-size: 12.5px; color: var(--muted);
+    background: transparent; border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; cursor:pointer;
+  }
+  .reset-btn:hover{ border-color: var(--danger); color: var(--danger); }
+  .reset-btn:focus-visible{ outline: 3px solid var(--process); outline-offset:2px; }
+
+  .check-group{ margin-bottom: 22px; }
+  .check-group h3{ display:flex; align-items:center; gap:8px; }
+  .check-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+  .check-item{
+    display:flex; align-items:flex-start; gap:12px; background: var(--paper); border:1px solid var(--line);
+    border-radius: 10px; padding: 12px 14px; cursor:pointer;
+  }
+  .check-item:has(input:checked){ background: var(--input-soft); border-color: var(--input-c); }
+  .check-item input{ margin-top: 3px; width:16px; height:16px; accent-color: var(--input-c); flex-shrink:0; }
+  .check-item input:focus-visible{ outline: 3px solid var(--process); outline-offset: 2px; }
+  .check-item span{ font-size: 14.5px; }
+  .check-item:has(input:checked) span{ color: var(--ink); }
+
+  /* timeline */
+  .timeline{ display:flex; flex-direction:column; gap:0; margin-top: 24px; }
+  .tl-item{ display:grid; grid-template-columns: 46px 1fr; gap:16px; }
+  .tl-marker-col{ display:flex; flex-direction:column; align-items:center; }
+  .tl-num{
+    width:32px; height:32px; border-radius:50%; background: var(--process); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-family: var(--font-mono); font-size:13px; font-weight:600; flex-shrink:0;
+  }
+  .tl-line{ flex:1; width:2px; background: var(--line); min-height: 24px; }
+  .tl-item:last-child .tl-line{ display:none; }
+  .tl-content{ padding-bottom: 26px; }
+  .tl-content h3{ margin-bottom:4px; }
+  .tl-content p{ font-size: 14.5px; color: var(--muted); margin:0; }
+
+  footer{ padding: 40px 0 60px; border-top: 1px solid var(--line); }
+  footer p{ font-size: 13px; color: var(--muted); }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ transition:none !important; animation:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">Informatika · Kelas X · Fase E · Bacaan Pembuka</p>
+    <h1>Sebelum kita mulai dua semester ke depan, kenalan dulu yuk sama Informatika.</h1>
+    <p class="lede">Coba dulu kotak di bawah ini. Ketik apa saja di kolom <strong>Input</strong>, pilih satu <strong>Proses</strong>, lalu lihat apa yang keluar di <strong>Output</strong>. Itulah, dalam bentuk paling sederhana, cara komputer bekerja — dan itulah juga yang akan kita pelajari selama satu tahun ke depan.</p>
+
+    <div class="ipo-card">
+      <div class="ipo-card__top">
+        <p class="eyebrow" style="margin:0">Coba Sendiri — Simulasi Input · Proses · Output</p>
+        <p class="ipo-card__hint">tidak ada yang tersimpan, aman untuk iseng-iseng</p>
+      </div>
+      <div class="ipo-grid">
+        <div class="ipo-block ipo-input">
+          <span class="ipo-block__label"><span class="dot dot--input"></span> Input</span>
+          <textarea id="ipoInput" placeholder="tulis apa saja di sini… misal: Belajar Informatika itu seru">Belajar Informatika itu seru</textarea>
+        </div>
+        <div class="ipo-arrow" aria-hidden="true">→</div>
+        <div class="ipo-block">
+          <span class="ipo-block__label"><span class="dot dot--process"></span> Proses</span>
+          <div class="ipo-process">
+            <select id="ipoOp">
+              <option value="upper">UBAH JADI HURUF BESAR</option>
+              <option value="reverse">BALIK URUTAN HURUF</option>
+              <option value="count">HITUNG JUMLAH KARAKTER & KATA</option>
+              <option value="vowel">SAMARKAN SEMUA HURUF VOKAL</option>
+              <option value="alpha">URUTKAN KATA SECARA ALFABET</option>
+            </select>
+            <p>Ini contoh "algoritma" paling sederhana: sekumpulan langkah pasti untuk mengubah input jadi output.</p>
+          </div>
+        </div>
+        <div class="ipo-arrow" aria-hidden="true">→</div>
+        <div class="ipo-block">
+          <span class="ipo-block__label"><span class="dot dot--output"></span> Output</span>
+          <div class="ipo-output"><pre id="ipoOutput">BELAJAR INFORMATIKA ITU SERU</pre></div>
+        </div>
+      </div>
+      <div class="ipo-card__foot">Model ini disebut <strong>Input–Process–Output (IPO)</strong> pada arsitektur komputer <strong>Von Neumann</strong> — salah satu topik pertama yang akan kita bahas di TP Berpikir Komputasional.</div>
+    </div>
+  </header>
+
+  <!-- DEFINISI -->
+  <section id="definisi">
+    <p class="eyebrow">01 — Definisi</p>
+    <h2>Jadi, Informatika itu sebenarnya apa?</h2>
+    <p class="lead-q">Bukan cuma "belajar komputer" atau "belajar ngoding". Informatika adalah cara berpikir untuk menyelesaikan masalah secara sistematis, sekaligus kecakapan hidup di dunia digital secara aman dan bertanggung jawab. Di kelas X, kita fokus ke dua dari empat elemen besarnya:</p>
+
+    <div class="elemen-toggle" role="tablist" aria-label="Pilih elemen">
+      <button class="elemen-btn" role="tab" aria-selected="true" aria-controls="panel-bk" id="tab-bk">Berpikir Komputasional</button>
+      <button class="elemen-btn" role="tab" aria-selected="false" aria-controls="panel-ld" id="tab-ld">Literasi Digital</button>
+    </div>
+
+    <div class="elemen-panel active" id="panel-bk" role="tabpanel" aria-labelledby="tab-bk">
+      <h3>Berpikir Komputasional</h3>
+      <p>Kemampuan menyelesaikan masalah secara bertahap dan sistematis — memecahnya jadi langkah-langkah kecil (algoritma), menyusun data dengan rapi (struktur data), lalu mensimulasikan bagaimana komputer benar-benar memprosesnya.</p>
+      <ul>
+        <li>Struktur data & algoritma standar (list, stack, queue, pencarian, pengurutan)</li>
+        <li>Mengolah data mentah supaya jadi data yang berkualitas dan bisa dipercaya</li>
+        <li>Menulis rancangan program sederhana dalam pseudocode</li>
+        <li>Cara kerja komputer Von Neumann & peran sistem operasi</li>
+      </ul>
+    </div>
+    <div class="elemen-panel" id="panel-ld" role="tabpanel" aria-labelledby="tab-ld">
+      <h3>Literasi Digital</h3>
+      <p>Kecakapan hidup di dunia digital — bukan cuma bisa "pakai" aplikasi, tapi juga tahu cara mencari informasi yang benar, menjaga keamanan akun, dan berperilaku baik saat berkarya di internet.</p>
+      <ul>
+        <li>Mesin pencari & cara membaca lateral untuk cek fakta</li>
+        <li>Pengolah dokumen, lembar kerja, dan presentasi</li>
+        <li>Keamanan jaringan, kata sandi, autentikasi dua langkah, privasi akun</li>
+        <li>Hak cipta (HaKI), profesi Informatika, dan budaya digital Indonesia</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PENTING -->
+  <section id="penting">
+    <p class="eyebrow">02 — Penting Nggak Sih?</p>
+    <h2>Penting nggak, sih, sebenarnya?</h2>
+    <p class="lead-q">Coba buka salah satu ini dulu, baru putuskan sendiri jawabannya.</p>
+
+    <details class="accordion-item" open>
+      <summary>Setiap kali kamu pegang HP, ada IPO yang jalan tanpa kamu sadari <span class="plus">+</span></summary>
+      <div class="accordion-body">
+        <span class="tag">Berpikir Komputasional</span>
+        <p>Ngetik tugas di laptop (keyboard → CPU olah karakter → tampil di layar), edit video di HP (sistem operasi atur memori & multitasking), main game online (sistem operasi atur koneksi, grafik, suara sekaligus) — semuanya IPO yang sama yang tadi kamu coba di kotak simulasi. Kalau komputer di rumahmu tiba-tiba lemot padahal dipakai banyak orang sekaligus, itu juga bisa dijelaskan dari sini.</p>
+      </div>
+    </details>
+
+    <details class="accordion-item">
+      <summary>Data yang salah, sekecil apa pun, bisa berujung keputusan yang salah <span class="plus">+</span></summary>
+      <div class="accordion-body">
+        <span class="tag">Berpikir Komputasional</span>
+        <p>Prinsipnya sederhana: <em>Garbage In, Garbage Out</em> (GIGO) — data sampah masuk, keluarnya juga sampah. Termometer yang baterainya hampir habis bisa bikin diagnosis salah. Tanggal lahir yang formatnya kebalik bisa bikin usia orang salah dihitung. Kemampuan mengolah data — memvalidasi, memverifikasi, membersihkan — sekarang jadi keterampilan sepenting bisa membaca dan menulis.</p>
+      </div>
+    </details>
+
+    <details class="accordion-item">
+      <summary>Hoaks menyebar lebih cepat daripada klarifikasinya <span class="plus">+</span></summary>
+      <div class="accordion-body">
+        <span class="tag">Literasi Digital</span>
+        <p>"Membaca lateral" — kebiasaan meninggalkan sebuah artikel sejenak untuk mengecek sumber lain sebelum percaya — adalah keterampilan bertahan hidup di linimasa. Bukan soal pintar atau tidak, tapi soal kebiasaan: cari sumber aslinya, cari tahu siapa yang menulis, baru simpulkan.</p>
+      </div>
+    </details>
+
+    <details class="accordion-item">
+      <summary>Akun yang tidak aman itu bukan cuma masalah kamu sendiri <span class="plus">+</span></summary>
+      <div class="accordion-body">
+        <span class="tag">Literasi Digital</span>
+        <p>Kata sandi yang lemah, tidak ada autentikasi dua langkah, pengaturan privasi yang dibiarkan default — semua itu pintu masuk buat orang lain menyalahgunakan datamu, kontakmu, bahkan identitasmu.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- BERGUNA -->
+  <section id="berguna">
+    <p class="eyebrow">03 — Berguna Nggak Sih?</p>
+    <h2>Berguna nggak buat mata pelajaran lain?</h2>
+    <p class="lead-q">Informatika sengaja dirancang bersinggungan dengan pelajaran lain — bukan berdiri sendiri di pojok jadwal pelajaran.</p>
+    <div class="subject-grid">
+      <div class="subject-card">
+        <p class="eyebrow">Matematika</p>
+        <p>Logika kondisional (jika–maka) dan pengulangan dipakai untuk merancang algoritma, sekaligus menghitung statistik seperti median dan modus.</p>
+      </div>
+      <div class="subject-card">
+        <p class="eyebrow">Bahasa Indonesia & Inggris</p>
+        <p>Menulis pseudocode melatih menyusun kalimat prosedur yang logis dan runtut — kemampuan yang sama dipakai saat menulis esai anti-hoaks.</p>
+      </div>
+      <div class="subject-card">
+        <p class="eyebrow">IPS</p>
+        <p>Analisis data sosial (demografi, tren ekonomi) dan dampak disinformasi terhadap opini publik sama-sama memakai cara berpikir Informatika.</p>
+      </div>
+      <div class="subject-card">
+        <p class="eyebrow">IPA</p>
+        <p>Pseudocode membantu merancang langkah kerja ilmiah; looping dipakai untuk mengatur eksperimen yang berulang, misalnya mengamati siklus tumbuhan.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUDAH DITERAPKAN -->
+  <section id="cek-diri">
+    <p class="eyebrow">04 — Apakah Sudah Saya Terapkan?</p>
+    <h2>Sebelum lanjut, jujur-jujuran ke diri sendiri dulu</h2>
+    <p class="lead-q">Ini bukan kuis, tidak dinilai, dan tidak dikirim ke siapa pun — cuma tersimpan di browser kamu sendiri. Centang yang menurutmu <em>sudah</em> kamu lakukan atau pahami. Sisanya, itulah target kita berdua semester ini.</p>
+
+    <div class="progress-summary">
+      <div class="ring">
+        <svg viewBox="0 0 64 64">
+          <circle class="bg" cx="32" cy="32" r="26"></circle>
+          <circle class="fg" id="ringFg" cx="32" cy="32" r="26" stroke-dasharray="163.4" stroke-dashoffset="163.4"></circle>
+        </svg>
+        <div class="ring-label" id="ringLabel">0%</div>
+      </div>
+      <p class="progress-text">Sudah diterapkan: <strong id="progressCount">0</strong> dari <strong id="progressTotal">19</strong> poin.</p>
+      <button class="reset-btn" id="resetBtn" type="button">Reset checklist</button>
+    </div>
+
+    <div class="check-group">
+      <h3><span class="dot dot--process"></span> Berpikir Komputasional</h3>
+      <ul class="check-list" data-group="bk">
+        <li class="check-item"><input type="checkbox" data-id="bk1"><span>Saya paham apa itu struktur data & algoritma standar (list, stack, queue).</span></li>
+        <li class="check-item"><input type="checkbox" data-id="bk2"><span>Saya pernah mengolah data sendiri/berkelompok supaya lebih berkualitas dan bisa dipercaya.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="bk3"><span>Saya bisa pakai algoritma pencarian/pengurutan untuk menyelesaikan masalah sehari-hari.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="bk4"><span>Saya bisa menuliskan langkah program sederhana dalam bentuk pseudocode.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="bk5"><span>Saya tahu bagian-bagian utama komputer (CPU, memori, dst.) dan cara kerjanya.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="bk6"><span>Saya pernah mensimulasikan bagaimana data mengalir dari input ke output di komputer.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="bk7"><span>Saya paham apa itu sistem operasi dan apa saja tugasnya.</span></li>
+      </ul>
+    </div>
+
+    <div class="check-group">
+      <h3><span class="dot dot--output"></span> Literasi Digital</h3>
+      <ul class="check-list" data-group="ld">
+        <li class="check-item"><input type="checkbox" data-id="ld1"><span>Saya bisa pakai mesin pencari lebih dari sekadar kata kunci biasa (tanda petik, minus, filter, dsb.).</span></li>
+        <li class="check-item"><input type="checkbox" data-id="ld2"><span>Saya tahu ke mana harus cek kalau ragu sebuah berita itu benar atau hoaks.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="ld3"><span>Saya sudah biasa "membaca lateral" — cek sumber lain dulu sebelum percaya suatu informasi.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="ld4"><span>Saya bisa pakai aplikasi dokumen, lembar kerja, dan presentasi untuk keperluan tugas.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="ld5"><span>Saya tahu dasar-dasar supaya koneksi wifi/internet saya aman.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="ld6"><span>Saya pernah mengatur sendiri pengaturan keamanan jaringan.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="ld7"><span>Saya pernah membuat & menyebarkan konten digital (tulisan, gambar, video) untuk orang lain.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="ld8"><span>Saya menghargai karya orang lain di internet dan tidak asal comot.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="ld9"><span>Saya tahu ada banyak profesi di bidang Informatika, bukan cuma "jadi programmer".</span></li>
+        <li class="check-item"><input type="checkbox" data-id="ld10"><span>Saya tahu contoh budaya Indonesia yang sudah didigitalkan.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="ld11"><span>Saya tahu cara menyaring konten negatif yang muncul di beranda saya.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="ld12"><span>Saya pakai password manager, autentikasi dua langkah, dan atur privasi akun saya sendiri.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section id="peta">
+    <p class="eyebrow">05 — Yang Menanti</p>
+    <h2>Peta perjalanan dua semester ke depan</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-marker-col"><div class="tl-num">1</div><div class="tl-line"></div></div>
+        <div class="tl-content"><h3>Struktur data & algoritma</h3><p>List, stack, queue, pencarian, dan pengurutan — dasar untuk menyusun solusi yang rapi.</p></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-marker-col"><div class="tl-num">2</div><div class="tl-line"></div></div>
+        <div class="tl-content"><h3>Von Neumann & sistem operasi</h3><p>Membuka "kotak hitam" komputer: dari CPU, memori, sampai bagaimana sistem operasi mengatur semuanya.</p></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-marker-col"><div class="tl-num">3</div><div class="tl-line"></div></div>
+        <div class="tl-content"><h3>Pengolahan data berkualitas</h3><p>Validasi, verifikasi, dan data cleansing — supaya kesimpulan kita tidak dibangun di atas data yang salah.</p></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-marker-col"><div class="tl-num">4</div><div class="tl-line"></div></div>
+        <div class="tl-content"><h3>Literasi digital & keamanan</h3><p>Membaca lateral, jejak digital, HaKI, sampai kata sandi dan privasi akun.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Bacaan pembuka — Informatika Kelas X (Fase E). Disusun mengacu pada Capaian Pembelajaran & Panduan Mata Pelajaran Informatika.</p>
+  </footer>
+</div>
+
+<script>
+  // ---- reading progress bar ----
+  const fill = document.getElementById('progressFill');
+  function updateProgress(){
+    const h = document.documentElement;
+    const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    fill.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+  }
+  document.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  // ---- elemen tabs ----
+  const tabs = document.querySelectorAll('.elemen-btn');
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabs.forEach(b => b.setAttribute('aria-selected', 'false'));
+      document.querySelectorAll('.elemen-panel').forEach(p => p.classList.remove('active'));
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(btn.getAttribute('aria-controls')).classList.add('active');
+    });
+  });
+
+  // ---- IPO simulator ----
+  const ipoInput = document.getElementById('ipoInput');
+  const ipoOp = document.getElementById('ipoOp');
+  const ipoOutput = document.getElementById('ipoOutput');
+
+  function runIPO(){
+    const val = ipoInput.value;
+    let out = '';
+    switch(ipoOp.value){
+      case 'upper':
+        out = val.toUpperCase();
+        break;
+      case 'reverse':
+        out = val.split('').reverse().join('');
+        break;
+      case 'count':
+        out = 'Karakter: ' + val.length + '\nKata: ' + (val.trim() ? val.trim().split(/\s+/).length : 0);
+        break;
+      case 'vowel':
+        out = val.replace(/[aiueoAIUEO]/g, '*');
+        break;
+      case 'alpha':
+        out = val.trim().split(/\s+/).filter(Boolean).sort((a,b)=>a.localeCompare(b, 'id')).join(' ');
+        break;
+      default:
+        out = val;
+    }
+    ipoOutput.textContent = out || '(kosong — coba ketik sesuatu di Input)';
+  }
+  ipoInput.addEventListener('input', runIPO);
+  ipoOp.addEventListener('change', runIPO);
+  runIPO();
+
+  // ---- checklist with localStorage ----
+  const STORAGE_KEY = 'informatika-x-checklist';
+  const checkboxes = Array.from(document.querySelectorAll('.check-item input[type="checkbox"]'));
+  const total = checkboxes.length;
+  document.getElementById('progressTotal').textContent = total;
+
+  const CIRC = 2 * Math.PI * 26; // r=26
+
+  function loadState(){
+    try{
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    }catch(e){ return {}; }
+  }
+  function saveState(state){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  function renderProgress(){
+    const checked = checkboxes.filter(c => c.checked).length;
+    document.getElementById('progressCount').textContent = checked;
+    const pct = total ? checked/total : 0;
+    const offset = CIRC * (1 - pct);
+    const fg = document.getElementById('ringFg');
+    fg.setAttribute('stroke-dasharray', CIRC.toFixed(1));
+    fg.setAttribute('stroke-dashoffset', offset.toFixed(1));
+    document.getElementById('ringLabel').textContent = Math.round(pct*100) + '%';
+  }
+
+  function init(){
+    const state = loadState();
+    checkboxes.forEach(cb => {
+      const id = cb.getAttribute('data-id');
+      if(state[id]) cb.checked = true;
+      cb.addEventListener('change', () => {
+        const s = loadState();
+        s[id] = cb.checked;
+        saveState(s);
+        renderProgress();
+      });
+    });
+    renderProgress();
+  }
+  init();
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    localStorage.removeItem(STORAGE_KEY);
+    checkboxes.forEach(cb => cb.checked = false);
+    renderProgress();
+  });
+</script>
+</body>
+</html>
