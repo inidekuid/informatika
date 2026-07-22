@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sebelum Mulai: Kenalan dengan Koding & Kecerdasan Artifisial — Kelas X</title>
+<meta name="description" content="Bacaan pembuka mata pelajaran pilihan Koding dan Kecerdasan Artifisial (KKA) Kelas X: apa bedanya dengan Informatika, kenapa penting, seberapa berguna, dan ruang refleksi sebelum memulai.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F1F0F6;
+    --bg-grid: rgba(91,63,163,0.07);
+    --paper:#FFFFFF;
+    --ink:#1B2430;
+    --muted:#5B6570;
+    --line:#DEDAE8;
+    --ai:#5B3FA3;
+    --ai-soft:#EDE8F7;
+    --code:#1F8F5F;
+    --code-soft:#E3F3EA;
+    --out:#C77B18;
+    --out-soft:#FBEDDA;
+    --danger:#B4472E;
+    --radius:14px;
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--bg-grid) 1px, transparent 1px) 0 0/100% 42px,
+      linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px) 0 0/42px 100%,
+      var(--bg);
+    color:var(--ink); font-family:var(--font-body); line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  a{ color:var(--ai); }
+
+  .progress-rail{ position:fixed; top:0; left:0; height:4px; width:100%; z-index:50; }
+  .progress-fill{ height:100%; width:0%; background:linear-gradient(90deg, var(--code), var(--ai), var(--out)); transition:width .08s linear; }
+
+  .wrap{ max-width:880px; margin:0 auto; padding:0 24px; }
+
+  .eyebrow{ font-family:var(--font-mono); font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:var(--ai); display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+  .eyebrow::before{ content:"//"; color:var(--muted); }
+
+  h1,h2,h3{ font-family:var(--font-display); font-weight:700; line-height:1.15; margin:0 0 12px; }
+  h2{ font-size:clamp(24px,3.4vw,32px); }
+  h3{ font-size:19px; }
+  p{ margin:0 0 16px; color:var(--ink); }
+  .muted{ color:var(--muted); }
+
+  header.hero{ padding:88px 0 56px; }
+  .hero h1{ font-size:clamp(30px,5vw,48px); max-width:17ch; }
+  .hero .lede{ font-size:18px; max-width:62ch; color:var(--muted); }
+
+  .badge-row{ display:flex; gap:8px; flex-wrap:wrap; margin: 4px 0 22px; }
+  .badge{ font-family:var(--font-mono); font-size:12px; padding:4px 10px; border-radius:999px; border:1px solid var(--line); color:var(--muted); background:var(--paper); }
+  .badge strong{ color:var(--ai); }
+
+  /* prompt demo */
+  .demo-card{ margin-top:36px; background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); box-shadow:0 1px 0 rgba(27,36,48,.03), 0 12px 30px -18px rgba(27,36,48,.25); overflow:hidden; }
+  .demo-card__top{ padding:18px 22px; border-bottom:1px dashed var(--line); display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .demo-card__top .eyebrow{ margin:0; }
+  .demo-card__hint{ font-size:13px; color:var(--muted); }
+  .demo-body{ padding:22px; display:flex; flex-direction:column; gap:16px; }
+
+  .field-label{ font-family:var(--font-mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; display:flex; align-items:center; gap:6px; margin-bottom:8px; }
+  .dot{ width:8px; height:8px; border-radius:50%; display:inline-block; }
+  .dot--code{ background:var(--code); }
+  .dot--ai{ background:var(--ai); }
+  .dot--out{ background:var(--out); }
+
+  .prompt-row{ display:flex; gap:10px; flex-wrap:wrap; }
+  .prompt-toggle{ display:flex; border:1.5px solid var(--ai); border-radius:10px; overflow:hidden; }
+  .prompt-toggle button{ font-family:var(--font-mono); font-size:12.5px; padding:9px 14px; border:none; background:var(--paper); color:var(--ai); cursor:pointer; }
+  .prompt-toggle button[aria-pressed="true"]{ background:var(--ai); color:#fff; }
+  .prompt-toggle button:focus-visible{ outline:3px solid var(--ai); outline-offset:-3px; }
+
+  textarea#promptInput{ width:100%; min-height:76px; resize:vertical; border:1.5px solid var(--code); background:var(--code-soft); border-radius:10px; padding:12px; font-family:var(--font-mono); font-size:14px; color:var(--ink); }
+  textarea#promptInput:focus-visible{ outline:3px solid var(--code); outline-offset:2px; }
+
+  .ai-output{ background:var(--ai-soft); border:1.5px solid var(--ai); border-radius:10px; padding:14px; min-height:90px; }
+  .ai-output pre{ margin:0; white-space:pre-wrap; word-break:break-word; font-family:var(--font-mono); font-size:13.5px; }
+  .quality-meter{ display:flex; align-items:center; gap:10px; margin-top:10px; }
+  .quality-bar{ flex:1; height:8px; border-radius:99px; background:var(--line); overflow:hidden; }
+  .quality-fill{ height:100%; background:var(--out); width:20%; transition:width .25s ease, background .25s ease; }
+  .quality-label{ font-family:var(--font-mono); font-size:12px; color:var(--muted); white-space:nowrap; }
+
+  .demo-card__foot{ padding:14px 22px; background:#FAFAFC; border-top:1px dashed var(--line); font-size:13px; color:var(--muted); }
+
+  section{ padding:64px 0; border-top:1px solid var(--line); }
+  section:first-of-type{ border-top:none; }
+  .lead-q{ font-size:18px; color:var(--muted); max-width:62ch; }
+
+  /* elemen tabs (6) */
+  .elemen-toggle{ display:flex; gap:8px; margin:22px 0 18px; flex-wrap:wrap; }
+  .elemen-btn{ font-family:var(--font-mono); font-size:12.5px; padding:8px 13px; border-radius:999px; border:1.5px solid var(--line); background:var(--paper); color:var(--ink); cursor:pointer; }
+  .elemen-btn[aria-selected="true"]{ border-color:var(--ai); background:var(--ai-soft); color:var(--ai); font-weight:600; }
+  .elemen-btn:focus-visible{ outline:3px solid var(--ai); outline-offset:2px; }
+  .elemen-panel{ display:none; background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:22px; }
+  .elemen-panel.active{ display:block; }
+  .elemen-panel .tag{ display:inline-block; font-family:var(--font-mono); font-size:11.5px; color:var(--ai); background:var(--ai-soft); border-radius:6px; padding:2px 8px; margin-bottom:8px; }
+  .elemen-panel ul{ margin:10px 0 0; padding-left:20px; }
+  .elemen-panel li{ margin-bottom:6px; }
+
+  /* accordion */
+  .accordion-item{ border:1px solid var(--line); border-radius:12px; background:var(--paper); margin-bottom:12px; overflow:hidden; }
+  .accordion-item summary{ list-style:none; cursor:pointer; padding:16px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px; font-family:var(--font-display); font-weight:600; font-size:16px; }
+  .accordion-item summary::-webkit-details-marker{ display:none; }
+  .accordion-item summary .plus{ font-family:var(--font-mono); color:var(--ai); font-size:20px; flex-shrink:0; transition:transform .15s ease; }
+  .accordion-item[open] summary .plus{ transform:rotate(45deg); }
+  .accordion-item summary:focus-visible{ outline:3px solid var(--ai); outline-offset:-3px; }
+  .accordion-body{ padding:0 20px 18px; color:var(--muted); }
+  .accordion-body .tag{ display:inline-block; font-family:var(--font-mono); font-size:11.5px; color:var(--ai); background:var(--ai-soft); border-radius:6px; padding:2px 8px; margin-bottom:8px; }
+
+  /* subject grid */
+  .subject-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:20px; }
+  @media (max-width:640px){ .subject-grid{ grid-template-columns:1fr; } }
+  .subject-card{ border:1px solid var(--line); background:var(--paper); border-radius:12px; padding:18px; }
+  .subject-card .eyebrow{ margin-bottom:6px; font-size:12px; }
+  .subject-card p{ margin:0; font-size:14.5px; color:var(--muted); }
+
+  /* checklist */
+  .progress-summary{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:18px 20px; margin:22px 0; }
+  .ring{ position:relative; width:64px; height:64px; flex-shrink:0; }
+  .ring svg{ transform:rotate(-90deg); width:64px; height:64px; }
+  .ring circle{ fill:none; stroke-width:7; }
+  .ring .bg{ stroke:var(--line); }
+  .ring .fg{ stroke:var(--ai); stroke-linecap:round; transition:stroke-dashoffset .3s ease; }
+  .ring-label{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:13px; font-weight:600; }
+  .progress-text strong{ font-family:var(--font-display); }
+  .reset-btn{ margin-left:auto; font-family:var(--font-mono); font-size:12.5px; color:var(--muted); background:transparent; border:1px solid var(--line); border-radius:8px; padding:8px 12px; cursor:pointer; }
+  .reset-btn:hover{ border-color:var(--danger); color:var(--danger); }
+  .reset-btn:focus-visible{ outline:3px solid var(--ai); outline-offset:2px; }
+
+  .check-group{ margin-bottom:22px; }
+  .check-group h3{ display:flex; align-items:center; gap:8px; font-size:16.5px; }
+  .check-group .bab-tag{ font-family:var(--font-mono); font-size:11.5px; color:var(--muted); font-weight:400; }
+  .check-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+  .check-item{ display:flex; align-items:flex-start; gap:12px; background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:12px 14px; cursor:pointer; }
+  .check-item:has(input:checked){ background:var(--code-soft); border-color:var(--code); }
+  .check-item input{ margin-top:3px; width:16px; height:16px; accent-color:var(--code); flex-shrink:0; }
+  .check-item input:focus-visible{ outline:3px solid var(--ai); outline-offset:2px; }
+  .check-item span{ font-size:14.5px; }
+
+  /* reflection journal */
+  .journal-card{ background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:20px 22px; margin-top:26px; }
+  .journal-card textarea{ width:100%; min-height:90px; resize:vertical; border:1.5px solid var(--line); border-radius:10px; padding:12px; font-family:var(--font-body); font-size:14.5px; color:var(--ink); }
+  .journal-card textarea:focus-visible{ outline:3px solid var(--ai); outline-offset:2px; }
+  .journal-card label{ font-family:var(--font-display); font-weight:600; font-size:15px; display:block; margin-bottom:8px; }
+  .journal-status{ font-family:var(--font-mono); font-size:12px; color:var(--muted); margin-top:8px; min-height:16px; }
+
+  /* timeline */
+  .timeline{ display:flex; flex-direction:column; gap:0; margin-top:24px; }
+  .tl-item{ display:grid; grid-template-columns:46px 1fr; gap:16px; }
+  .tl-marker-col{ display:flex; flex-direction:column; align-items:center; }
+  .tl-num{ width:32px; height:32px; border-radius:50%; background:var(--ai); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:13px; font-weight:600; flex-shrink:0; }
+  .tl-line{ flex:1; width:2px; background:var(--line); min-height:24px; }
+  .tl-item:last-child .tl-line{ display:none; }
+  .tl-content{ padding-bottom:26px; }
+  .tl-content h3{ margin-bottom:4px; }
+  .tl-content p{ font-size:14.5px; color:var(--muted); margin:0; }
+
+  footer{ padding:40px 0 60px; border-top:1px solid var(--line); }
+  footer p{ font-size:13px; color:var(--muted); }
+
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } *{ transition:none !important; animation:none !important; } }
+</style>
+</head>
+<body>
+
+<div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">Koding & Kecerdasan Artifisial · Kelas X · Mata Pelajaran Pilihan · Bacaan Pembuka</p>
+    <h1>Sebelum coding & ngobrol sama AI selama dua semester, kenalan dulu yuk.</h1>
+    <p class="lede">KKA ini bukan pengulangan Informatika — di sini kamu akan lebih banyak <em>praktik</em>: menulis kode sungguhan, dan belajar "berbicara" dengan AI supaya hasilnya benar-benar berguna, bukan asal jadi.</p>
+
+    <div class="badge-row">
+      <span class="badge">Status: <strong>mata pelajaran pilihan</strong></span>
+      <span class="badge">Melengkapi: <strong>Informatika (wajib)</strong></span>
+      <span class="badge">6 elemen · 6 bab</span>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-card__top">
+        <p class="eyebrow" style="margin:0">Coba Sendiri — Latihan Prompt Engineering Mini</p>
+        <p class="demo-card__hint">simulasi sederhana, bukan AI sungguhan</p>
+      </div>
+      <div class="demo-body">
+        <div>
+          <span class="field-label"><span class="dot dot--code"></span> Perintah (prompt) kamu ke AI</span>
+          <div class="prompt-row" style="margin-bottom:10px;">
+            <div class="prompt-toggle" role="group" aria-label="Contoh prompt">
+              <button type="button" data-example="vague" aria-pressed="true">Contoh prompt vague</button>
+              <button type="button" data-example="specific" aria-pressed="false">Contoh prompt spesifik</button>
+            </div>
+          </div>
+          <textarea id="promptInput" placeholder="tulis perintah ke AI di sini…">buatkan caption</textarea>
+        </div>
+        <div>
+          <span class="field-label"><span class="dot dot--ai"></span> Simulasi respons AI</span>
+          <div class="ai-output"><pre id="promptOutput">Baik. Bisa dibuatkan — tapi captionnya untuk apa? Siapa target pembacanya? Nada bicaranya seperti apa? Tanpa detail itu, saya cuma bisa menebak-nebak.</pre></div>
+          <div class="quality-meter">
+            <span class="quality-label">Kejelasan prompt:</span>
+            <div class="quality-bar"><div class="quality-fill" id="qualityFill"></div></div>
+            <span class="quality-label" id="qualityText">rendah</span>
+          </div>
+        </div>
+      </div>
+      <div class="demo-card__foot">Ini contoh kasar dari <strong>prompt engineering</strong>: makin jelas konteks, tujuan, dan format yang kamu minta, makin sesuai hasil yang kamu dapat. Ini salah satu inti materi elemen <strong>Pemanfaatan dan Pengembangan Kecerdasan Artifisial</strong>.</div>
+    </div>
+  </header>
+
+  <!-- DEFINISI / BEDA DENGAN INFORMATIKA -->
+  <section id="definisi">
+    <p class="eyebrow">01 — Definisi</p>
+    <h2>KKA itu apa, dan bedanya dengan Informatika di mana?</h2>
+    <p class="lead-q">Informatika itu wajib buat semua orang — isinya fondasi: cara komputer bekerja, cara berinternet dengan aman dan kritis. KKA ini pilihan, isinya lanjutan yang lebih dalam ke praktik: coding beneran dan kerja bareng AI. Ada 6 elemen di KKA — coba klik satu-satu:</p>
+
+    <div class="elemen-toggle" role="tablist" aria-label="Pilih elemen KKA">
+      <button class="elemen-btn" role="tab" aria-selected="true" aria-controls="p-bk" id="t-bk">Berpikir Komputasional</button>
+      <button class="elemen-btn" role="tab" aria-selected="false" aria-controls="p-ap" id="t-ap">Algoritma Pemrograman</button>
+      <button class="elemen-btn" role="tab" aria-selected="false" aria-controls="p-le" id="t-le">Literasi & Etika KA</button>
+      <button class="elemen-btn" role="tab" aria-selected="false" aria-controls="p-pk" id="t-pk">Pemanfaatan & Pengembangan KA</button>
+      <button class="elemen-btn" role="tab" aria-selected="false" aria-controls="p-ld" id="t-ld">Literasi Digital</button>
+      <button class="elemen-btn" role="tab" aria-selected="false" aria-controls="p-ad" id="t-ad">Analisis Data</button>
+    </div>
+
+    <div class="elemen-panel active" id="p-bk" role="tabpanel" aria-labelledby="t-bk">
+      <span class="tag">Bab 1, hlm. 1–28</span>
+      <h3>Berpikir Komputasional</h3>
+      <p>Bukan teori dasar lagi (itu sudah di Informatika) — di sini kamu langsung pakai cara berpikir itu untuk membedah masalah sehari-hari atau kejuruan yang lebih rumit, sampai mensimulasikan penyelesaiannya, lalu mengaitkannya dengan AI.</p>
+    </div>
+    <div class="elemen-panel" id="p-ap" role="tabpanel" aria-labelledby="t-ap">
+      <span class="tag">Bab 2, hlm. 29–104</span>
+      <h3>Algoritma Pemrograman</h3>
+      <p>Bagian paling "coding" dari KKA: membandingkan algoritma, menulis program berbasis teks (bukan cuma pseudocode), sampai debugging — mencari dan memperbaiki bug di kode sendiri.</p>
+    </div>
+    <div class="elemen-panel" id="p-le" role="tabpanel" aria-labelledby="t-le">
+      <span class="tag">Bab 3, hlm. 105–142</span>
+      <h3>Literasi dan Etika Kecerdasan Artifisial</h3>
+      <p>Bagaimana AI bisa "mengenali" wajah di foto atau suara di rekaman, profesi apa saja yang ada di bidang AI, dan tanggung jawab etika/hukum yang muncul kalau kita memakainya sembarangan.</p>
+    </div>
+    <div class="elemen-panel" id="p-pk" role="tabpanel" aria-labelledby="t-pk">
+      <span class="tag">Bab 4, hlm. 143–194</span>
+      <h3>Pemanfaatan dan Pengembangan Kecerdasan Artifisial</h3>
+      <p>Prompt engineering (seperti yang barusan kamu coba), cara menilai apakah konten buatan AI bisa dipercaya, sampai merancang sistem berbasis AI lewat proses design thinking.</p>
+    </div>
+    <div class="elemen-panel" id="p-ld" role="tabpanel" aria-labelledby="t-ld">
+      <span class="tag">Bab 5, hlm. 195–234</span>
+      <h3>Literasi Digital</h3>
+      <p>Kalau di Informatika kamu belajar jadi pengguna internet yang kritis, di sini kamu belajar jadi pembuat konten: konsep multimedia, hak cipta atas karya sendiri, etika produksi konten, sampai keamanan saat membagikannya.</p>
+    </div>
+    <div class="elemen-panel" id="p-ad" role="tabpanel" aria-labelledby="t-ad">
+      <span class="tag">Bab 6, hlm. 235–288</span>
+      <h3>Analisis Data</h3>
+      <p>Kenalan dengan basis data: apa itu, perangkat lunaknya, perintah dasar SQL untuk mengelola data, sampai mengolah data di spreadsheet.</p>
+    </div>
+  </section>
+
+  <!-- PENTING -->
+  <section id="penting">
+    <p class="eyebrow">02 — Penting Nggak Sih?</p>
+    <h2>Penting nggak, sih, sebenarnya?</h2>
+    <p class="lead-q">Buka salah satu ini dulu, baru putuskan sendiri jawabannya.</p>
+
+    <details class="accordion-item" open>
+      <summary>AI sekarang ada di mana-mana, tapi banyak orang pakainya asal-asalan <span class="plus">+</span></summary>
+      <div class="accordion-body">
+        <span class="tag">Pemanfaatan & Pengembangan KA</span>
+        <p>Coba lihat lagi demo prompt di atas — beda antara prompt yang jelas dan yang asal-asalan bisa sangat menentukan hasilnya. Orang yang tahu cara "berbicara" dengan AI dengan tepat akan jauh lebih efektif memakainya, dibanding yang cuma asal ketik lalu kecewa hasilnya jelek.</p>
+      </div>
+    </details>
+
+    <details class="accordion-item">
+      <summary>Kode yang kamu tulis sendiri, bug-nya juga tanggung jawabmu sendiri <span class="plus">+</span></summary>
+      <div class="accordion-body">
+        <span class="tag">Algoritma Pemrograman</span>
+        <p>Debugging bukan cuma soal skill teknis — ini melatih kesabaran dan cara berpikir runtut: mencari di mana logikamu meleset, bukan langsung menyerah. Kemampuan ini kepakai jauh di luar urusan coding.</p>
+      </div>
+    </details>
+
+    <details class="accordion-item">
+      <summary>AI bisa salah kenali, salah tebak, bahkan bias — dan itu bisa berdampak nyata <span class="plus">+</span></summary>
+      <div class="accordion-body">
+        <span class="tag">Literasi & Etika KA</span>
+        <p>Sistem pengenalan wajah atau suara tidak selalu akurat untuk semua orang. Kalau kita tidak paham keterbatasan dan konsekuensi etisnya, kita bisa terlalu percaya begitu saja pada keputusan yang dibuat AI — padahal AI bisa salah.</p>
+      </div>
+    </details>
+
+    <details class="accordion-item">
+      <summary>Data yang berantakan bikin keputusan ikut berantakan <span class="plus">+</span></summary>
+      <div class="accordion-body">
+        <span class="tag">Analisis Data</span>
+        <p>Basis data yang rapi adalah fondasi dari hampir semua sistem digital — dari aplikasi sekolah sampai marketplace. Paham cara kerja dan cara "bertanya" ke basis data (lewat SQL) membuka pintu ke banyak profesi digital.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- BERGUNA -->
+  <section id="berguna">
+    <p class="eyebrow">03 — Berguna Nggak Sih?</p>
+    <h2>Berguna nggak buat pelajaran atau bidang lain?</h2>
+    <p class="lead-q">KKA dirancang bisa dipakai lintas bidang, termasuk kejuruan — bukan cuma buat yang mau jadi programmer.</p>
+    <div class="subject-grid">
+      <div class="subject-card">
+        <p class="eyebrow">Matematika</p>
+        <p>Query basis data (SQL) memakai logika himpunan dan kondisional yang persis dipelajari di matematika — bedanya, di sini langsung dipraktikkan ke data sungguhan.</p>
+      </div>
+      <div class="subject-card">
+        <p class="eyebrow">Bahasa Indonesia & Inggris</p>
+        <p>Prompt engineering pada dasarnya adalah menulis instruksi yang jelas dan runtut — kemampuan menulis yang baik langsung berpengaruh ke kualitas hasil dari AI.</p>
+      </div>
+      <div class="subject-card">
+        <p class="eyebrow">Seni Budaya & Prakarya</p>
+        <p>Produksi konten multimedia (Bab 5) bersinggungan langsung dengan desain, videografi, dan storytelling visual.</p>
+      </div>
+      <div class="subject-card">
+        <p class="eyebrow">Mata Pelajaran Kejuruan (SMK)</p>
+        <p>Berpikir komputasional dan otomatisasi berbasis AI bisa diterapkan langsung ke masalah kejuruan spesifik jurusanmu, bukan cuma contoh umum.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- REFLEKSI -->
+  <section id="refleksi">
+    <p class="eyebrow">04 — Refleksi Diri</p>
+    <h2>Sebelum lanjut, jujur-jujuran ke diri sendiri dulu</h2>
+    <p class="lead-q">Bukan kuis, tidak dinilai, tidak dikirim ke siapa pun — cuma tersimpan di browser kamu sendiri. Centang yang menurutmu <em>sudah</em> kamu pahami atau lakukan.</p>
+
+    <div class="progress-summary">
+      <div class="ring">
+        <svg viewBox="0 0 64 64">
+          <circle class="bg" cx="32" cy="32" r="26"></circle>
+          <circle class="fg" id="ringFg" cx="32" cy="32" r="26" stroke-dasharray="163.4" stroke-dashoffset="163.4"></circle>
+        </svg>
+        <div class="ring-label" id="ringLabel">0%</div>
+      </div>
+      <p class="progress-text">Sudah diterapkan: <strong id="progressCount">0</strong> dari <strong id="progressTotal">16</strong> poin.</p>
+      <button class="reset-btn" id="resetBtn" type="button">Reset checklist</button>
+    </div>
+
+    <div class="check-group">
+      <h3><span class="dot dot--ai"></span> Berpikir Komputasional <span class="bab-tag">Bab 1</span></h3>
+      <ul class="check-list">
+        <li class="check-item"><input type="checkbox" data-id="bk1"><span>Saya bisa menerapkan cara berpikir sistematis untuk masalah sehari-hari/kejuruan yang cukup rumit.</span></li>
+      </ul>
+    </div>
+    <div class="check-group">
+      <h3><span class="dot dot--code"></span> Algoritma Pemrograman <span class="bab-tag">Bab 2</span></h3>
+      <ul class="check-list">
+        <li class="check-item"><input type="checkbox" data-id="ap1"><span>Saya bisa membandingkan dua algoritma dan bilang mana yang lebih baik.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="ap2"><span>Saya pernah menulis program sederhana berbasis teks (bukan cuma blok visual).</span></li>
+        <li class="check-item"><input type="checkbox" data-id="ap3"><span>Saya pernah mencari & memperbaiki bug (debugging) di kode saya sendiri.</span></li>
+      </ul>
+    </div>
+    <div class="check-group">
+      <h3><span class="dot dot--ai"></span> Literasi & Etika KA <span class="bab-tag">Bab 3</span></h3>
+      <ul class="check-list">
+        <li class="check-item"><input type="checkbox" data-id="le1"><span>Saya paham gambaran umum bagaimana AI mengenali citra dan suara.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="le2"><span>Saya tahu ada berbagai profesi di bidang Kecerdasan Artifisial.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="le3"><span>Saya paham ada konsekuensi etika & hukum saat memakai KA sembarangan.</span></li>
+      </ul>
+    </div>
+    <div class="check-group">
+      <h3><span class="dot dot--ai"></span> Pemanfaatan & Pengembangan KA <span class="bab-tag">Bab 4</span></h3>
+      <ul class="check-list">
+        <li class="check-item"><input type="checkbox" data-id="pk1"><span>Saya sudah pernah coba menulis prompt yang jelas & spesifik ke AI (seperti demo di atas).</span></li>
+        <li class="check-item"><input type="checkbox" data-id="pk2"><span>Saya bisa menilai apakah konten buatan AI itu masuk akal/bisa dipercaya atau tidak.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="pk3"><span>Saya tahu langkah-langkah design thinking untuk merancang sesuatu berbasis AI.</span></li>
+      </ul>
+    </div>
+    <div class="check-group">
+      <h3><span class="dot dot--out"></span> Literasi Digital <span class="bab-tag">Bab 5</span></h3>
+      <ul class="check-list">
+        <li class="check-item"><input type="checkbox" data-id="ld1"><span>Saya paham konsep dasar multimedia (teks, gambar, audio, video digabung).</span></li>
+        <li class="check-item"><input type="checkbox" data-id="ld2"><span>Saya bisa membuat konten multimedia sederhana sendiri.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="ld3"><span>Saya tahu cara menyebarkan konten digital dengan aman & memperhatikan hak cipta.</span></li>
+      </ul>
+    </div>
+    <div class="check-group">
+      <h3><span class="dot dot--code"></span> Analisis Data <span class="bab-tag">Bab 6</span></h3>
+      <ul class="check-list">
+        <li class="check-item"><input type="checkbox" data-id="ad1"><span>Saya paham apa itu basis data dan kenapa penting.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="ad2"><span>Saya bisa mengolah data sederhana di dalam basis data.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="ad3"><span>Saya tahu perintah dasar untuk mengelola basis data (SQL dasar).</span></li>
+      </ul>
+    </div>
+
+    <div class="journal-card">
+      <label for="journalInput">Satu hal yang paling ingin saya bisa lakukan setelah belajar KKA setahun ini:</label>
+      <textarea id="journalInput" placeholder="tulis bebas di sini… nanti bisa kamu baca lagi di akhir semester"></textarea>
+      <div class="journal-status" id="journalStatus"></div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section id="peta">
+    <p class="eyebrow">05 — Yang Menanti</p>
+    <h2>Peta perjalanan dua semester ke depan</h2>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-marker-col"><div class="tl-num">1</div><div class="tl-line"></div></div>
+        <div class="tl-content"><h3>Berpikir Komputasional terapan</h3><p>Membedah masalah nyata dan mulai mengaitkannya dengan AI.</p></div></div>
+      <div class="tl-item"><div class="tl-marker-col"><div class="tl-num">2</div><div class="tl-line"></div></div>
+        <div class="tl-content"><h3>Coding & debugging</h3><p>Menulis program berbasis teks dan belajar memperbaiki kesalahan logika sendiri.</p></div></div>
+      <div class="tl-item"><div class="tl-marker-col"><div class="tl-num">3</div><div class="tl-line"></div></div>
+        <div class="tl-content"><h3>Memahami & menghargai KA</h3><p>Cara kerja pengenalan pola, profesi di bidang AI, dan etikanya.</p></div></div>
+      <div class="tl-item"><div class="tl-marker-col"><div class="tl-num">4</div><div class="tl-line"></div></div>
+        <div class="tl-content"><h3>Bekerja bersama KA</h3><p>Prompt engineering, evaluasi konten AI, dan merancang solusi berbasis AI.</p></div></div>
+      <div class="tl-item"><div class="tl-marker-col"><div class="tl-num">5</div><div class="tl-line"></div></div>
+        <div class="tl-content"><h3>Produksi konten digital</h3><p>Multimedia, hak cipta, dan keamanan saat berbagi karya.</p></div></div>
+      <div class="tl-item"><div class="tl-marker-col"><div class="tl-num">6</div></div>
+        <div class="tl-content"><h3>Data & basis data</h3><p>Mengenal, mengelola, dan mengambil informasi dari basis data.</p></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Bacaan pembuka — Koding dan Kecerdasan Artifisial (KKA) Kelas X, mata pelajaran pilihan yang melengkapi Informatika. Disusun mengacu pada Capaian Pembelajaran & Buku Siswa KKA Kelas X.</p>
+  </footer>
+</div>
+
+<script>
+  // reading progress
+  const fill = document.getElementById('progressFill');
+  function updateProgress(){
+    const h = document.documentElement;
+    const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    fill.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+  }
+  document.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  // elemen tabs
+  const tabs = document.querySelectorAll('.elemen-btn');
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabs.forEach(b => b.setAttribute('aria-selected', 'false'));
+      document.querySelectorAll('.elemen-panel').forEach(p => p.classList.remove('active'));
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(btn.getAttribute('aria-controls')).classList.add('active');
+    });
+  });
+
+  // prompt engineering demo
+  const promptInput = document.getElementById('promptInput');
+  const promptOutput = document.getElementById('promptOutput');
+  const qualityFill = document.getElementById('qualityFill');
+  const qualityText = document.getElementById('qualityText');
+  const exampleBtns = document.querySelectorAll('.prompt-toggle button');
+
+  const examples = {
+    vague: "buatkan caption",
+    specific: "buatkan 3 opsi caption Instagram untuk foto panen tomat di kebun sekolah, nada ceria dan singkat, target pembaca orang tua siswa, sertakan 2 emoji"
+  };
+
+  function scorePrompt(text){
+    let score = 0;
+    const t = text.trim();
+    if (t.length > 25) score += 1;
+    if (t.length > 60) score += 1;
+    if (/\d/.test(t)) score += 1;
+    if (/untuk|target|nada|format|gaya|jumlah|panjang/i.test(t)) score += 1;
+    if (t.split(/\s+/).length > 12) score += 1;
+    return Math.min(score, 5);
+  }
+
+  function respond(text){
+    const t = text.trim();
+    if (!t){
+      return { out: '(kosong — coba tulis perintah dulu)', score: 0 };
+    }
+    const score = scorePrompt(t);
+    if (score <= 1){
+      return { out: 'Baik. Bisa dibuatkan — tapi untuk apa persisnya? Siapa target pembacanya? Nada bicaranya seperti apa? Tanpa detail itu, saya cuma bisa menebak-nebak.', score };
+    } else if (score <= 3){
+      return { out: 'Sudah lebih jelas dari sebelumnya. Saya bisa mulai membuatnya, tapi hasilnya akan lebih tepat kalau kamu juga sebutkan target pembaca dan nada bicara yang diinginkan.', score };
+    }
+    return { out: 'Jelas — target, nada, dan format sudah kamu sebutkan. Ini jenis prompt yang biasanya menghasilkan output paling sesuai dengan yang kamu bayangkan.', score };
+  }
+
+  function runPrompt(){
+    const { out, score } = respond(promptInput.value);
+    promptOutput.textContent = out;
+    const pct = (score/5)*100;
+    qualityFill.style.width = pct + '%';
+    qualityFill.style.background = score <= 1 ? 'var(--danger)' : score <= 3 ? 'var(--out)' : 'var(--code)';
+    qualityText.textContent = score <= 1 ? 'rendah' : score <= 3 ? 'sedang' : 'tinggi';
+  }
+  promptInput.addEventListener('input', runPrompt);
+
+  exampleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      exampleBtns.forEach(b => b.setAttribute('aria-pressed', 'false'));
+      btn.setAttribute('aria-pressed', 'true');
+      promptInput.value = examples[btn.getAttribute('data-example')];
+      runPrompt();
+    });
+  });
+  runPrompt();
+
+  // checklist with localStorage
+  const STORAGE_KEY = 'kka-x-checklist';
+  const checkboxes = Array.from(document.querySelectorAll('.check-item input[type="checkbox"]'));
+  const total = checkboxes.length;
+  document.getElementById('progressTotal').textContent = total;
+  const CIRC = 2 * Math.PI * 26;
+
+  function loadState(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }catch(e){ return {}; } }
+  function saveState(s){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }catch(e){} }
+
+  function renderProgress(){
+    const checked = checkboxes.filter(c => c.checked).length;
+    document.getElementById('progressCount').textContent = checked;
+    const pct = total ? checked/total : 0;
+    const offset = CIRC * (1 - pct);
+    const fg = document.getElementById('ringFg');
+    fg.setAttribute('stroke-dasharray', CIRC.toFixed(1));
+    fg.setAttribute('stroke-dashoffset', offset.toFixed(1));
+    document.getElementById('ringLabel').textContent = Math.round(pct*100) + '%';
+  }
+
+  function initChecklist(){
+    const state = loadState();
+    checkboxes.forEach(cb => {
+      const id = cb.getAttribute('data-id');
+      if (state[id]) cb.checked = true;
+      cb.addEventListener('change', () => {
+        const s = loadState();
+        s[id] = cb.checked;
+        saveState(s);
+        renderProgress();
+      });
+    });
+    renderProgress();
+  }
+  initChecklist();
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    localStorage.removeItem(STORAGE_KEY);
+    checkboxes.forEach(cb => cb.checked = false);
+    renderProgress();
+  });
+
+  // reflection journal
+  const JOURNAL_KEY = 'kka-x-journal';
+  const journalInput = document.getElementById('journalInput');
+  const journalStatus = document.getElementById('journalStatus');
+  journalInput.value = localStorage.getItem(JOURNAL_KEY) || '';
+  let journalTimer = null;
+  journalInput.addEventListener('input', () => {
+    journalStatus.textContent = 'menulis…';
+    clearTimeout(journalTimer);
+    journalTimer = setTimeout(() => {
+      try{
+        localStorage.setItem(JOURNAL_KEY, journalInput.value);
+        journalStatus.textContent = 'tersimpan di browser ini ✓';
+      }catch(e){
+        journalStatus.textContent = 'gagal menyimpan otomatis — salin manual kalau perlu';
+      }
+    }, 500);
+  });
+</script>
+</body>
+</html>
