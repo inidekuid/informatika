@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; }
+.container { max-width: 100%; padding: 2rem; background: var(--surface-0); }
+.section { margin-bottom: 3rem; }
+.section-title { font-size: 24px; font-weight: 500; color: var(--text-primary); margin-bottom: 1rem; }
+.subsection-title { font-size: 18px; font-weight: 500; color: var(--text-primary); margin-top: 2rem; margin-bottom: 0.8rem; }
+.learning-box { background: var(--bg-accent); border: 0.5px solid var(--border-accent); border-radius: 8px; padding: 1.25rem; margin: 1rem 0; }
+.learning-box h4 { color: var(--text-accent); font-size: 14px; font-weight: 500; margin-bottom: 0.5rem; }
+.learning-box p { color: var(--text-primary); font-size: 14px; }
+.diagram-container { margin: 2rem 0; display: flex; justify-content: center; }
+.diagram { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 8px; padding: 1.5rem; }
+.nav-tabs { display: flex; gap: 8px; margin-bottom: 2rem; flex-wrap: wrap; }
+.nav-tab { padding: 8px 16px; background: var(--surface-1); border: 0.5px solid var(--border); border-radius: 6px; cursor: pointer; transition: all 0.2s; font-size: 13px; }
+.nav-tab.active { background: var(--fill-accent); color: var(--on-accent); border-color: var(--fill-accent); }
+.nav-tab:hover { border-color: var(--border-strong); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.reflection-prompt { background: var(--bg-warning); border-left: 3px solid var(--fill-warning); padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+.reflection-prompt h5 { color: var(--text-warning); font-size: 13px; font-weight: 500; margin-bottom: 0.5rem; }
+.reflection-prompt p { color: var(--text-primary); font-size: 14px; }
+.activity-card { background: var(--surface-2); border: 0.5px solid var(--border); padding: 1rem; margin: 1rem 0; border-radius: 8px; }
+.activity-card h5 { color: var(--text-primary); font-weight: 500; margin-bottom: 0.5rem; }
+.simulator-box { background: var(--surface-1); border: 0.5px solid var(--border); padding: 1.5rem; border-radius: 8px; margin: 1rem 0; }
+.control-group { margin: 1rem 0; }
+.control-label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 0.5rem; font-weight: 500; }
+.control-input { width: 100%; padding: 8px 12px; border: 0.5px solid var(--border); border-radius: 6px; font-size: 13px; background: var(--fill-field); color: var(--text-primary); }
+.button-group { display: flex; gap: 8px; margin: 1rem 0; }
+button { padding: 8px 16px; background: var(--fill-accent); color: var(--on-accent); border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; transition: 0.2s; }
+button:hover { opacity: 0.9; }
+button.secondary { background: var(--surface-1); color: var(--text-primary); border: 0.5px solid var(--border-strong); }
+button.secondary:hover { background: var(--surface-2); }
+.output-box { background: var(--surface-2); border: 0.5px solid var(--border); padding: 1rem; border-radius: 6px; margin-top: 1rem; font-family: 'Courier New', monospace; font-size: 12px; color: var(--text-primary); max-height: 300px; overflow-y: auto; }
+.step-indicator { display: flex; gap: 12px; margin: 2rem 0; align-items: center; }
+.step { width: 36px; height: 36px; border-radius: 50%; background: var(--surface-1); border: 0.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 14px; }
+.step.active { background: var(--fill-accent); color: var(--on-accent); border-color: var(--fill-accent); }
+.step.done { background: var(--bg-success); color: var(--text-success); border-color: var(--fill-success); }
+.real-world-example { background: var(--bg-success); border: 0.5px solid var(--border-success); padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+.real-world-example h5 { color: var(--text-success); font-weight: 500; margin-bottom: 0.5rem; font-size: 13px; }
+.real-world-example p { color: var(--text-primary); font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="section">
+<h1 style="font-size:28px;margin-bottom:1rem;color:var(--text-primary)">Materi 1: Pemodelan dan Simulasi</h1>
+<p style="font-size:15px;color:var(--text-secondary);margin-bottom:2rem">Memahami arsitektur Von Neumann, model I-P-O, sistem operasi, dan simulasi dinamika komputer</p>
+
+<div class="learning-box">
+<h4>🎯 Capaian Pembelajaran</h4>
+<p>Setelah mempelajari materi ini, Anda dapat:</p>
+<ul style="margin-left:1.5rem;margin-top:0.5rem;font-size:14px">
+<li>Menjelaskan konsep arsitektur Von Neumann</li>
+<li>Menggambarkan alur data, instruksi, dan eksekusi program</li>
+<li>Mensimulasikan model Input-Proses-Output</li>
+<li>Membedakan jenis-jenis sistem operasi</li>
+<li>Memahami peran OS dalam pengelolaan sumber daya</li>
+<li>Menggunakan CLI dan GUI secara efisien</li>
+<li>Menganalisis penyebab komputer lambat</li>
+<li>Menciptakan mesin konseptual sederhana</li>
+</ul>
+</div>
+</div>
+
+<div class="nav-tabs">
+<div class="nav-tab active" onclick="switchTab(0)">Motivasi</div>
+<div class="nav-tab" onclick="switchTab(1)">Von Neumann</div>
+<div class="nav-tab" onclick="switchTab(2)">I-P-O Model</div>
+<div class="nav-tab" onclick="switchTab(3)">Sistem Operasi</div>
+<div class="nav-tab" onclick="switchTab(4)">Aktivitas</div>
+<div class="nav-tab" onclick="switchTab(5)">Ringkasan</div>
+</div>
+
+<!-- TAB 0: MOTIVASI -->
+<div class="tab-content active">
+<div class="section">
+<div class="subsection-title">Mengapa Materi Ini Penting?</div>
+
+<div class="real-world-example">
+<h5>🔴 Skenario Nyata</h5>
+<p>Anda sedang mengetik tugas di laptop sambil menyalakan musik di Spotify, chatting di WhatsApp, dan video YouTube loading di background. Kenapa semua bisa jalan bersamaan? Bagaimana komputer memutuskan tugas mana yang dikerjakan duluan? Apa artinya "CPU 80%"?</p>
+</div>
+
+<p style="margin:1.5rem 0;color:var(--text-primary)">Komputer modern tidak "tahu" bagaimana bekerja. Semua instruksi diterjemahkan menjadi 1 dan 0, diproses di CPU dengan ritme tertentu, disimpan di memori, dan dikeluarkan ke layar. Sistem operasi adalah maestro yang mengatur semuanya itu agar terasa seamless.</p>
+
+<p style="margin:1.5rem 0;color:var(--text-primary)"><strong>Tujuan Anda:</strong> Dari pengguna pasif yang hanya melihat icon → menjadi pemikir kritis yang memahami "black box" komputer.</p>
+
+<div class="reflection-prompt">
+<h5>💭 Renungkan</h5>
+<p>Bayangkan laptop Anda adalah sebuah kantor. Kepala kantor adalah CPU, lemari arsip adalah memori, dan pekerjaan masuk melalui pintu depan (input). Setiap pekerjaan diproses, disimpan, dan hasilnya dikirim keluar. Siapa yang mengatur alur kerja agar tidak chaos? Itu adalah sistem operasi!</p>
+</div>
+</div>
+</div>
+
+<!-- TAB 1: VON NEUMANN -->
+<div class="tab-content">
+<div class="section">
+<div class="subsection-title">Arsitektur Von Neumann</div>
+
+<p style="margin:1rem 0;color:var(--text-primary)">Hampir setiap komputer modern menggunakan desain yang sama, yang dinamai John von Neumann pada tahun 1945. Arsitektur ini memiliki lima komponen utama:</p>
+
+<div class="diagram-container">
+<svg width="100%" viewBox="0 0 680 380" style="max-width:500px" role="img">
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+<g class="c-blue">
+<rect x="40" y="30" width="120" height="60" rx="6" stroke-width="0.5"/>
+<text class="th" x="100" y="55" text-anchor="middle" dominant-baseline="central">INPUT</text>
+<text class="ts" x="100" y="75" text-anchor="middle" dominant-baseline="central">Keyboard, File</text>
+</g>
+
+<g class="c-teal">
+<rect x="200" y="30" width="280" height="60" rx="6" stroke-width="0.5"/>
+<text class="th" x="340" y="50" text-anchor="middle" dominant-baseline="central">CPU (Central Processing Unit)</text>
+<text class="ts" x="340" y="70" text-anchor="middle" dominant-baseline="central">ALU + Control Unit</text>
+</g>
+
+<g class="c-amber">
+<rect x="200" y="130" width="280" height="60" rx="6" stroke-width="0.5"/>
+<text class="th" x="340" y="150" text-anchor="middle" dominant-baseline="central">MEMORI (RAM)</text>
+<text class="ts" x="340" y="170" text-anchor="middle" dominant-baseline="central">Penyimpanan Sementara</text>
+</g>
+
+<g class="c-coral">
+<rect x="520" y="30" width="120" height="60" rx="6" stroke-width="0.5"/>
+<text class="th" x="580" y="55" text-anchor="middle" dominant-baseline="central">OUTPUT</text>
+<text class="ts" x="580" y="75" text-anchor="middle" dominant-baseline="central">Layar, Speaker</text>
+</g>
+
+<g class="c-purple">
+<rect x="200" y="230" width="280" height="60" rx="6" stroke-width="0.5"/>
+<text class="th" x="340" y="250" text-anchor="middle" dominant-baseline="central">PENYIMPANAN (Storage)</text>
+<text class="ts" x="340" y="270" text-anchor="middle" dominant-baseline="central">Hard Disk / SSD</text>
+</g>
+
+<line x1="160" y1="60" x2="200" y2="60" stroke="var(--text-primary)" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="480" y1="60" x2="520" y2="60" stroke="var(--text-primary)" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="340" y1="90" x2="340" y2="130" stroke="var(--text-primary)" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="340" y1="190" x2="340" y2="230" stroke="var(--text-primary)" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="320" y1="230" x2="300" y2="150" stroke="var(--text-primary)" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrow)"/>
+
+<text class="ts" x="340" y="310" text-anchor="middle" dominant-baseline="central">Data & Instruksi</text>
+<text class="ts" x="165" y="45" text-anchor="middle">Masuk</text>
+<text class="ts" x="505" y="45" text-anchor="middle">Keluar</text>
+</svg>
+</div>
+
+<div class="activity-card">
+<h5>📌 Komponen Kunci</h5>
+<ul style="margin-left:1.5rem;margin-top:0.5rem;font-size:14px;color:var(--text-primary)">
+<li><strong>Input:</strong> Perangkat yang membawa data ke komputer (keyboard, mouse, sensor, microphone)</li>
+<li><strong>CPU:</strong> "Otak" komputer. ALU melakukan perhitungan, CU mengatur instruksi</li>
+<li><strong>Memori (RAM):</strong> Penyimpanan cepat tempat CPU membaca dan menulis data saat sedang diproses</li>
+<li><strong>Output:</strong> Perangkat yang menampilkan hasil (layar, printer, speaker)</li>
+<li><strong>Storage:</strong> Penyimpanan permanen (hard disk, SSD) untuk data jangka panjang</li>
+</ul>
+</div>
+
+<div class="reflection-prompt">
+<h5>💭 Pertanyaan Refleksi</h5>
+<p>Ketika Anda mengetik di keyboard dan teks muncul di layar, alir mana yang terjadi? Input → CPU → RAM → Output, atau urutan yang berbeda? Coba jelaskan dengan diagram sendiri!</p>
+</div>
+</div>
+</div>
+
+<!-- TAB 2: I-P-O MODEL -->
+<div class="tab-content">
+<div class="section">
+<div class="subsection-title">Model Input-Proses-Output (I-P-O)</div>
+
+<p style="margin:1rem 0;color:var(--text-primary)">Setiap operasi komputer mengikuti pola yang sama: data masuk → diproses → hasil keluar. Mari simulasikan!</p>
+
+<div class="simulator-box">
+<h5 style="margin-bottom:1rem">🎮 Simulasi I-P-O Interaktif</h5>
+
+<div class="control-group">
+<label class="control-label">Pilih Operasi:</label>
+<select id="operation" class="control-input" onchange="updateSimulation()">
+<option value="add">Menjumlahkan dua bilangan</option>
+<option value="text">Menggabungkan teks (concatenate)</option>
+<option value="search">Mencari kata dalam teks</option>
+</select>
+</div>
+
+<div id="input-controls"></div>
+
+<div class="button-group">
+<button onclick="runSimulation()">▶ Jalankan Proses</button>
+<button class="secondary" onclick="resetSimulation()">↻ Reset</button>
+</div>
+
+<div class="output-box" id="simulationOutput" style="display:none">
+<div id="outputContent"></div>
+</div>
+</div>
+
+<div class="diagram-container">
+<svg width="100%" viewBox="0 0 680 200" style="max-width:600px" role="img">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<g class="c-blue">
+<rect x="20" y="50" width="140" height="80" rx="6" stroke-width="0.5"/>
+<text class="th" x="90" y="80" text-anchor="middle" dominant-baseline="central">INPUT</text>
+<text class="ts" x="90" y="110" text-anchor="middle" dominant-baseline="central">Data mentah</text>
+</g>
+
+<g class="c-teal">
+<rect x="270" y="50" width="140" height="80" rx="6" stroke-width="0.5"/>
+<text class="th" x="340" y="80" text-anchor="middle" dominant-baseline="central">PROSES</text>
+<text class="ts" x="340" y="110" text-anchor="middle" dominant-baseline="central">CPU bekerja</text>
+</g>
+
+<g class="c-coral">
+<rect x="520" y="50" width="140" height="80" rx="6" stroke-width="0.5"/>
+<text class="th" x="590" y="80" text-anchor="middle" dominant-baseline="central">OUTPUT</text>
+<text class="ts" x="590" y="110" text-anchor="middle" dominant-baseline="central">Hasil informasi</text>
+</g>
+
+<line x1="160" y1="90" x2="270" y2="90" stroke="var(--text-primary)" stroke-width="2" marker-end="url(#arrow)"/>
+<line x1="410" y1="90" x2="520" y2="90" stroke="var(--text-primary)" stroke-width="2" marker-end="url(#arrow)"/>
+</svg>
+</div>
+
+<div class="real-world-example">
+<h5>💡 Contoh Nyata</h5>
+<p><strong>Mengetik kata "hello":</strong><br>
+INPUT: Keyboard mengirim sinyal untuk setiap tombol yang ditekan<br>
+PROSES: CPU mengubah sinyal keyboard menjadi kode ASCII (72, 101, 108, 108, 111) dan menyimpannya di memori<br>
+OUTPUT: GPU menampilkan karakter di layar
+</p>
+</div>
+
+<div class="reflection-prompt">
+<h5>💭 Latihan</h5>
+<p>Amatilah simulasi di atas. Di mana data tersimpan saat PROSES sedang berlangsung? Kapan data dihapus dari memori?</p>
+</div>
+</div>
+</div>
+
+<!-- TAB 3: SISTEM OPERASI -->
+<div class="tab-content">
+<div class="section">
+<div class="subsection-title">Sistem Operasi dan Arsitektur Berlapis</div>
+
+<p style="margin:1rem 0;color:var(--text-primary)">Sistem Operasi (OS) adalah perantara antara pengguna dan hardware. OS mengelola memori, proses, file, dan antarmuka. Arsitektur OS sering digambarkan sebagai model bawang berlapis:</p>
+
+<div class="diagram-container">
+<svg width="100%" viewBox="0 0 680 400" style="max-width:500px" role="img">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<g class="c-gray">
+<rect x="80" y="20" width="520" height="360" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="50" text-anchor="middle" dominant-baseline="central">APPLICATIONS</text>
+<text class="ts" x="340" y="70" text-anchor="middle" dominant-baseline="central">(Chrome, Excel, Spotify, Game)</text>
+</g>
+
+<g class="c-blue">
+<rect x="120" y="100" width="440" height="80" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="125" text-anchor="middle" dominant-baseline="central">SHELL (Command Interpreter)</text>
+<text class="ts" x="340" y="150" text-anchor="middle" dominant-baseline="central">GUI (Desktop, Icons) atau CLI (Terminal, Commands)</text>
+</g>
+
+<g class="c-teal">
+<rect x="160" y="200" width="360" height="80" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="225" text-anchor="middle" dominant-baseline="central">KERNEL (Inti OS)</text>
+<text class="ts" x="340" y="250" text-anchor="middle" dominant-baseline="central">Process Manager, Memory Manager, File System</text>
+</g>
+
+<g class="c-amber">
+<rect x="200" y="300" width="280" height="60" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="320" text-anchor="middle" dominant-baseline="central">HARDWARE</text>
+<text class="ts" x="340" y="340" text-anchor="middle" dominant-baseline="central">(CPU, RAM, Disk, I/O)</text>
+</g>
+
+<text class="ts" x="620" y="140" text-anchor="start">↔ Devices</text>
+<text class="ts" x="620" y="180" text-anchor="start">Printers, Disks</text>
+</svg>
+</div>
+
+<div class="activity-card">
+<h5>🔍 Fungsi-Fungsi Sistem Operasi</h5>
+<ul style="margin-left:1.5rem;margin-top:0.5rem;font-size:14px;color:var(--text-primary)">
+<li><strong>Manajemen Memori:</strong> Mengalokasikan dan membebaskan RAM untuk program yang sedang berjalan</li>
+<li><strong>Manajemen Proses:</strong> Mengatur giliran program mana yang mendapat CPU (CPU scheduling, multitasking)</li>
+<li><strong>Antarmuka dengan Hardware:</strong> Menerjemahkan perintah program ke instruksi hardware</li>
+<li><strong>Antarmuka Pengguna:</strong> GUI (ikon, mouse) atau CLI (terminal, perintah teks)</li>
+<li><strong>Manajemen File:</strong> Menyimpan dan mengorganisir data di storage</li>
+</ul>
+</div>
+
+<div class="subsection-title" style="margin-top:2rem">Jenis-Jenis Sistem Operasi</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0">
+
+<div class="activity-card">
+<h5>🖥️ Desktop OS</h5>
+<p>Windows, macOS, Linux. Digunakan untuk komputer pribadi dan workstation. Fokus pada performa dan kemudahan penggunaan.</p>
+</div>
+
+<div class="activity-card">
+<h5>📱 Mobile OS</h5>
+<p>Android, iOS. Dioptimalkan untuk layar kecil, baterai terbatas, dan sensor (GPS, accelerometer).</p>
+</div>
+
+<div class="activity-card">
+<h5>🖲️ Embedded OS</h5>
+<p>RTOS (Real-Time OS). Tertanam dalam mesin: mobil, oven, smart TV. Respon cepat, resource terbatas.</p>
+</div>
+
+<div class="activity-card">
+<h5>⚙️ Server OS</h5>
+<p>Linux server, Windows Server. Dijalankan 24/7, mengelola jutaan koneksi, fokus pada stabilitas.</p>
+</div>
+
+</div>
+
+<div class="real-world-example">
+<h5>💡 Contoh: Multitasking</h5>
+<p>Anda mengetik + Spotify playing + YouTube loading. Ketiga proses ini TIDAK benar-benar berjalan bersamaan di CPU 1-core. OS membagi waktu CPU sangat cepat (context switching) sehingga terasa simultaneous. Inilah yang disebut multitasking!</p>
+</div>
+
+<div class="reflection-prompt">
+<h5>💭 Renungkan</h5>
+<p>Buka Task Manager (Windows) atau Activity Monitor (Mac). Lihat berapa banyak proses yang sedang berjalan. Apakah Anda benar-benar membuka semuanya? Apa yang OS lakukan dengan proses yang tidak Anda gunakan?</p>
+</div>
+</div>
+</div>
+
+<!-- TAB 4: AKTIVITAS -->
+<div class="tab-content">
+<div class="section">
+<div class="subsection-title">Aktivitas Praktis & Simulasi</div>
+
+<div class="step-indicator">
+<div class="step active">1</div>
+<span style="font-size:14px;color:var(--text-secondary)">Simulasi SAP</span>
+<div class="step">2</div>
+<span style="font-size:14px;color:var(--text-secondary)">Alur I-P-O</span>
+<div class="step">3</div>
+<span style="font-size:14px;color:var(--text-secondary)">Pengamatan OS</span>
+</div>
+
+<div class="activity-card">
+<h5>🤖 Aktivitas 1: Simulasi Mesin Sederhana (SAP)</h5>
+<p>Simulasikan mesin komputasional paling sederhana. Anda adalah CPU.</p>
+
+<div class="simulator-box">
+<p style="margin-bottom:1rem;font-size:14px"><strong>Instruksi:</strong></p>
+<div class="control-group">
+<label class="control-label">Masukkan kode program (setiap baris 1 instruksi):</label>
+<textarea id="programCode" class="control-input" rows="5" placeholder="Contoh:&#10;LOAD 10&#10;ADD 5&#10;STORE 0&#10;PRINT" style="font-family:monospace"></textarea>
+</div>
+
+<div class="button-group">
+<button onclick="runSAP()">▶ Eksekusi Program</button>
+<button class="secondary" onclick="resetSAP()">Reset</button>
+</div>
+
+<div class="output-box" id="sapOutput" style="display:none">
+<div id="sapContent"></div>
+</div>
+</div>
+
+<p style="font-size:13px;color:var(--text-secondary);margin-top:1rem"><strong>Instruksi yang tersedia:</strong> LOAD n (baca nilai), ADD n (tambah), SUB n (kurang), STORE addr (simpan ke alamat), PRINT (tampilkan), HALT (berhenti)</p>
+</div>
+
+<div class="activity-card" style="margin-top:2rem">
+<h5>📊 Aktivitas 2: Gambarkan Alur I-P-O</h5>
+<p>Pilih satu aktivitas harian dan gambarkan alur I-P-O-nya:</p>
+<ul style="margin-left:1.5rem;margin-top:0.5rem;font-size:14px;color:var(--text-primary)">
+<li>✅ Mengirim pesan WhatsApp</li>
+<li>✅ Menonton video TikTok</li>
+<li>✅ Membuka file Word dan mengeditnya</li>
+<li>✅ Bermain game di smartphone</li>
+</ul>
+<p style="margin-top:1rem;font-size:13px;color:var(--text-secondary)">Tulis: Apa INPUT-nya? Apa yang CPU/OS lakukan? Apa OUTPUT-nya?</p>
+</div>
+
+<div class="activity-card">
+<h5>🔍 Aktivitas 3: Pengamatan Langsung Sistem Operasi</h5>
+<p><strong>Windows:</strong></p>
+<ul style="margin-left:1.5rem;font-size:13px;color:var(--text-primary)">
+<li>Buka Task Manager (Ctrl+Shift+Esc)</li>
+<li>Catat CPU %, Memory %, Disk % yang sedang digunakan</li>
+<li>Buka program berat (game, video editor) → lihat perubahan</li>
+</ul>
+
+<p style="margin-top:1rem"><strong>Mac:</strong></p>
+<ul style="margin-left:1.5rem;font-size:13px;color:var(--text-primary)">
+<li>Buka Activity Monitor (Spotlight → Activity Monitor)</li>
+<li>Lihat tab CPU → catat proses yang paling berat</li>
+<li>Berapa % CPU mereka gunakan?</li>
+</ul>
+
+<p style="margin-top:1rem"><strong>Linux:</strong></p>
+<ul style="margin-left:1.5rem;font-size:13px;color:var(--text-primary)">
+<li>Buka terminal → <code style="background:var(--surface-1);padding:2px 4px;border-radius:3px">top</code></li>
+<li>Lihat kolom %CPU dan %MEM</li>
+</ul>
+
+<p style="margin-top:1rem;font-size:13px;color:var(--text-secondary)"><strong>Catatan:</strong> Apa yang membuat komputer lambat? Biasanya CPU 100% atau Memory penuh!</p>
+</div>
+
+</div>
+</div>
+
+<!-- TAB 5: RINGKASAN -->
+<div class="tab-content">
+<div class="section">
+<div class="subsection-title">Ringkasan & Peta Konsep</div>
+
+<div class="diagram-container">
+<svg width="100%" viewBox="0 0 680 480" style="max-width:600px" role="img">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<g class="c-purple">
+<rect x="140" y="20" width="400" height="50" rx="6" stroke-width="0.5"/>
+<text class="th" x="340" y="45" text-anchor="middle" dominant-baseline="central">Arsitektur Von Neumann</text>
+</g>
+
+<g class="c-blue">
+<rect x="40" y="100" width="160" height="80" rx="6" stroke-width="0.5"/>
+<text class="th" x="120" y="125" text-anchor="middle" dominant-baseline="central">INPUT</text>
+<text class="ts" x="120" y="155" text-anchor="middle" dominant-baseline="central">Data masuk</text>
+</g>
+
+<g class="c-teal">
+<rect x="240" y="100" width="160" height="80" rx="6" stroke-width="0.5"/>
+<text class="th" x="320" y="125" text-anchor="middle" dominant-baseline="central">CPU</text>
+<text class="ts" x="320" y="155" text-anchor="middle" dominant-baseline="central">Proses data</text>
+</g>
+
+<g class="c-coral">
+<rect x="440" y="100" width="160" height="80" rx="6" stroke-width="0.5"/>
+<text class="th" x="520" y="125" text-anchor="middle" dominant-baseline="central">OUTPUT</text>
+<text class="ts" x="520" y="155" text-anchor="middle" dominant-baseline="central">Hasil tampil</text>
+</g>
+
+<g class="c-amber">
+<rect x="240" y="220" width="160" height="80" rx="6" stroke-width="0.5"/>
+<text class="th" x="320" y="245" text-anchor="middle" dominant-baseline="central">MEMORI</text>
+<text class="ts" x="320" y="275" text-anchor="middle" dominant-baseline="central">Penyimpanan cepat</text>
+</g>
+
+<g class="c-green">
+<rect x="140" y="340" width="400" height="80" rx="6" stroke-width="0.5"/>
+<text class="th" x="340" y="360" text-anchor="middle" dominant-baseline="central">Sistem Operasi</text>
+<text class="ts" x="340" y="380" text-anchor="middle" dominant-baseline="central">Mengatur memori, proses, file, antarmuka</text>
+</g>
+
+<line x1="200" y1="140" x2="240" y2="140" stroke="var(--text-primary)" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="400" y1="140" x2="440" y2="140" stroke="var(--text-primary)" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="320" y1="180" x2="320" y2="220" stroke="var(--text-primary)" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="320" y1="300" x2="320" y2="340" stroke="var(--text-primary)" stroke-width="1.5" marker-end="url(#arrow)"/>
+</svg>
+</div>
+
+<div class="learning-box" style="margin-top:2rem">
+<h4>📝 Poin-Poin Kunci</h4>
+<ul style="margin-left:1.5rem;margin-top:0.5rem;font-size:14px">
+<li>Von Neumann architecture terdiri dari INPUT → CPU → MEMORI ↔ OUTPUT</li>
+<li>Model I-P-O menggambarkan setiap operasi: Data in → Process → Result out</li>
+<li>Sistem Operasi adalah maestro yang mengatur semua komponen</li>
+<li>OS melakukan context switching untuk membuat multitasking terasa seamless</li>
+<li>RAM digunakan untuk penyimpanan sementara, Storage untuk penyimpanan permanen</li>
+<li>Komputer lambat biasanya karena CPU penuh atau memori penuh</li>
+</ul>
+</div>
+
+<div class="reflection-prompt">
+<h5>🎯 Pertanyaan Penilaian Diri</h5>
+<p>Sebelum lanjut, tanya pada diri sendiri:</p>
+<ul style="margin-left:1.5rem;margin-top:0.5rem;font-size:14px">
+<li>☐ Saya bisa menjelaskan apa itu Von Neumann architecture</li>
+<li>☐ Saya bisa menggambarkan alur I-P-O untuk operasi sederhana</li>
+<li>☐ Saya memahami peran CPU, RAM, dan Storage</li>
+<li>☐ Saya tahu kenapa multitasking terasa smooth padahal CPU hanya 1 core</li>
+<li>☐ Saya bisa membedakan OS untuk desktop, mobile, dan embedded</li>
+</ul>
+<p style="margin-top:1rem;font-size:13px;color:var(--text-secondary)">Jika ada yang belum ✓, baca kembali bagian yang sesuai!</p>
+</div>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+function switchTab(index) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-content')[index].classList.add('active');
+  document.querySelectorAll('.nav-tab')[index].classList.add('active');
+}
+
+function updateSimulation() {
+  const op = document.getElementById('operation').value;
+  const container = document.getElementById('input-controls');
+  container.innerHTML = '';
+  
+  if (op === 'add') {
+    container.innerHTML = `
+      <div class="control-group">
+        <label class="control-label">Bilangan 1:</label>
+        <input type="number" id="num1" class="control-input" value="10" />
+      </div>
+      <div class="control-group">
+        <label class="control-label">Bilangan 2:</label>
+        <input type="number" id="num2" class="control-input" value="20" />
+      </div>
+    `;
+  } else if (op === 'text') {
+    container.innerHTML = `
+      <div class="control-group">
+        <label class="control-label">Teks 1:</label>
+        <input type="text" id="text1" class="control-input" value="Hello" />
+      </div>
+      <div class="control-group">
+        <label class="control-label">Teks 2:</label>
+        <input type="text" id="text2" class="control-input" value="World" />
+      </div>
+    `;
+  } else if (op === 'search') {
+    container.innerHTML = `
+      <div class="control-group">
+        <label class="control-label">Teks:</label>
+        <input type="text" id="searchText" class="control-input" value="Komputer adalah mesin pemroses data" />
+      </div>
+      <div class="control-group">
+        <label class="control-label">Cari kata:</label>
+        <input type="text" id="searchWord" class="control-input" value="data" />
+      </div>
+    `;
+  }
+}
+
+function runSimulation() {
+  const op = document.getElementById('operation').value;
+  const output = document.getElementById('simulationOutput');
+  const content = document.getElementById('outputContent');
+  let log = '';
+  
+  if (op === 'add') {
+    const n1 = parseInt(document.getElementById('num1').value) || 0;
+    const n2 = parseInt(document.getElementById('num2').value) || 0;
+    log = `INPUT: ${n1}, ${n2}\nPROSES: CPU melakukan penjumlahan ${n1} + ${n2}\nOUTPUT: ${n1 + n2}`;
+  } else if (op === 'text') {
+    const t1 = document.getElementById('text1').value;
+    const t2 = document.getElementById('text2').value;
+    log = `INPUT: "${t1}", "${t2}"\nPROSES: CPU menggabungkan string\nOUTPUT: "${t1} ${t2}"`;
+  } else if (op === 'search') {
+    const text = document.getElementById('searchText').value;
+    const word = document.getElementById('searchWord').value;
+    const found = text.includes(word);
+    log = `INPUT: "${text}"\n        Cari: "${word}"\nPROSES: CPU membandingkan karakter demi karakter\nOUTPUT: ${found ? 'Ditemukan!' : 'Tidak ditemukan'}`;
+  }
+  
+  content.textContent = log;
+  output.style.display = 'block';
+}
+
+function resetSimulation() {
+  document.getElementById('simulationOutput').style.display = 'none';
+  document.getElementById('outputContent').textContent = '';
+  updateSimulation();
+}
+
+function runSAP() {
+  const code = document.getElementById('programCode').value.trim();
+  const output = document.getElementById('sapOutput');
+  const content = document.getElementById('sapContent');
+  
+  const lines = code.split('\n').map(l => l.trim().toUpperCase()).filter(l => l);
+  let memory = {};
+  let accumulator = 0;
+  let log = 'EKSEKUSI PROGRAM:\n\n';
+  
+  for (const instr of lines) {
+    const [cmd, arg] = instr.split(' ');
+    
+    if (cmd === 'LOAD') {
+      accumulator = parseInt(arg) || 0;
+      log += `LOAD ${arg} → Accumulator = ${accumulator}\n`;
+    } else if (cmd === 'ADD') {
+      accumulator += parseInt(arg) || 0;
+      log += `ADD ${arg} → Accumulator = ${accumulator}\n`;
+    } else if (cmd === 'SUB') {
+      accumulator -= parseInt(arg) || 0;
+      log += `SUB ${arg} → Accumulator = ${accumulator}\n`;
+    } else if (cmd === 'STORE') {
+      const addr = arg || '0';
+      memory[addr] = accumulator;
+      log += `STORE ${addr} → Memory[${addr}] = ${accumulator}\n`;
+    } else if (cmd === 'PRINT') {
+      log += `PRINT → OUTPUT: ${accumulator}\n`;
+    } else if (cmd === 'HALT') {
+      log += `HALT → Program selesai\n`;
+      break;
+    }
+  }
+  
+  log += `\nAKHIR EKSEKUSI:\n`;
+  log += `Accumulator: ${accumulator}\n`;
+  log += `Memory: ${JSON.stringify(memory)}\n`;
+  
+  content.textContent = log;
+  output.style.display = 'block';
+}
+
+function resetSAP() {
+  document.getElementById('programCode').value = '';
+  document.getElementById('sapOutput').style.display = 'none';
+}
+
+updateSimulation();
+</script>
+</body>
+</html>
