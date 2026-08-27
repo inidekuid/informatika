@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Round Robin Scheduling — Simulasi Interaktif</title>
+<style>
+  :root {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --border: #e5e7eb;
+    --text: #1f2937;
+    --text-2: #4b5563;
+    --text-3: #9ca3af;
+    --blue: #2563eb;
+    --blue-bg: #eff6ff;
+    --blue-border: #bfdbfe;
+    --green: #059669;
+    --green-bg: #ecfdf5;
+    --green-border: #a7f3d0;
+    --amber: #d97706;
+    --amber-bg: #fffbeb;
+    --amber-border: #fde68a;
+    --red: #dc2626;
+    --red-bg: #fef2f2;
+    --purple: #7c3aed;
+    --purple-bg: #f5f3ff;
+    --purple-border: #c4b5fd;
+    --cyan: #0891b2;
+    --cyan-bg: #ecfeff;
+    --cyan-border: #a5f3fc;
+    --radius: 10px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.7; font-size:15px; }
+  .container { max-width:900px; margin:0 auto; padding:32px 20px; }
+  header { text-align:center; margin-bottom:36px; }
+  header h1 { font-size:1.6rem; font-weight:800; margin-bottom:4px; }
+  header p { color:var(--text-3); font-size:.9rem; }
+
+  section { margin-bottom:28px; }
+  .section-title { font-size:.75rem; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-3); margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+  .section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 24px; margin-bottom:14px; }
+  .card h3 { font-size:.95rem; font-weight:700; margin-bottom:8px; }
+
+  .info-box { border-radius:var(--radius); padding:16px 20px; margin-bottom:14px; font-size:.88rem; }
+  .info-box.blue { background:var(--blue-bg); border:1px solid var(--blue-border); }
+  .info-box.green { background:var(--green-bg); border:1px solid var(--green-border); }
+  .info-box.amber { background:var(--amber-bg); border:1px solid var(--amber-border); }
+  .info-box.purple { background:var(--purple-bg); border:1px solid var(--purple-border); }
+  .info-box.cyan { background:var(--cyan-bg); border:1px solid var(--cyan-border); }
+  .info-box h4 { font-size:.85rem; font-weight:700; margin-bottom:6px; }
+  .info-box p { color:var(--text-2); }
+  .info-box ul { margin:6px 0 0 18px; color:var(--text-2); }
+  .info-box li { margin-bottom:3px; }
+
+  .glossary-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  @media (max-width:600px) { .glossary-grid { grid-template-columns:1fr; } }
+  .glossary-item { padding:14px 16px; background:var(--bg); border:1px solid var(--border); border-radius:8px; }
+  .glossary-item .term { font-weight:700; font-size:.85rem; color:var(--blue); margin-bottom:2px; display:flex; align-items:center; gap:6px; }
+  .glossary-item .term code { background:var(--blue-bg); padding:1px 7px; border-radius:4px; font-size:.78rem; }
+  .glossary-item .def { font-size:.82rem; color:var(--text-2); }
+
+  table { width:100%; border-collapse:collapse; font-size:.88rem; }
+  th { text-align:left; font-size:.72rem; text-transform:uppercase; letter-spacing:.5px; color:var(--text-3); font-weight:600; padding:8px 10px; border-bottom:2px solid var(--border); }
+  td { padding:9px 10px; border-bottom:1px solid #f3f4f6; vertical-align:middle; }
+  tr:last-child td { border-bottom:none; }
+
+  .dot { display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:6px; vertical-align:middle; }
+
+  .badge { display:inline-block; padding:2px 10px; border-radius:20px; font-size:.72rem; font-weight:600; }
+  .badge-wait { background:#f3f4f6; color:var(--text-3); }
+  .badge-ready { background:var(--blue-bg); color:var(--blue); }
+  .badge-run { background:var(--green-bg); color:var(--green); }
+  .badge-done { background:#f3f4f6; color:var(--text-3); text-decoration:line-through; }
+  .badge-swap { background:var(--purple-bg); color:var(--purple); }
+
+  .btn { padding:9px 18px; border:1px solid var(--border); border-radius:8px; font-size:.85rem; font-weight:600; cursor:pointer; background:var(--surface); color:var(--text); transition:all .12s; }
+  .btn:hover { background:var(--bg); }
+  .btn:active { transform:scale(.97); }
+  .btn:disabled { opacity:.35; cursor:not-allowed; }
+  .btn-primary { background:var(--blue); color:#fff; border-color:var(--blue); }
+  .btn-primary:hover { background:#1d4ed8; }
+  .btn-green { background:var(--green); color:#fff; border-color:var(--green); }
+  .btn-green:hover { background:#047857; }
+  .btn-sm { padding:5px 12px; font-size:.8rem; }
+  .btn-group { display:flex; gap:6px; flex-wrap:wrap; }
+  .btn-icon { background:none; border:none; cursor:pointer; color:var(--text-3); font-size:.9rem; padding:4px; }
+  .btn-icon:hover { color:var(--red); }
+
+  .form-row { display:flex; gap:8px; align-items:flex-end; flex-wrap:wrap; }
+  .form-field label { display:block; font-size:.72rem; font-weight:600; text-transform:uppercase; letter-spacing:.5px; color:var(--text-3); margin-bottom:4px; }
+  .form-field input,.form-field select { width:100px; padding:8px 12px; border:1px solid var(--border); border-radius:8px; font-size:.88rem; background:var(--surface); color:var(--text); }
+  .form-field input:focus,.form-field select:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,0.1); }
+
+  .quantum-row { display:flex; align-items:center; gap:14px; }
+  .quantum-val { font-size:1.8rem; font-weight:800; color:var(--blue); min-width:40px; text-align:center; }
+  input[type="range"] { -webkit-appearance:none; flex:1; height:4px; background:var(--border); border-radius:2px; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; background:var(--blue); border-radius:50%; cursor:pointer; }
+
+  .preset-row { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+  .preset-btn { padding:6px 14px; border:1px dashed var(--border); border-radius:6px; font-size:.78rem; cursor:pointer; background:none; color:var(--text-2); transition:all .12s; }
+  .preset-btn:hover { border-color:var(--blue); color:var(--blue); background:var(--blue-bg); }
+
+  #sim-area { display:none; }
+
+  .narration { background:var(--blue-bg); border-left:3px solid var(--blue); border-radius:0 8px 8px 0; padding:14px 18px; font-size:.88rem; margin-bottom:14px; color:var(--text-2); }
+  .narration strong { color:var(--text); }
+  .narration .t-badge { display:inline-block; background:var(--blue); color:#fff; padding:1px 8px; border-radius:4px; font-size:.7rem; font-weight:700; margin-right:6px; }
+
+  .cpu-queue-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .queue-box { display:flex; align-items:center; gap:4px; min-height:44px; padding:8px 12px; border:1px dashed var(--border); border-radius:8px; flex:1; min-width:150px; overflow-x:auto; }
+  .queue-chip { padding:5px 12px; border-radius:6px; font-weight:700; font-size:.8rem; flex-shrink:0; animation:slideIn .25s ease; }
+  @keyframes slideIn { from{transform:translateX(16px);opacity:0}to{transform:none;opacity:1} }
+  .queue-arr { color:var(--text-3); font-size:.85rem; flex-shrink:0; }
+  .cpu-chip { min-width:72px; height:44px; border:2px solid var(--border); border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.85rem; background:var(--surface); flex-shrink:0; position:relative; transition:all .2s; }
+  .cpu-chip.active { border-color:var(--green); background:var(--green-bg); }
+  .cpu-label { position:absolute; top:-8px; left:8px; font-size:.6rem; font-weight:700; background:var(--surface); padding:0 4px; color:var(--text-3); text-transform:uppercase; }
+
+  .gantt-scroll { overflow-x:auto; padding-bottom:6px; }
+  .gantt-row { display:flex; gap:2px; min-height:44px; }
+  .gantt-block { display:flex; flex-direction:column; align-items:center; justify-content:center; min-width:42px; border-radius:6px; font-weight:700; font-size:.78rem; color:#fff; animation:gPop .3s cubic-bezier(.34,1.56,.64,1); }
+  .gantt-block.idle { background:#f3f4f6; color:var(--text-3); }
+  .gantt-block .gt { font-size:.6rem; opacity:.8; margin-top:2px; }
+  @keyframes gPop { from{transform:scaleX(0);opacity:0}to{transform:scaleX(1);opacity:1} }
+  .gantt-times { display:flex; gap:2px; }
+  .gantt-times span { min-width:42px; font-size:.65rem; color:var(--text-3); padding-left:2px; }
+
+  .prog-bg { width:100%; height:6px; background:#f3f4f6; border-radius:3px; }
+  .prog-fill { height:100%; border-radius:3px; transition:width .3s ease; }
+
+  .aha { background:var(--amber-bg); border:1px solid var(--amber-border); border-radius:var(--radius); padding:16px 20px; margin:14px 0; display:none; font-size:.88rem; }
+  .aha.show { display:block; animation:fadeIn .4s ease; }
+  .aha h4 { font-size:.85rem; color:var(--amber); margin-bottom:4px; }
+  .aha p { color:var(--text-2); }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none} }
+
+  .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px; }
+  .stat-box { text-align:center; padding:14px 8px; background:var(--bg); border-radius:8px; border:1px solid var(--border); }
+  .stat-num { font-size:1.4rem; font-weight:800; color:var(--blue); }
+  .stat-label { font-size:.7rem; color:var(--text-3); margin-top:2px; }
+
+  #results-area { display:none; }
+
+  .sticky-bar { position:sticky; top:0; z-index:10; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:12px 16px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+  .time-tag { font-size:.8rem; color:var(--text-3); font-weight:600; font-variant-numeric:tabular-nums; }
+
+  .phase-bar { display:flex; gap:2px; margin-bottom:24px; }
+  .phase-item { flex:1; text-align:center; padding:8px; font-size:.72rem; font-weight:600; border-radius:6px; background:#f3f4f6; color:var(--text-3); transition:all .2s; }
+  .phase-item.active { background:var(--blue-bg); color:var(--blue); }
+  .phase-item.done { background:var(--green-bg); color:var(--green); }
+
+  .os-flow { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:10px 0; }
+  .os-box { padding:10px 14px; border:1px solid var(--border); border-radius:8px; font-size:.8rem; text-align:center; background:var(--surface); }
+  .os-box strong { display:block; font-size:.75rem; color:var(--blue); }
+  .os-arrow { color:var(--text-3); }
+
+  .tabs { display:flex; gap:2px; margin-bottom:14px; border-bottom:2px solid var(--border); overflow-x:auto; }
+  .tab { padding:8px 16px; font-size:.82rem; font-weight:600; cursor:pointer; border:none; background:none; color:var(--text-3); border-bottom:2px solid transparent; margin-bottom:-2px; transition:all .15s; white-space:nowrap; }
+  .tab:hover { color:var(--text-2); }
+  .tab.active { color:var(--blue); border-bottom-color:var(--blue); }
+  .tab-content { display:none; }
+  .tab-content.active { display:block; }
+
+  /* ── MEMORY VISUALIZATION ── */
+  .mem-container { margin-top:10px; }
+  .mem-label { font-size:.68rem; font-weight:600; text-transform:uppercase; letter-spacing:.5px; color:var(--text-3); margin-bottom:6px; }
+  .mem-bar { display:flex; height:38px; border-radius:6px; overflow:hidden; border:1px solid var(--border); background:#f9fafb; }
+  .mem-slot { display:flex; align-items:center; justify-content:center; font-size:.7rem; font-weight:700; transition:all .35s ease; position:relative; overflow:hidden; }
+  .mem-slot.free { color:var(--text-3); background:repeating-linear-gradient(45deg,transparent,transparent 4px,rgba(0,0,0,.02) 4px,rgba(0,0,0,.02) 8px); }
+  .mem-slot .mem-info { font-size:.58rem; opacity:.7; margin-left:4px; }
+  .mem-legend { display:flex; gap:12px; margin-top:8px; flex-wrap:wrap; }
+  .mem-legend-item { font-size:.72rem; color:var(--text-3); display:flex; align-items:center; gap:4px; }
+  .mem-legend-dot { width:10px; height:10px; border-radius:3px; }
+
+  .swap-area { margin-top:10px; }
+  .swap-bar { display:flex; height:32px; border-radius:6px; overflow:hidden; border:1px dashed var(--purple-border); background:var(--purple-bg); }
+  .swap-slot { display:flex; align-items:center; justify-content:center; font-size:.68rem; font-weight:700; transition:all .35s ease; }
+  .swap-slot.free { color:var(--text-3); }
+
+  .mem-event { font-size:.8rem; color:var(--purple); margin-top:6px; padding:6px 10px; background:var(--purple-bg); border-radius:6px; display:none; animation:fadeIn .3s ease; }
+  .mem-event.show { display:block; }
+
+  /* Context Switch detail */
+  .cs-detail { margin-top:10px; padding:12px 16px; background:#f9fafb; border-radius:8px; border:1px solid var(--border); display:none; font-size:.82rem; }
+  .cs-detail.show { display:block; animation:fadeIn .3s ease; }
+  .cs-detail .cs-step { display:flex; align-items:center; gap:8px; padding:4px 0; color:var(--text-2); }
+  .cs-detail .cs-step .cs-icon { width:20px; text-align:center; }
+
+  /* PCB visual */
+  .pcb-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:8px; margin-top:10px; }
+  .pcb-card { padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:.76rem; background:var(--surface); transition:border-color .2s,box-shadow .2s; }
+  .pcb-card.highlight { border-color:var(--green); box-shadow:0 0 0 2px rgba(5,150,105,.12); }
+  .pcb-card .pcb-name { font-weight:700; font-size:.82rem; margin-bottom:4px; }
+  .pcb-card .pcb-row { display:flex; justify-content:space-between; color:var(--text-3); }
+  .pcb-card .pcb-val { color:var(--text); font-weight:600; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header>
+  <h1>Round Robin CPU Scheduling</h1>
+  <p>Simulasi interaktif — CPU scheduling, memory management & process swapping</p>
+</header>
+
+<div class="phase-bar">
+  <div class="phase-item active" id="ph1">① Pelajari Konsep</div>
+  <div class="phase-item" id="ph2">② Setup & Simulasi</div>
+  <div class="phase-item" id="ph3">③ Hasil & Insight</div>
+</div>
+
+<!-- ═══════ PAGE 1: LEARN ═══════ -->
+<div id="page-learn">
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab(this,'konsep')">Konsep Dasar</button>
+  <button class="tab" onclick="switchTab(this,'os')">Kaitan dengan OS</button>
+  <button class="tab" onclick="switchTab(this,'memory')">Memory & Swapping</button>
+  <button class="tab" onclick="switchTab(this,'glosarium')">Glosarium</button>
+</div>
+
+<!-- TAB: Konsep -->
+<div class="tab-content active" id="tab-konsep">
+<div class="card">
+  <h3>Apa itu Round Robin?</h3>
+  <p style="color:var(--text-2);margin-bottom:12px;">
+    Round Robin (RR) adalah algoritma <strong>penjadwalan CPU</strong> yang membagi waktu CPU secara <strong>adil</strong> kepada semua proses. Setiap proses mendapat jatah waktu tetap yang disebut <strong>time quantum</strong>. Jika proses belum selesai saat quantum habis, proses "dipaksa berhenti" (<em>preempt</em>) dan masuk ke belakang antrian.
+  </p>
+</div>
+
+<div class="info-box blue">
+  <h4>🔤 Apa itu P1, P2, P3?</h4>
+  <p><strong>P1, P2, P3</strong> adalah <strong>nama/label proses</strong> — singkatan dari Process 1, Process 2, dst. Dalam sistem operasi nyata, proses adalah <strong>program yang sedang berjalan</strong> di memori. Contoh:</p>
+  <ul>
+    <li><strong>P1</strong> = Chrome membuka halaman web</li>
+    <li><strong>P2</strong> = Spotify memutar musik</li>
+    <li><strong>P3</strong> = Word menyimpan dokumen</li>
+  </ul>
+  <p style="margin-top:8px;">Semua proses ini membutuhkan CPU, tapi CPU hanya bisa mengerjakan <strong>satu proses dalam satu waktu</strong>. Maka perlu penjadwalan!</p>
+</div>
+
+<div class="info-box green">
+  <h4>⏱️ Apa itu Arrival Time?</h4>
+  <p><strong>Arrival Time</strong> = waktu saat proses <strong>pertama kali masuk</strong> ke sistem dan siap dieksekusi.</p>
+  <ul>
+    <li>Arrival = <strong>0</strong> → proses sudah ada sejak awal</li>
+    <li>Arrival = <strong>3</strong> → proses baru muncul di detik ke-3 (misal: user baru membuka aplikasi)</li>
+  </ul>
+  <p style="margin-top:8px;">Proses hanya bisa masuk antrian <em>setelah</em> arrival time-nya tercapai.</p>
+</div>
+
+<div class="info-box amber">
+  <h4>⚡ Apa itu Burst Time?</h4>
+  <p><strong>Burst Time</strong> = <strong>total waktu CPU</strong> yang dibutuhkan proses untuk selesai sepenuhnya.</p>
+  <ul>
+    <li>Burst = <strong>3</strong> → proses butuh 3 unit waktu CPU</li>
+    <li>Burst = <strong>8</strong> → proses lebih berat, butuh 8 unit waktu</li>
+  </ul>
+  <p style="margin-top:8px;">Di Round Robin, proses dengan burst besar akan mendapat <strong>banyak giliran</strong> karena tidak bisa selesai dalam satu quantum.</p>
+</div>
+
+<div class="info-box purple">
+  <h4>🔄 Apa itu Time Quantum?</h4>
+  <p><strong>Time Quantum</strong> = batas waktu <strong>maksimum</strong> yang diberikan CPU kepada setiap proses dalam satu giliran.</p>
+  <ul>
+    <li>Quantum <strong>kecil</strong> → lebih responsif, tapi banyak perpindahan (overhead)</li>
+    <li>Quantum <strong>besar</strong> → lebih efisien, tapi proses kecil harus menunggu lama</li>
+  </ul>
+</div>
+
+<div class="card" style="background:var(--bg);">
+  <h3>💡 Analogi Sederhana</h3>
+  <p style="color:var(--text-2);">Bayangkan <strong>satu meja rias</strong> (CPU) dipakai bergantian oleh beberapa orang (proses). Setiap orang dapat jatah <strong>3 menit</strong> (quantum). Kalau belum selesai dandan, harus pindah ke belakang antrian. Semua mendapat giliran yang <strong>adil</strong>.</p>
+</div>
+</div>
+
+<!-- TAB: OS -->
+<div class="tab-content" id="tab-os">
+<div class="card">
+  <h3>Dimana Round Robin dalam Sistem Operasi?</h3>
+  <p style="color:var(--text-2);margin-bottom:14px;">Round Robin adalah bagian dari <strong>CPU Scheduler</strong>, salah satu komponen inti kernel OS.</p>
+  <div class="os-flow">
+    <div class="os-box"><strong>Program</strong>di disk</div>
+    <span class="os-arrow">→</span>
+    <div class="os-box" style="border-color:var(--purple-border);background:var(--purple-bg)"><strong>Loader</strong>muat ke RAM</div>
+    <span class="os-arrow">→</span>
+    <div class="os-box" style="border-color:var(--blue-border);background:var(--blue-bg)"><strong>PCB dibuat</strong>di memori</div>
+    <span class="os-arrow">→</span>
+    <div class="os-box" style="border-color:var(--green-border);background:var(--green-bg)"><strong>Scheduler</strong>Round Robin</div>
+    <span class="os-arrow">→</span>
+    <div class="os-box"><strong>CPU</strong>eksekusi</div>
+  </div>
+</div>
+
+<div class="info-box blue">
+  <h4>🗂️ Fungsi OS yang Terlibat</h4>
+  <ul>
+    <li><strong>Process Management</strong> — membuat, menjadwalkan, menghentikan proses</li>
+    <li><strong>CPU Scheduling</strong> — memilih proses mana yang dieksekusi (Round Robin)</li>
+    <li><strong>Memory Management</strong> — mengalokasikan RAM untuk proses, code, data, stack</li>
+    <li><strong>Interrupt Handling</strong> — timer interrupt memicu preemption saat quantum habis</li>
+    <li><strong>Context Switching</strong> — menyimpan/memulihkan register CPU lewat PCB</li>
+  </ul>
+</div>
+
+<div class="card" style="background:var(--bg);">
+  <h3>📐 Siklus Hidup Proses</h3>
+  <p style="color:var(--text-2);margin-bottom:10px;">Dalam simulasi ini, setiap proses melewati state berikut:</p>
+  <table>
+    <tr><td><span class="badge badge-wait">New / Waiting</span></td><td style="color:var(--text-2)">Belum tiba (arrival time belum tercapai)</td></tr>
+    <tr><td><span class="badge badge-ready">Ready</span></td><td style="color:var(--text-2)">Sudah tiba, menunggu giliran di ready queue + sudah ada di RAM</td></tr>
+    <tr><td><span class="badge badge-run">Running</span></td><td style="color:var(--text-2)">Sedang dieksekusi oleh CPU</td></tr>
+    <tr><td><span class="badge badge-swap">Swapped</span></td><td style="color:var(--text-2)">Dipindah dari RAM ke disk (swap out) karena RAM penuh</td></tr>
+    <tr><td><span class="badge badge-done">Terminated</span></td><td style="color:var(--text-2)">Selesai — memori dibebaskan</td></tr>
+  </table>
+</div>
+</div>
+
+<!-- TAB: Memory & Swapping -->
+<div class="tab-content" id="tab-memory">
+<div class="card">
+  <h3>🧠 Memory Management & Proses</h3>
+  <p style="color:var(--text-2);margin-bottom:12px;">Setiap proses yang berjalan membutuhkan <strong>ruang di memori (RAM)</strong>. OS bertanggung jawab mengalokasikan dan mengelola memori ini.</p>
+</div>
+
+<div class="info-box cyan">
+  <h4>📦 Apa yang Disimpan di RAM untuk Setiap Proses?</h4>
+  <ul>
+    <li><strong>Code (Text) Segment</strong> — instruksi program yang akan dieksekusi CPU</li>
+    <li><strong>Data Segment</strong> — variabel global & static</li>
+    <li><strong>Stack</strong> — variabel lokal, parameter fungsi, return address</li>
+    <li><strong>Heap</strong> — memori yang dialokasikan secara dinamis (malloc, new)</li>
+    <li><strong>PCB (Process Control Block)</strong> — metadata proses: PID, state, register CPU, pointer ke memori, prioritas, dsb.</li>
+  </ul>
+</div>
+
+<div class="info-box purple">
+  <h4>🔄 Apa itu Swapping?</h4>
+  <p><strong>Swapping</strong> adalah mekanisme OS memindahkan proses antara <strong>RAM</strong> dan <strong>disk (swap space)</strong>:</p>
+  <ul>
+    <li><strong>Swap Out</strong> — proses yang sedang <em>tidak aktif</em> (menunggu lama di antrian) dipindahkan dari RAM ke disk untuk memberi ruang bagi proses lain</li>
+    <li><strong>Swap In</strong> — saat proses mendapat giliran CPU lagi, OS memuat kembali proses dari disk ke RAM</li>
+  </ul>
+  <p style="margin-top:8px;">Swapping terjadi karena <strong>RAM terbatas</strong>. Jika ada 10 proses tapi RAM hanya cukup untuk 4, sisanya harus "menunggu di disk".</p>
+</div>
+
+<div class="info-box amber">
+  <h4>⚡ Kaitan Swapping dengan Round Robin</h4>
+  <ul>
+    <li>Round Robin membuat banyak proses <strong>bergantian aktif</strong> — ini meningkatkan kebutuhan memori</li>
+    <li>Saat proses di-<em>preempt</em> (quantum habis), OS menyimpan state-nya ke <strong>PCB di RAM</strong>. Jika RAM penuh, PCB + data proses bisa di-<em>swap out</em> ke disk</li>
+    <li>Quantum <strong>terlalu kecil</strong> → context switch sering → swap in/out sering → <strong>thrashing</strong> (sistem lambat karena sibuk swap)</li>
+    <li>Quantum <strong>terlalu besar</strong> → proses menunggu lama → lebih banyak proses idle di RAM → boros memori</li>
+  </ul>
+</div>
+
+<div class="card" style="background:var(--bg);">
+  <h3>📐 Alur Lengkap: Scheduling + Memory</h3>
+  <p style="color:var(--text-2);margin-bottom:10px;">Apa yang terjadi saat context switch di Round Robin:</p>
+  <table>
+    <tr><td style="font-weight:700;color:var(--blue);white-space:nowrap;">① Timer Interrupt</td><td style="color:var(--text-2)">Hardware timer mengirim sinyal bahwa quantum habis</td></tr>
+    <tr><td style="font-weight:700;color:var(--blue);white-space:nowrap;">② Save State</td><td style="color:var(--text-2)">Register CPU (PC, SP, flags) disimpan ke PCB proses berjalan di <strong>RAM</strong></td></tr>
+    <tr><td style="font-weight:700;color:var(--blue);white-space:nowrap;">③ Swap Out (jika perlu)</td><td style="color:var(--text-2)">Jika RAM penuh, proses lama dipindah ke disk (swap space)</td></tr>
+    <tr><td style="font-weight:700;color:var(--blue);white-space:nowrap;">④ Swap In (jika perlu)</td><td style="color:var(--text-2)">Proses berikutnya dimuat dari disk ke RAM (jika sebelumnya di-swap)</td></tr>
+    <tr><td style="font-weight:700;color:var(--blue);white-space:nowrap;">⑤ Load State</td><td style="color:var(--text-2)">Register CPU dimuat dari PCB proses baru</td></tr>
+    <tr><td style="font-weight:700;color:var(--blue);white-space:nowrap;">⑥ Resume</td><td style="color:var(--text-2)">CPU melanjutkan eksekusi proses baru dari posisi terakhir</td></tr>
+  </table>
+</div>
+</div>
+
+<!-- TAB: Glosarium -->
+<div class="tab-content" id="tab-glosarium">
+<div class="card">
+  <h3>📖 Glosarium Parameter & Istilah</h3>
+  <p style="color:var(--text-2);margin-bottom:14px;">Referensi lengkap semua istilah yang digunakan dalam simulasi.</p>
+  <div class="glossary-grid">
+    <div class="glossary-item"><div class="term">Proses <code>P1, P2, …</code></div><div class="def">Program yang sedang berjalan dan membutuhkan waktu CPU. Setiap proses memiliki ruang memori sendiri.</div></div>
+    <div class="glossary-item"><div class="term">Arrival Time <code>AT</code></div><div class="def">Waktu saat proses pertama kali masuk ke sistem dan siap dijadwalkan.</div></div>
+    <div class="glossary-item"><div class="term">Burst Time <code>BT</code></div><div class="def">Total waktu CPU yang dibutuhkan proses untuk selesai sepenuhnya.</div></div>
+    <div class="glossary-item"><div class="term">Memory Size <code>Mem</code></div><div class="def">Jumlah memori (RAM) yang dibutuhkan proses untuk berjalan.</div></div>
+    <div class="glossary-item"><div class="term">Time Quantum <code>Q</code></div><div class="def">Batas waktu maksimum CPU per giliran. Inti algoritma Round Robin.</div></div>
+    <div class="glossary-item"><div class="term">RAM Capacity</div><div class="def">Total memori fisik yang tersedia untuk semua proses.</div></div>
+    <div class="glossary-item"><div class="term">Ready Queue</div><div class="def">Antrian FIFO tempat proses menunggu giliran CPU. Proses harus ada di RAM.</div></div>
+    <div class="glossary-item"><div class="term">Context Switch</div><div class="def">Perpindahan CPU dari satu proses ke lainnya. Menyimpan & memulihkan register via PCB.</div></div>
+    <div class="glossary-item"><div class="term">Preemption</div><div class="def">Pemaksaan berhenti pada proses yang sedang berjalan karena quantum habis.</div></div>
+    <div class="glossary-item"><div class="term">Swap Out</div><div class="def">Memindahkan proses dari RAM ke disk (swap space) karena RAM penuh.</div></div>
+    <div class="glossary-item"><div class="term">Swap In</div><div class="def">Memuat kembali proses dari disk ke RAM saat akan mendapat giliran CPU.</div></div>
+    <div class="glossary-item"><div class="term">Swap Space</div><div class="def">Area di disk yang digunakan sebagai perpanjangan RAM untuk menyimpan proses yang di-swap.</div></div>
+    <div class="glossary-item"><div class="term">Thrashing</div><div class="def">Kondisi sistem sibuk swap in/out terus-menerus sehingga kinerja menurun drastis.</div></div>
+    <div class="glossary-item"><div class="term">PCB</div><div class="def">Process Control Block — struktur data di RAM berisi info proses: PID, state, register, pointer memori.</div></div>
+    <div class="glossary-item"><div class="term">Completion Time <code>CT</code></div><div class="def">Waktu saat proses selesai sepenuhnya. CT = waktu unit terakhir dieksekusi.</div></div>
+    <div class="glossary-item"><div class="term">Turnaround Time <code>TAT</code></div><div class="def">Total waktu dari tiba hingga selesai. Rumus: TAT = CT − AT.</div></div>
+    <div class="glossary-item"><div class="term">Waiting Time <code>WT</code></div><div class="def">Total waktu menunggu di antrian. Rumus: WT = TAT − BT.</div></div>
+    <div class="glossary-item"><div class="term">Response Time <code>RT</code></div><div class="def">Waktu dari tiba hingga pertama dieksekusi. Rumus: RT = First Run − AT.</div></div>
+    <div class="glossary-item"><div class="term">CPU Utilization</div><div class="def">Persentase waktu CPU aktif memproses (bukan idle).</div></div>
+    <div class="glossary-item"><div class="term">Starvation</div><div class="def">Proses tidak pernah dapat giliran CPU. Round Robin mencegah ini.</div></div>
+  </div>
+</div>
+</div>
+
+<div style="text-align:center;margin-top:20px;">
+  <button class="btn btn-primary" onclick="goToSetup()">Saya Paham — Lanjut ke Simulasi →</button>
+</div>
+</div>
+
+<!-- ═══════ PAGE 2: SETUP ═══════ -->
+<div id="page-setup" style="display:none;">
+<div class="section-title">Konfigurasi Simulasi</div>
+
+<div class="card">
+  <h3>Tambah Proses</h3>
+  <p style="color:var(--text-2);font-size:.84rem;margin-bottom:12px;">Tentukan proses, arrival time, burst time, dan ukuran memori yang dibutuhkan.</p>
+  <div class="form-row">
+    <div class="form-field"><label>Proses</label><input type="text" id="inp-name" readonly style="background:var(--bg);width:70px;"></div>
+    <div class="form-field"><label>Arrival</label><input type="number" id="inp-at" value="0" min="0" max="50" style="width:75px;"></div>
+    <div class="form-field"><label>Burst</label><input type="number" id="inp-bt" value="5" min="1" max="50" style="width:75px;"></div>
+    <div class="form-field"><label>Memory (KB)</label><input type="number" id="inp-mem" value="40" min="10" max="200" step="10" style="width:90px;"></div>
+    <button class="btn btn-primary btn-sm" onclick="addProcess()">+ Tambah</button>
+  </div>
+  <div class="preset-row">
+    <span style="font-size:.78rem;color:var(--text-3);">Preset:</span>
+    <button class="preset-btn" onclick="loadPreset('simple')">Sederhana (3 proses)</button>
+    <button class="preset-btn" onclick="loadPreset('medium')">Menengah (4 proses)</button>
+    <button class="preset-btn" onclick="loadPreset('complex')">Kompleks (5 proses)</button>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Daftar Proses</h3>
+  <table>
+    <thead><tr><th>Proses</th><th>Arrival</th><th>Burst</th><th>Memory</th><th>Keterangan</th><th></th></tr></thead>
+    <tbody id="proc-tbody"></tbody>
+  </table>
+  <p id="empty-msg" style="text-align:center;color:var(--text-3);padding:16px;font-size:.85rem;">Belum ada proses. Tambahkan di atas atau pilih preset.</p>
+</div>
+
+<div class="card">
+  <h3>Konfigurasi Sistem</h3>
+  <div style="display:flex;gap:24px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:200px;">
+      <p style="font-size:.8rem;color:var(--text-3);font-weight:600;margin-bottom:6px;">TIME QUANTUM</p>
+      <div class="quantum-row">
+        <span class="quantum-val" id="q-display">3</span>
+        <input type="range" id="q-slider" min="1" max="10" value="3" oninput="document.getElementById('q-display').textContent=this.value;showQTip()">
+      </div>
+      <p id="q-tip" style="font-size:.78rem;color:var(--text-3);margin-top:6px;"></p>
+    </div>
+    <div style="flex:1;min-width:200px;">
+      <p style="font-size:.8rem;color:var(--text-3);font-weight:600;margin-bottom:6px;">KAPASITAS RAM (KB)</p>
+      <div class="quantum-row">
+        <span class="quantum-val" id="ram-display" style="color:var(--purple);">120</span>
+        <input type="range" id="ram-slider" min="40" max="400" value="120" step="10" oninput="document.getElementById('ram-display').textContent=this.value;showRamTip()">
+      </div>
+      <p id="ram-tip" style="font-size:.78rem;color:var(--text-3);margin-top:6px;"></p>
+    </div>
+  </div>
+</div>
+
+<div style="text-align:center;margin-top:16px;">
+  <button class="btn" style="margin-right:8px;" onclick="backToLearn()">← Kembali</button>
+  <button class="btn btn-green" id="start-btn" onclick="startSim()" disabled>▶ Mulai Simulasi</button>
+</div>
+</div>
+
+<!-- ═══════ SIMULATION ═══════ -->
+<div id="sim-area">
+
+<div class="sticky-bar">
+  <div class="btn-group">
+    <button class="btn btn-primary btn-sm" id="step-btn" onclick="step()">⏭ Langkah</button>
+    <button class="btn btn-green btn-sm" id="play-btn" onclick="togglePlay()">▶ Auto</button>
+    <button class="btn btn-sm" onclick="resetSim()">↺ Reset</button>
+    <button class="btn btn-sm" onclick="backToSetupFromSim()">← Ubah</button>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <select id="speed-sel" onchange="updateSpeed()" style="padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.78rem;background:var(--surface);color:var(--text);">
+      <option value="1800">Lambat</option>
+      <option value="900" selected>Normal</option>
+      <option value="400">Cepat</option>
+    </select>
+    <span class="time-tag" id="time-tag">t = 0</span>
+  </div>
+</div>
+
+<div class="narration" id="narration">
+  <span class="t-badge">MULAI</span> Klik <strong>Langkah</strong> untuk memulai simulasi.
+</div>
+
+<!-- CPU & Queue -->
+<div class="card">
+  <h3 style="font-size:.85rem;">CPU & Ready Queue</h3>
+  <div class="cpu-queue-row" style="margin-top:8px;">
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:.68rem;color:var(--text-3);font-weight:600;margin-bottom:4px;">READY QUEUE (FIFO) →</div>
+      <div class="queue-box" id="q-box"><span style="color:var(--text-3);font-size:.82rem;">kosong</span></div>
+    </div>
+    <span class="os-arrow">→</span>
+    <div class="cpu-chip" id="cpu-chip">
+      <span class="cpu-label">CPU</span>
+      <span id="cpu-text" style="color:var(--text-3)">IDLE</span>
+    </div>
+  </div>
+
+  <!-- Context Switch Detail -->
+  <div class="cs-detail" id="cs-detail">
+    <div style="font-size:.75rem;font-weight:700;color:var(--text-3);margin-bottom:6px;">CONTEXT SWITCH:</div>
+    <div id="cs-steps"></div>
+  </div>
+</div>
+
+<!-- Memory -->
+<div class="card">
+  <h3 style="font-size:.85rem;">💾 RAM & Swap Space</h3>
+  <div class="mem-container">
+    <div class="mem-label">RAM (<span id="ram-used">0</span> / <span id="ram-total">120</span> KB)</div>
+    <div class="mem-bar" id="mem-bar"></div>
+    <div class="mem-legend" id="mem-legend"></div>
+  </div>
+  <div class="swap-area">
+    <div class="mem-label" style="margin-top:10px;">SWAP SPACE (Disk)</div>
+    <div class="swap-bar" id="swap-bar"><span style="padding:8px;color:var(--text-3);font-size:.75rem;">kosong</span></div>
+  </div>
+  <div class="mem-event" id="mem-event"></div>
+</div>
+
+<!-- PCB -->
+<div class="card">
+  <h3 style="font-size:.85rem;">📋 PCB (Process Control Blocks)</h3>
+  <div class="pcb-grid" id="pcb-grid"></div>
+</div>
+
+<!-- Gantt -->
+<div class="card">
+  <h3 style="font-size:.85rem;">📊 Gantt Chart</h3>
+  <div class="gantt-scroll">
+    <div class="gantt-row" id="gantt-row"></div>
+    <div class="gantt-times" id="gantt-times"></div>
+  </div>
+</div>
+
+<!-- Status -->
+<div class="card">
+  <h3 style="font-size:.85rem;">Status Proses</h3>
+  <table>
+    <thead><tr><th>Proses</th><th>Burst</th><th>Sisa</th><th>Mem</th><th>Lokasi</th><th>Progress</th><th>Status</th></tr></thead>
+    <tbody id="stat-tbody"></tbody>
+  </table>
+</div>
+
+<!-- Aha -->
+<div class="aha" id="aha-box">
+  <h4>💡 Aha Moment!</h4>
+  <p id="aha-text"></p>
+</div>
+
+<!-- Results -->
+<div id="results-area">
+  <div class="section-title">Hasil & Analisis</div>
+  <div class="card">
+    <h3>Statistik</h3>
+    <div class="stats-row" id="stats-row"></div>
+  </div>
+  <div class="card">
+    <h3>Detail per Proses</h3>
+    <table>
+      <thead><tr><th>Proses</th><th>AT</th><th>BT</th><th>CT</th><th>TAT</th><th>WT</th><th>RT</th><th>Swaps</th></tr></thead>
+      <tbody id="res-tbody"></tbody>
+    </table>
+    <div style="margin-top:12px;font-size:.78rem;color:var(--text-3);line-height:1.8;">
+      <strong style="color:var(--text)">CT</strong> = Completion Time &nbsp;|&nbsp;
+      <strong style="color:var(--text)">TAT</strong> = CT − AT &nbsp;|&nbsp;
+      <strong style="color:var(--text)">WT</strong> = TAT − BT &nbsp;|&nbsp;
+      <strong style="color:var(--text)">RT</strong> = First Run − AT &nbsp;|&nbsp;
+      <strong style="color:var(--text)">Swaps</strong> = jumlah swap out
+    </div>
+  </div>
+  <div class="info-box green" id="conclusion-box">
+    <h4>🎓 Kesimpulan</h4>
+    <p id="conclusion-text"></p>
+  </div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+const COLORS = ['#2563eb','#dc2626','#059669','#d97706','#7c3aed','#db2777','#0891b2','#ea580c'];
+let procs = [], procN = 0;
+let S = {}, autoInt = null;
+
+// ── TAB ──
+function switchTab(btn, name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── NAV ──
+function goToSetup() {
+  document.getElementById('page-learn').style.display = 'none';
+  document.getElementById('page-setup').style.display = 'block';
+  document.getElementById('ph1').className = 'phase-item done';
+  document.getElementById('ph2').className = 'phase-item active';
+  updateNameInp(); showQTip(); showRamTip();
+}
+function backToLearn() {
+  document.getElementById('page-learn').style.display = 'block';
+  document.getElementById('page-setup').style.display = 'none';
+  document.getElementById('ph1').className = 'phase-item active';
+  document.getElementById('ph2').className = 'phase-item';
+}
+function backToSetupFromSim() {
+  if (autoInt) { clearInterval(autoInt); autoInt = null; }
+  document.getElementById('sim-area').style.display = 'none';
+  document.getElementById('page-setup').style.display = 'block';
+  document.getElementById('ph2').className = 'phase-item active';
+  document.getElementById('ph3').className = 'phase-item';
+  renderTable();
+}
+
+// ── SETUP ──
+function updateNameInp() { document.getElementById('inp-name').value = 'P' + (procN + 1); }
+
+function addProcess(name, at, bt, mem) {
+  if (!name) {
+    name = 'P' + (procN + 1);
+    at = parseInt(document.getElementById('inp-at').value) || 0;
+    bt = parseInt(document.getElementById('inp-bt').value) || 1;
+    mem = parseInt(document.getElementById('inp-mem').value) || 40;
+  }
+  procN++;
+  procs.push({ name, at, bt, mem, color: COLORS[(procs.length) % COLORS.length] });
+  renderTable(); updateNameInp();
+  document.getElementById('inp-at').value = 0;
+  document.getElementById('inp-bt').value = 5;
+  document.getElementById('inp-mem').value = 40;
+}
+
+function removeProc(i) { procs.splice(i, 1); renderTable(); }
+
+function renderTable() {
+  const tb = document.getElementById('proc-tbody');
+  const msg = document.getElementById('empty-msg');
+  const btn = document.getElementById('start-btn');
+  if (procs.length === 0) { tb.innerHTML = ''; msg.style.display = 'block'; btn.disabled = true; return; }
+  msg.style.display = 'none'; btn.disabled = false;
+  tb.innerHTML = procs.map((p, i) => {
+    let desc = p.at === 0 ? 'Sudah ada sejak awal' : `Tiba di t=${p.at}`;
+    desc += `, butuh ${p.bt} unit CPU, ${p.mem} KB RAM`;
+    return `<tr>
+      <td><span class="dot" style="background:${p.color}"></span>${p.name}</td>
+      <td>${p.at}</td><td>${p.bt}</td><td>${p.mem} KB</td>
+      <td style="color:var(--text-3);font-size:.82rem;">${desc}</td>
+      <td><button class="btn-icon" onclick="removeProc(${i})">✕</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function loadPreset(t) {
+  procs = []; procN = 0;
+  if (t === 'simple') { addProcess('P1',0,5,40); addProcess('P2',1,3,50); addProcess('P3',2,8,30); }
+  else if (t === 'medium') { addProcess('P1',0,6,40); addProcess('P2',0,4,50); addProcess('P3',2,2,30); addProcess('P4',3,7,60); }
+  else { addProcess('P1',0,10,40); addProcess('P2',1,4,50); addProcess('P3',2,5,30); addProcess('P4',3,3,45); addProcess('P5',5,6,55); }
+}
+
+function showQTip() {
+  const v = parseInt(document.getElementById('q-slider').value);
+  const tip = document.getElementById('q-tip');
+  if (v === 1) tip.textContent = '⚡ Quantum 1: Sangat sering context switch — banyak overhead memori.';
+  else if (v >= 8) tip.textContent = '🐘 Quantum besar: Mendekati FCFS, proses pendek menunggu lama.';
+  else if (v <= 3) tip.textContent = '✓ Quantum kecil-sedang: Responsif, cocok untuk sistem interaktif.';
+  else tip.textContent = '✓ Quantum sedang: Keseimbangan responsivitas dan efisiensi.';
+}
+
+function showRamTip() {
+  const v = parseInt(document.getElementById('ram-slider').value);
+  const totalMem = procs.reduce((s, p) => s + p.mem, 0);
+  const tip = document.getElementById('ram-tip');
+  if (totalMem > 0 && v < totalMem) tip.textContent = `⚠ RAM (${v} KB) < total kebutuhan proses (${totalMem} KB) — swapping akan terjadi!`;
+  else if (totalMem > 0) tip.textContent = `✓ RAM cukup untuk semua proses (butuh ${totalMem} KB).`;
+  else tip.textContent = '';
+}
+
+// ── SIMULATION ──
+function startSim() {
+  const quantum = parseInt(document.getElementById('q-slider').value);
+  const ramCap = parseInt(document.getElementById('ram-slider').value);
+
+  S = {
+    procs: procs.map((p, i) => ({
+      ...p, i, rem: p.bt, status: 'wait', ct: null, first: null,
+      inRam: false, swapCount: 0, loc: 'none' // none, ram, swap
+    })),
+    queue: [], gantt: [], t: 0, quantum, ramCap,
+    run: null, ticks: 0, done: false, step: 0, cs: 0, totalSwaps: 0,
+    aha: {}, memEvents: []
+  };
+
+  document.getElementById('page-setup').style.display = 'none';
+  document.getElementById('sim-area').style.display = 'block';
+  document.getElementById('results-area').style.display = 'none';
+  document.getElementById('aha-box').classList.remove('show');
+  document.getElementById('cs-detail').classList.remove('show');
+  document.getElementById('mem-event').classList.remove('show');
+  document.getElementById('ph2').className = 'phase-item done';
+  document.getElementById('ph3').className = 'phase-item';
+  document.getElementById('ram-total').textContent = S.ramCap;
+
+  renderAll();
+  setNarr('start');
+  document.getElementById('sim-area').scrollIntoView({ behavior: 'smooth' });
+}
+
+function getRamUsed() {
+  return S.procs.filter(p => p.loc === 'ram').reduce((s, p) => s + p.mem, 0);
+}
+
+function tryLoadToRam(idx) {
+  const p = S.procs[idx];
+  if (p.loc === 'ram') return { loaded: true, events: [] };
+  const used = getRamUsed();
+  const events = [];
+  let freed = 0;
+
+  // Need to free space?
+  if (used + p.mem > S.ramCap) {
+    // Swap out processes that are waiting longest (in ready queue, from back)
+    // Find candidates: in ram, not running, not the one we're loading
+    const candidates = S.procs.filter((pp, j) =>
+      j !== idx && pp.loc === 'ram' && pp.status !== 'run' && pp.status !== 'done'
+    ).sort((a, b) => {
+      // Prefer swapping out processes furthest from front of queue
+      const aIdx = S.queue.indexOf(a.i);
+      const bIdx = S.queue.indexOf(b.i);
+      // Not in queue = swap first; in queue but later = swap first
+      const aP = aIdx === -1 ? 999 : aIdx;
+      const bP = bIdx === -1 ? 999 : bIdx;
+      return bP - aP;
+    });
+
+    for (const cand of candidates) {
+      if (used - freed + p.mem <= S.ramCap) break;
+      cand.loc = 'swap';
+      cand.swapCount++;
+      S.totalSwaps++;
+      freed += cand.mem;
+      events.push({ type: 'swap_out', name: cand.name, mem: cand.mem, color: cand.color });
+    }
+
+    if (used - freed + p.mem > S.ramCap) {
+      return { loaded: false, events };
+    }
+  }
+
+  p.loc = 'ram';
+  if (p.loc !== 'ram' || events.length > 0 || p.inRam === false) {
+    events.push({ type: 'swap_in', name: p.name, mem: p.mem, color: p.color });
+  }
+  p.inRam = true;
+  return { loaded: true, events };
+}
+
+function freeRam(idx) {
+  S.procs[idx].loc = 'none';
+  S.procs[idx].inRam = false;
+}
+
+function step() {
+  if (S.done) return;
+  S.step++;
+  let memEvts = [];
+  document.getElementById('cs-detail').classList.remove('show');
+  document.getElementById('mem-event').classList.remove('show');
+
+  // 1. Arrivals
+  let arrivals = [];
+  S.procs.forEach((p, i) => {
+    if (p.at === S.t && p.status === 'wait') {
+      p.status = 'ready';
+      // Try to load into RAM
+      const res = tryLoadToRam(i);
+      memEvts.push(...res.events);
+      S.queue.push(i);
+      arrivals.push(p.name);
+    }
+  });
+
+  // 2. Pick if nothing running
+  let csInfo = null;
+  if (S.run === null && S.queue.length > 0) {
+    S.run = S.queue.shift();
+    S.ticks = 0;
+    const p = S.procs[S.run];
+
+    // Ensure in RAM
+    if (p.loc !== 'ram') {
+      const res = tryLoadToRam(S.run);
+      memEvts.push(...res.events);
+    }
+
+    p.status = 'run';
+    if (p.first === null) p.first = S.t;
+  }
+
+  let narr = '';
+  if (arrivals.length > 0)
+    narr += `<strong>${arrivals.join(', ')}</strong> tiba → masuk ready queue dan dimuat ke RAM. `;
+
+  // 3. Execute
+  if (S.run !== null) {
+    const p = S.procs[S.run];
+    p.rem--;
+    S.ticks++;
+    S.gantt.push({ i: S.run, t: S.t });
+
+    narr += `<strong style="color:${p.color}">${p.name}</strong> dieksekusi — sisa burst: <strong>${p.rem}</strong> (quantum: ${S.ticks}/${S.quantum}).`;
+
+    if (p.rem === 0) {
+      p.status = 'done';
+      p.ct = S.t + 1;
+      freeRam(S.run);
+      memEvts.push({ type: 'free', name: p.name, mem: p.mem, color: p.color });
+      narr += `<br>✅ <strong style="color:${p.color}">${p.name}</strong> selesai! CT=${p.ct}. Memori ${p.mem} KB <strong>dibebaskan</strong>.`;
+      S.run = null; S.ticks = 0;
+
+      if (!S.aha.free) {
+        showAha('Saat proses selesai, OS <strong>membebaskan memori</strong> (dealokasi). Ruang RAM yang tadinya dipakai proses kini tersedia untuk proses lain — atau proses yang di-swap bisa dimuat kembali!');
+        S.aha.free = true;
+      }
+    }
+    else if (S.ticks >= S.quantum) {
+      // Arrivals at t+1
+      S.procs.forEach((p2, j) => {
+        if (p2.at === S.t + 1 && p2.status === 'wait') {
+          p2.status = 'ready';
+          const res = tryLoadToRam(j);
+          memEvts.push(...res.events);
+          S.queue.push(j);
+        }
+      });
+
+      const prevRun = S.run;
+      p.status = 'ready';
+      S.queue.push(S.run);
+      S.cs++;
+
+      // Show context switch detail
+      csInfo = { from: p.name, fromColor: p.color };
+
+      narr += `<br>⏰ Quantum habis! <strong style="color:${p.color}">${p.name}</strong> di-preempt → kembali ke antrian.`;
+
+      S.run = null; S.ticks = 0;
+
+      if (!S.aha.preempt) {
+        showAha('Ini <strong>preemption</strong>! Proses dipaksa berhenti karena quantum habis. OS menyimpan semua register CPU ke <strong>PCB di memori</strong>, lalu memuat PCB proses berikutnya. Inilah <em>context switch</em> — dan setiap switch punya overhead akses memori!');
+        S.aha.preempt = true;
+      }
+    }
+    S.t++;
+  } else {
+    S.gantt.push({ i: -1, t: S.t });
+    narr += 'CPU <strong>IDLE</strong> — tidak ada proses di antrian.';
+    S.t++;
+  }
+
+  // Show swap events
+  if (memEvts.length > 0) {
+    const evDiv = document.getElementById('mem-event');
+    let evHtml = memEvts.map(e => {
+      if (e.type === 'swap_out') return `🔴 <strong style="color:${e.color}">${e.name}</strong> di-SWAP OUT ke disk (${e.mem} KB dibebaskan dari RAM)`;
+      if (e.type === 'swap_in') return `🟢 <strong style="color:${e.color}">${e.name}</strong> dimuat ke RAM (${e.mem} KB dialokasikan)`;
+      if (e.type === 'free') return `⚪ <strong style="color:${e.color}">${e.name}</strong> selesai — ${e.mem} KB RAM dibebaskan`;
+      return '';
+    }).join('<br>');
+    evDiv.innerHTML = evHtml;
+    evDiv.classList.add('show');
+
+    // Aha for swapping
+    if (!S.aha.swap && memEvts.some(e => e.type === 'swap_out')) {
+      showAha('Swapping terjadi! RAM penuh sehingga OS harus <strong>memindahkan proses ke disk</strong> (swap out) untuk memberi ruang. Ini mirip seperti meja kerja yang terlalu sempit — kamu harus menyimpan sebagian berkas ke laci dulu. Semakin sering swapping, semakin lambat sistem (risiko <em>thrashing</em>).');
+      S.aha.swap = true;
+    }
+  }
+
+  // Show CS detail
+  if (csInfo) {
+    const csDiv = document.getElementById('cs-detail');
+    document.getElementById('cs-steps').innerHTML = `
+      <div class="cs-step"><span class="cs-icon">💾</span> Simpan register CPU ${csInfo.from} → PCB di RAM</div>
+      <div class="cs-step"><span class="cs-icon">📋</span> Update status ${csInfo.from}: Running → Ready</div>
+      <div class="cs-step"><span class="cs-icon">🔄</span> Pilih proses berikutnya dari ready queue</div>
+      <div class="cs-step"><span class="cs-icon">📂</span> Muat register CPU dari PCB proses baru</div>
+      <div class="cs-step"><span class="cs-icon">▶️</span> CPU melanjutkan eksekusi proses baru</div>
+    `;
+    csDiv.classList.add('show');
+  }
+
+  // Check done
+  if (S.procs.every(p => p.status === 'done')) {
+    S.done = true;
+    if (autoInt) { clearInterval(autoInt); autoInt = null; updatePlayBtn(); }
+    setNarr('done');
+    showResults();
+  } else {
+    setNarr('step', narr);
+  }
+
+  renderAll();
+  document.getElementById('time-tag').textContent = `t = ${S.t}`;
+
+  if (!S.aha.cycle && S.step > procs.length * S.quantum && !S.done) {
+    showAha('Proses bergiliran kembali! Ini "round" dalam Round Robin — setiap proses mendapat kesempatan berulang, <strong>tanpa starvation</strong>. Perhatikan juga bagaimana memori terus dialokasikan dan dibebaskan seiring proses selesai.');
+    S.aha.cycle = true;
+  }
+}
+
+// ── RENDER ──
+function renderAll() {
+  renderStatus();
+  renderQueue();
+  renderCPU();
+  renderMemory();
+  renderPCB();
+  renderGantt();
+}
+
+function renderStatus() {
+  document.getElementById('stat-tbody').innerHTML = S.procs.map(p => {
+    const pct = ((p.bt - p.rem) / p.bt * 100).toFixed(0);
+    let bc = 'badge-wait', bt2 = 'Menunggu';
+    if (p.status === 'ready') { bc = 'badge-ready'; bt2 = 'Ready'; }
+    if (p.status === 'run') { bc = 'badge-run'; bt2 = 'Running'; }
+    if (p.status === 'done') { bc = 'badge-done'; bt2 = 'Selesai'; }
+    let locText = '—';
+    if (p.loc === 'ram') locText = '🟢 RAM';
+    else if (p.loc === 'swap') locText = '🟣 Disk';
+    else if (p.status === 'done') locText = '⚪ Freed';
+    return `<tr>
+      <td><span class="dot" style="background:${p.color}"></span>${p.name}</td>
+      <td>${p.bt}</td><td>${p.rem}</td><td>${p.mem} KB</td>
+      <td style="font-size:.8rem;">${locText}</td>
+      <td><div class="prog-bg"><div class="prog-fill" style="width:${pct}%;background:${p.color}"></div></div></td>
+      <td><span class="badge ${bc}">${bt2}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderQueue() {
+  const qb = document.getElementById('q-box');
+  if (S.queue.length === 0) {
+    qb.innerHTML = '<span style="color:var(--text-3);font-size:.82rem;">kosong</span>';
+  } else {
+    qb.innerHTML = S.queue.map((idx, i) => {
+      const p = S.procs[idx];
+      return (i > 0 ? '<span class="queue-arr">→</span>' : '') +
+        `<div class="queue-chip" style="background:${p.color}18;border:1.5px solid ${p.color};color:${p.color}">${p.name}</div>`;
+    }).join('');
+  }
+}
+
+function renderCPU() {
+  const chip = document.getElementById('cpu-chip');
+  const cpuT = document.getElementById('cpu-text');
+  if (S.run !== null) {
+    const p = S.procs[S.run];
+    cpuT.textContent = p.name;
+    cpuT.style.color = p.color;
+    chip.classList.add('active');
+    chip.style.borderColor = p.color;
+  } else {
+    cpuT.textContent = 'IDLE';
+    cpuT.style.color = 'var(--text-3)';
+    chip.classList.remove('active');
+    chip.style.borderColor = '';
+  }
+}
+
+function renderMemory() {
+  const bar = document.getElementById('mem-bar');
+  const used = getRamUsed();
+  document.getElementById('ram-used').textContent = used;
+
+  // Build slots
+  const inRam = S.procs.filter(p => p.loc === 'ram');
+  const free = S.ramCap - used;
+  let html = '';
+  inRam.forEach(p => {
+    const w = (p.mem / S.ramCap * 100).toFixed(1);
+    html += `<div class="mem-slot" style="width:${w}%;background:${p.color}28;color:${p.color};border-right:1px solid ${p.color}44;">
+      ${p.name}<span class="mem-info">${p.mem}KB</span>
+    </div>`;
+  });
+  if (free > 0) {
+    const w = (free / S.ramCap * 100).toFixed(1);
+    html += `<div class="mem-slot free" style="width:${w}%;">Free ${free}KB</div>`;
+  }
+  bar.innerHTML = html;
+
+  // Legend
+  const legend = document.getElementById('mem-legend');
+  legend.innerHTML = inRam.map(p =>
+    `<span class="mem-legend-item"><span class="mem-legend-dot" style="background:${p.color}"></span>${p.name} (${p.mem}KB)</span>`
+  ).join('') + (free > 0 ? `<span class="mem-legend-item"><span class="mem-legend-dot" style="background:#e5e7eb"></span>Free (${free}KB)</span>` : '');
+
+  // Swap bar
+  const swapBar = document.getElementById('swap-bar');
+  const inSwap = S.procs.filter(p => p.loc === 'swap');
+  if (inSwap.length === 0) {
+    swapBar.innerHTML = '<span style="padding:8px;color:var(--text-3);font-size:.75rem;">kosong</span>';
+  } else {
+    swapBar.innerHTML = inSwap.map(p =>
+      `<div class="swap-slot" style="flex:1;background:${p.color}15;color:${p.color};border-right:1px solid ${p.color}33;">
+        ${p.name} (${p.mem}KB)
+      </div>`
+    ).join('');
+  }
+}
+
+function renderPCB() {
+  document.getElementById('pcb-grid').innerHTML = S.procs.map(p => {
+    const hl = p.status === 'run' ? ' highlight' : '';
+    let stText = 'New';
+    if (p.status === 'ready') stText = 'Ready';
+    if (p.status === 'run') stText = 'Running';
+    if (p.status === 'done') stText = 'Terminated';
+    if (p.loc === 'swap') stText += ' (Swapped)';
+    return `<div class="pcb-card${hl}" style="border-left:3px solid ${p.color}">
+      <div class="pcb-name" style="color:${p.color}">${p.name}</div>
+      <div class="pcb-row"><span>State</span><span class="pcb-val">${stText}</span></div>
+      <div class="pcb-row"><span>Remaining</span><span class="pcb-val">${p.rem}/${p.bt}</span></div>
+      <div class="pcb-row"><span>Memory</span><span class="pcb-val">${p.mem} KB</span></div>
+      <div class="pcb-row"><span>Location</span><span class="pcb-val">${p.loc === 'ram' ? 'RAM' : p.loc === 'swap' ? 'Disk' : p.status === 'done' ? 'Freed' : '—'}</span></div>
+    </div>`;
+  }).join('');
+}
+
+function renderGantt() {
+  let m = [];
+  S.gantt.forEach(e => {
+    if (m.length && m[m.length-1].i === e.i) { m[m.length-1].end = e.t+1; m[m.length-1].dur++; }
+    else m.push({ i: e.i, start: e.t, end: e.t+1, dur: 1 });
+  });
+  document.getElementById('gantt-row').innerHTML = m.map(b => {
+    if (b.i === -1) return `<div class="gantt-block idle" style="min-width:${b.dur*42}px"><span>idle</span><span class="gt">${b.start}–${b.end}</span></div>`;
+    const p = S.procs[b.i];
+    return `<div class="gantt-block" style="background:${p.color};min-width:${b.dur*42}px"><span>${p.name}</span><span class="gt">${b.start}–${b.end}</span></div>`;
+  }).join('');
+  document.getElementById('gantt-times').innerHTML = m.map(b =>
+    `<span style="min-width:${b.dur*42}px">${b.start}</span>`
+  ).join('') + (m.length ? `<span>${m[m.length-1].end}</span>` : '');
+}
+
+function setNarr(type, html) {
+  const n = document.getElementById('narration');
+  if (type === 'start')
+    n.innerHTML = `<span class="t-badge">MULAI</span> Quantum = <strong>${S.quantum}</strong>, RAM = <strong>${S.ramCap} KB</strong>, ${S.procs.length} proses. Klik <strong>Langkah</strong> untuk mulai.`;
+  else if (type === 'done')
+    n.innerHTML = `<span class="t-badge" style="background:var(--green)">SELESAI</span> Semua proses selesai! Total waktu: <strong>${S.t}</strong>, context switches: <strong>${S.cs}</strong>, total swaps: <strong>${S.totalSwaps}</strong>.`;
+  else
+    n.innerHTML = `<span class="t-badge">t = ${S.t-1}→${S.t}</span> ${html}`;
+}
+
+function showAha(text) {
+  const b = document.getElementById('aha-box');
+  document.getElementById('aha-text').innerHTML = text;
+  b.classList.add('show');
+  setTimeout(() => b.scrollIntoView({ behavior:'smooth', block:'nearest' }), 100);
+}
+
+// ── PLAY ──
+function togglePlay() {
+  if (autoInt) { clearInterval(autoInt); autoInt = null; }
+  else {
+    const spd = parseInt(document.getElementById('speed-sel').value);
+    autoInt = setInterval(() => { if (S.done) { clearInterval(autoInt); autoInt = null; updatePlayBtn(); return; } step(); }, spd);
+  }
+  updatePlayBtn();
+}
+function updatePlayBtn() {
+  const b = document.getElementById('play-btn');
+  b.textContent = autoInt ? '⏸ Pause' : '▶ Auto';
+  b.className = autoInt ? 'btn btn-sm' : 'btn btn-green btn-sm';
+}
+function updateSpeed() {
+  if (autoInt) { clearInterval(autoInt); const spd = parseInt(document.getElementById('speed-sel').value); autoInt = setInterval(() => { if (S.done) { clearInterval(autoInt); autoInt = null; updatePlayBtn(); return; } step(); }, spd); }
+}
+function resetSim() { if (autoInt) { clearInterval(autoInt); autoInt = null; } startSim(); }
+
+// ── RESULTS ──
+function showResults() {
+  document.getElementById('results-area').style.display = 'block';
+  document.getElementById('ph3').className = 'phase-item active';
+
+  let tTAT=0,tWT=0,tRT=0;
+  const tb = document.getElementById('res-tbody');
+  tb.innerHTML = S.procs.map(p => {
+    const tat=p.ct-p.at, wt=tat-p.bt, rt=p.first-p.at;
+    tTAT+=tat; tWT+=wt; tRT+=rt;
+    return `<tr>
+      <td><span class="dot" style="background:${p.color}"></span>${p.name}</td>
+      <td>${p.at}</td><td>${p.bt}</td><td>${p.ct}</td>
+      <td>${tat}</td><td>${wt}</td><td>${rt}</td>
+      <td>${p.swapCount}</td>
+    </tr>`;
+  }).join('');
+
+  const n=S.procs.length;
+  const avgTAT=(tTAT/n).toFixed(2), avgWT=(tWT/n).toFixed(2), avgRT=(tRT/n).toFixed(2);
+  const cpuU=((S.gantt.filter(g=>g.i!==-1).length/S.t)*100).toFixed(1);
+
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stat-box"><div class="stat-num">${avgTAT}</div><div class="stat-label">Avg Turnaround</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:var(--amber)">${avgWT}</div><div class="stat-label">Avg Waiting</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:var(--green)">${avgRT}</div><div class="stat-label">Avg Response</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:var(--purple)">${cpuU}%</div><div class="stat-label">CPU Utilization</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:var(--red)">${S.cs}</div><div class="stat-label">Context Switches</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:var(--cyan)">${S.totalSwaps}</div><div class="stat-label">Total Swaps</div></div>
+  `;
+
+  let c = [];
+  if (S.quantum >= Math.max(...procs.map(p=>p.bt)))
+    c.push('Quantum ≥ burst terbesar → berperilaku seperti <strong>FCFS</strong>, tidak ada preemption.');
+  else if (S.quantum === 1)
+    c.push('Quantum = 1 → paling "adil" tapi <strong>context switch & swap sangat banyak</strong>, overhead tinggi.');
+
+  if (S.totalSwaps > 0)
+    c.push(`Total <strong>${S.totalSwaps} swap</strong> terjadi karena RAM (${S.ramCap} KB) tidak cukup menampung semua proses sekaligus. Setiap swap menambah latency karena akses disk jauh lebih lambat dari RAM.`);
+  else
+    c.push('Tidak ada swapping — RAM cukup untuk semua proses aktif. Sistem berjalan optimal tanpa overhead disk I/O.');
+
+  if (S.cs > n*2)
+    c.push(`${S.cs} context switch — setiap switch menyimpan/memuat PCB dari/ke memori. Quantum lebih besar bisa menguranginya.`);
+
+  c.push(`Response time rata-rata = ${avgRT}. Round Robin memberi <strong>response time rendah</strong> — proses pendek tidak menunggu lama.`);
+
+  const wts = S.procs.map(p=>(p.ct-p.at)-p.bt);
+  c.push(`Waiting time: ${Math.min(...wts)} – ${Math.max(...wts)}. Round Robin menjamin <strong>tidak ada starvation</strong>.`);
+
+  c.push('💡 Coba kurangi RAM atau ubah quantum — lihat bagaimana swapping dan context switch saling memengaruhi!');
+
+  document.getElementById('conclusion-text').innerHTML = c.join('<br><br>');
+  setTimeout(() => document.getElementById('results-area').scrollIntoView({ behavior:'smooth' }), 300);
+}
+
+// ── INIT ──
+updateNameInp();
+</script>
+</body>
+</html>
