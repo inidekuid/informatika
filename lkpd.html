@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LKPD — Misi Round Robin Scheduling</title>
+<style>
+  :root{--bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--text:#1e293b;--text2:#475569;--text3:#94a3b8;--blue:#2563eb;--blue-bg:#eff6ff;--green:#059669;--green-bg:#ecfdf5;--amber:#d97706;--amber-bg:#fffbeb;--purple:#7c3aed;--purple-bg:#f5f3ff;--red:#dc2626;--r:10px}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.7;padding-bottom:80px}
+  .wrap{max-width:680px;margin:0 auto;padding:16px}
+
+  /* Header */
+  .header{text-align:center;padding:20px 16px;border-bottom:1px solid var(--border);background:var(--surface);margin-bottom:16px;border-radius:0 0 var(--r) var(--r)}
+  .header h1{font-size:1.2rem;font-weight:800}
+  .header p{font-size:.82rem;color:var(--text3)}
+  .subject-info{font-size:.78rem;color:var(--text2);margin-top:6px;padding:8px 12px;background:var(--bg);border-radius:6px;display:inline-block}
+
+  /* Timer */
+  .timer-bar{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--border);padding:8px 16px;display:flex;justify-content:space-between;align-items:center}
+  .timer{font-size:.85rem;font-weight:700;color:var(--blue);font-variant-numeric:tabular-nums}
+  .progress-mini{font-size:.75rem;color:var(--text3)}
+  .prog-bar-bg{width:120px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;display:inline-block;vertical-align:middle;margin-left:6px}
+  .prog-bar-fill{height:100%;background:var(--green);border-radius:2px;transition:width .4s}
+
+  /* Card */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;margin-bottom:12px}
+  .card h2{font-size:1rem;font-weight:700;margin-bottom:4px}
+  .card h3{font-size:.9rem;font-weight:700;margin-bottom:6px}
+  .card p,.card li{font-size:.88rem;color:var(--text2)}
+  .card ul{margin:4px 0 8px 18px}
+
+  /* Identity Form */
+  .id-form{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+  .id-field{flex:1;min-width:140px}
+  .id-field label{display:block;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:3px}
+  .id-field input{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:.88rem}
+  .id-field input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+
+  /* Mission header */
+  .mission{border-left:3px solid var(--blue);margin-bottom:16px}
+  .mission.m2{border-left-color:var(--green)}
+  .mission.m3{border-left-color:var(--amber)}
+  .mission.m4{border-left-color:var(--purple)}
+  .mission-head{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:14px 18px;background:var(--surface);border:1px solid var(--border);border-radius:0 var(--r) var(--r) 0}
+  .mission-head h2{font-size:.95rem;display:flex;align-items:center;gap:8px}
+  .mission-tag{font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:4px;color:#fff}
+  .mission-time{font-size:.72rem;color:var(--text3)}
+  .mission-body{padding:14px 18px;border:1px solid var(--border);border-top:none;border-radius:0 0 var(--r) 0;background:var(--surface)}
+  .mission-check{font-size:.85rem;color:var(--green);font-weight:700;display:none}
+
+  /* Instruction box */
+  .instr{background:var(--blue-bg);border-radius:8px;padding:12px 16px;margin-bottom:14px;font-size:.84rem;color:var(--text2)}
+  .instr strong{color:var(--text)}
+  .instr.green{background:var(--green-bg)}
+  .instr.amber{background:var(--amber-bg)}
+  .instr.purple{background:var(--purple-bg)}
+
+  /* Question */
+  .q-block{margin-bottom:14px}
+  .q-label{font-size:.84rem;font-weight:600;margin-bottom:4px;color:var(--text)}
+  .q-num{display:inline-block;width:22px;height:22px;background:var(--blue);color:#fff;border-radius:50%;text-align:center;line-height:22px;font-size:.72rem;font-weight:700;margin-right:6px}
+  .q-num.green{background:var(--green)}
+  .q-num.amber{background:var(--amber)}
+  .q-num.purple{background:var(--purple)}
+  textarea,.q-input{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:.86rem;font-family:inherit;resize:vertical;background:var(--surface);color:var(--text)}
+  textarea:focus,.q-input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+  textarea{min-height:60px}
+
+  /* Observation table */
+  .obs-table{width:100%;border-collapse:collapse;font-size:.82rem;margin:10px 0}
+  .obs-table th{background:var(--bg);padding:8px 10px;text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.3px;color:var(--text3);border-bottom:2px solid var(--border)}
+  .obs-table td{padding:6px 10px;border-bottom:1px solid #f1f5f9}
+  .obs-table input{width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:.82rem;text-align:center}
+
+  /* Quiz */
+  .quiz-q{margin-bottom:16px;padding:14px 16px;background:var(--bg);border-radius:8px;border:1px solid var(--border)}
+  .quiz-q.correct{border-color:var(--green);background:var(--green-bg)}
+  .quiz-q.wrong{border-color:var(--red);background:rgba(220,38,38,.04)}
+  .quiz-opts label{display:block;padding:6px 12px;margin:3px 0;border-radius:6px;font-size:.84rem;cursor:pointer;transition:background .12s}
+  .quiz-opts label:hover{background:var(--blue-bg)}
+  .quiz-opts input[type="radio"]{margin-right:8px}
+  .quiz-result{text-align:center;padding:20px;margin:16px 0}
+  .quiz-score{font-size:2.2rem;font-weight:800;color:var(--blue)}
+  .quiz-verdict{font-size:.9rem;color:var(--text2);margin-top:4px}
+
+  /* Buttons */
+  .btn{padding:10px 20px;border:1px solid var(--border);border-radius:8px;font-size:.88rem;font-weight:600;cursor:pointer;background:var(--surface);color:var(--text);transition:all .12s}
+  .btn:active{transform:scale(.97)}
+  .btn-blue{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .btn-green{background:var(--green);color:#fff;border-color:var(--green)}
+  .btn-amber{background:var(--amber);color:#fff;border-color:var(--amber)}
+  .btn-purple{background:var(--purple);color:#fff;border-color:var(--purple)}
+  .btn-lg{width:100%;padding:14px;font-size:.95rem;margin-top:10px}
+  .btn:disabled{opacity:.35;cursor:not-allowed}
+
+  /* Summary */
+  .summary-box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:.82rem;white-space:pre-wrap;font-family:'Consolas','Courier New',monospace;max-height:400px;overflow-y:auto;margin:10px 0;color:var(--text2)}
+  .copy-ok{color:var(--green);font-size:.82rem;display:none;margin-top:6px}
+
+  /* Link box */
+  .link-box{padding:12px 16px;background:var(--blue-bg);border:1px solid var(--blue);border-radius:8px;margin:10px 0;font-size:.84rem;word-break:break-all}
+  .link-box a{color:var(--blue);text-decoration:none;font-weight:600}
+
+  /* Divider */
+  hr{border:none;border-top:1px solid var(--border);margin:20px 0}
+
+  /* Hide/show */
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<!-- TIMER BAR -->
+<div class="timer-bar">
+  <div>
+    <span class="timer" id="timer">00:00</span>
+    <span style="font-size:.75rem;color:var(--text3);margin-left:8px;">dari 90 menit</span>
+  </div>
+  <div class="progress-mini">
+    <span id="prog-text">0/4 Misi</span>
+    <div class="prog-bar-bg"><div class="prog-bar-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="header">
+  <h1>📋 Lembar Kerja Peserta Didik</h1>
+  <p>Round Robin CPU Scheduling — Memory Management & Swapping</p>
+  <div class="subject-info">Sistem Operasi · 2 × 45 Menit · Kegiatan Mandiri</div>
+</div>
+
+<!-- IDENTITAS -->
+<div class="card">
+  <h3>👤 Identitas</h3>
+  <div class="id-form">
+    <div class="id-field"><label>Nama Lengkap</label><input type="text" id="nama" placeholder="Ketik nama..."></div>
+    <div class="id-field"><label>Kelas</label><input type="text" id="kelas" placeholder="Contoh: XII RPL 1"></div>
+    <div class="id-field"><label>No. Absen</label><input type="text" id="absen" placeholder="Contoh: 12" style="width:80px"></div>
+  </div>
+</div>
+
+<!-- PETUNJUK -->
+<div class="card">
+  <h3>📌 Petunjuk Umum</h3>
+  <ul>
+    <li>Buka <strong>Simulasi Round Robin</strong> di tab/jendela lain menggunakan link yang diberikan guru.</li>
+    <li>Kerjakan setiap misi secara <strong>berurutan</strong>. Perhatikan waktu di setiap misi.</li>
+    <li>Isi semua jawaban langsung di LKPD ini. Jawaban <strong>otomatis tersimpan</strong> di perangkatmu.</li>
+    <li>Di akhir, klik <strong>"Buat Ringkasan"</strong> untuk mendapat teks yang bisa di-copy dan dikirim ke LMS.</li>
+    <li>Jika bingung, baca kembali tab <strong>Konsep Dasar</strong> dan <strong>Glosarium</strong> di simulasi.</li>
+  </ul>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- MISI 1 -->
+<!-- ═══════════════════════════════════ -->
+<div class="mission" id="m1">
+  <div class="mission-head" onclick="toggleMission(1)">
+    <h2><span class="mission-tag" style="background:var(--blue)">MISI 1</span> Pahami Konsep</h2>
+    <div><span class="mission-time">⏱ 20 menit</span> <span class="mission-check" id="m1-check">✅</span></div>
+  </div>
+  <div class="mission-body" id="m1-body">
+    <div class="instr">
+      📖 <strong>Instruksi:</strong> Buka simulasi → baca tab <strong>"Konsep Dasar"</strong>, <strong>"Kaitan dengan OS"</strong>, dan <strong>"Memory & Swapping"</strong>. Setelah memahami, jawab pertanyaan berikut.
+    </div>
+
+    <div class="q-block">
+      <div class="q-label"><span class="q-num">1</span> Jelaskan apa itu Round Robin dengan kata-katamu sendiri!</div>
+      <textarea id="a1_1" placeholder="Tulis jawabanmu di sini..." oninput="saveAll()"></textarea>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label"><span class="q-num">2</span> Apa yang dimaksud dengan <em>Arrival Time</em> dan <em>Burst Time</em>? Berikan masing-masing 1 contoh.</div>
+      <textarea id="a1_2" placeholder="Tulis jawabanmu di sini..." oninput="saveAll()"></textarea>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label"><span class="q-num">3</span> Apa yang terjadi ketika time quantum habis tapi proses belum selesai?</div>
+      <textarea id="a1_3" placeholder="Tulis jawabanmu di sini..." oninput="saveAll()"></textarea>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label"><span class="q-num">4</span> Sebutkan minimal 3 informasi yang tersimpan di PCB (Process Control Block)!</div>
+      <textarea id="a1_4" placeholder="Tulis jawabanmu di sini..." oninput="saveAll()"></textarea>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label"><span class="q-num">5</span> Jelaskan perbedaan <em>Swap In</em> dan <em>Swap Out</em>. Kapan swapping terjadi?</div>
+      <textarea id="a1_5" placeholder="Tulis jawabanmu di sini..." oninput="saveAll()"></textarea>
+    </div>
+
+    <button class="btn btn-blue btn-lg" onclick="completeMission(1)">✅ Misi 1 Selesai — Lanjut ke Misi 2</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- MISI 2 -->
+<!-- ═══════════════════════════════════ -->
+<div class="mission m2" id="m2">
+  <div class="mission-head" onclick="toggleMission(2)">
+    <h2><span class="mission-tag" style="background:var(--green)">MISI 2</span> Simulasikan & Amati</h2>
+    <div><span class="mission-time">⏱ 25 menit</span> <span class="mission-check" id="m2-check">✅</span></div>
+  </div>
+  <div class="mission-body hidden" id="m2-body">
+    <div class="instr green">
+      🔬 <strong>Instruksi:</strong> Di simulasi, pilih preset <strong>"Sederhana (3 proses)"</strong>. Jalankan simulasi <strong>3 kali</strong> dengan quantum berbeda. Catat hasilnya di tabel berikut.
+    </div>
+
+    <h3>📊 Tabel Observasi</h3>
+    <p style="font-size:.82rem;color:var(--text3);margin-bottom:8px;">Jalankan simulasi sampai selesai, lalu catat angka dari bagian "Statistik".</p>
+
+    <table class="obs-table">
+      <thead>
+        <tr><th>Parameter</th><th>Skenario A<br><small>Q = 2</small></th><th>Skenario B<br><small>Q = 5</small></th><th>Skenario C<br><small>Q = 1</small></th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="font-weight:600">Avg Turnaround</td>
+          <td><input id="a2_tat_a" oninput="saveAll()" placeholder="..."></td>
+          <td><input id="a2_tat_b" oninput="saveAll()" placeholder="..."></td>
+          <td><input id="a2_tat_c" oninput="saveAll()" placeholder="..."></td></tr>
+        <tr><td style="font-weight:600">Avg Waiting</td>
+          <td><input id="a2_wt_a" oninput="saveAll()" placeholder="..."></td>
+          <td><input id="a2_wt_b" oninput="saveAll()" placeholder="..."></td>
+          <td><input id="a2_wt_c" oninput="saveAll()" placeholder="..."></td></tr>
+        <tr><td style="font-weight:600">Avg Response</td>
+          <td><input id="a2_rt_a" oninput="saveAll()" placeholder="..."></td>
+          <td><input id="a2_rt_b" oninput="saveAll()" placeholder="..."></td>
+          <td><input id="a2_rt_c" oninput="saveAll()" placeholder="..."></td></tr>
+        <tr><td style="font-weight:600">Context Switches</td>
+          <td><input id="a2_cs_a" oninput="saveAll()" placeholder="..."></td>
+          <td><input id="a2_cs_b" oninput="saveAll()" placeholder="..."></td>
+          <td><input id="a2_cs_c" oninput="saveAll()" placeholder="..."></td></tr>
+        <tr><td style="font-weight:600">CPU Utilization</td>
+          <td><input id="a2_cu_a" oninput="saveAll()" placeholder="..."></td>
+          <td><input id="a2_cu_b" oninput="saveAll()" placeholder="..."></td>
+          <td><input id="a2_cu_c" oninput="saveAll()" placeholder="..."></td></tr>
+      </tbody>
+    </table>
+
+    <div class="q-block">
+      <div class="q-label"><span class="q-num green">6</span> Dari 3 skenario, quantum berapa yang menghasilkan Avg Waiting Time paling kecil?</div>
+      <input class="q-input" id="a2_6" oninput="saveAll()" placeholder="Jawab: Q = ...">
+    </div>
+
+    <div class="q-block">
+      <div class="q-label"><span class="q-num green">7</span> Apa yang terjadi pada jumlah context switch saat quantum diperkecil? Mengapa demikian?</div>
+      <textarea id="a2_7" oninput="saveAll()" placeholder="Tulis analisismu..."></textarea>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label"><span class="q-num green">8</span> Perhatikan Response Time. Quantum berapa yang memberi response time terkecil? Apa artinya bagi pengguna?</div>
+      <textarea id="a2_8" oninput="saveAll()" placeholder="Tulis analisismu..."></textarea>
+    </div>
+
+    <button class="btn btn-green btn-lg" onclick="completeMission(2)">✅ Misi 2 Selesai — Lanjut ke Misi 3</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- MISI 3 -->
+<!-- ═══════════════════════════════════ -->
+<div class="mission m3" id="m3">
+  <div class="mission-head" onclick="toggleMission(3)">
+    <h2><span class="mission-tag" style="background:var(--amber)">MISI 3</span> Analisis & Tantangan</h2>
+    <div><span class="mission-time">⏱ 25 menit</span> <span class="mission-check" id="m3-check">✅</span></div>
+  </div>
+  <div class="mission-body hidden" id="m3-body">
+
+    <div class="instr amber">
+      🧩 <strong>Tantangan A — Quantum Optimal:</strong> Gunakan preset <strong>"Menengah (4 proses)"</strong>. Coba beberapa nilai quantum. Temukan quantum yang menghasilkan <strong>Avg Waiting Time paling kecil</strong>.
+    </div>
+    <div class="q-block">
+      <div class="q-label"><span class="q-num amber">9</span> Quantum optimal yang kamu temukan: </div>
+      <input class="q-input" id="a3_9" oninput="saveAll()" placeholder="Q = ... karena...">
+    </div>
+    <div class="q-block">
+      <div class="q-label"><span class="q-num amber">10</span> Tuliskan nilai Avg TAT, Avg WT, dan Context Switches pada quantum optimal tersebut:</div>
+      <textarea id="a3_10" oninput="saveAll()" placeholder="Avg TAT = ..., Avg WT = ..., CS = ..."></textarea>
+    </div>
+
+    <hr>
+
+    <div class="instr amber">
+      🧩 <strong>Tantangan B — Amati Swapping:</strong> Gunakan preset <strong>"Kompleks (5 proses)"</strong>. Atur <strong>RAM lebih kecil</strong> dari total kebutuhan proses (misal: 80 KB). Jalankan simulasi dan amati apa yang terjadi di bagian RAM & Swap Space.
+    </div>
+    <div class="q-block">
+      <div class="q-label"><span class="q-num amber">11</span> Berapa total kebutuhan memori semua proses? Berapa RAM yang kamu atur?</div>
+      <input class="q-input" id="a3_11" oninput="saveAll()" placeholder="Total = ... KB, RAM = ... KB">
+    </div>
+    <div class="q-block">
+      <div class="q-label"><span class="q-num amber">12</span> Apa yang kamu amati saat RAM penuh? Jelaskan proses swapping yang terjadi.</div>
+      <textarea id="a3_12" oninput="saveAll()" placeholder="Yang terjadi adalah..."></textarea>
+    </div>
+    <div class="q-block">
+      <div class="q-label"><span class="q-num amber">13</span> Berapa total swap yang terjadi? Apa dampaknya jika swapping terlalu sering? (Hint: cari istilah "thrashing" di glosarium)</div>
+      <textarea id="a3_13" oninput="saveAll()" placeholder="Total swap = ..., dampaknya..."></textarea>
+    </div>
+
+    <hr>
+
+    <div class="instr amber">
+      🧩 <strong>Tantangan C — Skenario Sendiri:</strong> Buat skenario proses buatanmu sendiri (minimal 4 proses). Tentukan arrival time, burst time, dan memory masing-masing. Jalankan simulasi dan catat hasilnya.
+    </div>
+    <div class="q-block">
+      <div class="q-label"><span class="q-num amber">14</span> Tuliskan daftar proses buatanmu (nama, arrival, burst, memory) dan quantum yang digunakan:</div>
+      <textarea id="a3_14" oninput="saveAll()" placeholder="P1: AT=0, BT=..., Mem=...&#10;P2: AT=..., BT=..., Mem=...&#10;Quantum = ...&#10;RAM = ..."></textarea>
+    </div>
+    <div class="q-block">
+      <div class="q-label"><span class="q-num amber">15</span> Tuliskan hasil simulasi skenariomu (Avg TAT, Avg WT, Avg RT, Context Switches, Total Swaps):</div>
+      <textarea id="a3_15" oninput="saveAll()" placeholder="Avg TAT = ..., Avg WT = ..., ..."></textarea>
+    </div>
+
+    <button class="btn btn-amber btn-lg" onclick="completeMission(3)">✅ Misi 3 Selesai — Lanjut ke Kuis Akhir</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- MISI 4: KUIS -->
+<!-- ═══════════════════════════════════ -->
+<div class="mission m4" id="m4">
+  <div class="mission-head" onclick="toggleMission(4)">
+    <h2><span class="mission-tag" style="background:var(--purple)">MISI 4</span> Kuis Akhir</h2>
+    <div><span class="mission-time">⏱ 20 menit</span> <span class="mission-check" id="m4-check">✅</span></div>
+  </div>
+  <div class="mission-body hidden" id="m4-body">
+    <div class="instr purple">
+      📝 <strong>Instruksi:</strong> Jawab 12 soal berikut. Pilihan ganda dan isian singkat. Setelah selesai, klik "Periksa Jawaban" untuk melihat skor. <strong>Kerjakan sendiri tanpa berdiskusi.</strong>
+    </div>
+
+    <div id="quiz-container"></div>
+
+    <button class="btn btn-purple btn-lg" id="quiz-submit" onclick="gradeQuiz()">📊 Periksa Jawaban</button>
+
+    <div class="quiz-result hidden" id="quiz-result">
+      <div class="quiz-score" id="quiz-score-num">0/12</div>
+      <div class="quiz-verdict" id="quiz-verdict"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- RINGKASAN & KIRIM -->
+<!-- ═══════════════════════════════════ -->
+<div class="card" id="summary-section">
+  <h2>📤 Ringkasan & Kirim</h2>
+  <p style="font-size:.84rem;color:var(--text2);margin-bottom:10px;">Klik tombol di bawah untuk menghasilkan ringkasan seluruh jawaban. <strong>Salin teks tersebut</strong> dan kirim ke LMS sebagai bukti pengerjaan.</p>
+  <button class="btn btn-blue btn-lg" onclick="generateSummary()">📋 Buat Ringkasan</button>
+  <div class="summary-box hidden" id="summary-text"></div>
+  <button class="btn btn-green btn-lg hidden" id="copy-btn" onclick="copySummary()">📋 Salin ke Clipboard</button>
+  <div class="copy-ok" id="copy-ok">✅ Berhasil disalin! Sekarang paste ke LMS.</div>
+</div>
+
+<div class="card" style="text-align:center;background:var(--bg);">
+  <p style="font-size:.82rem;color:var(--text3);">Selamat mengerjakan! 💪<br>LKPD Round Robin Scheduling — Sistem Operasi</p>
+</div>
+
+</div>
+
+<script>
+// ═══════════ TIMER ═══════════
+let startTime = Date.now();
+function updateTimer() {
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const m = Math.floor(elapsed / 60);
+  const s = elapsed % 60;
+  document.getElementById('timer').textContent =
+    String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  if (m >= 90) document.getElementById('timer').style.color = '#dc2626';
+  else if (m >= 70) document.getElementById('timer').style.color = '#d97706';
+}
+setInterval(updateTimer, 1000);
+
+// ═══════════ MISSION TOGGLE ═══════════
+let completedMissions = new Set();
+
+function toggleMission(n) {
+  const body = document.getElementById('m' + n + '-body');
+  body.classList.toggle('hidden');
+}
+
+function completeMission(n) {
+  completedMissions.add(n);
+  document.getElementById('m' + n + '-check').style.display = 'inline';
+  // Open next
+  if (n < 4) {
+    document.getElementById('m' + (n+1) + '-body').classList.remove('hidden');
+    document.getElementById('m' + (n+1)).scrollIntoView({ behavior:'smooth' });
+  }
+  // Update progress
+  const done = completedMissions.size;
+  document.getElementById('prog-text').textContent = done + '/4 Misi';
+  document.getElementById('prog-fill').style.width = (done/4*100) + '%';
+  saveAll();
+}
+
+// ═══════════ QUIZ ═══════════
+const quizData = [
+  {
+    q: 'Round Robin termasuk algoritma penjadwalan yang bersifat…',
+    opts: ['Non-preemptive','Preemptive','Cooperative','Batch'],
+    ans: 1
+  },
+  {
+    q: 'Ready Queue pada Round Robin menggunakan prinsip…',
+    opts: ['LIFO (Last In, First Out)','FIFO (First In, First Out)','Priority Queue','Random'],
+    ans: 1
+  },
+  {
+    q: 'Jika time quantum habis dan proses belum selesai, maka proses akan…',
+    opts: ['Dihapus dari sistem','Dilanjutkan sampai selesai','Di-preempt dan masuk ke belakang antrian','Dipindah ke swap space secara permanen'],
+    ans: 2
+  },
+  {
+    q: 'Context switch menyimpan register CPU ke…',
+    opts: ['Hard disk','GPU','PCB (Process Control Block)','Cache L1'],
+    ans: 2
+  },
+  {
+    q: 'Jika Quantum = 4 dan Burst Time suatu proses = 3, maka…',
+    opts: ['Proses di-preempt di akhir quantum','Proses selesai dalam 1 giliran tanpa preemption','Proses di-swap out','CPU idle selama 1 unit'],
+    ans: 1
+  },
+  {
+    q: 'Keuntungan utama Round Robin dibanding FCFS adalah…',
+    opts: ['Throughput lebih tinggi','Tidak ada starvation, semua proses mendapat giliran','Tidak membutuhkan memori','Tidak membutuhkan timer'],
+    ans: 1
+  },
+  {
+    q: '"Swap Out" berarti…',
+    opts: ['Memindahkan proses dari disk ke RAM','Memindahkan proses dari RAM ke disk','Menghapus proses dari antrian','Menukar posisi dua proses di antrian'],
+    ans: 1
+  },
+  {
+    q: 'Quantum yang terlalu kecil menyebabkan…',
+    opts: ['CPU selalu idle','Banyak context switch sehingga overhead tinggi','Tidak ada preemption yang terjadi','Proses selesai lebih cepat'],
+    ans: 1
+  },
+  {
+    q: 'Jika quantum sangat besar (lebih besar dari semua burst time), Round Robin berperilaku seperti…',
+    opts: ['SJF (Shortest Job First)','FCFS (First Come First Served)','Priority Scheduling','Multilevel Queue'],
+    ans: 1
+  },
+  {
+    q: 'Thrashing terjadi ketika…',
+    opts: ['CPU terlalu cepat memproses','Sistem sibuk melakukan swap in/out terus-menerus','RAM terlalu besar','Quantum terlalu besar'],
+    ans: 1
+  },
+  // Short answer
+  {
+    q: 'Jika Arrival Time = 0, Burst Time = 6, Completion Time = 16, berapakah Turnaround Time?',
+    type: 'short',
+    ans: '16'
+  },
+  {
+    q: 'Dari soal nomor 11, berapakah Waiting Time proses tersebut?',
+    type: 'short',
+    ans: '10'
+  }
+];
+
+function buildQuiz() {
+  const c = document.getElementById('quiz-container');
+  c.innerHTML = quizData.map((q, i) => {
+    if (q.type === 'short') {
+      return `<div class="quiz-q" id="qq${i}">
+        <div class="q-label"><span class="q-num purple">${i+1}</span> ${q.q}</div>
+        <input class="q-input" id="qans${i}" placeholder="Tulis jawaban (angka)..." oninput="saveAll()">
+      </div>`;
+    }
+    return `<div class="quiz-q" id="qq${i}">
+      <div class="q-label"><span class="q-num purple">${i+1}</span> ${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((o, j) => `<label><input type="radio" name="q${i}" value="${j}" onchange="saveAll()"> ${o}</label>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function gradeQuiz() {
+  let score = 0;
+  quizData.forEach((q, i) => {
+    const el = document.getElementById('qq' + i);
+    el.classList.remove('correct','wrong');
+    if (q.type === 'short') {
+      const v = document.getElementById('qans' + i).value.trim();
+      if (v === q.ans) { score++; el.classList.add('correct'); }
+      else { el.classList.add('wrong'); }
+    } else {
+      const sel = document.querySelector(`input[name="q${i}"]:checked`);
+      if (sel && parseInt(sel.value) === q.ans) { score++; el.classList.add('correct'); }
+      else { el.classList.add('wrong'); }
+    }
+  });
+
+  document.getElementById('quiz-result').classList.remove('hidden');
+  document.getElementById('quiz-score-num').textContent = score + '/' + quizData.length;
+
+  let verdict = '';
+  const pct = score / quizData.length;
+  if (pct >= 0.9) verdict = '🏆 Luar biasa! Kamu sangat memahami Round Robin!';
+  else if (pct >= 0.7) verdict = '👍 Bagus! Sebagian besar sudah dipahami.';
+  else if (pct >= 0.5) verdict = '📚 Cukup. Coba pelajari lagi bagian yang salah.';
+  else verdict = '💪 Perlu belajar lagi. Baca ulang materi di simulasi.';
+  document.getElementById('quiz-verdict').textContent = verdict;
+
+  completeMission(4);
+  saveAll();
+
+  window.quizScore = score;
+}
+
+// ═══════════ SAVE/LOAD ═══════════
+const FIELDS = [
+  'nama','kelas','absen',
+  'a1_1','a1_2','a1_3','a1_4','a1_5',
+  'a2_tat_a','a2_tat_b','a2_tat_c','a2_wt_a','a2_wt_b','a2_wt_c',
+  'a2_rt_a','a2_rt_b','a2_rt_c','a2_cs_a','a2_cs_b','a2_cs_c',
+  'a2_cu_a','a2_cu_b','a2_cu_c','a2_6','a2_7','a2_8',
+  'a3_9','a3_10','a3_11','a3_12','a3_13','a3_14','a3_15'
+];
+
+function saveAll() {
+  const data = {};
+  FIELDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) data[id] = el.value;
+  });
+  // Quiz
+  quizData.forEach((q, i) => {
+    if (q.type === 'short') {
+      data['qans' + i] = document.getElementById('qans' + i)?.value || '';
+    } else {
+      const sel = document.querySelector(`input[name="q${i}"]:checked`);
+      data['q' + i] = sel ? sel.value : '';
+    }
+  });
+  data.completedMissions = [...completedMissions];
+  localStorage.setItem('lkpd_rr', JSON.stringify(data));
+}
+
+function loadAll() {
+  try {
+    const data = JSON.parse(localStorage.getItem('lkpd_rr'));
+    if (!data) return;
+    FIELDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && data[id]) el.value = data[id];
+    });
+    quizData.forEach((q, i) => {
+      if (q.type === 'short') {
+        if (data['qans' + i]) document.getElementById('qans' + i).value = data['qans' + i];
+      } else {
+        if (data['q' + i] !== undefined && data['q' + i] !== '') {
+          const radio = document.querySelector(`input[name="q${i}"][value="${data['q'+i]}"]`);
+          if (radio) radio.checked = true;
+        }
+      }
+    });
+    if (data.completedMissions) {
+      data.completedMissions.forEach(n => {
+        completedMissions.add(n);
+        document.getElementById('m' + n + '-check').style.display = 'inline';
+      });
+      const done = completedMissions.size;
+      document.getElementById('prog-text').textContent = done + '/4 Misi';
+      document.getElementById('prog-fill').style.width = (done/4*100) + '%';
+    }
+  } catch(e) {}
+}
+
+// ═══════════ SUMMARY ═══════════
+function generateSummary() {
+  const nama = document.getElementById('nama').value || '(belum diisi)';
+  const kelas = document.getElementById('kelas').value || '(belum diisi)';
+  const absen = document.getElementById('absen').value || '(belum diisi)';
+  const now = new Date().toLocaleString('id-ID');
+
+  let txt = `════════════════════════════════\n`;
+  txt += `LKPD ROUND ROBIN SCHEDULING\n`;
+  txt += `════════════════════════════════\n`;
+  txt += `Nama  : ${nama}\nKelas : ${kelas}\nAbsen : ${absen}\nWaktu : ${now}\n`;
+  txt += `Misi selesai: ${completedMissions.size}/4\n`;
+  txt += `\n── MISI 1: PAHAMI KONSEP ──\n`;
+  for (let i = 1; i <= 5; i++) {
+    txt += `\n${i}. ${document.getElementById('a1_'+i).value || '(belum dijawab)'}\n`;
+  }
+
+  txt += `\n── MISI 2: SIMULASIKAN & AMATI ──\n`;
+  txt += `\nTabel Observasi (Q=2 / Q=5 / Q=1):\n`;
+  ['tat','wt','rt','cs','cu'].forEach(m => {
+    const label = {tat:'Avg TAT',wt:'Avg WT',rt:'Avg RT',cs:'Context SW',cu:'CPU Util'}[m];
+    const a = document.getElementById('a2_'+m+'_a').value||'-';
+    const b = document.getElementById('a2_'+m+'_b').value||'-';
+    const c = document.getElementById('a2_'+m+'_c').value||'-';
+    txt += `  ${label}: ${a} | ${b} | ${c}\n`;
+  });
+  txt += `\n6. ${document.getElementById('a2_6').value||'(belum dijawab)'}\n`;
+  txt += `7. ${document.getElementById('a2_7').value||'(belum dijawab)'}\n`;
+  txt += `8. ${document.getElementById('a2_8').value||'(belum dijawab)'}\n`;
+
+  txt += `\n── MISI 3: ANALISIS & TANTANGAN ──\n`;
+  for (let i = 9; i <= 15; i++) {
+    txt += `\n${i}. ${document.getElementById('a3_'+i).value || '(belum dijawab)'}\n`;
+  }
+
+  txt += `\n── MISI 4: KUIS AKHIR ──\n`;
+  txt += `Skor: ${window.quizScore !== undefined ? window.quizScore + '/12' : '(belum dikerjakan)'}\n`;
+  quizData.forEach((q, i) => {
+    if (q.type === 'short') {
+      txt += `${i+1}. ${document.getElementById('qans'+i).value||'-'}\n`;
+    } else {
+      const sel = document.querySelector(`input[name="q${i}"]:checked`);
+      txt += `${i+1}. ${sel ? q.opts[parseInt(sel.value)] : '(belum dijawab)'}\n`;
+    }
+  });
+
+  txt += `\n════════════════════════════════\n`;
+  txt += `Selesai pada: ${now}\n`;
+
+  document.getElementById('summary-text').textContent = txt;
+  document.getElementById('summary-text').classList.remove('hidden');
+  document.getElementById('copy-btn').classList.remove('hidden');
+  document.getElementById('summary-section').scrollIntoView({ behavior:'smooth' });
+}
+
+function copySummary() {
+  const text = document.getElementById('summary-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    document.getElementById('copy-ok').style.display = 'block';
+    setTimeout(() => document.getElementById('copy-ok').style.display = 'none', 3000);
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    document.getElementById('copy-ok').style.display = 'block';
+  });
+}
+
+// ═══════════ INIT ═══════════
+buildQuiz();
+loadAll();
+</script>
+</body>
+</html>
