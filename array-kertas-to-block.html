@@ -1,0 +1,189 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dari Kertas ke Kode Block</title>
+<style>
+:root{--bg:#EDF3F0;--ink:#12332F;--card:#fff;--hi:#F2C14E;--ok:#2E7D32;--err:#B93A0B;--mute:#4A6660;--accent:#2E5597;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F2A27;--ink:#EAF0EC;--card:#173C37;--err:#FF8F6B;--mute:#A9C2BB}}
+:root[data-theme="dark"]{--bg:#0F2A27;--ink:#EAF0EC;--card:#173C37;--err:#FF8F6B;--mute:#A9C2BB}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Arial,sans-serif;overflow:hidden;font-size:clamp(15px,2vw,21px)}
+#app{height:100%;display:flex;flex-direction:column;max-width:1000px;margin:0 auto}
+header{display:flex;align-items:center;justify-content:space-between;padding:.6em 1em;gap:1em;flex-wrap:wrap}
+header h1{font-size:1em;margin:0}
+#score{font-weight:700;background:var(--card);border:2px solid var(--ink);border-radius:8px;padding:.2em .7em}
+main{flex:1;min-height:0;overflow-y:auto;padding:0 1em 1em;display:flex;flex-direction:column;gap:.7em}
+h2{margin:.2em 0;font-size:1.15em}
+p{margin:.2em 0}
+.mute{color:var(--mute);font-size:.85em}
+#msg{min-height:1.5em;font-weight:700;text-align:center}
+#msg.ok{color:var(--ok)}#msg.err{color:var(--err)}
+.blk{display:inline-flex;align-items:center;gap:.4em;background:#F9A825;color:#2b2200;font-weight:700;border-radius:8px 8px 8px 2px;padding:.4em .7em;position:relative;margin:.15em 0}
+.blk.op{background:#5C6BC0;color:#fff}
+.blk.list{background:#EF6C00;color:#fff}
+.blk.err{background:var(--err);color:#fff}
+.blk.ok{background:var(--ok);color:#fff}
+.blk .slot{background:rgba(255,255,255,.55);border-radius:6px;padding:.1em .5em;min-width:1.4em;text-align:center;display:inline-block}
+.stack{display:flex;flex-direction:column;align-items:flex-start;gap:0;background:var(--card);border:2px solid var(--ink);border-radius:10px;padding:.8em;}
+.palette{display:flex;flex-wrap:wrap;gap:.4em;padding:.3em 0}
+button.chip{font:inherit;cursor:pointer;background:var(--card);color:var(--ink);border:2px solid var(--ink);border-radius:8px;padding:.3em .8em;min-height:40px}
+button.chip.sel{background:var(--hi)}
+button.btn{font:inherit;cursor:pointer;background:var(--card);color:var(--ink);border:3px solid var(--ink);border-radius:10px;padding:.5em 1.1em;min-height:44px}
+button.btn.big{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700}
+#out{font-family:ui-monospace,Consolas,monospace;background:#0F2A27;color:#9FE8A0;border-radius:10px;padding:.7em .9em;min-height:2.6em;white-space:pre-wrap;font-size:.9em}
+input[type=text]{font:inherit;padding:.35em .6em;border:2px solid var(--ink);border-radius:8px;background:var(--card);color:var(--ink)}
+footer{display:flex;align-items:center;justify-content:space-between;padding:.6em 1em;border-top:2px solid var(--ink)}
+footer button{min-width:6em}
+</style>
+</head>
+<body>
+<div id="app">
+<header><h1>🧩 Dari Kertas ke Kode Block</h1><span id="score">Skor: 0</span></header>
+<main id="main"></main>
+<footer>
+  <button class="btn" id="prev" type="button">Kembali</button>
+  <span id="pos" class="mute"></span>
+  <button class="btn big" id="next" type="button">Lanjut</button>
+</footer>
+</div>
+<script>
+(function(){
+"use strict";
+var main=document.getElementById('main'),scoreEl=document.getElementById('score'),posEl=document.getElementById('pos');
+var prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next');
+var score=0;function addScore(n){score+=n;scoreEl.textContent='Skor: '+score}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+function isNum(s){return /^-?\d+([.,]\d+)?$/.test(s.trim())}
+
+/* ---- STAGE 0: INTRO ---- */
+function Intro(){
+  main.innerHTML='';
+  main.appendChild(el('h2','','Dari Kotak Kertas ke Kode Block'));
+  main.appendChild(el('p','','Kemarin kalian menyusun array di kertas dengan kartu. Hari ini kalian akan menyusun array yang sama memakai <b>blok kode</b>, lalu menjalankannya dan melihat hasilnya sungguhan — seperti di Scratch.'));
+  var box=el('div','stack');
+  box.appendChild(el('div','blk list','buat list <span class="slot">nilai_siswa</span> = [ 85, 90, 78, 95, 88 ]'));
+  main.appendChild(box);
+  main.appendChild(el('p','mute','Kerjakan sendiri atau berdua dalam satu tim. Tidak perlu login, cukup buka halaman ini.'));
+  nextBtn.disabled=false;
+}
+
+/* ---- STAGE 1: BANGUN ARRAY DENGAN BLOK ---- */
+function BuildArray(){
+  main.innerHTML='';
+  main.appendChild(el('h2','','1. Susun Array Memakai Blok'));
+  main.appendChild(el('p','','Ketuk kartu angka untuk menambah ke dalam blok "buat list". Boleh pakai nilai_siswa milikmu sendiri dari kertas kemarin, atau coba array baru.'));
+  var name='nilai_siswa',vals=[];
+  var stack=el('div','stack');main.appendChild(stack);
+  var pal=el('div','palette');main.appendChild(pal);
+  [85,90,78,95,88,70,75,100].forEach(function(v){
+    var b=el('button','chip',String(v));
+    b.onclick=function(){vals.push(v);render()};
+    pal.appendChild(b);
+  });
+  var inpRow=el('div','palette');
+  var inp=document.createElement('input');inp.type='text';inp.placeholder='angka/teks bebas';
+  var addBtn=el('button','chip','+ Tambah');
+  addBtn.onclick=function(){var v=inp.value.trim();if(!v)return;vals.push(isNum(v)?Number(v):('"'+v+'"'));inp.value='';render()};
+  inpRow.appendChild(inp);inpRow.appendChild(addBtn);main.appendChild(inpRow);
+  var clearBtn=el('button','chip','Kosongkan');clearBtn.onclick=function(){vals=[];render()};pal.appendChild(clearBtn);
+  var runBtn=el('button','btn big','Jalankan Blok');main.appendChild(runBtn);
+  var out=el('div','#out');out.id='out1';main.appendChild(out);
+  var got=false;
+  runBtn.onclick=function(){
+    out.textContent=name+' = ['+vals.join(', ')+']\nprint('+name+')\n→  ['+vals.join(', ')+']\nprint(panjang dari '+name+')\n→  '+vals.length;
+    if(vals.length>=3&&!got){got=true;addScore(15)}
+  };
+  function render(){
+    stack.innerHTML='';
+    var b=el('div','blk list','buat list <span class="slot">'+name+'</span> = [ '+vals.join(', ')+' ]');
+    stack.appendChild(b);
+    out.textContent='';
+  }
+  render();
+  nextBtn.disabled=false;
+}
+
+/* ---- STAGE 2: AMBIL ITEM & PANJANG ---- */
+function AmbilPanjang(){
+  main.innerHTML='';
+  var arr=['apel','jeruk','mangga','pisang','anggur','melon','kiwi'];
+  main.appendChild(el('h2','','2. Ambil Item dari Array'));
+  main.appendChild(el('p','','buah = ["apel","jeruk","mangga","pisang","anggur","melon","kiwi"]. Pilih indeks, lalu ketuk Jalankan dan cocokkan dengan jawabanmu di kertas Level 2 kemarin.'));
+  var idx=0;
+  var blk=el('div','blk op','ambil item ke-<span class="slot">'+idx+'</span> dari <b>buah</b>');
+  main.appendChild(blk);
+  var pal=el('div','palette');main.appendChild(pal);
+  arr.forEach(function(_,i){
+    var b=el('button','chip',String(i));
+    b.onclick=function(){idx=i;blk.innerHTML='ambil item ke-<span class="slot">'+idx+'</span> dari <b>buah</b>';[].forEach.call(pal.children,function(c){c.classList.remove('sel')});b.classList.add('sel')};
+    pal.appendChild(b);
+  });
+  var runBtn=el('button','btn big','Jalankan Blok');main.appendChild(runBtn);
+  var out=el('div','#out');main.appendChild(out);
+  var runLen=el('button','btn','Jalankan: panjang dari buah');main.appendChild(runLen);
+  var got1=false,got2=false;
+  runBtn.onclick=function(){out.textContent='buah['+idx+']\n→  "'+arr[idx]+'"';if(!got1){got1=true;addScore(10)}};
+  runLen.onclick=function(){out.textContent='panjang(buah)\n→  '+arr.length;if(!got2){got2=true;addScore(10)}};
+  nextBtn.disabled=false;
+}
+
+/* ---- STAGE 3: JALANKAN BLOK YANG ERROR ---- */
+function ErrorBlocks(){
+  main.innerHTML='';
+  main.appendChild(el('h2','','3. Jalankan Blok, Temukan Error'));
+  main.appendChild(el('p','','Blok ini sudah jadi. Tebak dulu jenis kesalahannya, baru ketuk Jalankan untuk mencocokkan, seperti Detektif Bug di kertas Level 3.'));
+  var cases=[
+    {code:'buah = ["apel","jeruk","mangga"]\nprint(buah[3])',err:'Indeks 3 tidak ada. Indeks terakhir array ini hanya 2.',type:1},
+    {code:'umur = [15, 16, "tujuh belas"]\nprint(jumlah(umur))',err:'Tipe data campur: "tujuh belas" adalah teks, bukan angka.',type:2},
+    {code:'nilai = [ ]\nnilai[0] = 80\nnilai[2] = 90',err:'Indeks 1 dilompati dan dibiarkan kosong. Array harus berurutan dari indeks 0.',type:3}
+  ];
+  var types=['A: indeks di luar jangkauan','B: tipe data campur','C: ada slot kosong/dilompati'];
+  cases.forEach(function(c,ci){
+    var wrap=el('div','stack');
+    wrap.appendChild(el('div','blk','<pre style="margin:0;font-family:ui-monospace,monospace;white-space:pre-wrap">'+c.code+'</pre>'));
+    var pal=el('div','palette');
+    var chosen=-1;
+    types.forEach(function(t,i){
+      var b=el('button','chip',t);
+      b.onclick=function(){chosen=i;[].forEach.call(pal.children,function(x){x.classList.remove('sel')});b.classList.add('sel')};
+      pal.appendChild(b);
+    });
+    wrap.appendChild(pal);
+    var runBtn=el('button','btn','Jalankan Blok Ini');
+    var out=el('div','#out');
+    var got=false;
+    runBtn.onclick=function(){
+      out.textContent='ERROR!\n'+c.err;
+      if(chosen===(c.type-1)&&!got){got=true;addScore(8)}
+    };
+    wrap.appendChild(runBtn);wrap.appendChild(out);
+    main.appendChild(wrap);
+  });
+  nextBtn.disabled=false;
+}
+
+function Final(){
+  main.innerHTML='';
+  var badge=score>=55?'Programmer Array Pemula':score>=30?'Penerjemah Blok':'Penjelajah Kode';
+  main.appendChild(el('h2','','Selesai!'));
+  main.appendChild(el('p','','Skor akhir: <b>'+score+'</b>'));
+  main.appendChild(el('p','','Lencana: <b>'+badge+'</b>'));
+  main.appendChild(el('p','mute','Foto layar ini dan unggah ke LMS sebagai bukti, lalu kerjakan Kuis Level 6 dan Refleksi di LMS.'));
+  nextBtn.disabled=true;
+}
+
+var stages=[Intro,BuildArray,AmbilPanjang,ErrorBlocks,Final];
+var i=0;
+function go(n){i=Math.max(0,Math.min(stages.length-1,n));stages[i]();posEl.textContent=(i+1)+' / '+stages.length;prevBtn.disabled=i===0}
+prevBtn.onclick=function(){go(i-1)};nextBtn.onclick=function(){go(i+1)};
+go(0);
+})();
+</script>
+</body>
+</html>
+
+</body></html>
