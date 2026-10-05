@@ -1,48 +1,64 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Dari Kertas ke Kode Block</title>
+<title>Dari Kertas ke Blok Kode</title>
 <style>
 :root{--bg:#EDF3F0;--ink:#12332F;--card:#fff;--hi:#F2C14E;--ok:#2E7D32;--err:#B93A0B;--mute:#4A6660;--accent:#2E5597;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F2A27;--ink:#EAF0EC;--card:#173C37;--err:#FF8F6B;--mute:#A9C2BB}}
-:root[data-theme="dark"]{--bg:#0F2A27;--ink:#EAF0EC;--card:#173C37;--err:#FF8F6B;--mute:#A9C2BB}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F2A27;--ink:#EAF0EC;--card:#173C37;--ok:#7FD38A;--err:#FF8F6B;--mute:#A9C2BB}}
+:root[data-theme="dark"]{--bg:#0F2A27;--ink:#EAF0EC;--card:#173C37;--ok:#7FD38A;--err:#FF8F6B;--mute:#A9C2BB}
 *{box-sizing:border-box}html,body{height:100%;margin:0}
+[hidden]{display:none!important}
 body{background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Arial,sans-serif;overflow:hidden;font-size:clamp(15px,2vw,21px)}
 #app{height:100%;display:flex;flex-direction:column;max-width:1000px;margin:0 auto}
 header{display:flex;align-items:center;justify-content:space-between;padding:.6em 1em;gap:1em;flex-wrap:wrap}
 header h1{font-size:1em;margin:0}
 #score{font-weight:700;background:var(--card);border:2px solid var(--ink);border-radius:8px;padding:.2em .7em}
 main{flex:1;min-height:0;overflow-y:auto;padding:0 1em 1em;display:flex;flex-direction:column;gap:.7em}
+main>*{flex-shrink:0}
 h2{margin:.2em 0;font-size:1.15em}
+h3{margin:.4em 0 .1em;font-size:1em}
 p{margin:.2em 0}
+ol{margin:.3em 0;padding-left:1.4em}li{margin:.25em 0}
 .mute{color:var(--mute);font-size:.85em}
-#msg{min-height:1.5em;font-weight:700;text-align:center}
-#msg.ok{color:var(--ok)}#msg.err{color:var(--err)}
-.blk{display:inline-flex;align-items:center;gap:.4em;background:#F9A825;color:#2b2200;font-weight:700;border-radius:8px 8px 8px 2px;padding:.4em .7em;position:relative;margin:.15em 0}
+.blk{display:inline-flex;align-items:center;gap:.4em;background:#F9A825;color:#2b2200;font-weight:700;border-radius:8px 8px 8px 2px;padding:.4em .7em;margin:.15em 0;max-width:100%}
 .blk.op{background:#5C6BC0;color:#fff}
 .blk.list{background:#EF6C00;color:#fff}
-.blk.err{background:var(--err);color:#fff}
-.blk.ok{background:var(--ok);color:#fff}
-.blk .slot{background:rgba(255,255,255,.55);border-radius:6px;padding:.1em .5em;min-width:1.4em;text-align:center;display:inline-block}
-.stack{display:flex;flex-direction:column;align-items:flex-start;gap:0;background:var(--card);border:2px solid var(--ink);border-radius:10px;padding:.8em;}
+.blk pre{margin:0;font-family:ui-monospace,Consolas,monospace;white-space:pre-wrap}
+.stack{display:flex;flex-direction:column;align-items:flex-start;gap:.2em;background:var(--card);border:2px solid var(--ink);border-radius:10px;padding:.8em}
+.stack>*{max-width:100%}
+.stack input[type=text]{width:100%}
 .palette{display:flex;flex-wrap:wrap;gap:.4em;padding:.3em 0}
 button.chip{font:inherit;cursor:pointer;background:var(--card);color:var(--ink);border:2px solid var(--ink);border-radius:8px;padding:.3em .8em;min-height:40px}
-button.chip.sel{background:var(--hi)}
+button.chip.sel{background:var(--hi);color:#2b2200}
 button.btn{font:inherit;cursor:pointer;background:var(--card);color:var(--ink);border:3px solid var(--ink);border-radius:10px;padding:.5em 1.1em;min-height:44px}
 button.btn.big{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700}
-#out{font-family:ui-monospace,Consolas,monospace;background:#0F2A27;color:#9FE8A0;border-radius:10px;padding:.7em .9em;min-height:2.6em;white-space:pre-wrap;font-size:.9em}
-input[type=text]{font:inherit;padding:.35em .6em;border:2px solid var(--ink);border-radius:8px;background:var(--card);color:var(--ink)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.output{font-family:ui-monospace,Consolas,monospace;background:#0F2A27;color:#9FE8A0;border-radius:10px;padding:.7em .9em;min-height:2.6em;height:auto;flex-shrink:0;white-space:pre-wrap;overflow-wrap:anywhere;overflow:visible;font-size:.9em;line-height:1.5;margin:.2em 0;width:100%}
+.feedback{font-weight:700;min-height:1.5em}.feedback.ok{color:var(--ok)}.feedback.err{color:var(--err)}
+input[type=text],textarea{font:inherit;padding:.35em .6em;border:2px solid var(--ink);border-radius:8px;background:var(--card);color:var(--ink)}
+input.code{font-family:ui-monospace,Consolas,monospace}
+textarea{width:100%;min-height:16em;resize:vertical;white-space:pre-wrap}
+textarea.short{min-height:5em}
+.external-link{color:var(--accent);font-weight:700}
+.cells{display:flex;flex-wrap:wrap;gap:.4em;margin:.3em 0}
+.cell{display:block;background:var(--card);color:var(--ink);border:2px solid var(--ink);border-radius:8px;min-width:4.8em;text-align:center;overflow:hidden;padding:0;font:inherit}
+button.cell{cursor:pointer}
+.cell .idx{display:block;background:var(--ink);color:var(--card);font-size:.75em;padding:.15em .4em}
+.cell .val{display:block;padding:.4em .5em;font-family:ui-monospace,Consolas,monospace;font-weight:700;word-break:break-word}
+.cell.empty .val{color:var(--mute);font-weight:400}
+.cell.hi{background:var(--hi);color:#2b2200}
+.cell.hi .val{color:#2b2200}
+.quiz{margin:.3em 0;width:100%}
 footer{display:flex;align-items:center;justify-content:space-between;padding:.6em 1em;border-top:2px solid var(--ink)}
 footer button{min-width:6em}
 </style>
 </head>
 <body>
 <div id="app">
-<header><h1>🧩 Dari Kertas ke Kode Block</h1><span id="score">Skor: 0</span></header>
+<header><h1>Dari Kertas ke Blok Kode</h1><span id="score">Skor: 0</span></header>
 <main id="main"></main>
 <footer>
   <button class="btn" id="prev" type="button">Kembali</button>
@@ -55,135 +71,495 @@ footer button{min-width:6em}
 "use strict";
 var main=document.getElementById('main'),scoreEl=document.getElementById('score'),posEl=document.getElementById('pos');
 var prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next');
-var score=0;function addScore(n){score+=n;scoreEl.textContent='Skor: '+score}
-function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
-function isNum(s){return /^-?\d+([.,]\d+)?$/.test(s.trim())}
 
-/* ---- STAGE 0: INTRO ---- */
+/* Total skor maksimum: 15+10+12+3 (tahap 1-2), 4x8 (tahap 3), 5+5+8+5+5 (tahap 4). */
+var MAX_SCORE=100,SLOTS=5,MAX_DATA=8;
+var FILL_VALUES=[85,90,78,95,88,70,75,100];
+var FRUITS=['apel','jeruk','mangga','pisang','anggur','melon','kiwi'];
+var KIND_LABELS=['Indeks tidak tersedia','Jenis data tidak sesuai','Indeks dilewati (tidak berurutan)','Rumus tidak sesuai'];
+var LEVEL_TITLES={1:'Indeks dan jenis data',2:'Kotak terlewat dan rumus'};
+var CODE_POINTS={name:5,data:5,decl:8,show:5,len:5};
+var RESERVED=['False','None','True','and','as','assert','async','await','break','class','continue','def','del','elif','else','except','finally','for','from','global','if','import','in','is','lambda','nonlocal','not','or','pass','raise','return','try','while','with','yield','print','len','list'];
+var ERROR_CASES=[
+  {level:1,code:'buah = ["apel", "jeruk", "mangga"]\nTampilkan buah[3]',
+   q:'Array buah memiliki 3 data dan indeks dimulai dari 0. Berapa indeks terakhir yang tersedia?',opts:['1','2','3'],ok:1,
+   qHint:'Hitung dari 0: apel = 0, jeruk = 1, mangga = 2.',qExplain:'Indeks terakhir adalah 2.',
+   kind:0,explain:'Indeks 3 tidak tersedia. Indeks yang tersedia hanya 0, 1, dan 2.'},
+  {level:1,code:'umur = [15, 16, "tujuh belas"]\nTampilkan jumlah(umur)',
+   q:'Operasi jumlah hanya dapat dilakukan pada angka. Data mana yang bukan angka?',opts:['15','16','"tujuh belas"'],ok:2,
+   qHint:'Angka ditulis tanpa tanda kutip. Teks ditulis dengan tanda kutip.',qExplain:'"tujuh belas" adalah teks.',
+   kind:1,explain:'Data "tujuh belas" berupa teks, padahal jumlah memerlukan angka.'},
+  {level:2,code:'buat array nilai dengan 3 kotak (indeks 0, 1, 2)\nnilai[0] = 80\nnilai[2] = 90\nTampilkan nilai[1]',
+   q:'Kotak mana yang belum diisi?',opts:['Indeks 0','Indeks 1','Indeks 2'],ok:1,
+   qHint:'Periksa indeks yang diisi pada kode. Indeks mana yang tidak disebut?',qExplain:'Indeks 1 belum diisi.',
+   kind:2,explain:'Indeks 1 dilewati. Isi kotak berurutan mulai dari indeks 0 supaya tidak ada kotak kosong.'},
+  {level:2,code:'nilai = [70, 80, 90]\njumlah_nilai = jumlah(nilai)\nrata_rata = jumlah_nilai / 2',
+   q:'Berapa banyak data dalam array nilai?',opts:['2','3','4'],ok:1,
+   qHint:'Hitung jumlah angka di dalam tanda kurung siku.',qExplain:'Ada 3 data.',
+   kind:3,explain:'Ada 3 data, sehingga jumlah nilai dibagi 3, bukan 2.'}
+];
+
+var score=0,awarded={};
+var progress={
+  arrayName:'',arrayValues:[],
+  fruitIndex:null,fruitShown:null,
+  quiz:{},
+  createName:'',createValues:null,createStep:1,
+  code:{decl:'',show:'',len:''},showIdx:null,
+  attempts:{decl:0,show:0,len:0},
+  student:{nama:'',kelas:'',refleksi:''}
+};
+
+function setScore(){scoreEl.textContent='Skor: '+score}
+function addScore(key,n){if(awarded[key]!==undefined)return;awarded[key]=n;score+=n;setScore()}
+function removeScore(key){if(awarded[key]===undefined)return;score-=awarded[key];delete awarded[key];setScore()}
+function pointsFor(attempts,full){return attempts===0?full:Math.ceil(full/2)}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+function tx(tag,cls,s){var e=document.createElement(tag);if(cls)e.className=cls;e.textContent=s;return e}
+function btn(label,cls,handler){var b=tx('button','btn'+(cls?' '+cls:''),label);b.type='button';b.onclick=handler;return b}
+function chip(label,handler){var b=tx('button','chip',label);b.type='button';b.onclick=handler;return b}
+function codeBox(text){var p=document.createElement('pre');p.className='output';p.textContent=text;return p}
+function field(label,placeholder,value,isCode){var i=document.createElement('input');i.type='text';i.placeholder=placeholder;i.value=value||'';i.setAttribute('aria-label',label);if(isCode)i.className='code';return i}
+function feedbackBox(){return el('div','feedback')}
+function say(box,ok,msg){box.className='feedback '+(ok?'ok':'err');box.textContent=msg}
+function isNum(s){return /^-?\d+(\.\d+)?$/.test(s.trim())}
+function parseValue(s){var t=s.trim();return isNum(t)?Number(t):t}
+function formatValue(v){return typeof v==='string'?JSON.stringify(v):String(v)}
+function solved(key){return !!(progress.quiz[key]&&progress.quiz[key].solved)}
+function badgeOf(){return score>=85?'Sangat Baik':score>=60?'Baik':'Perlu Latihan'}
+function checkName(name){
+  if(!name)return 'Nama array belum diisi.';
+  if(!/^[A-Za-z_][A-Za-z0-9_]*$/.test(name))return 'Gunakan huruf, angka, atau garis bawah tanpa spasi, dan jangan diawali angka.';
+  if(RESERVED.indexOf(name)>=0)return '"'+name+'" adalah kata khusus Python. Gunakan nama lain.';
+  return '';
+}
+function cellsView(values,slots,hi,onPick){
+  var wrap=el('div','cells');
+  for(var k=0;k<slots;k++){(function(k){
+    var empty=k>=values.length;
+    var c=document.createElement(onPick?'button':'div');
+    if(onPick){c.type='button';c.onclick=function(){onPick(k)}}
+    c.className='cell'+(empty?' empty':'')+(hi===k?' hi':'');
+    c.appendChild(tx('span','idx','Indeks '+k));
+    c.appendChild(tx('span','val',empty?'kosong':formatValue(values[k])));
+    wrap.appendChild(c);
+  })(k)}
+  return wrap;
+}
+function pyLink(){var a=tx('a','external-link','Buka editor Python (tab baru)');a.href='https://www.programiz.com/python-programming/online-compiler/';a.target='_blank';a.rel='noopener noreferrer';return a}
+function copyText(text,status,okMsg){
+  function done(ok){say(status,ok,ok?okMsg:'Penyalinan otomatis tidak berhasil. Pilih teksnya, lalu salin secara manual.')}
+  function legacy(){var t=document.createElement('textarea');t.value=text;t.setAttribute('readonly','');t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();var ok=false;try{ok=document.execCommand('copy')}catch(e){}document.body.removeChild(t);done(ok)}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){done(true)},legacy)}else{legacy()}
+}
+
+/* Soal pilihan dengan petunjuk; jawaban salah dicatat sebagai percobaan. */
+function quiz(key,question,options,correct,hint,explain,onSolved){
+  var st=progress.quiz[key]||(progress.quiz[key]={solved:false,attempts:0,chosen:-1});
+  var box=el('div','quiz');
+  box.appendChild(tx('p','',question));
+  var pal=el('div','palette'),fb=feedbackBox();
+  var buttons=options.map(function(label,i){var b=chip(label,function(){if(st.solved)return;st.chosen=i;mark()});pal.appendChild(b);return b});
+  function mark(){buttons.forEach(function(b,i){b.classList.toggle('sel',st.chosen===i)})}
+  var check=btn('Periksa jawaban','',function(){
+    if(st.solved)return;
+    if(st.chosen<0){say(fb,false,'Pilih salah satu jawaban terlebih dahulu.');return}
+    if(st.chosen===correct){st.solved=true;check.disabled=true;say(fb,true,'Benar. '+explain);onSolved(st.attempts)}
+    else{st.attempts++;say(fb,false,'Belum tepat. '+hint+(st.attempts>=3?' Baca petunjuk dengan teliti sebelum menjawab lagi.':''))}
+  });
+  mark();
+  if(st.solved){check.disabled=true;say(fb,true,'Benar. '+explain)}
+  box.appendChild(pal);box.appendChild(check);box.appendChild(fb);
+  return box;
+}
+
+/* ---- TAHAP 0: PENGANTAR ---- */
 function Intro(){
   main.innerHTML='';
-  main.appendChild(el('h2','','Dari Kotak Kertas ke Kode Block'));
-  main.appendChild(el('p','','Kemarin kalian menyusun array di kertas dengan kartu. Hari ini kalian akan menyusun array yang sama memakai <b>blok kode</b>, lalu menjalankannya dan melihat hasilnya sungguhan — seperti di Scratch.'));
+  main.appendChild(el('h2','','Dari Kertas ke Blok Kode'));
+  main.appendChild(el('p','','Array adalah kumpulan data yang disusun berurutan. Setiap data menempati satu kotak yang memiliki nomor indeks, dan indeks pertama adalah 0.'));
   var box=el('div','stack');
-  box.appendChild(el('div','blk list','buat list <span class="slot">nilai_siswa</span> = [ 85, 90, 78, 95, 88 ]'));
+  box.appendChild(tx('p','mute','Contoh array nilai_siswa:'));
+  box.appendChild(cellsView([85,90,78,95,88],5,null));
   main.appendChild(box);
-  main.appendChild(el('p','mute','Kerjakan sendiri atau berdua dalam satu tim. Tidak perlu login, cukup buka halaman ini.'));
+  main.appendChild(el('p','','Kegiatan di kertas kini kalian lakukan di komputer:'));
+  var list=el('ol','',
+    '<li>Menentukan nama array.</li>'+
+    '<li>Mengisi data ke kotak sesuai indeksnya.</li>'+
+    '<li>Membaca data dari indeks, dan mencari indeks dari data.</li>'+
+    '<li>Mengenali kesalahan pada array.</li>'+
+    '<li>Menulis program Python sendiri untuk membuat array.</li>');
+  main.appendChild(list);
+  main.appendChild(tx('p','mute','Kerjakan sendiri atau bersama satu teman. Hasil akhir berupa ringkasan yang disalin ke esai tugas di LMS.'));
   nextBtn.disabled=false;
 }
 
-/* ---- STAGE 1: BANGUN ARRAY DENGAN BLOK ---- */
+/* ---- TAHAP 1: NAMA ARRAY DAN ISI DATA KE INDEKS ---- */
 function BuildArray(){
   main.innerHTML='';
-  main.appendChild(el('h2','','1. Susun Array Memakai Blok'));
-  main.appendChild(el('p','','Ketuk kartu angka untuk menambah ke dalam blok "buat list". Boleh pakai nilai_siswa milikmu sendiri dari kertas kemarin, atau coba array baru.'));
-  var name='nilai_siswa',vals=[];
-  var stack=el('div','stack');main.appendChild(stack);
-  var pal=el('div','palette');main.appendChild(pal);
-  [85,90,78,95,88,70,75,100].forEach(function(v){
-    var b=el('button','chip',String(v));
-    b.onclick=function(){vals.push(v);render()};
-    pal.appendChild(b);
-  });
-  var inpRow=el('div','palette');
-  var inp=document.createElement('input');inp.type='text';inp.placeholder='angka/teks bebas';
-  var addBtn=el('button','chip','+ Tambah');
-  addBtn.onclick=function(){var v=inp.value.trim();if(!v)return;vals.push(isNum(v)?Number(v):('"'+v+'"'));inp.value='';render()};
-  inpRow.appendChild(inp);inpRow.appendChild(addBtn);main.appendChild(inpRow);
-  var clearBtn=el('button','chip','Kosongkan');clearBtn.onclick=function(){vals=[];render()};pal.appendChild(clearBtn);
-  var runBtn=el('button','btn big','Jalankan Blok');main.appendChild(runBtn);
-  var out=el('div','#out');out.id='out1';main.appendChild(out);
-  var got=false;
-  runBtn.onclick=function(){
-    out.textContent=name+' = ['+vals.join(', ')+']\nprint('+name+')\n→  ['+vals.join(', ')+']\nprint(panjang dari '+name+')\n→  '+vals.length;
-    if(vals.length>=3&&!got){got=true;addScore(15)}
-  };
-  function render(){
-    stack.innerHTML='';
-    var b=el('div','blk list','buat list <span class="slot">'+name+'</span> = [ '+vals.join(', ')+' ]');
-    stack.appendChild(b);
-    out.textContent='';
+  var vals=progress.arrayValues,selected=null;
+  main.appendChild(el('h2','','1. Tentukan Nama dan Isi Array'));
+  main.appendChild(el('p','','Seperti di kertas: tulis nama array lebih dahulu, lalu isi kotak satu per satu mulai dari indeks 0.'));
+  var nameRow=el('div','palette');
+  var nameInput=field('Nama array','Contoh: nilai_siswa',progress.arrayName);
+  nameRow.appendChild(nameInput);
+  main.appendChild(tx('h3','','Langkah 1: Nama array'));
+  main.appendChild(nameRow);
+  var nameFb=feedbackBox();
+  nameRow.appendChild(chip('Tetapkan nama',function(){
+    var n=nameInput.value.trim(),m=checkName(n);
+    if(m){say(nameFb,false,m);return}
+    progress.arrayName=n;say(nameFb,true,'Nama array: '+n+'.');draw();
+  }));
+  main.appendChild(nameFb);
+  var area=el('div');main.appendChild(area);
+  var fb=feedbackBox();
+  var out=el('div');
+
+  function pick(k){
+    if(k>vals.length){say(fb,false,'Indeks '+k+' belum dapat diisi karena indeks '+vals.length+' masih kosong. Isi kotak berurutan mulai dari indeks 0.');return}
+    selected=k;draw();say(fb,true,'Indeks '+k+' dipilih. Sekarang pilih data untuk mengisinya.');
   }
-  render();
+  function put(v){
+    if(selected==null){say(fb,false,'Pilih kotak (indeks) tujuan terlebih dahulu.');return}
+    var k=selected;vals[k]=v;selected=null;draw();say(fb,true,'Indeks '+k+' diisi dengan '+formatValue(v)+'.');
+  }
+  function draw(){
+    area.innerHTML='';out.innerHTML='';
+    if(!progress.arrayName){area.appendChild(tx('p','mute','Tetapkan nama array terlebih dahulu.'));return}
+    var name=progress.arrayName;
+    area.appendChild(tx('h3','','Langkah 2: Isi data ke indeks'));
+    var head=el('div','blk list');head.textContent='buat array '+name+' dengan '+SLOTS+' kotak';area.appendChild(head);
+    area.appendChild(cellsView(vals,SLOTS,selected,pick));
+    area.appendChild(tx('p','mute',selected==null?'Pilih kotak dengan indeks '+(vals.length<SLOTS?vals.length:'yang ingin diubah')+', lalu pilih data.':'Indeks '+selected+' dipilih.'));
+    var pal=el('div','palette');
+    FILL_VALUES.forEach(function(v){pal.appendChild(chip(String(v),function(){put(v)}))});
+    area.appendChild(pal);
+    var own=el('div','palette'),ownInput=field('Data lain','Data lain (angka atau teks)','');
+    own.appendChild(ownInput);
+    own.appendChild(chip('Isi kotak',function(){var v=ownInput.value.trim();if(!v){say(fb,false,'Data belum diisi.');return}put(parseValue(v))}));
+    area.appendChild(own);
+    vals.forEach(function(v,k){var b=el('div','blk op');b.textContent='isi '+name+'['+k+'] dengan '+formatValue(v);area.appendChild(b)});
+    var actions=el('div','palette');
+    actions.appendChild(btn('Jalankan','big',function(){
+      if(vals.length<SLOTS){say(fb,false,'Masih ada kotak kosong: indeks '+vals.length+' sampai '+(SLOTS-1)+'.');out.innerHTML='';return}
+      out.innerHTML='';
+      out.appendChild(codeBox(name+' = ['+vals.map(formatValue).join(', ')+']\nTampilkan isi '+name+'\nHasil: ['+vals.map(formatValue).join(', ')+']\nJumlah data: '+vals.length));
+      say(fb,true,'Array '+name+' berhasil dibuat dengan '+vals.length+' data.');addScore('fill',15);
+    }));
+    actions.appendChild(chip('Ulangi dari awal',function(){vals.length=0;selected=null;removeScore('fill');draw();say(fb,true,'Array dikosongkan. Mulai lagi dari indeks 0.')}));
+    area.appendChild(actions);area.appendChild(fb);area.appendChild(out);
+  }
+  draw();
   nextBtn.disabled=false;
 }
 
-/* ---- STAGE 2: AMBIL ITEM & PANJANG ---- */
-function AmbilPanjang(){
+/* ---- TAHAP 2: MEMBACA INDEKS DAN ISI DATA ---- */
+function ReadArray(){
   main.innerHTML='';
-  var arr=['apel','jeruk','mangga','pisang','anggur','melon','kiwi'];
-  main.appendChild(el('h2','','2. Ambil Item dari Array'));
-  main.appendChild(el('p','','buah = ["apel","jeruk","mangga","pisang","anggur","melon","kiwi"]. Pilih indeks, lalu ketuk Jalankan dan cocokkan dengan jawabanmu di kertas Level 2 kemarin.'));
-  var idx=0;
-  var blk=el('div','blk op','ambil item ke-<span class="slot">'+idx+'</span> dari <b>buah</b>');
-  main.appendChild(blk);
+  main.appendChild(el('h2','','2. Membaca Indeks dan Isi Data'));
+  main.appendChild(el('p','','Array buah di bawah memiliki 7 data. Setiap data menempati satu indeks, dan indeks pertama adalah 0.'));
+  var cellBox=el('div');main.appendChild(cellBox);
+  function drawCells(){cellBox.innerHTML='';cellBox.appendChild(cellsView(FRUITS,FRUITS.length,progress.fruitShown))}
+  drawCells();
+
+  main.appendChild(tx('h3','','A. Dari indeks ke data'));
+  main.appendChild(tx('p','','Pilih satu indeks, lalu tekan Tampilkan data.'));
   var pal=el('div','palette');main.appendChild(pal);
-  arr.forEach(function(_,i){
-    var b=el('button','chip',String(i));
-    b.onclick=function(){idx=i;blk.innerHTML='ambil item ke-<span class="slot">'+idx+'</span> dari <b>buah</b>';[].forEach.call(pal.children,function(c){c.classList.remove('sel')});b.classList.add('sel')};
-    pal.appendChild(b);
+  var fb=feedbackBox(),out=el('div','output');
+  var idxButtons=FRUITS.map(function(_,k){var b=chip(String(k),function(){progress.fruitIndex=k;mark();fb.textContent=''});pal.appendChild(b);return b});
+  function mark(){idxButtons.forEach(function(b,k){b.classList.toggle('sel',progress.fruitIndex===k)})}
+  mark();
+  main.appendChild(btn('Tampilkan data','big',function(){
+    var k=progress.fruitIndex;
+    if(k==null){say(fb,false,'Pilih indeks terlebih dahulu.');return}
+    progress.fruitShown=k;drawCells();
+    out.textContent='Tampilkan buah['+k+']\nHasil: '+FRUITS[k];
+    say(fb,true,'Data pada indeks '+k+' adalah '+FRUITS[k]+'.');addScore('show',10);
+  }));
+  main.appendChild(fb);main.appendChild(out);
+  if(progress.fruitShown!=null)out.textContent='Tampilkan buah['+progress.fruitShown+']\nHasil: '+FRUITS[progress.fruitShown];
+
+  main.appendChild(tx('h3','','B. Dari data ke indeks'));
+  ['pisang','kiwi','apel'].forEach(function(f,n){
+    var correct=FRUITS.indexOf(f);
+    main.appendChild(quiz('find'+n,'Data "'+f+'" berada pada indeks berapa?',FRUITS.map(function(_,k){return String(k)}),correct,
+      'Lihat kotak di atas, lalu baca nomor indeks pada kotak yang berisi "'+f+'".','Data "'+f+'" berada pada indeks '+correct+'.',
+      function(a){addScore('find'+n,a===0?4:2)}));
   });
-  var runBtn=el('button','btn big','Jalankan Blok');main.appendChild(runBtn);
-  var out=el('div','#out');main.appendChild(out);
-  var runLen=el('button','btn','Jalankan: panjang dari buah');main.appendChild(runLen);
-  var got1=false,got2=false;
-  runBtn.onclick=function(){out.textContent='buah['+idx+']\n→  "'+arr[idx]+'"';if(!got1){got1=true;addScore(10)}};
-  runLen.onclick=function(){out.textContent='panjang(buah)\n→  '+arr.length;if(!got2){got2=true;addScore(10)}};
+
+  main.appendChild(tx('h3','','C. Indeks terakhir'));
+  main.appendChild(quiz('last','Array buah memiliki 7 data. Berapa indeks terakhir?',['5','6','7','8'],1,
+    'Indeks dimulai dari 0, sehingga indeks terakhir selalu satu lebih kecil daripada jumlah data.',
+    'Indeks terakhir adalah 6, yaitu jumlah data dikurangi 1.',function(a){addScore('last',a===0?3:2)}));
+
+  main.appendChild(tx('h3','','Contoh yang sama dalam Python'));
+  main.appendChild(tx('p','','Python menyimpan data berurutan dalam list. Indeks list juga dimulai dari 0, dan len() menghitung jumlah data.'));
+  main.appendChild(codeBox('buah = ["apel", "jeruk", "mangga", "pisang", "anggur", "melon", "kiwi"]\nprint(buah[3])\nprint(len(buah))'));
+  main.appendChild(tx('p','mute','Keluaran program:'));
+  main.appendChild(codeBox('pisang\n7'));
+  main.appendChild(pyLink());
   nextBtn.disabled=false;
 }
 
-/* ---- STAGE 3: JALANKAN BLOK YANG ERROR ---- */
+/* ---- TAHAP 3: TEMUKAN KESALAHAN ---- */
 function ErrorBlocks(){
   main.innerHTML='';
-  main.appendChild(el('h2','','3. Jalankan Blok, Temukan Error'));
-  main.appendChild(el('p','','Blok ini sudah jadi. Tebak dulu jenis kesalahannya, baru ketuk Jalankan untuk mencocokkan, seperti Detektif Bug di kertas Level 3.'));
-  var cases=[
-    {code:'buah = ["apel","jeruk","mangga"]\nprint(buah[3])',err:'Indeks 3 tidak ada. Indeks terakhir array ini hanya 2.',type:1},
-    {code:'umur = [15, 16, "tujuh belas"]\nprint(jumlah(umur))',err:'Tipe data campur: "tujuh belas" adalah teks, bukan angka.',type:2},
-    {code:'nilai = [ ]\nnilai[0] = 80\nnilai[2] = 90',err:'Indeks 1 dilompati dan dibiarkan kosong. Array harus berurutan dari indeks 0.',type:3}
-  ];
-  var types=['A: indeks di luar jangkauan','B: tipe data campur','C: ada slot kosong/dilompati'];
-  cases.forEach(function(c,ci){
+  main.appendChild(el('h2','','3. Temukan Kesalahan'));
+  main.appendChild(tx('p','','Semua contoh memakai pseudocode. Untuk setiap contoh, jawab dahulu pertanyaan petunjuk. Setelah benar, pilih jenis kesalahannya. Skor penuh hanya diberikan bila jawaban benar pada percobaan pertama.'));
+  var lastLevel=0;
+  ERROR_CASES.forEach(function(c,ci){
+    if(c.level!==lastLevel){lastLevel=c.level;main.appendChild(tx('h3','','Level '+c.level+': '+LEVEL_TITLES[c.level]))}
     var wrap=el('div','stack');
-    wrap.appendChild(el('div','blk','<pre style="margin:0;font-family:ui-monospace,monospace;white-space:pre-wrap">'+c.code+'</pre>'));
-    var pal=el('div','palette');
-    var chosen=-1;
-    types.forEach(function(t,i){
-      var b=el('button','chip',t);
-      b.onclick=function(){chosen=i;[].forEach.call(pal.children,function(x){x.classList.remove('sel')});b.classList.add('sel')};
-      pal.appendChild(b);
-    });
-    wrap.appendChild(pal);
-    var runBtn=el('button','btn','Jalankan Blok Ini');
-    var out=el('div','#out');
-    var got=false;
-    runBtn.onclick=function(){
-      out.textContent='ERROR!\n'+c.err;
-      if(chosen===(c.type-1)&&!got){got=true;addScore(8)}
-    };
-    wrap.appendChild(runBtn);wrap.appendChild(out);
+    var blk=el('div','blk');blk.appendChild(tx('pre','',c.code));wrap.appendChild(blk);
+    var kindWrap=el('div');
+    wrap.appendChild(quiz('pem'+ci,'Pertanyaan petunjuk: '+c.q,c.opts,c.ok,c.qHint,c.qExplain,function(){kindWrap.hidden=false}));
+    kindWrap.appendChild(quiz('kind'+ci,'Jenis kesalahan apa yang terjadi pada kode di atas?',KIND_LABELS,c.kind,
+      'Hubungkan dengan jawaban petunjuk tadi, lalu pilih jenis yang paling sesuai.',c.explain,function(){
+        addScore('error'+ci,pointsFor(progress.quiz['pem'+ci].attempts+progress.quiz['kind'+ci].attempts,8));
+      }));
+    kindWrap.hidden=!solved('pem'+ci);
+    wrap.appendChild(kindWrap);
     main.appendChild(wrap);
   });
   nextBtn.disabled=false;
 }
 
+/* ---- TAHAP 4: MENULIS PROGRAM PYTHON ---- */
+function splitItems(s){
+  var items=[],cur='',q=null;
+  for(var k=0;k<s.length;k++){
+    var c=s.charAt(k);
+    if(q){cur+=c;if(c===q)q=null}
+    else if(c==='"'||c==="'"){q=c;cur+=c}
+    else if(c===','){items.push(cur);cur=''}
+    else cur+=c;
+  }
+  items.push(cur);
+  return items.map(function(x){return x.trim()});
+}
+function parsePyItem(item){
+  if(item==='')return {msg:'Ada data yang kosong. Periksa tanda koma.'};
+  if(/^-?\d+(\.\d+)?$/.test(item))return {value:Number(item)};
+  var m=/^"([^"]*)"$/.exec(item)||/^'([^']*)'$/.exec(item);
+  if(m)return {value:m[1]};
+  return {msg:'Data '+item+' bukan angka dan belum diberi tanda kutip. Teks harus ditulis dengan tanda kutip.'};
+}
+function checkDecl(line,name,values){
+  if(!line.trim())return 'Kode belum ditulis.';
+  var m=/^\s*([^=\s]+)\s*=\s*(.*?)\s*$/.exec(line);
+  if(!m)return 'Gunakan tanda sama dengan (=) untuk menyimpan data ke dalam nama array.';
+  if(m[1]!==name)return 'Nama array harus sama dengan langkah 1, yaitu '+name+'. Python membedakan huruf besar dan kecil.';
+  var rhs=m[2];
+  if(rhs.charAt(0)!=='['||rhs.charAt(rhs.length-1)!==']')return 'Data array ditulis di dalam tanda kurung siku [ ].';
+  var items=splitItems(rhs.slice(1,-1)),parsed=[];
+  for(var k=0;k<items.length;k++){var r=parsePyItem(items[k]);if(r.msg)return r.msg;parsed.push(r.value)}
+  if(parsed.length!==values.length)return 'Jumlah data tidak sama dengan langkah 2. Seharusnya '+values.length+' data, kode kalian berisi '+parsed.length+'.';
+  for(var j=0;j<values.length;j++){
+    if(parsed[j]!==values[j])return 'Data pada indeks '+j+' tidak sama dengan langkah 2. Angka ditulis tanpa tanda kutip, teks dengan tanda kutip.';
+  }
+  return '';
+}
+function checkShow(line,name,n){
+  var m=/^\s*print\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*\[\s*(-?\d+)\s*\]\s*\)\s*$/.exec(line);
+  if(!m)return {msg:'Gunakan bentuk print(nama_array[nomor_indeks]).'};
+  if(m[1]!==name)return {msg:'Nama array harus '+name+', sesuai langkah 1.'};
+  var k=Number(m[2]);
+  if(k<0||k>=n)return {msg:'Indeks '+k+' tidak tersedia. Array '+name+' memiliki '+n+' data, sehingga indeks yang dapat dipakai adalah 0 sampai '+(n-1)+'.'};
+  return {k:k};
+}
+function checkLen(line,name){
+  var m=/^\s*print\(\s*len\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*\)\s*\)\s*$/.exec(line);
+  if(!m)return 'Gunakan bentuk print(len(nama_array)).';
+  if(m[1]!==name)return 'Nama array harus '+name+', sesuai langkah 1.';
+  return '';
+}
+function programLines(){return [progress.code.decl,progress.code.show,progress.code.len]}
+function programOutput(){return [String(progress.createValues[progress.showIdx]),String(progress.createValues.length)]}
+
+function WriteProgram(){
+  function resetAll(){
+    ['p-name','p-data','p-decl','p-show','p-len'].forEach(removeScore);
+    progress.createName='';progress.createValues=null;progress.createStep=1;
+    progress.code={decl:'',show:'',len:''};progress.showIdx=null;progress.attempts={decl:0,show:0,len:0};
+  }
+  function section(title,done){var d=el('div','stack');d.appendChild(tx('h3','',title+(done?' (selesai)':'')));main.appendChild(d);return d}
+
+  function render(){
+    main.innerHTML='';
+    var step=progress.createStep;
+    main.appendChild(el('h2','','4. Menulis Program Python'));
+    main.appendChild(tx('p','','Kalian akan menulis program sendiri, satu baris pada satu waktu. Contoh yang diberikan memakai data lain, jadi sesuaikan dengan nama dan data kalian.'));
+
+    var s1=section('Langkah 1: Tentukan nama array',step>1);
+    if(step>1)s1.appendChild(tx('p','','Nama array: '+progress.createName));
+    else{
+      var nameInput=field('Nama array','Contoh: daftar_buah',progress.createName),f1=feedbackBox();
+      s1.appendChild(tx('p','mute','Gunakan huruf, angka, atau garis bawah. Jangan diawali angka dan jangan memakai spasi.'));
+      s1.appendChild(nameInput);
+      s1.appendChild(btn('Simpan nama','big',function(){
+        var n=nameInput.value.trim(),m=checkName(n);
+        if(m){say(f1,false,m);return}
+        progress.createName=n;progress.createStep=2;addScore('p-name',CODE_POINTS.name);render();
+      }));
+      s1.appendChild(f1);
+    }
+    if(step<2){nextBtn.disabled=true;return}
+
+    var s2=section('Langkah 2: Tentukan data',step>2);
+    if(step>2)s2.appendChild(cellsView(progress.createValues,progress.createValues.length,null));
+    else{
+      var dataInput=field('Data array','Contoh: apel, jeruk, 12',''),f2=feedbackBox();
+      s2.appendChild(tx('p','mute','Tulis 3 sampai '+MAX_DATA+' data, dipisahkan koma. Pada langkah ini tulis teks tanpa tanda kutip. Gunakan titik untuk angka desimal.'));
+      s2.appendChild(dataInput);
+      s2.appendChild(btn('Simpan data','big',function(){
+        var raw=dataInput.value.trim();
+        if(/["'\\]/.test(raw)){say(f2,false,'Tulis teks tanpa tanda kutip dan tanpa garis miring terbalik. Tanda kutip dipakai nanti saat menulis kode.');return}
+        var items=raw.split(',').map(function(v){return v.trim()});
+        if(items.length<3||items.length>MAX_DATA||items.some(function(v){return v===''})){say(f2,false,'Tulis 3 sampai '+MAX_DATA+' data dan pastikan tidak ada data yang kosong.');return}
+        progress.createValues=items.map(parseValue);progress.createStep=3;addScore('p-data',CODE_POINTS.data);render();
+      }));
+      s2.appendChild(f2);
+    }
+    if(step<3){nextBtn.disabled=true;return}
+
+    var name=progress.createName,values=progress.createValues;
+    var s3=section('Langkah 3: Tulis kode untuk membuat array',step>3);
+    if(step>3)s3.appendChild(codeBox(progress.code.decl));
+    else{
+      var declInput=field('Kode membuat array','Ketik kode Python di sini','',true),f3=feedbackBox();
+      s3.appendChild(tx('p','mute','Contoh dengan data lain:'));
+      s3.appendChild(codeBox('warna = ["merah", "biru", "hijau"]'));
+      s3.appendChild(tx('p','mute','Aturan: nama array, tanda =, lalu data di dalam [ ] yang dipisahkan koma. Teks diberi tanda kutip, angka tidak.'));
+      s3.appendChild(declInput);
+      s3.appendChild(btn('Periksa kode','big',function(){
+        var m=checkDecl(declInput.value,name,values);
+        if(m){progress.attempts.decl++;say(f3,false,m);return}
+        progress.code.decl=declInput.value.trim();progress.createStep=4;
+        addScore('p-decl',pointsFor(progress.attempts.decl,CODE_POINTS.decl));render();
+      }));
+      s3.appendChild(f3);
+    }
+    if(step<4){nextBtn.disabled=true;return}
+
+    var s4=section('Langkah 4: Tampilkan data pada satu indeks',step>4);
+    if(step>4){s4.appendChild(codeBox(progress.code.show));s4.appendChild(codeBox(programOutput()[0]))}
+    else{
+      var showInput=field('Kode menampilkan data','Ketik kode Python di sini','',true),f4=feedbackBox();
+      s4.appendChild(tx('p','mute','Fungsi print() menampilkan data. Contoh dengan data lain, menampilkan data pada indeks 0:'));
+      s4.appendChild(codeBox('print(warna[0])'));
+      s4.appendChild(tx('p','mute','Pilih sendiri indeksnya. Indeks yang tersedia pada array kalian adalah 0 sampai '+(values.length-1)+'.'));
+      s4.appendChild(showInput);
+      s4.appendChild(btn('Periksa kode','big',function(){
+        var r=checkShow(showInput.value,name,values.length);
+        if(r.msg){progress.attempts.show++;say(f4,false,r.msg);return}
+        progress.code.show=showInput.value.trim();progress.showIdx=r.k;progress.createStep=5;
+        addScore('p-show',pointsFor(progress.attempts.show,CODE_POINTS.show));render();
+      }));
+      s4.appendChild(f4);
+    }
+    if(step<5){nextBtn.disabled=true;return}
+
+    var s5=section('Langkah 5: Hitung jumlah data',step>5);
+    if(step>5){s5.appendChild(codeBox(progress.code.len));s5.appendChild(codeBox(programOutput()[1]))}
+    else{
+      var lenInput=field('Kode menghitung jumlah data','Ketik kode Python di sini','',true),f5=feedbackBox();
+      s5.appendChild(tx('p','mute','Fungsi len() menghitung jumlah data. Contoh dengan data lain:'));
+      s5.appendChild(codeBox('print(len(warna))'));
+      s5.appendChild(lenInput);
+      s5.appendChild(btn('Periksa kode','big',function(){
+        var m=checkLen(lenInput.value,name);
+        if(m){progress.attempts.len++;say(f5,false,m);return}
+        progress.code.len=lenInput.value.trim();progress.createStep=6;
+        addScore('p-len',pointsFor(progress.attempts.len,CODE_POINTS.len));render();
+      }));
+      s5.appendChild(f5);
+    }
+    if(step<6){nextBtn.disabled=true;return}
+
+    var done=section('Program lengkap',true);
+    done.appendChild(codeBox(programLines().join('\n')));
+    done.appendChild(tx('p','mute','Keluaran program:'));
+    done.appendChild(codeBox(programOutput().join('\n')));
+    var copyFb=feedbackBox();
+    var actions=el('div','palette');
+    actions.appendChild(btn('Salin kode','big',function(){copyText(programLines().join('\n'),copyFb,'Kode berhasil disalin. Tempelkan ke editor Python lalu jalankan.')}));
+    actions.appendChild(pyLink());
+    actions.appendChild(chip('Ulangi dari langkah 1',function(){resetAll();render()}));
+    done.appendChild(actions);done.appendChild(copyFb);
+    done.appendChild(tx('p','mute','Tempelkan kode ke editor Python, tekan Run, lalu bandingkan hasilnya dengan keluaran di atas.'));
+    nextBtn.disabled=false;
+  }
+  render();
+}
+
+/* ---- RINGKASAN UNTUK LMS ---- */
+function buildSummary(){
+  var p=progress,st=p.student,L=[];
+  L.push('RINGKASAN LATIHAN ARRAY');
+  L.push('Nama: '+(st.nama.trim()||'(belum diisi)'));
+  L.push('Kelas: '+(st.kelas.trim()||'(belum diisi)'));
+  L.push('Skor: '+score+' dari '+MAX_SCORE+' ('+badgeOf()+')');
+  L.push('');
+  L.push('1. Menentukan nama array dan mengisi data ke indeks');
+  if(p.arrayName&&p.arrayValues.length){
+    L.push('Nama array: '+p.arrayName);
+    p.arrayValues.forEach(function(v,k){L.push(p.arrayName+'['+k+'] = '+formatValue(v))});
+    if(p.arrayValues.length<SLOTS)L.push('(baru '+p.arrayValues.length+' dari '+SLOTS+' kotak terisi)');
+  }else L.push('Belum dikerjakan.');
+  L.push('');
+  L.push('2. Membaca indeks dan isi data');
+  L.push(p.fruitShown==null?'Menampilkan data dari indeks: belum dikerjakan.':'Data pada indeks '+p.fruitShown+' dalam array buah: '+FRUITS[p.fruitShown]);
+  var findOk=[0,1,2].filter(function(n){return solved('find'+n)}).length;
+  L.push('Mencari indeks dari data: '+findOk+' dari 3 benar');
+  L.push('Indeks terakhir pada array 7 data: '+(solved('last')?'benar (indeks 6)':'belum benar'));
+  L.push('');
+  L.push('3. Mengenali kesalahan');
+  ERROR_CASES.forEach(function(c,ci){L.push((ci+1)+'. '+KIND_LABELS[c.kind]+': '+(solved('kind'+ci)?'benar':'belum benar'))});
+  L.push('');
+  L.push('4. Program Python buatan sendiri');
+  if(p.createStep>=6){
+    programLines().forEach(function(l){L.push(l)});
+    L.push('Keluaran:');
+    programOutput().forEach(function(l){L.push(l)});
+  }else L.push('Belum selesai.');
+  L.push('');
+  L.push('5. Refleksi');
+  L.push(st.refleksi.trim()||'(belum diisi)');
+  return L.join('\n');
+}
+
 function Final(){
   main.innerHTML='';
-  var badge=score>=55?'Programmer Array Pemula':score>=30?'Penerjemah Blok':'Penjelajah Kode';
   main.appendChild(el('h2','','Selesai!'));
-  main.appendChild(el('p','','Skor akhir: <b>'+score+'</b>'));
-  main.appendChild(el('p','','Lencana: <b>'+badge+'</b>'));
-  main.appendChild(el('p','mute','Foto layar ini dan unggah ke LMS sebagai bukti, lalu kerjakan Kuis Level 6 dan Refleksi di LMS.'));
+  main.appendChild(el('p','','Skor akhir: <b>'+score+'</b> dari '+MAX_SCORE+'. Hasil: <b>'+badgeOf()+'</b>'));
+  main.appendChild(tx('p','','Isi data diri dan refleksi. Setelah itu salin ringkasan dan tempelkan ke esai tugas di LMS.'));
+  var st=progress.student;
+  var summary=document.createElement('textarea');summary.readOnly=true;summary.setAttribute('aria-label','Ringkasan hasil latihan');
+  function refresh(){summary.value=buildSummary()}
+  var nama=field('Nama','Nama lengkap',st.nama),kelas=field('Kelas','Kelas',st.kelas);
+  var refleksi=document.createElement('textarea');refleksi.className='short';refleksi.value=st.refleksi;
+  refleksi.setAttribute('aria-label','Refleksi');refleksi.placeholder='Tuliskan dua hal yang kalian pelajari tentang array dan satu kesalahan yang paling sering terjadi.';
+  nama.oninput=function(){st.nama=nama.value;refresh()};
+  kelas.oninput=function(){st.kelas=kelas.value;refresh()};
+  refleksi.oninput=function(){st.refleksi=refleksi.value;refresh()};
+  main.appendChild(nama);main.appendChild(kelas);main.appendChild(refleksi);
+  refresh();main.appendChild(summary);
+  var copyFb=feedbackBox();
+  main.appendChild(btn('Salin ringkasan','big',function(){
+    if(!st.nama.trim()){say(copyFb,false,'Isi nama terlebih dahulu.');nama.focus();return}
+    copyText(summary.value,copyFb,'Ringkasan berhasil disalin. Tempelkan ke esai tugas di LMS.');
+  }));
+  main.appendChild(copyFb);
   nextBtn.disabled=true;
 }
 
-var stages=[Intro,BuildArray,AmbilPanjang,ErrorBlocks,Final];
-var i=0;
-function go(n){i=Math.max(0,Math.min(stages.length-1,n));stages[i]();posEl.textContent=(i+1)+' / '+stages.length;prevBtn.disabled=i===0}
-prevBtn.onclick=function(){go(i-1)};nextBtn.onclick=function(){go(i+1)};
+var stages=[Intro,BuildArray,ReadArray,ErrorBlocks,WriteProgram,Final];
+var cur=0;
+function go(n){cur=Math.max(0,Math.min(stages.length-1,n));stages[cur]();main.scrollTop=0;posEl.textContent=(cur+1)+' / '+stages.length;prevBtn.disabled=cur===0}
+prevBtn.onclick=function(){go(cur-1)};nextBtn.onclick=function(){go(cur+1)};
 go(0);
 })();
 </script>
 </body>
 </html>
-
-</body></html>
