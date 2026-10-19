@@ -1,0 +1,1657 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dari Sekuensial ke Biner</title>
+<style>
+:root{
+  --bg:#f4f5f9; --card:#ffffff; --fg:#1c1f2b; --mut:#5f6578; --line:#c9cdd9;
+  --soft:#eceef6; --acc:#2f6fdb; --accsoft:#dfe9fb;
+  --ok:#1f9d55; --oksoft:#dcf3e5;
+  --warn:#b26a00; --warnsoft:#fbeed6;
+  --bad:#c93c3c; --badsoft:#f9dede;
+  --seq:#7c3aed; --seqsoft:#ede9fe;
+  --bin:#0891b2; --binsoft:#e0f2fe;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1117; --card:#1a1d28; --fg:#eceef6; --mut:#8a93aa; --line:#2e3245;
+    --soft:#22253a; --acc:#7aa7ff; --accsoft:#1a2744;
+    --ok:#4cc38a; --oksoft:#122b1e;
+    --warn:#f0b050; --warnsoft:#2e2010;
+    --bad:#ff7b7b; --badsoft:#2e1414;
+    --seq:#a78bfa; --seqsoft:#1e1635;
+    --bin:#38bdf8; --binsoft:#082634;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1117; --card:#1a1d28; --fg:#eceef6; --mut:#8a93aa; --line:#2e3245;
+  --soft:#22253a; --acc:#7aa7ff; --accsoft:#1a2744;
+  --ok:#4cc38a; --oksoft:#122b1e;
+  --warn:#f0b050; --warnsoft:#2e2010;
+  --bad:#ff7b7b; --badsoft:#2e1414;
+  --seq:#a78bfa; --seqsoft:#1e1635;
+  --bin:#38bdf8; --binsoft:#082634;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:clamp(13px,min(1.55vh,1.55vw),18px)}
+body{background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.6;
+  height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── top bar ── */
+.top{flex:0 0 auto;z-index:10;background:var(--bg);border-bottom:1px solid var(--line);padding:clamp(8px,0.7vw,16px) clamp(16px,1.6vw,40px)}
+.top-inner{width:100%;display:flex;align-items:center;gap:clamp(10px,1vw,20px)}
+.meta-info{flex:1;font-size:.82rem;color:var(--mut)}
+.cnt{font-size:.9rem;color:var(--acc);font-weight:700;white-space:nowrap}
+.bar-wrap{flex:1;height:5px;background:var(--soft);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;width:0;background:var(--acc);border-radius:4px;transition:width .3s}
+.theme-btn{padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--mut);font-size:.82rem;cursor:pointer;font-family:inherit;white-space:nowrap}
+.theme-btn:hover{border-color:var(--acc);color:var(--acc)}
+
+/* ── deck ── */
+.deck{flex:1 1 auto;width:100%;display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain;
+  padding:clamp(10px,1vw,20px) clamp(16px,1.6vw,40px) 0;scroll-behavior:smooth}
+.deck::-webkit-scrollbar{width:10px}
+.deck::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px}
+.deck::-webkit-scrollbar-track{background:transparent}
+.slide{display:none;background:var(--card);border:1px solid var(--line);border-radius:18px;
+  padding:clamp(16px,1.4vw,34px);min-height:0;animation:none;overflow:hidden}
+.slide.on{display:flex;flex-direction:column;flex:1 1 auto;justify-content:flex-start;
+  overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;animation:fadein .28s ease;
+  scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.slide.on::-webkit-scrollbar{width:9px}
+.slide.on::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── typography ── */
+h1{font-size:1.9rem;line-height:1.18;margin-bottom:10px}
+h2{font-size:1.45rem;line-height:1.22;margin-bottom:8px}
+h3{font-size:1.04rem;font-weight:700;margin:12px 0 6px}
+p,li{font-size:1.02rem;line-height:1.55}
+ol,ul{padding-left:1.4em}
+ol li,ul li{margin-bottom:4px}
+
+.kicker{font-size:.74rem;text-transform:uppercase;letter-spacing:.1em;color:var(--acc);font-weight:800;margin-bottom:6px}
+
+/* kicker warna berdasarkan topik */
+.kicker.seq{color:var(--seq)}
+.kicker.bin{color:var(--bin)}
+.kicker.compare{color:var(--ok)}
+
+/* ── callout boxes ── */
+.call{border-left:4px solid var(--acc);background:var(--accsoft);padding:11px 15px;border-radius:12px;margin:10px 0;font-size:1rem}
+.call.warn{border-color:var(--warn);background:var(--warnsoft)}
+.call.ok{border-color:var(--ok);background:var(--oksoft)}
+.call.seq{border-color:var(--seq);background:var(--seqsoft)}
+.call.danger{border-color:var(--bad);background:var(--badsoft)}
+
+/* ── bridge card ── */
+.bridge{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:0;margin:10px 0;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.bridge-col{padding:12px 15px;min-width:0}
+.bridge-col.seq-side{background:var(--seqsoft);border-right:1px solid var(--line)}
+.bridge-col.bin-side{background:var(--binsoft)}
+.bridge-arrow{display:flex;align-items:center;justify-content:center;padding:0 10px;background:var(--soft);font-size:1.4rem;color:var(--mut)}
+.bridge-col h4{font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;font-weight:800;margin-bottom:8px}
+.bridge-col.seq-side h4{color:var(--seq)}
+.bridge-col.bin-side h4{color:var(--bin)}
+.bridge-col p{font-size:.96rem;line-height:1.55;color:var(--fg)}
+.bridge.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.bridge.three .bridge-col{border-right:1px solid var(--line)}
+.bridge.three .bridge-col:last-child{border-right:0}
+
+/* ── comparison table ── */
+.comp-table{width:100%;border-collapse:collapse;font-size:.92rem;margin:8px 0;border-radius:12px;overflow:hidden;table-layout:auto}
+.comp-table th,.comp-table td{padding:7px 10px;border:1px solid var(--line);text-align:left;overflow-wrap:anywhere}
+.tbl-wrap{width:100%;max-width:100%;overflow-x:auto}
+.comp-table th{background:var(--soft);font-weight:700}
+.comp-table .seq-h{background:var(--seqsoft);color:var(--seq)}
+.comp-table .bin-h{background:var(--binsoft);color:var(--bin)}
+.comp-table .better{font-weight:700;color:var(--ok)}
+
+/* ── data cells ── */
+.lane{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}
+.cell{display:flex;flex-direction:column;align-items:center;gap:5px}
+.box{min-width:3.4rem;height:3.4rem;padding:0 .35rem;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--fg);font-weight:700;font-size:1.12rem;font-family:inherit;transition:all .2s;cursor:pointer}
+.box:disabled{cursor:default}
+.box.out{opacity:.18!important;filter:grayscale(1);pointer-events:none}
+.box.dicek{background:var(--soft);border-color:var(--mut)}
+.box.tengah{border-color:var(--warn);box-shadow:0 0 0 3px var(--warnsoft)}
+.box.last{background:var(--acc);border-color:var(--acc);color:#fff}
+.box.aktif{background:var(--binsoft);border-color:var(--bin)}
+.box.hit{background:var(--ok);border-color:var(--ok);color:#fff}
+.box.buang{background:var(--badsoft);border-color:var(--bad);color:var(--fg)}
+.box.pasti{background:var(--seqsoft);border-color:var(--seq)}
+.box.tidakpasti{background:var(--warnsoft);border-color:var(--warn)}
+.box.seq-curr{background:var(--seq);border-color:var(--seq);color:#fff}
+.box.bin-curr{background:var(--bin);border-color:var(--bin);color:#fff}
+.lab{font-size:.72rem;color:var(--mut);min-height:1em;text-align:center;white-space:nowrap}
+.lab .t{color:var(--warn);font-weight:700}
+.lab .k{color:var(--acc);font-weight:700}
+.lab .n{color:var(--ok);font-weight:700}
+.lab .s{color:var(--seq);font-weight:700}
+.lab .b{color:var(--bin);font-weight:700}
+
+/* ── msg ── */
+.msg{font-size:1rem;min-height:2.6em;text-align:center;padding:9px 14px;border-radius:12px;background:var(--soft);margin:8px 0;line-height:1.5}
+.msg.ok{background:var(--oksoft);border:1px solid var(--ok)}
+.msg.warn{background:var(--warnsoft);border:1px solid var(--warn)}
+.msg.bad{background:var(--badsoft);border:1px solid var(--bad)}
+
+/* ── stats ── */
+.stats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:6px 0}
+.stat{background:var(--soft);border-radius:12px;padding:7px 13px;text-align:center;min-width:96px}
+.stat b{display:block;font-size:1.25rem}
+.stat span{font-size:.8rem;color:var(--mut)}
+.stat.seq-stat{background:var(--seqsoft)}
+.stat.seq-stat b{color:var(--seq)}
+.stat.bin-stat{background:var(--binsoft)}
+.stat.bin-stat b{color:var(--bin)}
+
+/* ── controls ── */
+.ctrl{display:flex;flex-wrap:wrap;gap:7px;align-items:center;justify-content:center;margin:8px 0}
+button{font:inherit;padding:7px 14px;border-radius:10px;border:1px solid var(--acc);background:transparent;color:var(--acc);cursor:pointer;transition:background .15s,border-color .15s}
+button:not(.box):hover{background:var(--accsoft)}
+button.pri{background:var(--acc);color:#fff;border-color:var(--acc)}
+button.pri:hover{filter:brightness(1.06)}
+button:disabled:not(.box){opacity:.35;cursor:default;background:transparent!important;filter:none!important}
+.box:disabled{opacity:1}
+button.guess{border-color:var(--line);color:var(--fg);background:var(--card)}
+button.guess:hover{border-color:var(--acc)}
+input[type=number]{font:inherit;font-size:1rem;padding:7px 10px;width:90px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--fg);text-align:center}
+label.chk{font-size:.96rem;color:var(--mut);display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+
+/* ── badge ── */
+.badge{display:inline-block;font-size:.8rem;padding:4px 12px;border-radius:999px;background:var(--oksoft);color:var(--ok);font-weight:700}
+.badge.no{background:var(--badsoft);color:var(--bad)}
+
+/* ── two-col ── */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.two>*{min-width:0}
+.two .panel,.two pre{max-width:100%}
+.two.code-wide{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+.panel{background:var(--soft);border-radius:14px;padding:12px 14px;margin:8px 0}
+.panel[hidden]{display:none!important}
+
+/* ── race labels ── */
+.race-label{font-weight:700;font-size:.9rem;margin-top:12px;padding:4px 0 2px 4px;display:flex;align-items:center;gap:8px}
+.race-label .dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.dot-seq{background:var(--seq)}
+.dot-bin{background:var(--bin)}
+
+/* ── note ── */
+.note{color:var(--mut);font-size:.9rem;margin-top:8px;line-height:1.5}
+
+/* ── Python code block ── */
+pre{background:var(--soft);padding:12px 14px;border-radius:12px;overflow:auto;font-size:.92rem;line-height:1.5;margin:8px 0;border:1px solid var(--line);max-width:100%}
+.code-label{font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin-bottom:4px}
+.hl{background:var(--accsoft);border-radius:4px;padding:1px 4px;color:var(--acc);font-weight:700}
+pre.out{background:var(--oksoft);border-color:var(--ok);font-size:.86rem;line-height:1.5;white-space:pre-wrap}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.94em;background:var(--soft);padding:1px 5px;border-radius:5px}
+
+/* ── code trace (baris kode aktif) ── */
+.code-trace{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:6px 0;margin:6px 0;max-height:min(32vh,360px);overflow:auto;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.82rem;line-height:1.48}
+.cl{display:flex;gap:10px;padding:1px 14px;white-space:pre;transition:background .2s;border-left:3px solid transparent}
+.cl .ln{min-width:20px;text-align:right;color:var(--mut);opacity:.7;user-select:none;flex-shrink:0}
+.cl .ct{white-space:pre}
+.cl.on{background:var(--accsoft);border-left-color:var(--acc)}
+.cl.on .ct{color:var(--acc);font-weight:700}
+.cl.on .ln{color:var(--acc);opacity:1;font-weight:700}
+.cl.dim{opacity:.35}
+
+/* ── trace table ── */
+.trace-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:6px 0}
+.trace-table th,.trace-table td{padding:5px 8px;border:1px solid var(--line);text-align:left}
+.trace-table th{background:var(--soft);font-weight:700}
+.trace-table tr.on td{background:var(--accsoft)}
+.trace-table tr.on td:first-child{font-weight:700;color:var(--acc)}
+.trace-table .empty{color:var(--mut);font-style:italic}
+.trace-scroll{overflow:auto;max-height:18vh}
+
+/* ── step indicator ── */
+.step-row{display:flex;gap:8px;align-items:flex-start;margin:8px 0}
+.step-num{min-width:28px;height:28px;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:.85rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+
+/* ── nav ── */
+.nav{position:sticky;bottom:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:10px;
+  margin-top:8px;padding:8px 0;background:var(--bg)}
+
+/* ── responsive ── */
+@media (max-width:640px){
+  .meta-info{display:none}
+  .top{padding:8px 12px}
+  .top-inner{gap:8px}
+  .theme-btn{padding:5px 9px;font-size:.78rem}
+  .slide{padding:16px 13px}
+  h1{font-size:1.55rem}
+  h2{font-size:1.25rem}
+  p,li{font-size:1rem}
+  .two,.two.code-wide{grid-template-columns:1fr}
+  .bridge,.bridge.three{grid-template-columns:1fr;overflow:visible}
+  .bridge.three .bridge-col{border-right:0;border-bottom:1px solid var(--line)}
+  .bridge.three .bridge-col:last-child{border-bottom:0}
+  .bridge-arrow{display:none}
+  .code-trace{font-size:.72rem}
+  pre{white-space:pre-wrap;overflow-wrap:anywhere}
+  .two .stats{gap:6px}
+  .two .stat{min-width:70px;padding:8px 10px}
+  .box{min-width:44px;height:48px;font-size:1rem;padding:0 3px}
+  .lane{gap:5px}
+  .stat{min-width:90px}
+}
+
+/* layar pendek (dinding 768p / 800p): rapatkan tanpa mengubah struktur */
+@media (max-height:820px){
+  .slide{padding:10px 15px}
+  h1{font-size:1.6rem;margin-bottom:8px}
+  h2{font-size:1.25rem;line-height:1.15;margin-bottom:6px}
+  h3{margin:8px 0 4px}
+  p,li{line-height:1.48}
+  .kicker{margin-bottom:4px}
+  .call{margin:7px 0;padding:9px 12px;font-size:.96rem}
+  .bridge{margin:7px 0}
+  .bridge-col{padding:9px 12px}
+  .panel{padding:9px 11px;margin:6px 0}
+  .msg{margin:6px 0;padding:7px 12px;min-height:2.2em;font-size:.95rem}
+  .ctrl{margin:6px 0;gap:6px}
+  .stats{gap:6px;margin:4px 0}
+  .stat{padding:5px 10px;min-width:76px}
+  .stat b{font-size:1.12rem}
+  .lane{gap:3px;margin:6px 0}
+  .box{min-width:2.8rem;height:2.8rem;font-size:.95rem}
+  .two{gap:10px}
+  .note{margin-top:6px}
+  pre{font-size:.78rem;line-height:1.35;padding:10px 12px}
+  .code-trace{max-height:min(20vh,220px)}
+  .trace-scroll{max-height:12vh}
+  .step-row{margin:5px 0}
+  button{padding:6px 12px}
+  .nav{margin-top:6px;padding:6px 0}
+}
+@media (min-width:1200px) and (max-height:820px){
+  pre{font-size:.84rem;line-height:1.48}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-inner">
+    <div class="meta-info">Informatika X · Materi 2 · P3 (lanjutan)</div>
+    <div class="bar-wrap"><div class="bar-fill" id="prog"></div></div>
+    <div class="cnt" id="cnt"></div>
+    <button class="theme-btn" id="themeBtn">🌙 Gelap</button>
+    <button class="theme-btn" id="fsBtn">⛶ Layar penuh</button>
+  </div>
+</div>
+
+<div class="deck">
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 1 – PEMBUKA: jembatan dari pertemuan lalu
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-s>
+  <div class="kicker seq">Recap · Pertemuan sebelumnya</div>
+  <h1>Kamu sudah bisa mencari satu per satu — sekarang kita tanya: <em>bisakah lebih hemat?</em></h1>
+  <p>Di pertemuan lalu, kita pakai <b>pencarian sekuensial</b>: periksa dari index 0, satu per satu, sampai ketemu atau habis. Cara ini bekerja di semua kondisi data.</p>
+
+  <div class="bridge" style="margin-top:18px">
+    <div class="bridge-col seq-side">
+      <h4>Sekuensial (pertemuan lalu)</h4>
+      <p>Cek index 0, 1, 2, … sampai ketemu. Selalu benar, tapi bisa panjang.</p>
+    </div>
+    <div class="bridge-arrow">→</div>
+    <div class="bridge-col bin-side">
+      <h4>Binary search (hari ini)</h4>
+      <p>Cek dari <em>tengah</em>, lalu buang separuh yang tidak mungkin. Bisa jauh lebih singkat — tapi butuh syarat.</p>
+    </div>
+  </div>
+
+  <div class="call" style="margin-top:16px">
+    <b>Pertanyaan kunci hari ini:</b> Kapan kita bisa menghindari mengecek satu per satu? Dan apa yang harus kita bayar untuk itu?
+  </div>
+  <p class="note">Navigasi: panah kiri/kanan, geser di layar sentuh, atau tombol di bawah.</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 2 – INGAT KEMBALI: kelemahan sekuensial
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-s>
+  <div class="kicker seq">Ingat kembali</div>
+  <h2>Kasus terburuk sekuensial: element ada di ujung</h2>
+  <p>Data: <b>2, 5, 8, 12, 16, 23, 38, 56, 72, 91</b> (10 angka, index 0–9).</p>
+
+  <div class="panel" style="margin:14px 0">
+    <p>Cari <b>91</b> (ada di index 9). Sekuensial harus mengecek index 0, 1, 2, …, 9 — <b>10 cek</b> untuk 10 data.</p>
+  </div>
+
+  <div class="lane" id="s2lane"></div>
+
+  <div class="call seq" style="margin-top:14px">
+    Dalam kasus terburuk, sekuensial butuh <b>sebanyak jumlah data</b>. Untuk 1 juta data, itu bisa sampai 1 juta cek.
+  </div>
+  <p class="note">Bukan berarti sekuensial jelek — ia tetap <em>benar</em> di semua kondisi. Pertanyaannya: adakah cara yang lebih hemat <em>tanpa mengorbankan kebenaran</em>?</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 3 – AHA MOMENT: tebak angka
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-s>
+  <div class="kicker">Permainan</div>
+  <h2>Tebak angka 1 sampai 100 — strategi mana yang lebih cepat?</h2>
+  <p>Temanmu memilih angka rahasia. Kamu menebak, ia menjawab <em>"lebih besar"</em>, <em>"lebih kecil"</em>, atau <em>"tepat"</em>.</p>
+
+  <div class="two" style="margin:14px 0">
+    <div class="panel">
+      <h3 style="color:var(--seq);margin-top:0">Strategi A — Urutan</h3>
+      <p>Tebak 1, lalu 2, lalu 3, …</p>
+      <p class="note">Seperti sekuensial: selalu maju satu langkah. Kasus terburuk: 100 tebakan.</p>
+    </div>
+    <div class="panel">
+      <h3 style="color:var(--bin);margin-top:0">Strategi B — Tengah</h3>
+      <p>Tebak 50 → jika "lebih kecil", tebak 25 → jika "lebih besar", tebak 37 → …</p>
+      <p class="note">Setiap jawaban membuang separuh. Kasus terburuk: 7 tebakan untuk 100 angka.</p>
+    </div>
+  </div>
+
+  <div class="ctrl">
+    <button id="s3btn" class="pri">Tunjukkan perbandingan</button>
+  </div>
+  <div class="panel" id="s3ans" hidden>
+    <p>Jika angka rahasia adalah <b>73</b>:</p>
+    <ul>
+      <li><b style="color:var(--seq)">Strategi A:</b> 73 tebakan — cek 1, 2, …, 73</li>
+      <li><b style="color:var(--bin)">Strategi B:</b> 50 → 75 → 62 → 68 → 71 → 73 — <b>6 tebakan</b></li>
+    </ul>
+      <p class="note">Strategi B bisa jauh lebih hemat karena setiap jawaban <em>membuang separuh kandidat yang tersisa</em>. Inilah ide dasar binary search.</p>
+    <p class="note">Keterangan: tebakan ke-1 = 50 (tengah 1–100), ke-2 = 75 (tengah 51–100), ke-3 = 62 (tengah 51–74), ke-4 = 68 (tengah 63–74), ke-5 = 71 (tengah 69–74), ke-6 = 73 (tengah 72–74). Total 6 tebakan.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 4 – AHA 1: satu cek membuang separuh
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-s>
+  <div class="kicker bin">Ide inti</div>
+  <h2>Satu cek di tengah → separuh data langsung tersingkir</h2>
+  <p>Data: <b>2, 5, 8, 12, 16, 23, 38, 56, 72, 91</b>. Cari <b>23</b>. Kita cek index <b>4</b> (nilai 16).</p>
+
+  <div class="lane" id="s4lane"></div>
+  <div class="ctrl"><button id="s4btn">Tampilkan yang tersingkir</button></div>
+  <div class="msg" id="s4msg">Pikirkan dulu: index mana yang sekarang pasti bukan jawaban?</div>
+
+  <div class="bridge" style="margin-top:14px" id="s4bridge" hidden>
+    <div class="bridge-col seq-side">
+      <h4>Sekuensial — cek index 0</h4>
+      <p>Nilai 2 ≠ 23. Satu angka tersingkir. <b>Sisa: 9</b></p>
+    </div>
+    <div class="bridge-arrow">vs</div>
+    <div class="bridge-col bin-side">
+      <h4>Biner — cek index 4</h4>
+      <p>Nilai 16 &lt; 23. Index 0–4 (5 angka) tersingkir. <b>Sisa: 5</b></p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 5 – PERBANDINGAN VISUAL setelah cek pertama
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-s>
+  <div class="kicker compare">Perbandingan langsung</div>
+  <h2>Setelah cek <em>pertama</em> — sudah terlihat bedanya</h2>
+
+  <div class="race-label"><div class="dot dot-seq"></div><span>Sekuensial — cek index 0 (nilai 2)</span></div>
+  <div class="lane" id="s5a"></div>
+
+  <div class="race-label" style="margin-top:10px"><div class="dot dot-bin"></div><span>Biner — cek index 4 (nilai 16)</span></div>
+  <div class="lane" id="s5b"></div>
+
+  <div class="call" style="margin-top:14px">
+    Sekuensial: <b>1 angka tersingkir</b> per cek.<br>
+    Biner: <b>~separuh</b> angka tersingkir per cek.<br>
+    Dengan 10 data, separuhnya = 5. Dengan 1 juta data, separuhnya = 500.000.
+  </div>
+  <p class="note">Perbedaan ini <em>berlipat</em> setiap langkah — itulah yang membuat biner jauh lebih hemat pada data besar.</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 6 – SYARAT: mengapa harus terurut?
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-s>
+  <div class="kicker bin">Syarat penting</div>
+  <h2>Kita bisa buang separuh <em>hanya</em> jika data terurut</h2>
+  <p>Pertanyaan kuncinya: mengapa nilai di tengah bisa memberi tahu kita tentang <em>seluruh sisi kiri atau kanan</em>?</p>
+
+  <div class="two" style="margin:14px 0">
+    <div>
+      <h3 style="color:var(--ok)">✓ Data terurut naik</h3>
+      <p class="note">Cek index 4, nilai <b>16</b>. Cari 23.</p>
+      <div class="lane" id="s6a"></div>
+      <div class="call ok" style="margin-top:8px;font-size:.95rem">Karena data urut, semua angka di <em>kiri</em> index 4 pasti &lt; 16 &lt; 23. Kita <b>yakin</b> membuang 5 angka sekaligus.</div>
+    </div>
+    <div>
+      <h3 style="color:var(--bad)">✗ Data tidak terurut</h3>
+      <p class="note">Cek index 4, nilai <b>56</b>. Cari 23.</p>
+      <div class="lane" id="s6b"></div>
+      <div class="call danger" style="margin-top:8px;font-size:.95rem">Data tidak urut → angka di kiri bisa apa saja. <b>23 bisa saja ada di kiri</b>. Kita tidak bisa membuang separuh dengan yakin.</div>
+    </div>
+  </div>
+
+  <div class="call warn">
+    <b>Syarat yang tidak boleh dilanggar:</b> Data harus terurut sebelum menggunakan binary search. Tanpa ini, hasilnya bisa salah — angka ada tapi dinyatakan tidak ada.
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 7 – MENENTUKAN KIRI, KANAN, DAN TENGAH
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-s>
+  <div class="kicker bin">Langkah pertama</div>
+  <h2>Dari mana mulai? Menentukan <code>kiri</code>, <code>kanan</code>, dan <code>tengah</code></h2>
+  <p>Sebelum memeriksa data, kita wajib menetapkan <em>batas area aktif</em> dan <em>rumus menentukan nilai tengah</em>.</p>
+
+  <div class="two" style="margin:14px 0">
+    <div class="panel" style="margin:0">
+      <h3 style="margin-top:0;color:var(--bin)">Langkah 0 — Tetapkan batas awal</h3>
+      <div class="step-row"><div class="step-num" style="background:var(--seq)">K</div><div><b>kiri = 0</b><br><span style="color:var(--mut);font-size:.92rem">Index paling pertama dari data (selalu 0).</span></div></div>
+      <div class="step-row" style="margin-top:8px"><div class="step-num" style="background:var(--seq)">R</div><div><b>kanan = panjang data − 1</b><br><span style="color:var(--mut);font-size:.92rem">Index terakhir. Pada 10 data: kanan = 10 − 1 = <b>9</b>.</span></div></div>
+      <p class="note" style="margin-top:8px">Index dimulai dari 0 sampai <code>len(data) - 1</code>.</p>
+    </div>
+    <div class="panel" style="margin:0">
+      <h3 style="margin-top:0;color:var(--bin)">Langkah 1 — Hitung index tengah</h3>
+      <div style="background:var(--binsoft);border-radius:12px;padding:12px;text-align:center;margin-bottom:8px">
+        <div style="font-size:1.45rem;font-weight:800;color:var(--bin);font-family:monospace">tengah = ⌊(kiri + kanan) / 2⌋</div>
+        <div style="font-size:.82rem;color:var(--mut);margin-top:4px">Di Python ditulis: <code>tengah = (kiri + kanan) // 2</code></div>
+      </div>
+      <p style="font-size:.92rem"><b>Kenapa pembulatan ke bawah (<code>//</code>)?</b><br>
+      Jika jumlah data genap (index 0 sampai 9), <code>(0+9)/2 = 4.5</code>. Komputer tidak punya index 4.5, maka dibulatkan ke bawah menjadi index <b>4</b>.</p>
+    </div>
+  </div>
+
+  <div class="call warn" style="margin:12px 0;font-size:1rem">
+    <b>⚠️ Miskonsepsi Fatal: Yang Dijumlahkan Adalah NOMOR INDEX, Bukan NILAI Datanya!</b><br>
+    Data: [2, 5, 8, 12, 16, 23, 38, 56, 72, 91] dengan index 0 sampai 9.<br>
+    ❌ <b>SALAH:</b> <code>(2 + 91) // 2 = 46</code> &nbsp;<em>(ini menjumlahkan angka di dalam kotak)</em><br>
+    ✓ <b>BENAR:</b> <code>(0 + 9) // 2 = 4</code> &nbsp;<em>(kita mencari alamat kotak tengah = index 4, isinya adalah 16)</em>
+  </div>
+
+  <!-- Kalkulator interaktif -->
+  <div class="panel" style="border:2px solid var(--bin);margin-top:4px">
+    <h3 style="margin-top:0;color:var(--bin)">🧮 Kalkulator tengah — coba sendiri</h3>
+    <div class="ctrl" style="justify-content:flex-start;gap:16px;flex-wrap:wrap">
+      <label style="display:flex;align-items:center;gap:8px;font-size:1rem">
+        kiri =
+        <input type="number" id="calcKiri" value="0" min="0" max="99" style="width:70px">
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:1rem">
+        kanan =
+        <input type="number" id="calcKanan" value="9" min="0" max="99" style="width:70px">
+      </label>
+      <button id="calcBtn" class="pri">Hitung tengah</button>
+    </div>
+    <div id="calcResult" style="display:none;margin-top:12px">
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:1.05rem">
+        <span>tengah = ⌊(</span>
+        <span id="calcShowK" style="font-weight:700;color:var(--seq)">0</span>
+        <span>+</span>
+        <span id="calcShowR" style="font-weight:700;color:var(--seq)">9</span>
+        <span>) / 2⌋ = ⌊</span>
+        <span id="calcShowSum" style="font-weight:700">9</span>
+        <span>/ 2⌋ = ⌊</span>
+        <span id="calcShowDiv" style="font-weight:700">4.5</span>
+        <span>⌋ =</span>
+        <span id="calcShowAns" style="font-weight:800;font-size:1.3rem;color:var(--bin)">4</span>
+      </div>
+      <div id="calcLane" style="margin-top:14px"></div>
+      <div id="calcMsg" class="msg" style="margin-top:8px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 8 – MENENTUKAN PROSES PENCARIAN & KEPUTUSAN
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-s>
+  <div class="kicker bin">Proses pencarian</div>
+  <h2>Bagaimana angka yang dicari menentukan langkah berikutnya?</h2>
+  <p>Misalkan angka yang kita cari adalah <b>target</b> (contoh: <code>target = 23</code>). Setiap kali index tengah didapat, bandingkan nilai di tengah <code>data[tengah]</code> dengan <code>target</code>:</p>
+
+  <div class="bridge three" style="margin:14px 0">
+    <div class="bridge-col" style="background:var(--oksoft)">
+      <h4 style="color:var(--ok)">1. data[tengah] == target</h4>
+      <p><b>🎯 Ketemu!</b> Nilai cocok dengan angka yang dicari. Catat index <code>tengah</code> dan selesai (<code>break</code>).</p>
+    </div>
+    <div class="bridge-col" style="background:var(--binsoft)">
+      <h4 style="color:var(--bin)">2. data[tengah] &lt; target</h4>
+      <p>Nilai tengah <em>terlalu kecil</em>. Karena data urut naik, seluruh sisi kiri pasti lebih kecil lagi. Buang sisi kiri:<br>
+      <b><code>kiri = tengah + 1</code></b></p>
+    </div>
+    <div class="bridge-col" style="background:var(--warnsoft)">
+      <h4 style="color:var(--warn)">3. data[tengah] &gt; target</h4>
+      <p>Nilai tengah <em>terlalu besar</em>. Karena data urut naik, seluruh sisi kanan pasti lebih besar lagi. Buang sisi kanan:<br>
+      <b><code>kanan = tengah − 1</code></b></p>
+    </div>
+  </div>
+
+  <div class="two" style="margin:12px 0">
+    <div class="panel" style="margin:0">
+      <b>Mengapa harus <code>+ 1</code> dan <code>− 1</code>?</b>
+      <p style="font-size:.95rem;margin-top:6px">Karena index <code>tengah</code> <em>sudah diperiksa</em> dan terbukti bukan jawaban! Jika hanya ditulis <code>kiri = tengah</code> atau <code>kanan = tengah</code>, program bisa terjebak dalam <b>loop berputar tanpa henti (infinite loop)</b>.</p>
+    </div>
+    <div class="panel" style="margin:0">
+      <b>Kapan kita tahu angka TIDAK ADA di data?</b>
+      <p style="font-size:.95rem;margin-top:6px">Setiap langkah, area aktif menyusut. Jika target tidak ada, batas <code>kiri</code> akhirnya melompat melewati <code>kanan</code> (<b><code>kiri &gt; kanan</code></b>). Area menjadi kosong (0 elemen) → angka dipastikan tidak ada!</p>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:10px">
+    <b>Contoh runutan cari 23 pada [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]:</b>
+    <div class="tbl-wrap">
+    <table class="comp-table" style="margin-top:8px">
+      <tr><th>Langkah</th><th>kiri</th><th>kanan</th><th>tengah = ⌊(k+r)/2⌋</th><th>data[tengah] vs target (23)</th><th>Keputusan</th></tr>
+      <tr><td>1</td><td>0</td><td>9</td><td>⌊(0+9)/2⌋ = <b>4</b></td><td>data[4] = 16 &lt; 23 (terlalu kecil)</td><td>Buang kiri → <code>kiri = 4 + 1 = 5</code></td></tr>
+      <tr><td>2</td><td>5</td><td>9</td><td>⌊(5+9)/2⌋ = <b>7</b></td><td>data[7] = 56 &gt; 23 (terlalu besar)</td><td>Buang kanan → <code>kanan = 7 − 1 = 6</code></td></tr>
+      <tr><td>3</td><td>5</td><td>6</td><td>⌊(5+6)/2⌋ = <b>5</b></td><td>data[5] = 23 == 23 (sama!)</td><td class="better">Ketemu di index 5! ✓</td></tr>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 8b – LANGKAH DEMI LANGKAH (step visualizer)
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-s>
+  <div class="kicker bin">Langkah demi langkah</div>
+  <h2>Ikuti perjalanan binary search — satu langkah sekali klik</h2>
+  <p>Kotak biru = <em>area aktif</em>, kotak pudar = tersingkir. Baris kode yang menyala = perintah yang sedang dijalankan.</p>
+
+  <div class="ctrl">
+    <span>Target:</span>
+    <button class="bpreset pri" data-v="23">23</button>
+    <button class="bpreset" data-v="72">72</button>
+    <button class="bpreset" data-v="40">40 (tidak ada)</button>
+  </div>
+
+  <div class="two code-wide">
+    <div class="panel" style="margin:0">
+      <div class="code-label">Area aktif</div>
+      <div class="lane" id="bsLane"></div>
+      <div class="msg" id="bsMsg">Tekan <b>Langkah berikutnya</b> untuk mulai dari area penuh.</div>
+      <div class="stats">
+        <div class="stat bin-stat"><b id="bsNo">0</b><span>langkah</span></div>
+        <div class="stat"><b id="bsKiri">0</b><span>kiri</span></div>
+        <div class="stat"><b id="bsKanan">9</b><span>kanan</span></div>
+        <div class="stat"><b id="bsSisa">10</b><span>area aktif</span></div>
+      </div>
+      <div class="ctrl">
+        <button id="bsPrev">← Sebelumnya</button>
+        <button id="bsNext" class="pri">Langkah berikutnya →</button>
+        <button id="bsPlay">▶ Putar otomatis</button>
+        <button id="bsReset">↩ Ulang</button>
+      </div>
+    </div>
+    <div class="panel" style="margin:0">
+      <div class="code-label">Python — baris menyala = sedang dijalankan</div>
+      <div class="code-trace" id="bsCode"></div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:14px">
+    <b>Jejak langkah — tabel bertambah setiap kali kamu maju</b>
+    <div class="trace-scroll">
+      <table class="trace-table" id="bsTrace">
+        <thead>
+          <tr><th>Langkah</th><th>kiri</th><th>kanan</th><th>tengah</th><th>data[tengah]</th><th>Keputusan</th></tr>
+        </thead>
+        <tbody id="bsTraceBody">
+          <tr><td colspan="6" class="empty">Belum ada langkah. Tekan "Langkah berikutnya".</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 8 – SIMULATOR: cari sendiri
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-s>
+  <div class="kicker bin">Simulator</div>
+  <h2>Cari sendiri — klik kotak yang ingin kamu cek</h2>
+  <div class="ctrl">
+    <span>Target:</span>
+    <input type="number" class="target-input" value="23">
+    <button class="preset" data-v="23">23</button>
+    <button class="preset" data-v="72">72</button>
+    <button class="preset" data-v="40">40 (tidak ada)</button>
+    <button class="preset" data-v="91">91</button>
+  </div>
+  <div class="ctrl">
+    <span class="badge" id="badgeM">Data terurut</span>
+    <label class="chk"><input type="checkbox" id="predOn" checked> Tebak dulu sebelum cek</label>
+  </div>
+  <div class="lane" id="mCells"></div>
+  <div class="panel" id="mPred" hidden>
+    <p style="margin-bottom:8px"><b id="mPredQ"></b></p>
+    <div class="ctrl">
+      <button class="guess" data-g="besar">Lebih besar</button>
+      <button class="guess" data-g="kecil">Lebih kecil</button>
+      <button class="guess" data-g="sama">Sama / ketemu</button>
+    </div>
+  </div>
+  <div class="msg" id="mMsg">Pilih satu kotak untuk mengecek. Disarankan mulai dari tengah (gunakan tombol di bawah).</div>
+  <div class="stats">
+    <div class="stat bin-stat"><b id="mLangkah">0</b><span>langkah kamu</span></div>
+    <div class="stat"><b id="mSisa">10</b><span>area aktif</span></div>
+    <div class="stat"><b id="mBuang">0</b><span>tersingkir</span></div>
+  </div>
+  <div class="ctrl">
+    <button id="mHint">Tunjukkan tengah</button>
+    <button id="mReset">Ulang</button>
+  </div>
+  <p class="hint-sw" style="font-size:.82rem;color:var(--mut);text-align:center;margin-top:6px">
+    Kotak pudar = tersingkir. Kotak bergaris kuning = tengah area aktif.
+  </p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 9 – POLA: pelipatan
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-s>
+  <div class="kicker bin">Pola</div>
+  <h2>Area aktif terbagi dua setiap langkah</h2>
+  <p>Pada 10 data: area tersisa <b>10 → 5 → 2 → 1 → 0</b>. Paling banyak empat cek.</p>
+
+  <h3>Jika datanya 1.000:</h3>
+  <div class="tbl-wrap">
+  <table class="comp-table">
+    <tr><th>Langkah</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr>
+    <tr><th>Sisa area</th><td>500</td><td>250</td><td>125</td><td>62</td><td>31</td><td>15</td><td>7</td><td>3</td><td>1</td><td>0</td></tr>
+  </table>
+  </div>
+
+  <div class="bridge" style="margin-top:16px">
+    <div class="bridge-col seq-side">
+      <h4>Sekuensial — kasus terburuk</h4>
+      <p>1.000 data → 1.000 cek<br>1.000.000 data → 1.000.000 cek</p>
+    </div>
+    <div class="bridge-arrow">vs</div>
+    <div class="bridge-col bin-side">
+      <h4>Biner — kasus terburuk</h4>
+      <p>1.000 data → ~10 cek<br>1.000.000 data → ~20 cek</p>
+    </div>
+  </div>
+
+  <p class="note">~20 cek dari log₂(1.000.000) ≈ 19,9. Ini perhitungan matematis. Artinya: jika data dilipatduakan terus, jumlah cek hanya bertambah 1.</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 10 – TANYA: setelah 2 cek
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-s>
+  <div class="kicker bin">Cek pemahaman</div>
+  <h2>Setelah dua cek — berapa yang tersisa?</h2>
+  <p>Data 10 angka. Cek ke-1 di index 4 (nilai 16), cari 23, 16 &lt; 23. Cek ke-2 di index 7 (nilai 56), 56 &gt; 23.</p>
+  <div class="lane" id="s10lane"></div>
+  <p style="margin-top:12px">Berapa angka yang masih mungkin menjadi jawaban?</p>
+  <div class="ctrl">
+    <button class="guess s10" data-n="1">1 angka</button>
+    <button class="guess s10" data-n="2">2 angka</button>
+    <button class="guess s10" data-n="3">3 angka</button>
+    <button class="guess s10" data-n="5">5 angka</button>
+  </div>
+  <div class="msg" id="s10msg">Pilih jawabanmu.</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 11 – LOMBA ANIMASI: seq vs bin
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-s>
+  <div class="kicker compare">Simulasi lomba</div>
+  <h2>Sekuensial vs Biner — lihat langsung bedanya</h2>
+  <p>Kedua cara bekerja pada angka yang sama. Perhatikan jumlah langkah masing-masing.</p>
+  <div class="ctrl">
+    <span>Target:</span>
+    <input type="number" class="target-input" value="23">
+    <button class="preset" data-v="91">91 (ujung)</button>
+    <button class="preset" data-v="23">23</button>
+    <button class="preset" data-v="40">40 (tidak ada)</button>
+  </div>
+  <div class="ctrl">
+    <span class="badge" id="badgeR">Data terurut</span>
+    <button id="rPlay" class="pri">▶ Mulai</button>
+    <button id="rPause">⏸ Jeda</button>
+    <button id="rReset">↩ Ulang</button>
+    <button id="rData">Pakai data acak</button>
+  </div>
+
+  <div class="race-label"><div class="dot dot-seq"></div><b>Sekuensial</b></div>
+  <div class="lane" id="rS"></div>
+  <div class="race-label" style="margin-top:6px"><div class="dot dot-bin"></div><b>Biner</b></div>
+  <div class="lane" id="rB"></div>
+
+  <div class="stats" style="margin-top:12px">
+    <div class="stat seq-stat"><b id="rSc">0</b><span>cek sekuensial</span></div>
+    <div class="stat bin-stat"><b id="rBc">0</b><span>cek biner</span></div>
+  </div>
+  <div class="msg" id="rMsg">Tekan Mulai untuk memulai lomba.</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 12 – SYARAT DIBUKTIKAN: data acak
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-s>
+  <div class="kicker">Syarat, dibuktikan</div>
+  <h2>Biner pada data acak: hasilnya bisa salah</h2>
+  <p>Coba di simulator sebelumnya: tekan <b>"Pakai data acak"</b>, lalu jalankan lomba untuk angka <b>23</b>.</p>
+
+  <div class="lane" id="s12lane"></div>
+  <p class="note">Data: <b>23, 2, 91, 8, 56, 12, 72, 5, 38, 16</b>. Biner cek index 4 (nilai 56). Karena 56 &gt; 23, sisi kanan dibuang. Lalu cek index 1 (nilai 2). Karena 2 &lt; 23, kiri dibuang — termasuk index 0 yang berisi 23. Hasil: tidak ditemukan, padahal ada.</p>
+
+  <div class="call danger">
+    <b>Biner tidak salah algoritmanya — syaratnya yang dilanggar.</b> Ia hanya bisa menjamin kebenaran jika data terurut. Jika tidak, hasilnya tidak bisa dipercaya.
+  </div>
+
+  <div class="bridge" style="margin-top:14px">
+    <div class="bridge-col seq-side">
+      <h4>Sekuensial</h4>
+      <p>Bekerja di data acak maupun terurut. Selalu benar, tapi lebih lambat.</p>
+    </div>
+    <div class="bridge-arrow">≠</div>
+    <div class="bridge-col bin-side">
+      <h4>Biner</h4>
+      <p>Jauh lebih hemat — <em>tapi hanya pada data terurut</em>. Di data acak, hasilnya tidak bisa dipercaya.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 13 – KODE PYTHON
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-s>
+  <div class="kicker bin">Kode Python</div>
+  <h2>Binary search sebagai skrip lurus — tanpa <code>def</code></h2>
+  <p>Semua ditulis <b>struktural</b>: baris dijalankan berurutan dari atas ke bawah. Tidak ada fungsi (<code>def</code>), tidak ada pemanggilan — cukup <code>while</code>, <code>if/elif/else</code>, dan <code>print</code>. Salin ke <code>binary_search.py</code>, lalu jalankan.</p>
+
+  <div class="code-label">Python</div>
+  <pre>data = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]
+cari = 23
+kiri = 0
+kanan = len(data) - 1
+langkah = 0
+ketemu = False
+while kiri &lt;= kanan:
+    langkah = langkah + 1
+    tengah = (kiri + kanan) // 2
+    print("Langkah", langkah, "| kiri", kiri, "| kanan", kanan, "| tengah", tengah)
+    print("  data[", tengah, "] =", data[tengah], "vs", cari)
+    if data[tengah] == cari:
+        ketemu = True
+        print("  Sama! Ketemu di index", tengah)
+        break
+    elif data[tengah] &lt; cari:
+        print("  Terlalu kecil -&gt; buang kiri, kiri =", tengah + 1)
+        kiri = tengah + 1
+    else:
+        print("  Terlalu besar -&gt; buang kanan, kanan =", tengah - 1)
+        kanan = tengah - 1
+if ketemu:
+    print("Selesai: ketemu di index", tengah, "dalam", langkah, "langkah")
+else:
+    print("Selesai: tidak ditemukan dalam", langkah, "langkah")</pre>
+
+  <div class="call ok">
+    <b>Mengapa tanpa <code>def</code>?</b> Kode struktural lebih mudah diikuti saat baru belajar: alurnya terlihat utuh dari atas ke bawah. Setelah paham, barulah kode ini biasanya dibungkus menjadi fungsi agar bisa dipakai berulang.
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 13b – MENJALANKAN KODE & MEMBACA HASIL
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-s>
+  <div class="kicker bin">Menjalankan kode</div>
+  <h2>Jalankan, lalu baca hasilnya</h2>
+  <p>Output di bawah adalah hasil nyata untuk <code>cari = 23</code>. Bandingkan dengan jejak langkah pada slide "Langkah demi langkah".</p>
+
+  <div class="two" style="margin-top:8px">
+    <div class="panel" style="margin:0">
+      <h3 style="margin-top:0">Cara membaca kodenya</h3>
+      <div class="step-row"><div class="step-num">1</div><div><b><code>kiri = 0</code>, <code>kanan = len(data) - 1</code></b><br><span class="note">Tandai area awal: seluruh data (index 0 sampai 9).</span></div></div>
+      <div class="step-row"><div class="step-num">2</div><div><b><code>tengah = (kiri + kanan) // 2</code></b><br><span class="note">Cek titik tengah. <code>//</code> membulatkan ke bawah karena index tidak boleh pecahan.</span></div></div>
+      <div class="step-row"><div class="step-num">3</div><div><b><code>kiri = tengah + 1</code></b> / <b><code>kanan = tengah - 1</code></b><br><span class="note">Buang separuh yang sudah pasti bukan jawaban. Inilah inti penghematannya.</span></div></div>
+      <div class="step-row"><div class="step-num">4</div><div><b><code>while kiri &lt;= kanan</code></b><br><span class="note">Selama area masih berisi, ulangi. Jika <code>kiri &gt; kanan</code>, area kosong → angka tidak ada.</span></div></div>
+    </div>
+    <div class="panel" style="margin:0">
+      <h3 style="margin-top:0">Hasil di terminal (<code>cari = 23</code>)</h3>
+      <pre class="out">Langkah 1 | kiri 0 | kanan 9 | tengah 4
+  data[ 4 ] = 16 vs 23
+  Terlalu kecil -&gt; buang kiri, kiri = 5
+Langkah 2 | kiri 5 | kanan 9 | tengah 7
+  data[ 7 ] = 56 vs 23
+  Terlalu besar -&gt; buang kanan, kanan = 6
+Langkah 3 | kiri 5 | kanan 6 | tengah 5
+  data[ 5 ] = 23 vs 23
+  Sama! Ketemu di index 5
+Selesai: ketemu di index 5 dalam 3 langkah</pre>
+    </div>
+  </div>
+
+  <div class="call" style="margin-top:12px">
+    <b>Coba sendiri:</b> ubah <code>cari</code> menjadi <code>72</code> (ketemu di index 8), <code>91</code> (ketemu di index 9), atau <code>40</code> (tidak ditemukan). Hitung dulu perkiraan langkahnya, baru jalankan.
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 14 – KAPAN PAKAI MANA?
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-s>
+  <div class="kicker compare">Kapan memakai yang mana?</div>
+  <h2>Sekuensial dan biner punya situasinya masing-masing</h2>
+
+  <div class="tbl-wrap">
+  <table class="comp-table">
+    <tr>
+      <th>Kondisi</th>
+      <th class="seq-h">Sekuensial</th>
+      <th class="bin-h">Biner</th>
+    </tr>
+    <tr>
+      <td>Data tidak terurut</td>
+      <td class="better">✓ Aman dipakai</td>
+      <td>✗ Hasilnya tidak bisa dipercaya</td>
+    </tr>
+    <tr>
+      <td>Data terurut, dicari sekali</td>
+      <td>Bisa, tapi lebih banyak cek</td>
+      <td class="better">✓ Lebih hemat</td>
+    </tr>
+    <tr>
+      <td>Data kecil (&lt; 20 elemen)</td>
+      <td class="better">✓ Cukup, kode lebih sederhana</td>
+      <td>Bisa, tapi manfaat kecil</td>
+    </tr>
+    <tr>
+      <td>Data besar (jutaan elemen)</td>
+      <td>Lambat di kasus terburuk</td>
+      <td class="better">✓ Sangat signifikan efisiensinya</td>
+    </tr>
+    <tr>
+      <td>Data sering berubah</td>
+      <td class="better">✓ Langsung dipakai</td>
+      <td>Perlu sort ulang setiap ada perubahan</td>
+    </tr>
+  </table>
+  </div>
+
+  <div class="call" style="margin-top:14px">
+    Keduanya benar pada kondisinya masing-masing. Pilih berdasarkan konteks, bukan berdasarkan mana yang "lebih keren".
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 15 – REFLEKSI & LATIHAN
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-s>
+  <div class="kicker">Refleksi &amp; Latihan</div>
+  <h2>Sebelum kita selesai</h2>
+
+  <div class="call" style="margin-bottom:16px">
+    Tulis di kertas: <b>apa satu perbedaan terpenting antara sekuensial dan biner</b> — tanpa menggunakan kata "lebih cepat"?
+  </div>
+
+  <div class="panel">
+    <b>Latihan mandiri</b>
+    <ol style="margin-top:10px">
+      <li>Data: <b>[3, 7, 11, 15, 19, 24, 30]</b>. Cari <b>24</b> dengan biner. Isi tabel kiri/tengah/kanan tiap langkah. Berapa langkah?</li>
+      <li>Data yang sama. Cari <b>10</b>. Berapa langkah, dan apa tanda angka itu tidak ada?</li>
+      <li>Data: <b>[11, 3, 7, 24, 15]</b>. Bolehkah langsung dipakai biner? Apa yang harus dilakukan dulu?</li>
+      <li>Jelaskan kenapa <code>kanan = len(data) - 1</code>, bukan <code>len(data)</code>.</li>
+    </ol>
+  </div>
+
+  <p class="note">Kunci Latihan 1 dan 2 ada di panduan guru. Latihan 3 dan 4: jawaban terbuka — nilai dari kualitas alasan.</p>
+</section>
+
+<!-- ── nav ── -->
+<div class="nav">
+  <button id="prev">← Sebelumnya</button>
+  <button class="pri" id="next">Berikutnya →</button>
+</div>
+
+</div><!-- end .deck -->
+
+<script>
+/* ═══════════════ DATA ═══════════════ */
+const SORTED   = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91];
+const UNSORTED = [23, 2, 91, 8, 56, 12, 72, 5, 38, 16];
+const S = { data: SORTED.slice(), sorted: true, target: 23 };
+
+/* ═══════════════ NAVIGASI ═══════════════ */
+const slides = [...document.querySelectorAll('[data-s]')];
+let cur = 0;
+
+function show(i) {
+  cur = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach((s, k) => s.classList.toggle('on', k === cur));
+  document.getElementById('cnt').textContent = (cur + 1) + ' / ' + slides.length;
+  document.getElementById('prog').style.width = ((cur + 1) / slides.length * 100) + '%';
+  document.getElementById('prev').disabled = (cur === 0);
+  document.getElementById('next').disabled = (cur === slides.length - 1);
+  const deck = document.querySelector('.deck');
+  if (deck) deck.scrollTo({ top: 0 });
+  if (slides[cur]) slides[cur].scrollTop = 0;
+}
+
+document.getElementById('prev').onclick = () => show(cur - 1);
+document.getElementById('next').onclick = () => show(cur + 1);
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'ArrowRight') show(cur + 1);
+  if (e.key === 'ArrowLeft') show(cur - 1);
+  if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+});
+let tx = null, ty = null;
+document.addEventListener('touchstart', e => {
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (tx === null) return;
+  const t = e.target;
+  const dx = e.changedTouches[0].clientX - tx;
+  const dy = e.changedTouches[0].clientY - ty;
+  tx = null; ty = null;
+  if (t && t.closest && t.closest('pre, .code-trace, .tbl-wrap, .trace-scroll, input, button')) return;
+  if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+    if (dx < 0) show(cur + 1); else show(cur - 1);
+  }
+}, { passive: true });
+
+/* ═══════════════ THEME ═══════════════ */
+const themeBtn = document.getElementById('themeBtn');
+function applyTheme(dark) {
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  themeBtn.textContent = dark ? '☀ Terang' : '🌙 Gelap';
+}
+themeBtn.onclick = () => {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  applyTheme(!isDark);
+};
+if (window.matchMedia('(prefers-color-scheme: dark)').matches) applyTheme(true);
+
+/* ═══════════════ FULLSCREEN (untuk dinding digital) ═══════════════ */
+const fsBtn = document.getElementById('fsBtn');
+function toggleFullscreen() {
+  const el = document.documentElement;
+  if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+    const req = el.requestFullscreen || el.webkitRequestFullscreen;
+    if (req) req.call(el).catch(() => {});
+  } else {
+    const exit = document.exitFullscreen || document.webkitExitFullscreen;
+    if (exit) exit.call(document);
+  }
+}
+fsBtn.onclick = toggleFullscreen;
+function syncFsBtn() {
+  const on = !!(document.fullscreenElement || document.webkitFullscreenElement);
+  fsBtn.textContent = on ? '⛶ Keluar' : '⛶ Layar penuh';
+}
+document.addEventListener('fullscreenchange', syncFsBtn);
+document.addEventListener('webkitfullscreenchange', syncFsBtn);
+
+/* ═══════════════ UTIL ═══════════════ */
+function mk(tag, cls, txt) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (txt !== undefined) e.textContent = txt;
+  return e;
+}
+function cellEl(v, i, cls, labelHtml) {
+  const c = mk('div', 'cell');
+  const b = mk('button', 'box ' + (cls || ''), String(v));
+  b.disabled = true;
+  c.appendChild(b);
+  const l = mk('div', 'lab');
+  l.innerHTML = labelHtml || ('idx ' + i);
+  c.appendChild(l);
+  return c;
+}
+function setMsg(el, text, kind) {
+  el.textContent = text;
+  el.className = 'msg' + (kind ? ' ' + kind : '');
+}
+
+/* ═══════════════ SLIDE 2 — sekuensial kasus terburuk ═══════════════ */
+(function () {
+  const lane = document.getElementById('s2lane');
+  SORTED.forEach((v, i) => {
+    const cls = i < 9 ? 'dicek' : 'seq-curr';
+    const lab = i < 9
+      ? '<span class="s">cek ' + (i + 1) + '</span>'
+      : '<span class="s">ketemu!</span>';
+    lane.appendChild(cellEl(v, i, cls, lab));
+  });
+})();
+
+/* ═══════════════ SLIDE 3 — tebak angka ═══════════════ */
+document.getElementById('s3btn').onclick = () => {
+  const ans = document.getElementById('s3ans');
+  ans.hidden = !ans.hidden;
+  document.getElementById('s3btn').textContent = ans.hidden ? 'Tunjukkan perbandingan' : 'Sembunyikan';
+};
+
+/* ═══════════════ SLIDE 4 — satu cek membuang separuh ═══════════════ */
+(function () {
+  const lane = document.getElementById('s4lane');
+  function draw(showBuang) {
+    lane.innerHTML = '';
+    SORTED.forEach((v, i) => {
+      let cls = '';
+      if (i === 4) cls = 'last';
+      else if (showBuang && i < 4) cls = 'buang';
+      const lab = i === 4 ? '<span class="b">dicek (tengah)</span>' : 'idx ' + i;
+      lane.appendChild(cellEl(v, i, cls, lab));
+    });
+  }
+  draw(false);
+  let on = false;
+  document.getElementById('s4btn').onclick = () => {
+    on = !on;
+    draw(on);
+    document.getElementById('s4btn').textContent = on ? 'Sembunyikan' : 'Tampilkan yang tersingkir';
+    document.getElementById('s4bridge').hidden = !on;
+    setMsg(document.getElementById('s4msg'),
+      on ? 'Index 0–4 (5 angka) langsung tersingkir dari satu cek. Sekuensial hanya akan menyingkirkan 1 angka dari cek pertamanya.'
+        : 'Pikirkan dulu: index mana yang sekarang pasti bukan jawaban?',
+      on ? 'ok' : '');
+  };
+})();
+
+/* ═══════════════ SLIDE 5 — perbandingan setelah cek 1 ═══════════════ */
+(function () {
+  const a = document.getElementById('s5a');
+  SORTED.forEach((v, i) => {
+    const cls = i === 0 ? 'buang' : '';
+    const lab = i === 0 ? '<span class="s">cek 1 → tersingkir</span>' : 'idx ' + i;
+    a.appendChild(cellEl(v, i, cls, lab));
+  });
+  const b = document.getElementById('s5b');
+  SORTED.forEach((v, i) => {
+    let cls = '';
+    if (i === 4) cls = 'last';
+    else if (i < 4) cls = 'buang';
+    const lab = i === 4 ? '<span class="b">cek 1 (tengah)</span>' : (i < 4 ? '<span class="t">tersingkir</span>' : 'idx ' + i);
+    b.appendChild(cellEl(v, i, cls, lab));
+  });
+})();
+
+/* ═══════════════ SLIDE 6 — syarat terurut ═══════════════ */
+(function () {
+  const a = document.getElementById('s6a');
+  SORTED.forEach((v, i) => {
+    let cls = '';
+    if (i === 4) cls = 'last';
+    else if (i < 4) cls = 'pasti';
+    a.appendChild(cellEl(v, i, cls,
+      i === 4 ? '<span class="b">dicek</span>' : (i < 4 ? '<span class="n">pasti &lt; 16</span>' : 'idx ' + i)));
+  });
+  const b = document.getElementById('s6b');
+  UNSORTED.slice(0, 10).forEach((v, i) => {
+    let cls = '';
+    if (i === 4) cls = 'last';
+    else if (i < 4) cls = 'tidakpasti';
+    b.appendChild(cellEl(v, i, cls,
+      i === 4 ? '<span class="b">dicek</span>' : (i < 4 ? '<span class="t">belum pasti</span>' : 'idx ' + i)));
+  });
+})();
+
+/* ═══════════════ SLIDE 10 — cek pemahaman ═══════════════ */
+(function () {
+  const lane = document.getElementById('s10lane');
+  SORTED.forEach((v, i) => {
+    let cls = '', lab = 'idx ' + i;
+    if (i === 4) { cls = 'last'; lab = '<span class="b">cek 1</span>'; }
+    else if (i === 7) { cls = 'last'; lab = '<span class="b">cek 2</span>'; }
+    else if (i < 4) { cls = 'buang'; lab = '<span class="t">tersingkir</span>'; }
+    else if (i > 7) { cls = 'buang'; lab = '<span class="t">tersingkir</span>'; }
+    else if (i === 5 || i === 6) { cls = 'pasti'; lab = '<span class="n">masih aktif</span>'; }
+    lane.appendChild(cellEl(v, i, cls, lab));
+  });
+  const msg = document.getElementById('s10msg');
+  document.querySelectorAll('.s10').forEach(btn => {
+    btn.onclick = () => {
+      const n = Number(btn.dataset.n);
+      document.querySelectorAll('.s10').forEach(x => x.disabled = true);
+      if (n === 2) {
+        setMsg(msg, 'Benar! Index 5 (23) dan index 6 (38) yang tersisa. Cek ketiga cukup pilih salah satu dari dua itu.', 'ok');
+      } else {
+        setMsg(msg, 'Belum tepat. Cek 1 di index 4 membuang index 0–4. Cek 2 di index 7 membuang index 7–9. Yang tersisa: index 5 dan 6 → 2 angka.', 'warn');
+      }
+    };
+  });
+})();
+
+/* ═══════════════ SLIDE 12 — data acak ═══════════════ */
+(function () {
+  const lane = document.getElementById('s12lane');
+  const data = UNSORTED.slice(0, 10);
+  data.forEach((v, i) => {
+    let cls = '', lab = 'idx ' + i;
+    if (i === 0) { cls = 'buang'; lab = '<span class="n">23 ada di sini</span>'; }
+    else if (i === 4) { cls = 'dicek'; lab = '<span class="b">cek 1 (tengah)</span>'; }
+    else if (i === 1) { cls = 'last'; lab = '<span class="b">cek 2</span>'; }
+    else if (i <= 1) { cls = 'buang'; }
+    else if (i > 4) { cls = 'out'; }
+    lane.appendChild(cellEl(v, i, cls, lab));
+  });
+})();
+
+/* ═══════════════ SIMULATOR 1 — slide 8 ═══════════════ */
+const M = { kiri: 0, kanan: 0, langkah: 0, checked: new Set(), sisa: [], found: -1, selesai: false, pending: -1, last: -1, hint: -1, buang: 0 };
+
+function mReset() {
+  M.kiri = 0; M.kanan = S.data.length - 1; M.langkah = 0; M.checked = new Set();
+  M.sisa = [M.kanan - M.kiri + 1]; M.found = -1; M.selesai = false; M.pending = -1; M.last = -1; M.hint = -1; M.buang = 0;
+  document.getElementById('mPred').hidden = true;
+  setMsg(document.getElementById('mMsg'), 'Pilih satu kotak untuk mengecek. Disarankan mulai dari tengah (gunakan tombol di bawah).', '');
+  mRender();
+}
+function mTengah() { return (M.kiri <= M.kanan) ? Math.floor((M.kiri + M.kanan) / 2) : -1; }
+function mRender() {
+  const wrap = document.getElementById('mCells'); wrap.innerHTML = '';
+  const tg = mTengah();
+  S.data.forEach((v, i) => {
+    let cls = '';
+    if (i < M.kiri || i > M.kanan) cls += ' out';
+    if (M.checked.has(i)) cls += ' dicek';
+    if (i === M.last) cls += ' last';
+    if (i === M.found) cls += ' hit';
+    if (!M.selesai && i === tg) cls += ' tengah';
+    if (M.hint === i && !M.selesai) cls += ' tengah';
+    const b = mk('button', 'box' + cls, String(v));
+    b.disabled = M.selesai;
+    b.onclick = () => mPick(i);
+    const c = mk('div', 'cell'); c.appendChild(b);
+    const parts = [];
+    if (!M.selesai) {
+      if (i === tg) parts.push('<span class="t">tengah</span>');
+      else {
+        if (i === M.kiri) parts.push('<span class="k">kiri</span>');
+        if (i === M.kanan) parts.push('<span class="k">kanan</span>');
+      }
+    }
+    if (parts.length === 0) parts.push('idx ' + i);
+    const l = mk('div', 'lab'); l.innerHTML = parts.join(' ');
+    c.appendChild(l);
+    wrap.appendChild(c);
+  });
+  document.getElementById('mLangkah').textContent = M.langkah;
+  const sisa = (M.kiri <= M.kanan && !(M.found >= 0)) ? (M.kanan - M.kiri + 1) : 0;
+  document.getElementById('mSisa').textContent = sisa;
+  document.getElementById('mBuang').textContent = M.buang;
+  document.getElementById('mHint').disabled = M.selesai || M.pending >= 0;
+  document.getElementById('badgeM').textContent = S.sorted ? 'Data terurut' : 'Data tidak terurut';
+  document.getElementById('badgeM').className = 'badge' + (S.sorted ? '' : ' no');
+}
+function mPick(i) {
+  if (M.selesai || M.pending >= 0) return;
+  if (i < M.kiri || i > M.kanan) {
+    setMsg(document.getElementById('mMsg'), 'Index ' + i + ' sudah tersingkir. Tidak perlu dicek lagi.', 'warn');
+    return;
+  }
+  if (document.getElementById('predOn').checked) {
+    M.pending = i;
+    document.getElementById('mPredQ').textContent = 'Sebelum dicek: nilai di index ' + i + ' lebih besar, lebih kecil, atau sama dengan ' + S.target + '?';
+    document.getElementById('mPred').hidden = false;
+    mRender();
+    return;
+  }
+  mApply(i, '');
+}
+document.querySelectorAll('.guess[data-g]').forEach(btn => {
+  btn.onclick = () => {
+    const i = M.pending; if (i < 0) return;
+    const v = S.data[i];
+    const truth = v === S.target ? 'sama' : (v > S.target ? 'besar' : 'kecil');
+    const nama = { besar: 'lebih besar', kecil: 'lebih kecil', sama: 'sama' };
+    const pre = (btn.dataset.g === truth)
+      ? 'Tebakanmu benar! '
+      : 'Belum tepat — nilai di index ' + i + ' ternyata ' + nama[truth] + ' dari ' + S.target + '. ';
+    M.pending = -1;
+    document.getElementById('mPred').hidden = true;
+    mApply(i, pre);
+  };
+});
+function mApply(i, pre) {
+  const v = S.data[i], t = S.target;
+  const kOld = M.kiri, kanOld = M.kanan;
+  M.langkah++; M.checked.add(i); M.last = i; M.hint = -1;
+  let text = '', kind = '';
+  if (v === t) {
+    M.found = i; M.selesai = true;
+    text = 'Ketemu di index ' + i + ' setelah ' + M.langkah + ' langkah!';
+    kind = 'ok';
+  } else if (v < t) {
+    const n = i - kOld + 1;
+    M.kiri = i + 1; M.buang += n;
+    text = 'Index ' + i + ' = ' + v + ', lebih kecil dari ' + t + '. Index ' + kOld + '–' + i + ' (' + n + ' angka) tersingkir. Kiri sekarang = ' + (i + 1) + '.';
+  } else {
+    const n = kanOld - i + 1;
+    M.kanan = i - 1; M.buang += n;
+    text = 'Index ' + i + ' = ' + v + ', lebih besar dari ' + t + '. Index ' + i + '–' + kanOld + ' (' + n + ' angka) tersingkir. Kanan sekarang = ' + (i - 1) + '.';
+  }
+  if (!S.sorted && v !== t) {
+    text += ' ⚠ Data tidak terurut — membuang sisi ini mungkin keliru.';
+    kind = 'warn';
+  }
+  if (!M.selesai && M.kiri > M.kanan) {
+    M.selesai = true;
+    text += ' Area kosong — angka ' + t + ' tidak ada di data.';
+    kind = 'warn';
+  }
+  if (M.selesai && M.found >= 0) {
+    const sq = S.data.indexOf(t) + 1;
+    text += ' Sekuensial dari kiri butuh ' + sq + ' cek. Kamu butuh ' + M.langkah + '.';
+  }
+  if (M.selesai && M.found < 0) {
+    text += ' Sekuensial harus mengecek semua elemen sebelum yakin angka tidak ada.';
+  }
+  setMsg(document.getElementById('mMsg'), pre + text, kind);
+  if (!M.selesai) M.sisa.push(M.kanan - M.kiri + 1);
+  mRender();
+}
+document.getElementById('mHint').onclick = () => {
+  if (M.selesai || M.pending >= 0) return;
+  const tg = mTengah(); if (tg < 0) return;
+  M.hint = tg; mRender();
+  setMsg(document.getElementById('mMsg'), 'Tengah area aktif = index ' + tg + ', nilainya ' + S.data[tg] + '. Binary search selalu cek di sini.', '');
+};
+document.getElementById('mReset').onclick = () => { mReset(); };
+
+/* ═══════════════ SIMULATOR 2 — lomba (slide 11) ═══════════════ */
+const R = { t: 0, timer: null, seq: [], bin: [], fS: -1, fB: -1, maxT: 0 };
+function rBuild() {
+  R.seq = []; R.fS = -1;
+  for (let i = 0; i < S.data.length; i++) { R.seq.push(i); if (S.data[i] === S.target) { R.fS = i; break; } }
+  R.bin = []; R.fB = -1;
+  let k = 0, r = S.data.length - 1;
+  while (k <= r) {
+    const m = Math.floor((k + r) / 2);
+    R.bin.push({ m, k, r });
+    if (S.data[m] === S.target) { R.fB = m; break; }
+    if (S.data[m] < S.target) k = m + 1; else r = m - 1;
+  }
+  R.maxT = Math.max(R.seq.length, R.bin.length);
+  R.t = 0;
+}
+function rStop() { if (R.timer) { clearInterval(R.timer); R.timer = null; } }
+function rRender() {
+  const sWrap = document.getElementById('rS'), bWrap = document.getElementById('rB');
+  sWrap.innerHTML = ''; bWrap.innerHTML = '';
+  const done = R.t >= R.maxT;
+  const ps = Math.min(R.t, R.seq.length);
+  const curS = ps > 0 ? R.seq[ps - 1] : -1;
+  S.data.forEach((v, i) => {
+    let cls = '';
+    if (i < curS && curS >= 0) cls += ' dicek';
+    if (i === curS) cls = (i === R.fS) ? ' hit' : ' seq-curr';
+    const c = mk('div', 'cell');
+    const b = mk('button', 'box' + cls, String(v)); b.disabled = true;
+    c.appendChild(b);
+    c.appendChild(mk('div', 'lab', i === curS ? 'sekarang' : 'idx ' + i));
+    sWrap.appendChild(c);
+  });
+  const pb = Math.min(R.t, R.bin.length);
+  const st = pb > 0 ? R.bin[pb - 1] : null;
+  S.data.forEach((v, i) => {
+    let cls = '';
+    if (st) {
+      if (i < st.k || i > st.r) cls += ' out';
+      for (let j = 0; j < pb - 1; j++) { if (R.bin[j].m === i) cls += ' dicek'; }
+      if (i === st.m) cls += (st.m === R.fB ? ' hit' : ' bin-curr');
+    }
+    const c = mk('div', 'cell');
+    const b = mk('button', 'box' + cls, String(v)); b.disabled = true;
+    c.appendChild(b);
+    let lab = 'idx ' + i;
+    if (st && i === st.m) lab = '<span class="b">tengah</span>';
+    const l = mk('div', 'lab'); l.innerHTML = lab;
+    c.appendChild(l);
+    bWrap.appendChild(c);
+  });
+  document.getElementById('rSc').textContent = ps;
+  document.getElementById('rBc').textContent = pb;
+  document.getElementById('badgeR').textContent = S.sorted ? 'Data terurut' : 'Data tidak terurut';
+  document.getElementById('badgeR').className = 'badge' + (S.sorted ? '' : ' no');
+  const msg = document.getElementById('rMsg');
+  if (R.t === 0) { setMsg(msg, 'Tekan Mulai untuk memulai lomba.', ''); }
+  else if (done) {
+    if (R.fS >= 0 && R.fB >= 0) {
+      const selisih = R.seq.length - R.bin.length;
+      setMsg(msg, 'Selesai! Biner: ' + R.bin.length + ' cek. Sekuensial: ' + R.seq.length + ' cek. Biner lebih hemat ' + selisih + ' cek.', 'ok');
+    } else if (R.fS >= 0 && R.fB < 0) {
+      setMsg(msg, '⚠ Biner menyatakan angka tidak ada — padahal ada di index ' + R.fS + '. Ini terjadi karena data tidak terurut!', 'bad');
+    } else {
+      setMsg(msg, 'Keduanya menyatakan angka tidak ada. Sekuensial membutuhkan ' + R.seq.length + ' cek, biner ' + R.bin.length + ' cek.', '');
+    }
+  } else {
+    setMsg(msg, 'Berjalan… Perhatikan area biner yang menyusut vs sekuensial yang maju satu per satu.', '');
+  }
+}
+function rStart() {
+  rStop();
+  if (R.t >= R.maxT) { R.t = 0; }
+  rRender();
+  R.timer = setInterval(() => { R.t++; rRender(); if (R.t >= R.maxT) { rStop(); } }, 900);
+}
+function rAll() { rStop(); rBuild(); rRender(); }
+document.getElementById('rPlay').onclick = () => { if (R.t >= R.maxT || R.maxT === 0) { rBuild(); } rStart(); };
+document.getElementById('rPause').onclick = rStop;
+document.getElementById('rReset').onclick = rAll;
+document.getElementById('rData').onclick = () => { setData(!S.sorted); };
+
+/* ═══════════════ DATA BERSAMA ═══════════════ */
+function setData(sortedFlag) {
+  S.sorted = sortedFlag;
+  S.data = sortedFlag ? SORTED.slice() : UNSORTED.slice(0, 10);
+  document.getElementById('rData').textContent = sortedFlag ? 'Pakai data acak' : 'Kembali ke data terurut';
+  mReset();
+  rAll();
+}
+function setTarget(v) {
+  S.target = v;
+  document.querySelectorAll('.target-input').forEach(inp => inp.value = v);
+  mReset();
+  rAll();
+}
+document.querySelectorAll('.target-input').forEach(inp => {
+  inp.onchange = () => { const v = Number(inp.value); if (!Number.isNaN(v)) setTarget(v); };
+});
+document.querySelectorAll('.preset').forEach(btn => {
+  btn.onclick = () => setTarget(Number(btn.dataset.v));
+});
+document.getElementById('predOn').onchange = () => { mReset(); };
+
+/* ═══════════════ KALKULATOR TENGAH (slide 7) ═══════════════ */
+function calcTengah() {
+  const kEl = document.getElementById('calcKiri');
+  const rEl = document.getElementById('calcKanan');
+  const k = parseInt(kEl.value, 10);
+  const r = parseInt(rEl.value, 10);
+
+  // validasi
+  const resultDiv = document.getElementById('calcResult');
+  const msgEl = document.getElementById('calcMsg');
+  if (isNaN(k) || isNaN(r)) {
+    resultDiv.style.display = 'block';
+    setMsg(msgEl, 'Isi kedua nilai kiri dan kanan terlebih dahulu.', 'warn');
+    return;
+  }
+  if (k > r) {
+    resultDiv.style.display = 'block';
+    setMsg(msgEl, 'Kiri (' + k + ') tidak boleh lebih besar dari kanan (' + r + '). Jika kiri > kanan, area sudah kosong — artinya angka yang dicari tidak ada di data.', 'warn');
+    return;
+  }
+  if (k < 0 || r < 0) {
+    resultDiv.style.display = 'block';
+    setMsg(msgEl, 'Index tidak boleh negatif.', 'warn');
+    return;
+  }
+
+  const sum = k + r;
+  const divExact = sum / 2;
+  const tengah = Math.floor(divExact);
+
+  // tampilkan langkah perhitungan
+  document.getElementById('calcShowK').textContent = k;
+  document.getElementById('calcShowR').textContent = r;
+  document.getElementById('calcShowSum').textContent = sum;
+  document.getElementById('calcShowDiv').textContent = (divExact % 1 === 0) ? divExact : divExact.toFixed(1);
+  document.getElementById('calcShowAns').textContent = tengah;
+  resultDiv.style.display = 'block';
+
+  // visualisasi lane
+  const lane = document.getElementById('calcLane');
+  lane.innerHTML = '';
+
+  // buat representasi sederhana: tunjukkan nomor index saja (bukan data nyata)
+  const total = r + 1; // asumsi index 0 sampai r
+  const startShow = Math.max(0, k); // mulai dari kiri
+  const endShow = r;
+  const cells = [];
+  for (let i = startShow; i <= endShow; i++) {
+    const isTengah = (i === tengah);
+    const isKiri = (i === k);
+    const isKanan = (i === r);
+    let cls = 'box';
+    if (isTengah) cls += ' tengah';
+    if (isKiri && !isTengah) cls += ' pasti';
+    if (isKanan && !isTengah) cls += ' pasti';
+
+    const c = mk('div', 'cell');
+    const inData = SORTED[i] !== undefined;
+    const b = mk('button', cls, inData ? String(SORTED[i]) : 'idx ' + i);
+    b.disabled = true;
+    b.style.minWidth = '72px';
+    b.style.fontSize = '.9rem';
+    c.appendChild(b);
+    const l = mk('div', 'lab');
+    if (isTengah) l.innerHTML = '<span class="t">⬆ tengah</span>';
+    else if (isKiri && isKanan) l.innerHTML = '<span class="k">kiri = kanan</span>';
+    else if (isKiri) l.innerHTML = '<span class="k">kiri</span>';
+    else if (isKanan) l.innerHTML = '<span class="k">kanan</span>';
+    else l.textContent = inData ? ('idx ' + i) : '';
+    c.appendChild(l);
+    lane.appendChild(c);
+  }
+
+  // pesan penjelasan
+  const sisiKiri = tengah - k;
+  const sisiKanan = r - tengah;
+  let penjelasan = 'Index tengah = ' + tengah + '. ';
+  if (sisiKiri === 0 && sisiKanan === 0) {
+    penjelasan += 'Area hanya berisi 1 elemen (index ' + tengah + '). Cek langsung — jika tidak cocok, area akan kosong.';
+  } else {
+    penjelasan += 'Jika cek di index ' + tengah + ' hasilnya lebih kecil dari target, kiri bergeser ke ' + (tengah + 1) + ' (buang ' + (sisiKiri + 1) + ' elemen). Jika lebih besar, kanan bergeser ke ' + (tengah - 1) + ' (buang ' + (sisiKanan + 1) + ' elemen).';
+  }
+  setMsg(msgEl, penjelasan, 'ok');
+}
+
+document.getElementById('calcBtn').onclick = calcTengah;
+// hitung otomatis saat nilai berubah
+['calcKiri', 'calcKanan'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    if (document.getElementById('calcResult').style.display !== 'none') calcTengah();
+  });
+});
+
+/* ═══════════════ STEP VISUALIZER — langkah demi langkah ═══════════════ */
+const BS_CODE = [
+  'data = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]',
+  'cari = 23',
+  '',
+  'kiri = 0',
+  'kanan = len(data) - 1',
+  'langkah = 0',
+  'ketemu = False',
+  '',
+  'while kiri <= kanan:',
+  '    langkah = langkah + 1',
+  '    tengah = (kiri + kanan) // 2',
+  '    print("Langkah", langkah, "tengah", tengah)',
+  '',
+  '    if data[tengah] == cari:',
+  '        ketemu = True',
+  '        print("  Sama! Ketemu di index", tengah)',
+  '        break',
+  '    elif data[tengah] < cari:',
+  '        print("  Terlalu kecil -> buang kiri")',
+  '        kiri = tengah + 1',
+  '    else:',
+  '        print("  Terlalu besar -> buang kanan")',
+  '        kanan = tengah - 1',
+  '',
+  'if ketemu:',
+  '    print("Selesai: ketemu di index", tengah)',
+  'else:',
+  '    print("Selesai: tidak ditemukan")'
+];
+
+const BS = { target: 23, steps: [], i: -1, timer: null };
+
+function bsBuildSteps() {
+  const data = SORTED; const t = BS.target; const out = [];
+  let k = 0, r = data.length - 1;
+  while (k <= r) {
+    const m = Math.floor((k + r) / 2);
+    const v = data[m];
+    let decision, nk = k, nr = r, found = false;
+    if (v === t) { decision = 'sama → ketemu'; found = true; }
+    else if (v < t) { decision = 'terlalu kecil → kiri = ' + (m + 1); nk = m + 1; }
+    else { decision = 'terlalu besar → kanan = ' + (m - 1); nr = m - 1; }
+    out.push({ k, r, m, v, decision, nk, nr, found });
+    if (found) break;
+    k = nk; r = nr;
+  }
+  return out;
+}
+function bsBuildCode() {
+  const wrap = document.getElementById('bsCode');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  BS_CODE.forEach((txt, idx) => {
+    const line = (idx === 1) ? ('cari = ' + BS.target) : txt;
+    const row = mk('div', 'cl');
+    row.appendChild(mk('span', 'ln', String(idx + 1)));
+    row.appendChild(mk('span', 'ct', line.length ? line : ' '));
+    wrap.appendChild(row);
+  });
+}
+function bsHighlight(step) {
+  const rows = document.querySelectorAll('#bsCode .cl');
+  rows.forEach(row => row.classList.remove('on'));
+  let lines;
+  if (!step) {
+    lines = [4, 5, 6, 7];
+  } else {
+    lines = [9, 10, 11, 12];
+    if (step.found) lines = lines.concat([14, 15, 16, 17]);
+    else if (step.v < BS.target) lines = lines.concat([18, 19, 20]);
+    else lines = lines.concat([21, 22, 23]);
+    if (!step.found && step.nk > step.nr) lines = lines.concat([25, 28]);
+  }
+  lines.forEach(n => { if (rows[n - 1]) rows[n - 1].classList.add('on'); });
+  const box = document.getElementById('bsCode');
+  const first = box && box.querySelector('.cl.on');
+  if (first) {
+    const top = first.offsetTop;
+    if (top < box.scrollTop) box.scrollTop = top;
+    else if (top + first.offsetHeight > box.scrollTop + box.clientHeight) {
+      box.scrollTop = top + first.offsetHeight - box.clientHeight;
+    }
+  }
+}
+function bsRender() {
+  const step = BS.i >= 0 ? BS.steps[BS.i] : null;
+  const lane = document.getElementById('bsLane');
+  lane.innerHTML = '';
+  const k = step ? step.k : 0;
+  const r = step ? step.r : SORTED.length - 1;
+  const m = step ? step.m : -1;
+  SORTED.forEach((v, i) => {
+    let cls;
+    if (i < k || i > r) cls = 'out';
+    else { cls = 'aktif'; if (i === m) cls = 'last'; }
+    if (step) { for (let j = 0; j < BS.i; j++) { if (BS.steps[j].m === i) cls += ' dicek'; } }
+    const c = mk('div', 'cell');
+    const b = mk('button', 'box ' + cls, String(v));
+    b.disabled = true;
+    c.appendChild(b);
+    const parts = [];
+    if (i === m) parts.push('<span class="b">tengah</span>');
+    if (i === k) parts.push('<span class="k">kiri</span>');
+    if (i === r) parts.push('<span class="k">kanan</span>');
+    if (parts.length === 0) parts.push('idx ' + i);
+    const l = mk('div', 'lab'); l.innerHTML = parts.join(' ');
+    c.appendChild(l);
+    lane.appendChild(c);
+  });
+  const empty = step && !step.found && step.nk > step.nr;
+  document.getElementById('bsNo').textContent = step ? BS.i + 1 : 0;
+  document.getElementById('bsKiri').textContent = empty ? step.nk : k;
+  document.getElementById('bsKanan').textContent = empty ? step.nr : r;
+  document.getElementById('bsSisa').textContent = empty ? 0 : ((k <= r) ? (r - k + 1) : 0);
+
+  const msg = document.getElementById('bsMsg');
+  if (!step) {
+    setMsg(msg, 'Area aktif masih penuh: index 0–' + r + '. Tekan "Langkah berikutnya" untuk memulai.', '');
+  } else if (step.found) {
+    setMsg(msg, 'Langkah ' + (BS.i + 1) + ': cek index ' + step.m + ' (nilai ' + step.v + '). ' + step.v + ' == ' + BS.target + ' → KETEMU! Pencarian berhenti.', 'ok');
+  } else if (step.nk > step.nr) {
+    setMsg(msg, 'Langkah ' + (BS.i + 1) + ': cek index ' + step.m + ' (nilai ' + step.v + '). ' + step.decision + '. Area aktif jadi kosong → ' + BS.target + ' tidak ada di data.', 'warn');
+  } else {
+    setMsg(msg, 'Langkah ' + (BS.i + 1) + ': cek index ' + step.m + ' (nilai ' + step.v + '). ' + step.decision + '. Area aktif tersisa index ' + step.nk + '–' + step.nr + '.', '');
+  }
+
+  const body = document.getElementById('bsTraceBody');
+  body.innerHTML = '';
+  if (!step) {
+    const tr = mk('tr');
+    const td = mk('td', 'empty', 'Belum ada langkah. Tekan "Langkah berikutnya".');
+    td.colSpan = 6; tr.appendChild(td); body.appendChild(tr);
+  } else {
+    for (let j = 0; j <= BS.i; j++) {
+      const s = BS.steps[j];
+      const tr = mk('tr', j === BS.i ? 'on' : '');
+      [j + 1, s.k, s.r, s.m, s.v, s.decision].forEach((val, col) => {
+        tr.appendChild(mk('td', (col === 4 && s.v === BS.target) ? 'better' : '', String(val)));
+      });
+      body.appendChild(tr);
+    }
+  }
+  bsHighlight(step);
+  document.getElementById('bsPrev').disabled = BS.i < 0;
+  document.getElementById('bsNext').disabled = BS.i >= BS.steps.length - 1;
+}
+function bsStop() { if (BS.timer) { clearInterval(BS.timer); BS.timer = null; } }
+function bsReset() {
+  bsStop();
+  BS.i = -1;
+  BS.steps = bsBuildSteps();
+  bsBuildCode();
+  bsRender();
+}
+document.getElementById('bsNext').onclick = () => {
+  bsStop();
+  if (BS.i < BS.steps.length - 1) { BS.i++; bsRender(); }
+};
+document.getElementById('bsPrev').onclick = () => {
+  bsStop();
+  if (BS.i >= 0) { BS.i--; bsRender(); }
+};
+document.getElementById('bsPlay').onclick = () => {
+  bsStop();
+  if (BS.i >= BS.steps.length - 1) BS.i = -1;
+  bsRender();
+  BS.timer = setInterval(() => {
+    if (BS.i >= BS.steps.length - 1) { bsStop(); return; }
+    BS.i++; bsRender();
+  }, 1500);
+};
+document.getElementById('bsReset').onclick = bsReset;
+document.querySelectorAll('.bpreset').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.bpreset').forEach(b => b.classList.remove('pri'));
+    btn.classList.add('pri');
+    BS.target = Number(btn.dataset.v);
+    bsReset();
+  };
+});
+
+/* ═══════════════ INIT ═══════════════ */
+show(0);
+mReset();
+rAll();
+bsReset();
+</script>
+</body>
+</html>
