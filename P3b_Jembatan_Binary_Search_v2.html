@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lomba Pencarian: Sekuensial vs Biner</title>
+<style>
+:root{
+  --bg:#f4f5f9; --card:#ffffff; --fg:#1c1d26; --mut:#5f6374; --line:#c9cdd9;
+  --acc:#2f6fdb; --acc-soft:#e3ecfc; --ok:#1f9d55; --ok-soft:#dff4e8;
+  --warn:#b26a00; --warn-soft:#fff1d6; --gone:#e6e8ef; --seen:#eef0f6;
+  --cell:26px; --radius:16px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#14151b; --card:#1f2129; --fg:#eceef6; --mut:#a9aec0; --line:#3a3e4d;
+    --acc:#7aa7ff; --acc-soft:#263454; --ok:#4cc38a; --ok-soft:#1d3a2c;
+    --warn:#f0b050; --warn-soft:#3d3118; --gone:#262932; --seen:#1b1d25;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14151b; --card:#1f2129; --fg:#eceef6; --mut:#a9aec0; --line:#3a3e4d;
+  --acc:#7aa7ff; --acc-soft:#263454; --ok:#4cc38a; --ok-soft:#1d3a2c;
+  --warn:#f0b050; --warn-soft:#3d3118; --gone:#262932; --seen:#1b1d25;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.55;min-height:100vh}
+.topbar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.progress{height:4px;background:var(--line)}
+.progress div{height:100%;background:var(--acc);width:0;transition:width .3s}
+.meta{max-width:980px;margin:0 auto;padding:8px 16px;display:flex;justify-content:space-between;font-size:.9rem;color:var(--mut)}
+.deck{max-width:980px;margin:0 auto;padding:16px 16px 40px}
+.slide{display:none;background:var(--card);border-radius:var(--radius);padding:30px 28px;min-height:62vh;border:1px solid var(--line)}
+.slide.on{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+h1{font-size:2.05rem;margin:0 0 10px;line-height:1.2;color:var(--acc)}
+h2{font-size:1.6rem;margin:0 0 12px;line-height:1.25}
+h3{font-size:1.1rem;margin:18px 0 6px}
+p,li{font-size:1.12rem}
+ol li,ul li{margin-bottom:8px}
+.kicker{font-size:.85rem;text-transform:uppercase;letter-spacing:.08em;color:var(--acc);margin:0 0 6px;font-weight:600}
+.lead{font-size:1.25rem;color:var(--fg)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{background:var(--acc-soft);border-radius:12px;padding:14px 16px;margin:12px 0}
+.card.ok{background:var(--ok-soft)}
+.card.warn{background:var(--warn-soft)}
+.card.plain{background:transparent;border:1px solid var(--line)}
+.card b{display:block;margin-bottom:4px}
+.note{font-size:.98rem;color:var(--mut);margin-top:12px}
+pre{background:var(--gone);color:var(--fg);padding:14px 16px;border-radius:12px;overflow-x:auto;font-size:.98rem;line-height:1.5;margin:12px 0}
+table{width:100%;border-collapse:collapse;font-size:1.02rem;margin:10px 0}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:.92rem;color:var(--mut);font-weight:600}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.95em;background:var(--gone);padding:1px 5px;border-radius:5px}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:18px;flex-wrap:wrap}
+.nav .mid{color:var(--mut);font-size:.95rem}
+button{font:inherit;min-height:44px;padding:9px 18px;border-radius:12px;border:1.5px solid var(--acc);background:transparent;color:var(--acc);cursor:pointer;font-weight:600}
+button:hover{background:var(--acc-soft)}
+button.pri{background:var(--acc);color:#fff}
+button.pri:hover{filter:brightness(1.05);background:var(--acc)}
+button:disabled{opacity:.4;cursor:default;background:transparent}
+input,select{font:inherit;min-height:44px;padding:8px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--fg)}
+input[type=number]{width:110px}
+label{font-size:.95rem;color:var(--mut);display:flex;flex-direction:column;gap:4px}
+
+/* ---------- simulator ---------- */
+.sim{margin-top:6px}
+.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:12px}
+.seg{display:inline-flex;border:1.5px solid var(--acc);border-radius:12px;overflow:hidden}
+.seg button{border:0;border-radius:0;min-height:44px}
+.seg button.on{background:var(--acc);color:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:.9rem;color:var(--mut);margin:8px 0 2px}
+.chip{display:inline-flex;align-items:center;gap:6px}
+.sw{width:16px;height:16px;border-radius:4px;display:inline-block;border:2px solid var(--line)}
+.track{margin:14px 0 6px}
+.trackhead{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px}
+.trackhead h3{margin:0}
+.count{font-size:1.5rem;font-weight:800;color:var(--acc)}
+.count small{font-size:.9rem;font-weight:600;color:var(--mut);margin-left:4px}
+.cells{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--cell),1fr));gap:4px;margin-top:8px}
+.cell{height:var(--h,26px);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:7px;border:1.5px solid var(--line);font-size:var(--fs,.8rem);font-weight:700;background:var(--card);color:var(--fg);transition:all .2s;position:relative;min-width:0}
+.cell i{font-style:normal;font-size:.62rem;font-weight:500;color:var(--mut);line-height:1}
+.cell.seen{background:var(--seen);color:var(--mut);border-style:dashed}
+.cell.gone{background:var(--gone);color:var(--mut);opacity:.5}
+.cell.cur{background:var(--acc);border-color:var(--acc);color:#fff}
+.cell.cur i{color:#fff}
+.cell.mid{border:3px solid var(--warn);background:var(--warn-soft);color:var(--fg)}
+.cell.hit{background:var(--ok);border-color:var(--ok);color:#fff}
+.cell.hit i{color:#fff}
+.cell.miss{background:var(--warn-soft);border-color:var(--warn)}
+.status{margin:8px 0 0;font-size:1.02rem;min-height:2.4em}
+.explain{background:var(--acc-soft);border-radius:12px;padding:12px 14px;margin-top:10px;font-size:1.02rem;min-height:3.2em}
+.explain.bad{background:var(--warn-soft)}
+.explain.good{background:var(--ok-soft)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 4px}
+.predict{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end;margin:10px 0}
+.reveal{display:none;margin-top:12px}
+.reveal.on{display:block}
+.bars{margin:14px 0}
+.bar{display:grid;grid-template-columns:110px 1fr 70px;gap:10px;align-items:center;margin:8px 0;font-size:1rem}
+.bar .fill{height:22px;border-radius:6px;background:var(--acc)}
+.bar.b .fill{background:var(--ok)}
+.bar span{text-align:right;color:var(--mut)}
+details{background:var(--gone);border-radius:12px;padding:10px 14px;margin:10px 0}
+summary{cursor:pointer;font-weight:600;min-height:32px;display:flex;align-items:center}
+details[open] summary{margin-bottom:8px}
+@media (max-width:720px){
+  :root{--cell:22px}
+  .slide{padding:22px 16px}
+  h1{font-size:1.6rem}
+  h2{font-size:1.35rem}
+  p,li{font-size:1.04rem}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .predict{grid-template-columns:1fr}
+  .bar{grid-template-columns:90px 1fr 56px}
+  .count{font-size:1.25rem}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="progress"><div id="bar"></div></div>
+  <div class="meta"><span>Informatika Kelas X · Materi 2 · Pertemuan 3 (lanjutan)</span><span id="cnt"></span></div>
+</div>
+
+<div class="deck">
+
+<!-- 1 -->
+<section class="slide" data-s>
+  <p class="kicker">Hari ini</p>
+  <h1>Lomba Pencarian: Sekuensial lawan Biner</h1>
+  <p class="lead">Kita akan menjalankan dua cara mencari angka pada data yang sama, dan melihat siapa yang lebih cepat, lalu mencari tahu kenapa.</p>
+  <div class="grid3" style="margin-top:14px">
+    <div class="card"><b>Menebak</b>Kamu memprediksi hasilnya sebelum dijalankan.</div>
+    <div class="card"><b>Mengamati</b>Setiap langkah dilihat dan dijelaskan di layar.</div>
+    <div class="card"><b>Membandingkan</b>Kamu mencari sendiri syarat yang membuat biner bekerja.</div>
+  </div>
+  <p class="note">Simpan prediksimu di kertas. Kita cek di slide 4.</p>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-s>
+  <p class="kicker">Pemanasan</p>
+  <h2>Tebak angka 1 sampai 100</h2>
+  <p>Temanmu memilih angka rahasia dari 1 sampai 100. Setiap tebakanmu dijawab: <b>lebih besar</b>, <b>lebih kecil</b>, atau <b>tepat</b>.</p>
+  <div class="card">Tebak sebanyak yang kamu perlukan. Catat berapa tebakan yang kamu pakai sampai tepat.</div>
+  <p><b>Pertanyaan:</b> strategi apa yang paling sedikit memakai tebakan? Jawabanmu mungkin menyebut "tebakan di tengah". Simpan kalimat itu. Kita akan mencari tahu kenapa tebakan di tengah itu kuat.</p>
+  <p class="note">Ini bukan tes. Tidak ada jawaban yang salah di tahap ini.</p>
+</section>
+
+<!-- 3 -->
+<section class="slide" data-s>
+  <p class="kicker">Ide kunci</p>
+  <h2>Sekuensial membuang satu data. Biner membuang separuh.</h2>
+  <p>Perbedaan itu terlihat dari apa yang terjadi setelah setiap pengecekan.</p>
+  <div class="grid2">
+    <div class="card plain"><b>Sekuensial</b>Setelah mengecek satu index, hanya index itu yang "selesai". Sisanya masih harus dicek.</div>
+    <div class="card plain"><b>Biner</b>Setelah mengecek satu index di tengah, separuh area ikut tersingkir, tanpa perlu dicek satu per satu.</div>
+  </div>
+  <p>Biner bisa membuang separuh area hanya karena data terurut. Kalau nilai di tengah lebih kecil dari yang dicari, semua nilai di sisi kiri juga lebih kecil. Kamu tidak perlu mengeceknya.</p>
+  <div class="card warn"><b>Ini syarat yang tidak boleh dilewati.</b>Jika data tidak terurut, nilai di sisi kiri bisa saja lebih besar. Pembuangan separuh area menjadi salah. Kita akan melihatnya di simulator.</div>
+</section>
+
+<!-- 4: simulator -->
+<section class="slide" data-s>
+  <p class="kicker">Simulasi</p>
+  <h2>Lomba: jalankan dan amati</h2>
+  <p class="note" style="margin-top:0">Tulis prediksimu dulu. Lalu tekan Langkah atau Otomatis.</p>
+
+  <div class="predict">
+    <label>Prediksi langkah sekuensial
+      <input id="predSeq" type="number" min="1" placeholder="mis. 150">
+    </label>
+    <label>Prediksi langkah biner
+      <input id="predBin" type="number" min="1" placeholder="mis. 8">
+    </label>
+    <button id="predOk" class="pri">Simpan prediksi</button>
+  </div>
+
+  <div class="sim">
+    <div class="controls">
+      <label>Ukuran data
+        <div class="seg" id="sizeSeg">
+          <button data-n="10">10</button>
+          <button data-n="50">50</button>
+          <button data-n="200" class="on">200</button>
+        </div>
+      </label>
+      <label>Data
+        <div class="seg" id="modeSeg">
+          <button data-m="sort" class="on">Terurut</button>
+          <button data-m="unsort">Tidak terurut</button>
+        </div>
+      </label>
+      <label>Cari nilai
+        <input id="target" type="number" value="450">
+      </label>
+      <button id="randomBtn">Nilai acak</button>
+    </div>
+
+    <div class="legend">
+      <span class="chip"><span class="sw" style="background:var(--acc);border-color:var(--acc)"></span>sedang dicek</span>
+      <span class="chip"><span class="sw" style="border:3px solid var(--warn);background:var(--warn-soft)"></span>tengah (biner)</span>
+      <span class="chip"><span class="sw" style="background:var(--seen);border-style:dashed"></span>sudah dicek (sekuensial)</span>
+      <span class="chip"><span class="sw" style="background:var(--gone);opacity:.6"></span>sudah dibuang (biner)</span>
+      <span class="chip"><span class="sw" style="background:var(--ok);border-color:var(--ok)"></span>ketemu</span>
+    </div>
+
+    <div class="track">
+      <div class="trackhead">
+        <h3>Sekuensial: dari kiri ke kanan</h3>
+        <div class="count"><span id="seqN">0</span><small>langkah</small></div>
+      </div>
+      <div class="cells" id="seqCells"></div>
+      <div class="status" id="seqStatus"></div>
+    </div>
+
+    <div class="track">
+      <div class="trackhead">
+        <h3>Biner: cek tengah</h3>
+        <div class="count"><span id="binN">0</span><small>langkah</small></div>
+      </div>
+      <div class="cells" id="binCells"></div>
+      <div class="status" id="binStatus"></div>
+    </div>
+
+    <div class="explain" id="explain">Tekan Langkah untuk memulai. Kedua pencarian akan bergerak bersamaan.</div>
+
+    <div class="actions">
+      <button id="stepBtn" class="pri">Langkah</button>
+      <button id="autoBtn">Otomatis</button>
+      <button id="resetBtn">Ulang</button>
+    </div>
+
+    <div class="reveal" id="reveal"></div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-s>
+  <p class="kicker">Yang berubah</p>
+  <h2>Mengapa selisihnya sebesar itu?</h2>
+  <p>Sekuensial memerlukan satu cek untuk setiap data yang berada sebelum jawabannya. Biner membagi area menjadi dua setiap langkah.</p>
+  <div class="bars">
+    <div class="bar"><span>Sekuensial</span><div><div class="fill" style="width:100%"></div></div><span>200</span></div>
+    <div class="bar b"><span>Biner</span><div><div class="fill" style="width:4%"></div></div><span>8</span></div>
+  </div>
+  <p class="note">Angka di atas adalah kasus terburuk untuk 200 data. Sekuensial paling banyak 200 cek. Biner paling banyak 8 cek.</p>
+  <div class="card">Setiap langkah biner membuang separuh dari sisa area. Setelah 1 langkah tersisa setengah data, setelah 2 langkah tersisa seperempat, dan seterusnya. Itulah kenapa jumlah langkah bertambah sangat lambat ketika data membesar.</div>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-s>
+  <p class="kicker">Ulangi dengan teliti</p>
+  <h2>Lacak satu contoh sampai habis</h2>
+  <p>Data: <code>[2, 5, 8, 12, 16, 23, 38, 56, 72, 91]</code>. Cari 23.</p>
+  <table>
+    <tr><th>Langkah</th><th>Kiri</th><th>Kanan</th><th>Tengah</th><th>Nilai</th><th>Keputusan</th></tr>
+    <tr><td>1</td><td>0</td><td>9</td><td>4</td><td>16</td><td>16 lebih kecil dari 23. Semua index 0 sampai 4 juga lebih kecil, dibuang. Kiri = 5.</td></tr>
+    <tr><td>2</td><td>5</td><td>9</td><td>7</td><td>56</td><td>56 lebih besar dari 23. Index 7 sampai 9 dibuang. Kanan = 6.</td></tr>
+    <tr><td>3</td><td>5</td><td>6</td><td>5</td><td>23</td><td>Ketemu.</td></tr>
+  </table>
+  <p class="note">Tengah = (kiri + kanan) dibagi 2, dibulatkan ke bawah. Pada langkah 1, (0 + 9) / 2 = 4,5 dibulatkan jadi 4.</p>
+</section>
+
+<!-- 7 -->
+<section class="slide" data-s>
+  <p class="kicker">Syarat</p>
+  <h2>Cobalah data tidak terurut</h2>
+  <p>Di simulator, ganti data ke <b>Tidak terurut</b>, lalu cari angka yang jelas ada, misalnya 23 atau 72. Perhatikan apa yang dicetak biner.</p>
+  <div class="card warn">Biner bisa berkata "tidak ada" padahal angkanya ada. Ia membuang area yang seharusnya masih diperiksa.</div>
+  <p><b>Pertanyaan:</b> apa yang harus dilakukan sebelum biner bisa dipakai? Jawab dengan satu kalimat.</p>
+  <details>
+    <summary>Lihat jawaban</summary>
+    <p>Data harus terurut. Pengurutan dilakukan sekali sebelum pencarian. Kalau data sering berubah, pengurutan ulang juga punya biaya.</p>
+  </details>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-s>
+  <p class="kicker">Skala</p>
+  <h2>Berapa langkah untuk data yang besar?</h2>
+  <table>
+    <tr><th>Jumlah data</th><th>Sekuensial (kasus terburuk)</th><th>Biner (kasus terburuk)</th></tr>
+    <tr><td>10</td><td>10</td><td>4</td></tr>
+    <tr><td>50</td><td>50</td><td>6</td></tr>
+    <tr><td>200</td><td>200</td><td>8</td></tr>
+    <tr><td>1.000</td><td>1.000</td><td>10</td></tr>
+    <tr><td>1.000.000</td><td>1.000.000</td><td>20</td></tr>
+  </table>
+  <p>Biner paling banyak kira-kira <b>log dasar 2 dari n, dibulatkan ke atas</b>. Kamu tidak perlu menghitung logaritma. Cukup ingat: setiap langkah membuang separuh sisa area.</p>
+  <p class="note">Tabel ini adalah kasus terburuk. Pada kenyataannya, sekuensial bisa berhenti lebih awal jika data yang dicari ada di depan.</p>
+</section>
+
+<!-- 9 -->
+<section class="slide" data-s>
+  <p class="kicker">Kode</p>
+  <h2>Versi Python</h2>
+  <pre>data = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]
+cari = 23
+
+kiri = 0
+kanan = len(data) - 1
+langkah = 0
+
+while kiri &lt;= kanan:
+    langkah = langkah + 1
+    tengah = (kiri + kanan) // 2
+    print("Cek index", tengah, "nilainya", data[tengah])
+    if data[tengah] == cari:
+        print("Ketemu setelah", langkah, "langkah")
+        break
+    elif data[tengah] &lt; cari:
+        kiri = tengah + 1
+    else:
+        kanan = tengah - 1
+else:
+    print("Tidak ditemukan setelah", langkah, "langkah")</pre>
+  <div class="grid3">
+    <div class="card plain"><b>while</b>Ulangi selama kiri belum melewati kanan.</div>
+    <div class="card plain"><b>//</b>Pembagian bulat. Hasilnya selalu bilangan utuh.</div>
+    <div class="card plain"><b>break</b>Berhenti saat jawaban sudah ketemu.</div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="slide" data-s>
+  <p class="kicker">Hati-hati</p>
+  <h2>Kesalahan yang paling sering terjadi</h2>
+  <ol>
+    <li><b><code>kanan = len(data)</code></b>. Index terakhir adalah len(data) - 1. Akibatnya program akan membaca index yang tidak ada.</li>
+    <li><b>Lupa mengubah kiri atau kanan.</b> Area tidak mengecil, dan program berputar terus. Hentikan dengan Ctrl+C untuk melihat efeknya.</li>
+    <li><b><code>while kiri &lt; kanan</code></b>. Area dengan satu elemen tidak pernah dicek.</li>
+  </ol>
+  <p class="note">Coba dengan sengaja salah satu dari ketiganya di editormu. Lihat apa yang terjadi. Mengalami error sendiri lebih mudah diingat daripada membaca penjelasannya.</p>
+</section>
+
+<!-- 11 -->
+<section class="slide" data-s>
+  <p class="kicker">Latihan</p>
+  <h2>Kerjakan sebelum melihat jawaban</h2>
+  <ol>
+    <li>Data <code>[3, 7, 11, 15, 19, 24, 30]</code>. Cari 24 dengan biner. Tulis kiri, kanan, tengah, dan keputusan setiap langkah.</li>
+    <li>Data yang sama. Cari 10. Berapa langkah, dan apa tandanya bahwa angka itu tidak ada?</li>
+    <li>Di simulator, ukuran 200 dan nilai 450. Prediksi sekuensial dan biner, lalu bandingkan dengan hasil.</li>
+    <li>Ubah data menjadi <b>Tidak terurut</b> dan cari angka yang ada. Apa yang salah?</li>
+  </ol>
+  <details>
+    <summary>Lihat jawaban nomor 1 dan 2</summary>
+    <p><b>1.</b> Langkah 1: kiri 0, kanan 6, tengah 3, nilai 15, lebih kecil, kiri = 4. Langkah 2: kiri 4, kanan 6, tengah 5, nilai 24, ketemu.</p>
+    <p><b>2.</b> Langkah 1: tengah 3, nilai 15, lebih besar, kanan = 2. Langkah 2: tengah 1, nilai 7, lebih kecil, kiri = 2. Langkah 3: tengah 2, nilai 11, lebih besar, kanan = 1. Sekarang kiri (2) lebih besar dari kanan (1). Tandanya: area kosong.</p>
+  </details>
+</section>
+
+<!-- 12 -->
+<section class="slide" data-s>
+  <p class="kicker">Penutup</p>
+  <h2>Refleksi</h2>
+  <div class="card">Apa yang sekarang kamu pahami tentang "membuang separuh" yang belum kamu pahami sebelum slide ini?</div>
+  <div class="card">Pada situasi nyata apa kamu tetap memilih sekuensial, walaupun biner tersedia? Jelaskan dengan syarat data.</div>
+  <div class="card">Tebakan awalmu tadi, apakah meleset? Di langkah mana kamu mulai melihat pola?</div>
+</section>
+
+<div class="nav">
+  <button id="prev">Sebelumnya</button>
+  <span class="mid" id="mid"></span>
+  <button class="pri" id="next">Berikutnya</button>
+</div>
+
+</div>
+
+<script>
+/* ---------- navigasi ---------- */
+const slides=[...document.querySelectorAll('[data-s]')];
+let cur=0;
+function show(i){
+  cur=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach((s,k)=>s.classList.toggle('on',k===cur));
+  document.getElementById('cnt').textContent=(cur+1)+' / '+slides.length;
+  document.getElementById('mid').textContent='Slide '+(cur+1)+' dari '+slides.length;
+  document.getElementById('bar').style.width=((cur+1)/slides.length*100)+'%';
+  document.getElementById('prev').disabled=(cur===0);
+  document.getElementById('next').disabled=(cur===slides.length-1);
+  if(slides[cur].querySelector('#seqCells') && !sim.inited){ resetSim(); sim.inited=true; }
+}
+document.getElementById('prev').onclick=()=>show(cur-1);
+document.getElementById('next').onclick=()=>show(cur+1);
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  if(e.key==='ArrowRight')show(cur+1);
+  if(e.key==='ArrowLeft')show(cur-1);
+});
+
+/* ---------- simulator ---------- */
+const sim={
+  n:200, mode:'sort', data:[], target:450,
+  seq:{pos:-1,langkah:0,selesai:false,ketemu:-1,note:''},
+  bin:{kiri:0,kanan:0,tengah:-1,langkah:0,selesai:false,ketemu:-1,note:''},
+  pred:{seq:null,bin:null}, timer:null, inited:false
+};
+
+function makeSorted(n){ return Array.from({length:n},(_,i)=>(i+1)*3); }
+function makeUnsorted(arr){
+  // permutasi deterministik agar hasil bisa diulang
+  const a=arr.slice(); let s=7;
+  for(let i=a.length-1;i>0;i--){
+    s=(Math.imul(s,1103515245)+12345)&0x7fffffff;
+    const j=s%(i+1);
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function buildData(){
+  const base=makeSorted(sim.n);
+  sim.data = sim.mode==='sort' ? base : makeUnsorted(base);
+}
+function defaultTarget(){
+  // nilai di sekitar dua pertiga data, agar sekuensial terasa panjang
+  const idx=Math.floor(sim.n*0.75)-1;
+  return makeSorted(sim.n)[idx];
+}
+
+function resetSim(){
+  clearInterval(sim.timer); sim.timer=null;
+  buildData();
+  const tEl=document.getElementById('target');
+  const v=Number(tEl.value);
+  if(tEl.dataset.touched!=='1'){ sim.target=defaultTarget(); tEl.value=sim.target; }
+  else { sim.target = Number.isNaN(v)? sim.target : v; }
+  sim.seq={pos:-1,langkah:0,selesai:false,ketemu:-1,note:''};
+  sim.bin={kiri:0,kanan:sim.data.length-1,tengah:-1,langkah:0,selesai:false,ketemu:-1,note:''};
+  document.getElementById('reveal').classList.remove('on');
+  document.getElementById('reveal').innerHTML='';
+  document.getElementById('explain').className='explain';
+  document.getElementById('explain').textContent = sim.mode==='sort'
+    ? 'Tekan Langkah untuk memulai. Kedua pencarian bergerak bersamaan pada data yang sama.'
+    : 'Data tidak terurut. Coba langkah demi langkah dan perhatikan apakah biner tetap benar.';
+  render();
+}
+
+function stepSeq(){
+  const s=sim.seq;
+  if(s.selesai)return;
+  if(s.pos+1>=sim.data.length){ s.selesai=true; s.note='Semua data sudah dicek.'; return; }
+  s.pos++; s.langkah++;
+  const v=sim.data[s.pos];
+  if(v===sim.target){ s.ketemu=s.pos; s.selesai=true; s.note='Ketemu di index '+s.pos+' setelah '+s.langkah+' langkah.'; }
+  else if(s.pos===sim.data.length-1){ s.selesai=true; s.note='Index terakhir sudah dicek. Angka tidak ada, setelah '+s.langkah+' langkah.'; }
+  else { s.note='Cek index '+s.pos+' (nilai '+v+'). Belum sama, lanjut.'; }
+}
+
+function stepBin(){
+  const b=sim.bin;
+  if(b.selesai)return;
+  if(b.kiri>b.kanan){ b.selesai=true; b.tengah=-1; b.note='Area kosong. Angka '+sim.target+' tidak ada menurut biner.'; return; }
+  const t=Math.floor((b.kiri+b.kanan)/2);
+  b.tengah=t; b.langkah++;
+  const v=sim.data[t];
+  if(v===sim.target){
+    b.ketemu=t; b.selesai=true;
+    b.note='Ketemu di index '+t+' setelah '+b.langkah+' langkah.';
+    return;
+  }
+  if(v<sim.target){
+    if(sim.mode==='sort'){
+      b.note='Index '+t+' berisi '+v+', lebih kecil dari '+sim.target+'. Karena data terurut, index 0 sampai '+t+' juga lebih kecil. Semua itu dibuang. Kiri jadi '+(t+1)+'.';
+    }else{
+      b.note='Index '+t+' berisi '+v+', lebih kecil dari '+sim.target+'. Data tidak terurut, jadi bagian kiri bisa saja berisi '+sim.target+'. Membuangnya bisa salah.';
+    }
+    b.kiri=t+1;
+  }else{
+    if(sim.mode==='sort'){
+      b.note='Index '+t+' berisi '+v+', lebih besar dari '+sim.target+'. Karena data terurut, index '+t+' sampai '+(sim.data.length-1)+' juga lebih besar. Semua itu dibuang. Kanan jadi '+(t-1)+'.';
+    }else{
+      b.note='Index '+t+' berisi '+v+', lebih besar dari '+sim.target+'. Data tidak terurut, jadi bagian kanan bisa saja berisi '+sim.target+'. Membuangnya bisa salah.';
+    }
+    b.kanan=t-1;
+  }
+  if(!b.selesai && b.kiri>b.kanan){
+    b.selesai=true; b.tengah=-1;
+    b.note+=' Area kosong, biner menyatakan angka tidak ada.';
+  }
+}
+
+function stepAll(){
+  if(sim.seq.selesai && sim.bin.selesai) return;
+  stepSeq(); stepBin(); render();
+  if(sim.seq.selesai && sim.bin.selesai) finish();
+}
+
+function finish(){
+  clearInterval(sim.timer); sim.timer=null;
+  const r=document.getElementById('reveal');
+  const s=sim.seq.langkah, b=sim.bin.langkah;
+  const ps=sim.pred.seq, pb=sim.pred.bin;
+  let html='<div class="card ok"><b>Hasil</b>Sekuensial: '+s+' langkah. Biner: '+b+' langkah.';
+  if(b>0 && s>0) html+=' Sekuensial memakai sekitar '+(s/b).toFixed(1)+' kali lebih banyak langkah.';
+  html+='</div>';
+  if(ps!==null || pb!==null){
+    html+='<div class="card"><b>Prediksimu</b>';
+    html+= ps!==null ? 'Sekuensial: kamu menulis '+ps+', hasilnya '+s+'. ' : '';
+    html+= pb!==null ? 'Biner: kamu menulis '+pb+', hasilnya '+b+'.' : '';
+    html+='</div>';
+  }
+  if(sim.mode==='unsort' && sim.bin.ketemu<0 && sim.seq.ketemu>=0){
+    html+='<div class="card warn"><b>Perhatikan</b>Sekuensial menemukan angka di index '+sim.seq.ketemu+', tetapi biner menyatakan tidak ada. Ini terjadi karena data tidak terurut.</div>';
+  }
+  r.innerHTML=html; r.classList.add('on');
+}
+
+function render(){
+  const n=sim.data.length;
+  const cellSize = n<=10 ? '56px' : (n<=50 ? '40px' : '26px');
+  const h = n<=10 ? '52px' : (n<=50 ? '40px' : '28px');
+  const fs = n<=10 ? '1rem' : (n<=50 ? '.85rem' : '.7rem');
+  ['seqCells','binCells'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.style.setProperty('--cell',cellSize);
+    el.style.setProperty('--h',h);
+    el.style.setProperty('--fs',fs);
+  });
+
+  // sekuensial
+  const sq=document.getElementById('seqCells'); sq.innerHTML='';
+  sim.data.forEach((v,i)=>{
+    const c=document.createElement('div');
+    let cls='cell';
+    const s=sim.seq;
+    if(s.ketemu===i) cls+=' hit';
+    else if(i===s.pos && !s.selesai) cls+=' cur';
+    else if(i===s.pos && s.selesai && s.ketemu<0) cls+=' miss';
+    else if(i<=s.pos) cls+=' seen';
+    c.className=cls;
+    c.title='index '+i+', nilai '+v;
+    c.innerHTML=v+(n<=50?'<i>'+i+'</i>':'');
+    sq.appendChild(c);
+  });
+
+  // biner
+  const bq=document.getElementById('binCells'); bq.innerHTML='';
+  const b=sim.bin;
+  sim.data.forEach((v,i)=>{
+    const c=document.createElement('div');
+    let cls='cell';
+    if(b.ketemu===i) cls+=' hit';
+    else if(i===b.tengah && !b.selesai) cls+=' mid';
+    else if(i===b.tengah && b.selesai && b.ketemu<0) cls+=' miss';
+    else if(i<b.kiri || i>b.kanan) cls+=' gone';
+    c.className=cls;
+    c.title='index '+i+', nilai '+v;
+    c.innerHTML=v+(n<=50?'<i>'+i+'</i>':'');
+    bq.appendChild(c);
+  });
+
+  document.getElementById('seqN').textContent=sim.seq.langkah;
+  document.getElementById('binN').textContent=sim.bin.langkah;
+  document.getElementById('seqStatus').textContent=sim.seq.note||('Mulai dari index 0. Cari '+sim.target+'.');
+  document.getElementById('binStatus').textContent=sim.bin.note||('Kiri 0, kanan '+(n-1)+'. Tengah dihitung dari keduanya.');
+  const ex=document.getElementById('explain');
+  if(sim.bin.note){
+    ex.textContent=sim.bin.note;
+    ex.className='explain'+(sim.mode==='unsort' && sim.bin.note.indexOf('bisa saja')>=0?' bad':'');
+  }
+  document.getElementById('stepBtn').disabled = sim.seq.selesai && sim.bin.selesai;
+  document.getElementById('autoBtn').disabled = sim.seq.selesai && sim.bin.selesai;
+  document.getElementById('autoBtn').textContent = sim.timer ? 'Jeda' : 'Otomatis';
+}
+
+/* kontrol */
+document.getElementById('stepBtn').onclick=()=>{ stepAll(); };
+document.getElementById('autoBtn').onclick=()=>{
+  if(sim.timer){ clearInterval(sim.timer); sim.timer=null; render(); return; }
+  sim.timer=setInterval(()=>{
+    if(sim.seq.selesai && sim.bin.selesai){ clearInterval(sim.timer); sim.timer=null; render(); return; }
+    stepAll();
+  },700);
+  render();
+};
+document.getElementById('resetBtn').onclick=()=>{ sim.pred={seq:null,bin:null}; resetSim(); };
+
+document.querySelectorAll('#sizeSeg button').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('#sizeSeg button').forEach(x=>x.classList.remove('on'));
+    btn.classList.add('on');
+    sim.n=Number(btn.dataset.n);
+    document.getElementById('target').dataset.touched='0';
+    resetSim();
+  };
+});
+document.querySelectorAll('#modeSeg button').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('#modeSeg button').forEach(x=>x.classList.remove('on'));
+    btn.classList.add('on');
+    sim.mode=btn.dataset.m;
+    resetSim();
+  };
+});
+document.getElementById('target').onchange=(e)=>{
+  e.target.dataset.touched='1';
+  resetSim();
+};
+document.getElementById('randomBtn').onclick=()=>{
+  const idx=Math.floor(Math.random()*sim.n);
+  const v=makeSorted(sim.n)[idx];
+  const tEl=document.getElementById('target');
+  tEl.value=v; tEl.dataset.touched='1';
+  resetSim();
+};
+document.getElementById('predOk').onclick=()=>{
+  const ps=document.getElementById('predSeq').value;
+  const pb=document.getElementById('predBin').value;
+  sim.pred.seq = ps==='' ? null : Number(ps);
+  sim.pred.bin = pb==='' ? null : Number(pb);
+  const r=document.getElementById('reveal');
+  r.innerHTML='<div class="card"><b>Prediksi tersimpan.</b>Jalankan sampai selesai untuk melihat hasilnya.</div>';
+  r.classList.add('on');
+};
+
+show(0);
+</script>
+</body>
+</html>
