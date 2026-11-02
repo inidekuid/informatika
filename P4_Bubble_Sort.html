@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bubble Sort: Mengurutkan Data Selangkah demi Selangkah</title>
+<style>
+:root{
+  --bg:#fbfaf7; --ink:#1f2328; --muted:#5b6370; --line:#e3e0d8;
+  --accent:#1d5fa7; --accent-soft:#e7f0fa; --code-bg:#f3f1ec; --warn:#8a5a00; --warn-soft:#fbf3e2;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16181c; --ink:#e7e9ee; --muted:#9aa3b2; --line:#2b3038;
+    --accent:#7fb3ea; --accent-soft:#1d2b3d; --code-bg:#20242b; --warn:#f0c46c; --warn-soft:#2e2a20;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16181c; --ink:#e7e9ee; --muted:#9aa3b2; --line:#2b3038;
+  --accent:#7fb3ea; --accent-soft:#1d2b3d; --code-bg:#20242b; --warn:#f0c46c; --warn-soft:#2e2a20;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:17px/1.7 Georgia,"Times New Roman",serif}
+.wrap{max-width:720px;margin:0 auto;padding:24px 16px 80px}
+header.cover{padding:40px 0 24px;border-bottom:1px solid var(--line);margin-bottom:24px}
+.kicker{font:600 13px/1.4 system-ui,sans-serif;color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
+h1{font-size:2rem;line-height:1.25;margin:8px 0 12px}
+h2{font-size:1.45rem;margin:48px 0 8px;padding-top:12px;border-top:1px solid var(--line)}
+h3{font-size:1.15rem;margin:28px 0 6px}
+p{margin:0 0 14px}
+.meta{font:14px/1.5 system-ui,sans-serif;color:var(--muted)}
+nav.toc{background:var(--accent-soft);border-radius:10px;padding:16px 20px;margin:24px 0}
+nav.toc h2{border:0;margin:0 0 8px;padding:0;font-size:1.05rem}
+nav.toc ol{margin:0;padding-left:20px}
+nav.toc a{color:var(--accent);text-decoration:none}
+nav.toc li{margin:4px 0}
+.box{border-radius:10px;padding:14px 18px;margin:20px 0;font:15px/1.6 system-ui,sans-serif}
+.box.tip{background:var(--accent-soft)}
+.box.warn{background:var(--warn-soft);color:var(--ink)}
+.box strong{display:block;margin-bottom:4px}
+pre{background:var(--code-bg);border-radius:8px;padding:14px 16px;overflow-x:auto;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;margin:14px 0}
+code{font:0.92em ui-monospace,Menlo,Consolas,monospace;background:var(--code-bg);padding:1px 5px;border-radius:4px}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:16px 0;font:15px/1.5 system-ui,sans-serif;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--accent-soft)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:18px 0}
+.card{border:1px solid var(--line);border-radius:10px;padding:14px}
+.card h3{margin:0 0 6px;font-size:1rem}
+.card p{font:14px/1.5 system-ui,sans-serif;margin:0;color:var(--muted)}
+.tier{display:inline-block;font:600 12px/1 system-ui,sans-serif;padding:5px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);margin-right:6px}
+details{border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin:14px 0;background:transparent}
+summary{cursor:pointer;font:600 15px/1.4 system-ui,sans-serif;color:var(--accent)}
+details[open] summary{margin-bottom:8px}
+.trace td:first-child{white-space:nowrap}
+.blank{display:inline-block;min-width:60px;border-bottom:1.5px solid var(--muted);margin:0 4px}
+.check{display:flex;gap:10px;align-items:flex-start;font:15px/1.5 system-ui,sans-serif;margin:8px 0}
+.check span.box-l{flex:none;width:16px;height:16px;border:1.5px solid var(--muted);border-radius:3px;margin-top:3px}
+.answer-line{border-bottom:1px solid var(--line);height:28px;margin:10px 0}
+
+.sim-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0;font:15px/1.4 system-ui,sans-serif}
+.sim-controls input[type=text]{flex:1 1 220px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:14px ui-monospace,Menlo,Consolas,monospace}
+.sim-controls button{padding:8px 12px;border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);border-radius:6px;cursor:pointer;font:600 14px system-ui,sans-serif}
+.sim-controls button:disabled{opacity:.45;cursor:default}
+.sim-controls label{font:14px system-ui,sans-serif;color:var(--muted)}
+.bars{display:flex;align-items:flex-end;justify-content:center;gap:8px;height:200px;padding:12px 6px;border:1px solid var(--line);border-radius:10px;margin:10px 0}
+.bar{flex:1 1 0;max-width:72px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.bar .fill{width:100%;background:var(--accent);opacity:.55;border-radius:6px 6px 0 0;transition:height .25s ease,background .2s}
+.bar .val{font:600 14px system-ui,sans-serif;margin-bottom:4px}
+.bar .idx{font:12px system-ui,sans-serif;color:var(--muted);margin-top:4px}
+.bar.cmp .fill{background:var(--warn);opacity:1}
+.bar.swap .fill{background:#c0392b;opacity:1}
+.bar.sorted .fill{background:#2e8b57;opacity:.75}
+.sim-stats{display:flex;gap:10px;flex-wrap:wrap;font:14px system-ui,sans-serif;margin:8px 0}
+.sim-stats div{border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+.sim-msg{min-height:48px;font:15px/1.5 system-ui,sans-serif;padding:10px 12px;border-radius:8px;background:var(--accent-soft);margin:8px 0}
+.sim-err{color:#c0392b;font:14px system-ui,sans-serif;min-height:18px}
+.presets{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);font:14px/1.5 system-ui,sans-serif;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <div class="kicker">Informatika Kelas X &middot; Materi 2 Struktur Data Dasar &middot; Pertemuan 4</div>
+  <h1>Bubble Sort: Mengurutkan Data Selangkah demi Selangkah</h1>
+  <p class="meta">Bahan belajar mandiri. Kamu bisa membaca dari awal sampai akhir, atau memilih jalur sesuai kecepatanmu.</p>
+</header>
+
+<nav class="toc">
+  <h2>Isi</h2>
+  <ol>
+    <li><a href="#bab1">Mengapa data perlu diurutkan</a></li>
+    <li><a href="#bab2">Ide dasar Bubble Sort</a></li>
+    <li><a href="#bab3">Lacak dengan kartu</a></li>
+    <li><a href="#sim">Simulasi Bubble Sort</a></li>
+    <li><a href="#bab4">Bubble Sort dengan Python</a></li>
+    <li><a href="#bab5">Tantangan</a></li>
+    <li><a href="#bab6">Refleksi dan pengumpulan</a></li>
+    <li><a href="#referensi">Referensi belajar</a></li>
+  </ol>
+</nav>
+
+<section>
+  <h3>Pilih jalurmu</h3>
+  <p>Setiap bab punya tanda jalur. Kerjakan jalur yang sesuai dengan kecepatanmu. Guru akan memberi tahu bagian mana yang wajib dikumpulkan.</p>
+  <div class="cards">
+    <div class="card"><h3><span class="tier">Inti</span></h3><p>Bab 1 sampai 3, dan Python sampai kode berjalan. Ini yang wajib.</p></div>
+    <div class="card"><h3><span class="tier">Lanjut</span></h3><p>Python lengkap dengan semua kotak terisi, plus Tantangan A dan B.</p></div>
+    <div class="card"><h3><span class="tier">Pengayaan</span></h3><p>Tantangan C: versi yang berhenti lebih awal. Untuk yang sudah selesai lebih dulu.</p></div>
+  </div>
+</section>
+
+
+<section id="bab1">
+  <h2>Bab 1. Mengapa data perlu diurutkan</h2>
+  <p><span class="tier">Inti</span></p>
+  <p>Kemarin kamu mencari angka dengan cara biner. Cara itu hanya benar jika data sudah terurut. Pertanyaannya sekarang: bagaimana data bisa terurut?</p>
+  <p>Mengurutkan data berarti mengatur ulang isinya dari kecil ke besar, atau dari besar ke kecil. Ada banyak cara untuk melakukannya. Dalam bab ini kita pelajari satu yang paling sederhana, yaitu Bubble Sort.</p>
+  <div class="box tip"><strong>Sebelum lanjut</strong>Tulis di kertas: jika kamu diberi 5 kartu angka yang acak dan diminta mengurutkannya, apa langkah pertama yang kamu lakukan? Tulis dulu, lalu baca lanjutannya.</div>
+</section>
+
+<section id="bab2">
+  <h2>Bab 2. Ide dasar Bubble Sort</h2>
+  <p><span class="tier">Inti</span></p>
+  <p>Bubble Sort bekerja dengan cara sederhana. Bandingkan dua angka yang bersebelahan. Jika angka kiri lebih besar dari angka kanan, tukar keduanya. Lalu lanjutkan ke pasangan berikutnya ke kanan.</p>
+  <p>Satu kali perjalanan dari kiri ke kanan disebut satu <strong>putaran</strong>. Setelah satu putaran, angka terbesar selalu sampai di posisi paling kanan. Angka itu sudah di tempat yang benar, jadi putaran berikutnya tidak perlu memeriksanya lagi.</p>
+  <p>Putaran diulang sampai tidak ada lagi angka yang perlu ditukar.</p>
+  <p>Mengapa disebut Bubble Sort? Angka besar "naik" ke kanan seperti gelembung, sedikit demi sedikit dalam setiap putaran.</p>
+
+  <h3>Contoh: data 5, 3, 8, 1, 4</h3>
+  <table>
+    <tr><th>Putaran</th><th>Yang terjadi</th><th>Urutan setelah putaran</th></tr>
+    <tr><td>1</td><td>5 dan 3 ditukar. 5 dan 8 tidak. 8 dan 1 ditukar. 8 dan 4 ditukar.</td><td>3, 5, 1, 4, 8</td></tr>
+    <tr><td>2</td><td>Angka 8 sudah di tempat. Cukup periksa 3 pasangan.</td><td>3, 1, 4, 5, 8</td></tr>
+    <tr><td>3</td><td>Periksa 2 pasangan.</td><td>1, 3, 4, 5, 8</td></tr>
+    <tr><td>4</td><td>Periksa 1 pasangan. Tidak ada yang ditukar, jadi data sudah terurut.</td><td>1, 3, 4, 5, 8</td></tr>
+  </table>
+  <p>Perhatikan dua hal. Setiap putaran memeriksa sedikit lebih sedikit pasangan, karena bagian kanan sudah pasti terurut. Dan putaran ke-4 penting, karena di sana kita tahu data sudah benar-benar terurut: tidak ada pasangan yang perlu ditukar lagi.</p>
+</section>
+
+<section id="bab3">
+  <h2>Bab 3. Lacak dengan kartu</h2>
+  <p><span class="tier">Inti</span></p>
+  <p>Ambil 5 kartu atau 5 kertas kecil. Tulis angka 5, 3, 8, 1, 4 di kartu tersebut. Susun dari kiri ke kanan di meja, lalu ikuti aturan Bubble Sort.</p>
+  <p>Isi tabel ini di buku catatanmu:</p>
+  <table>
+    <tr><th>Putaran</th><th>Urutan kartu di akhir putaran</th><th>Jumlah pertukaran</th></tr>
+    <tr><td>1</td><td>______ ______ ______ ______ ______</td><td>______</td></tr>
+    <tr><td>2</td><td>______ ______ ______ ______ ______</td><td>______</td></tr>
+    <tr><td>3</td><td>______ ______ ______ ______ ______</td><td>______</td></tr>
+    <tr><td>4</td><td>______ ______ ______ ______ ______</td><td>______</td></tr>
+  </table>
+
+  <p>Jawab dengan kalimatmu sendiri:</p>
+  <div class="check"><span class="box-l"></span><div>a. Berapa total pertukaran dari awal sampai data terurut?</div></div>
+  <div class="check"><span class="box-l"></span><div>b. Berapa kali kamu membandingkan dua kartu? Hitung, jangan menebak.</div></div>
+  <div class="check"><span class="box-l"></span><div>c. Setelah putaran berapa kamu yakin data sudah terurut? Bagaimana kamu tahu?</div></div>
+
+  <details>
+    <summary>Lihat kunci (coba dulu sebelum membuka)</summary>
+    <p>Putaran 1: 3, 5, 1, 4, 8. Pertukaran 3.<br>
+    Putaran 2: 3, 1, 4, 5, 8. Pertukaran 2.<br>
+    Putaran 3: 1, 3, 4, 5, 8. Pertukaran 1.<br>
+    Putaran 4: 1, 3, 4, 5, 8. Pertukaran 0.</p>
+    <p>a. Total pertukaran: 6.<br>
+    b. Total perbandingan: 10. Putaran 1 membandingkan 4 pasang, putaran 2 membandingkan 3, putaran 3 membandingkan 2, dan putaran 4 membandingkan 1. Jumlahnya 4 + 3 + 2 + 1 = 10.<br>
+    c. Data sudah terurut sejak akhir putaran 3, tetapi kita baru yakin di putaran 4, karena di sana tidak ada pertukaran sama sekali. Jika tidak ada pertukaran dalam satu putaran, setiap pasangan bersebelahan sudah berurutan.</p>
+  </details>
+</section>
+
+<section id="sim">
+  <h2>Simulasi Bubble Sort</h2>
+  <p>Simulasi ini menjalankan Bubble Sort langkah demi langkah. Warna kuning berarti dua angka sedang dibandingkan. Warna merah berarti keduanya ditukar. Warna hijau berarti angka sudah berada di posisi akhirnya.</p>
+  <p>Coba dulu sebelum menekan Langkah: tebak apa yang terjadi berikutnya.</p>
+
+  <div class="sim-controls">
+    <input type="text" id="simData" value="5, 3, 8, 1, 4" aria-label="Data angka, dipisah koma">
+    <button id="simApply">Terapkan data</button>
+  </div>
+  <div class="presets">
+    <button type="button" data-preset="5,3,8,1,4">Contoh kita</button>
+    <button type="button" data-preset="5,4,3,2,1">Terbalik</button>
+    <button type="button" data-preset="1,2,3,5,4">Hampir terurut</button>
+    <button type="button" data-preset="7,2,9,4,1,8,3">7 data</button>
+  </div>
+  <div class="sim-controls">
+    <label><input type="checkbox" id="simEarly"> Berhenti lebih awal jika satu putaran tidak ada pertukaran</label>
+  </div>
+  <div class="sim-err" id="simErr"></div>
+
+  <div class="bars" id="simBars" role="img" aria-label="Batang angka yang sedang diurutkan"></div>
+  <div class="sim-stats">
+    <div>Putaran: <strong id="stPass">0</strong></div>
+    <div>Perbandingan: <strong id="stCmp">0</strong></div>
+    <div>Pertukaran: <strong id="stSw">0</strong></div>
+  </div>
+  <div class="sim-msg" id="simMsg">Tekan Langkah untuk mulai.</div>
+  <div class="sim-controls">
+    <button id="simStep">Langkah</button>
+    <button id="simAuto">Otomatis</button>
+    <button id="simReset">Ulang</button>
+  </div>
+
+  <details>
+    <summary>Hitung sendiri sebelum melihat hasilnya</summary>
+    <p>Untuk data 5, 3, 8, 1, 4, tanpa berhenti lebih awal: perbandingan 10, pertukaran 6. Coba cocokkan dengan angka di statistik setelah simulasi selesai.</p>
+  </details>
+</section>
+
+<section id="bab4">
+  <h2>Bab 4. Bubble Sort dengan Python</h2>
+  <p><span class="tier">Inti</span> <span class="tier">Lanjut</span></p>
+  <p>Buka Thonny atau IDLE. Buat file baru dan simpan dengan nama <code>Bubble_Kelas_[Kelas]_Absen[NomorAbsen].py</code>. Ketik kode di bawah.</p>
+
+  <h3>4.1 Kode dengan bagian kosong</h3>
+  <p>Isi bagian yang ditandai dengan kotak kosong. Jangan langsung membuka jawaban.</p>
+<pre><code># Nama: ______________  Absen: ____  Kelas: ____
+nilai = [5, 3, 8, 1, 4]
+n = len(nilai)
+total_tukar = 0
+
+for putaran in range(____):
+    print("Awal putaran", putaran + 1, nilai)
+    for i in range(n - 1 - putaran):
+        if nilai[i] ____ nilai[i + 1]:
+            nilai[i], nilai[i + 1] = ____
+            total_tukar = total_tukar + 1
+
+print("Hasil", nilai)
+print("Total pertukaran", total_tukar)</code></pre>
+
+  <div class="box tip"><strong>Petunjuk</strong>
+  Putaran dilakukan sebanyak n - 1 kali. Tulis ekspresi itu di kotak pertama.<br>
+  Syarat tukar: angka kiri lebih besar dari angka kanan. Tulis tanda perbandingan yang tepat.<br>
+  Untuk menukar dua nilai, tulis <code>nilai[i + 1], nilai[i]</code> di kotak terakhir.</div>
+
+  <details>
+    <summary>Lihat jawaban kotak (setelah mencoba sendiri)</summary>
+    <pre><code>range(n - 1)
+&gt;
+nilai[i + 1], nilai[i]</code></pre>
+  </details>
+
+  <h3>4.2 Hasil yang harus muncul</h3>
+  <p>Jika kodemu benar, outputnya seperti ini:</p>
+<pre><code>Awal putaran 1 [5, 3, 8, 1, 4]
+Awal putaran 2 [3, 5, 1, 4, 8]
+Awal putaran 3 [3, 1, 4, 5, 8]
+Awal putaran 4 [1, 3, 4, 5, 8]
+Hasil [1, 3, 4, 5, 8]
+Total pertukaran 6</code></pre>
+  <p>Jika hasilmu berbeda, periksa dulu tanda perbandingan dan batas range. Dua kesalahan itu paling sering terjadi.</p>
+
+  <div class="box warn"><strong>Kesalahan yang sering terjadi</strong>
+  range(n) pada loop dalam menyebabkan IndexError karena nilai[i + 1] melewati index terakhir.<br>
+  Menulis <code>nilai[i] = nilai[i + 1]</code> tanpa menukar membuat kedua angka menjadi sama, dan angka asli hilang.<br>
+  Tanda <code>&lt;</code> membuat urutannya terbalik. Tanyakan pada dirimu: apa yang sebenarnya diminta?</div>
+</section>
+
+<section id="bab5">
+  <h2>Bab 5. Tantangan</h2>
+  <p>Kerjakan setelah kodemu di Bab 4 berjalan.</p>
+
+  <h3><span class="tier">Lanjut</span> Tantangan A</h3>
+  <p>Ubah data menjadi <code>[5, 4, 3, 2, 1]</code>. Jalankan dan catat total pertukaran. Mengapa jumlahnya sebesar itu?</p>
+  <details>
+    <summary>Lihat kunci</summary>
+    <p>Total pertukaran 10. Setiap pasangan yang dibandingkan di data ini salah urut, sehingga selalu ditukar. Jumlah pertukaran sama dengan jumlah pasangan yang salah urut di data awal, dan untuk 5 data terbalik jumlahnya 10. Ini kasus terburuk Bubble Sort.</p>
+  </details>
+
+  <h3><span class="tier">Lanjut</span> Tantangan B</h3>
+  <p>Ubah data menjadi <code>[1, 2, 3, 4, 5]</code>. Jalankan dan lihat apakah ada pertukaran. Apakah program tetap memeriksa semua pasangan di setiap putaran?</p>
+  <details>
+    <summary>Lihat kunci</summary>
+    <p>Tidak ada pertukaran, total pertukaran 0. Program tetap memeriksa 10 pasangan, karena kode di Bab 4 belum berhenti lebih awal, walaupun datanya sudah terurut sejak awal.</p>
+  </details>
+
+  <h3><span class="tier">Pengayaan</span> Tantangan C</h3>
+  <p>Buat versi yang berhenti lebih awal, yaitu jika dalam satu putaran tidak ada pertukaran sama sekali. Tulis perubahanmu dan jelaskan mengapa itu aman.</p>
+  <details>
+    <summary>Lihat kunci</summary>
+<pre><code>nilai = [5, 3, 8, 1, 4]
+n = len(nilai)
+total_tukar = 0
+for putaran in range(n - 1):
+    print("Awal putaran", putaran + 1, nilai)
+    tukar_putaran = 0
+    for i in range(n - 1 - putaran):
+        if nilai[i] &gt; nilai[i + 1]:
+            nilai[i], nilai[i + 1] = nilai[i + 1], nilai[i]
+            total_tukar = total_tukar + 1
+            tukar_putaran = tukar_putaran + 1
+    if tukar_putaran == 0:
+        break
+print("Hasil", nilai)
+print("Total pertukaran", total_tukar)</code></pre>
+    <p>Versi ini tetap menghasilkan data terurut yang sama. Alasannya: jika tidak ada pertukaran dalam satu putaran, setiap pasangan bersebelahan sudah berurutan, sehingga seluruh data sudah terurut.</p>
+  </details>
+</section>
+
+<section id="bab6">
+  <h2>Bab 6. Refleksi dan pengumpulan</h2>
+  <p><span class="tier">Inti</span></p>
+  <p>Jawab dengan kalimatmu sendiri:</p>
+  <div class="check"><span class="box-l"></span><div>1. Dalam satu kalimat, apa yang dilakukan satu putaran Bubble Sort?</div></div>
+  <div class="answer-line"></div>
+  <div class="check"><span class="box-l"></span><div>2. Mengapa Bubble Sort menjadi lambat jika datanya sangat banyak? Sebut jumlah perbandingannya.</div></div>
+  <div class="answer-line"></div>
+  <div class="check"><span class="box-l"></span><div>3. Kemarin kamu mencari dengan biner. Hari ini kamu mengurutkan dengan Bubble Sort. Apa hubungan keduanya?</div></div>
+  <div class="answer-line"></div>
+
+  <div class="box tip"><strong>Yang dikumpulkan</strong>
+  1. File .py dengan nama dan absen di baris komentar paling atas.<br>
+  2. Jawaban Bab 3 dan Bab 6, dalam PDF atau Word. Nama file: <code>Bubble_Kelas_[Kelas]_Absen[NomorAbsen].pdf</code><br>
+  Ikuti arahan guru untuk tempat pengumpulan.</div>
+</section>
+
+<section id="referensi">
+  <h2>Referensi belajar</h2>
+  <p>Gunakan referensi ini untuk memperdalam materi. Halaman buku perlu kamu cocokkan sendiri dengan edisi buku yang kamu pegang.</p>
+  <table>
+    <tr><th>Sumber</th><th>Bagian yang relevan</th><th>Catatan</th></tr>
+    <tr><td>Mushthofa, dkk. (2023). Informatika untuk SMA/MA/SMK/MAK Kelas X, Edisi Revisi. Kemendikbudristek.</td><td>Bab 2, Subbab C, bagian pengurutan</td><td>Nomor halaman belum saya verifikasi. Cari di daftar isi buku Anda.</td></tr>
+    <tr><td><a href="https://en.wikipedia.org/wiki/Bubble_sort" target="_blank" rel="noopener">Wikipedia (Inggris): Bubble sort</a></td><td>Prosedur, versi berhenti lebih awal, dan jumlah perbandingan dan pertukaran</td><td>Saya buka halamannya dan memastikan bahwa versi berhenti lebih awal dijelaskan di sana. Isinya dalam bahasa Inggris.</td></tr>
+    <tr><td><a href="https://www.codecademy.com/resources/docs/general/algorithm/bubble-sort" target="_blank" rel="noopener">Codecademy: Bubble Sort</a></td><td>Ringkasan dengan contoh kode</td><td>Hanya hasil pencarian yang saya lihat. Isi halaman belum saya buka.</td></tr>
+  </table>
+  <p>Ada juga banyak simulator Bubble Sort di internet. Pastikan simulator itu bisa dibuka dan sesuai dengan contoh di bab ini sebelum dijadikan rujukan kelas.</p>
+</section>
+
+<footer>
+  Bahan ini disusun untuk belajar mandiri dan pelajaran di kelas. Istilah dan contoh perlu dicocokkan dengan buku Informatika Kelas X Edisi Revisi 2023 sebelum digunakan sebagai rujukan resmi.
+</footer>
+
+</div>
+<script>
+function makeSim(data, early) {
+  const n = data.length;
+  const s = { arr: data.slice(), n: n, early: !!early, p: 0, i: 0, cmp: 0, sw: 0, passSw: 0, done: n <= 1 };
+  s.step = function () {
+    if (s.done) return { type: 'done' };
+    if (s.i >= s.n - 1 - s.p) {
+      const passNo = s.p + 1, swaps = s.passSw;
+      s.p++; s.i = 0; s.passSw = 0;
+      if (s.early && swaps === 0) s.done = true;
+      if (s.p >= s.n - 1) s.done = true;
+      return { type: 'pass', pass: passNo, swaps: swaps, arr: s.arr.slice(), done: s.done };
+    }
+    const a = s.i, b = s.i + 1;
+    s.cmp++;
+    const swapped = s.arr[a] > s.arr[b];
+    if (swapped) { const t = s.arr[a]; s.arr[a] = s.arr[b]; s.arr[b] = t; s.sw++; s.passSw++; }
+    s.i++;
+    return { type: 'cmp', a: a, b: b, swapped: swapped, arr: s.arr.slice(), pass: s.p + 1 };
+  };
+  return s;
+}
+
+
+(function () {
+  var s = null, timer = null;
+  var bars = document.getElementById('simBars');
+  var msg = document.getElementById('simMsg');
+  var err = document.getElementById('simErr');
+  var input = document.getElementById('simData');
+  var early = document.getElementById('simEarly');
+  var stepBtn = document.getElementById('simStep');
+  var autoBtn = document.getElementById('simAuto');
+
+  function parse(text) {
+    var parts = text.split(',').map(function (x) { return x.trim(); }).filter(function (x) { return x !== ''; });
+    if (parts.length < 2 || parts.length > 12) return { error: 'Masukkan 2 sampai 12 angka, dipisah koma.' };
+    var nums = [];
+    for (var i = 0; i < parts.length; i++) {
+      if (!/^-?\d+$/.test(parts[i])) return { error: 'Semua isi harus bilangan bulat. Periksa "' + parts[i] + '".' };
+      nums.push(parseInt(parts[i], 10));
+    }
+    return { nums: nums };
+  }
+
+  function draw(arr, hl, sorted) {
+    var max = Math.max.apply(null, arr.map(Math.abs)) || 1;
+    bars.innerHTML = '';
+    arr.forEach(function (v, i) {
+      var b = document.createElement('div');
+      b.className = 'bar';
+      if (hl && (i === hl.a || i === hl.b)) b.classList.add(hl.swapped ? 'swap' : 'cmp');
+      if (sorted && sorted.indexOf(i) !== -1) b.classList.add('sorted');
+      var val = document.createElement('div'); val.className = 'val'; val.textContent = v;
+      var fill = document.createElement('div'); fill.className = 'fill';
+      fill.style.height = Math.max(8, Math.round(Math.abs(v) / max * 150)) + 'px';
+      var idx = document.createElement('div'); idx.className = 'idx'; idx.textContent = 'index ' + i;
+      b.appendChild(val); b.appendChild(fill); b.appendChild(idx);
+      bars.appendChild(b);
+    });
+  }
+
+  function stats() {
+    document.getElementById('stPass').textContent = s.p;
+    document.getElementById('stCmp').textContent = s.cmp;
+    document.getElementById('stSw').textContent = s.sw;
+  }
+
+  function sortedSet() {
+    var out = [];
+    for (var i = s.n - s.p; i < s.n; i++) if (i >= 0) out.push(i);
+    return out;
+  }
+
+  function reset(text) {
+    var r = parse(text);
+    if (r.error) { err.textContent = r.error; return; }
+    err.textContent = '';
+    stopAuto();
+    s = makeSim(r.nums, early.checked);
+    draw(s.arr, null, s.done ? [] : sortedSet());
+    stats();
+    msg.textContent = s.done ? 'Data sudah terurut (atau hanya satu angka).' : 'Tekan Langkah untuk mulai.';
+    stepBtn.disabled = s.done; autoBtn.disabled = s.done;
+  }
+
+  function stopAuto() {
+    if (timer) { clearInterval(timer); timer = null; }
+    autoBtn.textContent = 'Otomatis';
+  }
+
+  function doStep() {
+    if (!s || s.done) { stopAuto(); return false; }
+    var r = s.step();
+    if (r.type === 'cmp') {
+      draw(r.arr, { a: r.a, b: r.b, swapped: r.swapped }, sortedSet());
+      msg.textContent = 'Putaran ' + r.pass + ': bandingkan angka di index ' + r.a + ' dan ' + r.b + '. ' +
+        (r.swapped ? 'Kiri lebih besar, jadi keduanya ditukar.' : 'Kiri tidak lebih besar, jadi tidak ditukar.');
+    } else if (r.type === 'pass') {
+      draw(r.arr, null, sortedSet());
+      msg.textContent = 'Putaran ' + r.pass + ' selesai dengan ' + r.swaps + ' pertukaran. ' +
+        (r.done
+          ? (s.p >= s.n - 1 || s.early ? 'Data sudah terurut.' : 'Data sudah terurut.')
+          : 'Mulai putaran berikutnya.');
+    }
+    stats();
+    if (s.done) { stopAuto(); stepBtn.disabled = true; autoBtn.disabled = true; msg.textContent += ' Simulasi selesai.'; }
+    return true;
+  }
+
+  stepBtn.addEventListener('click', function () { doStep(); });
+  autoBtn.addEventListener('click', function () {
+    if (timer) { stopAuto(); return; }
+    autoBtn.textContent = 'Jeda';
+    timer = setInterval(function () { if (!doStep()) stopAuto(); }, 700);
+  });
+  document.getElementById('simReset').addEventListener('click', function () { reset(input.value); });
+  document.getElementById('simApply').addEventListener('click', function () { reset(input.value); });
+  early.addEventListener('change', function () { reset(input.value); });
+  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') reset(input.value); });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-preset]'), function (btn) {
+    btn.addEventListener('click', function () { input.value = btn.getAttribute('data-preset').replace(/,/g, ', '); reset(input.value); });
+  });
+  reset(input.value);
+})();
+</script>
+</body>
+</html>
