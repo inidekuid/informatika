@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insertion Sort dan Selection Sort</title>
+<style>
+:root{
+  --bg:#fbfaf7; --ink:#1f2328; --muted:#5b6370; --line:#e3e0d8;
+  --accent:#1d5fa7; --accent-soft:#e7f0fa; --code-bg:#f3f1ec; --warn:#8a5a00; --warn-soft:#fbf3e2;
+  --hl:#f0c46c; --ok:#2e8b57; --bad:#c0392b;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16181c; --ink:#e7e9ee; --muted:#9aa3b2; --line:#2b3038;
+    --accent:#7fb3ea; --accent-soft:#1d2b3d; --code-bg:#20242b; --warn:#f0c46c; --warn-soft:#2e2a20;
+    --hl:#b8892a; --ok:#4cbf82; --bad:#e06b5d;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16181c; --ink:#e7e9ee; --muted:#9aa3b2; --line:#2b3038;
+  --accent:#7fb3ea; --accent-soft:#1d2b3d; --code-bg:#20242b; --warn:#f0c46c; --warn-soft:#2e2a20;
+  --hl:#b8892a; --ok:#4cbf82; --bad:#e06b5d;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:17px/1.7 Georgia,"Times New Roman",serif}
+.wrap{max-width:760px;margin:0 auto;padding:24px 16px 80px}
+header.cover{padding:40px 0 24px;border-bottom:1px solid var(--line);margin-bottom:24px}
+.kicker{font:600 13px/1.4 system-ui,sans-serif;color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
+h1{font-size:2rem;line-height:1.25;margin:8px 0 12px}
+h2{font-size:1.45rem;margin:48px 0 8px;padding-top:12px;border-top:1px solid var(--line)}
+h3{font-size:1.15rem;margin:28px 0 6px}
+p{margin:0 0 14px}
+.meta{font:14px/1.5 system-ui,sans-serif;color:var(--muted)}
+nav.toc{background:var(--accent-soft);border-radius:10px;padding:16px 20px;margin:24px 0}
+nav.toc h2{border:0;margin:0 0 8px;padding:0;font-size:1.05rem}
+nav.toc ol{margin:0;padding-left:20px}
+nav.toc a{color:var(--accent);text-decoration:none}
+nav.toc li{margin:4px 0}
+.box{border-radius:10px;padding:14px 18px;margin:20px 0;font:15px/1.6 system-ui,sans-serif}
+.box.tip{background:var(--accent-soft)}
+.box.warn{background:var(--warn-soft);color:var(--ink)}
+.box strong{display:block;margin-bottom:4px}
+pre{background:var(--code-bg);border-radius:8px;padding:14px 16px;overflow-x:auto;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;margin:14px 0}
+code{font:0.92em ui-monospace,Menlo,Consolas,monospace;background:var(--code-bg);padding:1px 5px;border-radius:4px}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:16px 0;font:15px/1.5 system-ui,sans-serif;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--accent-soft)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:18px 0}
+.card{border:1px solid var(--line);border-radius:10px;padding:14px}
+.card h3{margin:0 0 6px;font-size:1rem}
+.card p{font:14px/1.5 system-ui,sans-serif;margin:0;color:var(--muted)}
+.tag{display:inline-block;font:600 12px/1 system-ui,sans-serif;padding:5px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);margin-right:6px}
+details{border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin:14px 0}
+summary{cursor:pointer;font:600 15px/1.4 system-ui,sans-serif;color:var(--accent)}
+details[open] summary{margin-bottom:8px}
+.check{display:flex;gap:10px;align-items:flex-start;font:15px/1.5 system-ui,sans-serif;margin:8px 0}
+.check span.box-l{flex:none;width:16px;height:16px;border:1.5px solid var(--muted);border-radius:3px;margin-top:3px}
+.sim{border:1px solid var(--line);border-radius:12px;padding:16px;margin:18px 0;font:15px/1.5 system-ui,sans-serif}
+.sim-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+.sim input[type=text]{flex:1 1 200px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:14px ui-monospace,Menlo,Consolas,monospace}
+.sim button{padding:8px 12px;border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);border-radius:6px;cursor:pointer;font:600 14px system-ui,sans-serif}
+.sim button:disabled{opacity:.45;cursor:default}
+.sim .ghost{border-color:var(--line);background:transparent;color:var(--muted)}
+.presets{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.bars{display:flex;align-items:flex-end;justify-content:center;gap:8px;height:210px;padding:12px 6px;border:1px solid var(--line);border-radius:10px;margin:10px 0}
+.bar{flex:1 1 0;max-width:72px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.bar .fill{width:100%;background:var(--accent);opacity:.5;border-radius:6px 6px 0 0;transition:height .25s ease}
+.bar .val{font:600 14px system-ui,sans-serif;margin-bottom:4px}
+.bar .idx{font:12px system-ui,sans-serif;color:var(--muted);margin-top:4px}
+.bar.sorted .fill{background:var(--ok);opacity:.7}
+.bar.key .fill{background:var(--hl);opacity:1}
+.bar.cmp .fill{background:var(--accent);opacity:1}
+.bar.min .fill{background:var(--ok);opacity:1}
+.bar.swap .fill{background:var(--bad);opacity:1}
+.sim-stats{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+.sim-stats div{border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+.sim-msg{min-height:48px;padding:10px 12px;border-radius:8px;background:var(--accent-soft);margin:8px 0}
+.sim-err{color:var(--bad);min-height:18px;margin:4px 0}
+.legend{font:13px/1.6 system-ui,sans-serif;color:var(--muted)}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);font:14px/1.5 system-ui,sans-serif;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <div class="kicker">Informatika Kelas X &middot; Materi 2 Struktur Data Dasar &middot; Pertemuan 5 sampai 6</div>
+  <h1>Insertion Sort dan Selection Sort</h1>
+  <p class="meta">Lanjutan dari Bubble Sort. Bahan belajar mandiri dengan simulasi dan contoh.</p>
+</header>
+
+<nav class="toc">
+  <h2>Isi</h2>
+  <ol>
+    <li><a href="#bab1">Tiga cara, satu tujuan</a></li>
+    <li><a href="#bab2">Insertion Sort: menyisipkan ke tempat yang tepat</a></li>
+    <li><a href="#simIns">Simulasi Insertion Sort</a></li>
+    <li><a href="#bab3">Selection Sort: memilih yang terkecil</a></li>
+    <li><a href="#simSel">Simulasi Selection Sort</a></li>
+    <li><a href="#bab4">Tiga algoritma dibandingkan</a></li>
+    <li><a href="#bab5">Contoh nyata</a></li>
+    <li><a href="#bab6">Python</a></li>
+    <li><a href="#bab7">Latihan</a></li>
+    <li><a href="#referensi">Referensi belajar</a></li>
+  </ol>
+</nav>
+
+<section id="bab1">
+  <h2>Bab 1. Tiga cara, satu tujuan</h2>
+  <p>Ketiga algoritma ini mengurutkan data dengan cara yang berbeda. Perbedaannya paling terasa pada dua hal: berapa banyak perbandingan yang dilakukan, dan berapa banyak data yang harus dipindah.</p>
+  <div class="cards">
+    <div class="card"><h3>Bubble Sort</h3><p>Menukar pasangan bersebelahan yang salah urut, berulang sampai tidak ada yang perlu ditukar.</p></div>
+    <div class="card"><h3>Insertion Sort</h3><p>Mengambil satu elemen, lalu menyisipkannya ke posisi yang tepat di bagian yang sudah terurut.</p></div>
+    <div class="card"><h3>Selection Sort</h3><p>Mencari elemen terkecil di bagian yang belum terurut, lalu menaruhnya di posisi berikutnya.</p></div>
+  </div>
+  <div class="box tip"><strong>Sebelum lanjut</strong>Jika kamu diberi 5 kartu acak dan diminta mengurutkannya dengan tangan, apa cara paling alami yang kamu pakai? Catat jawabanmu, lalu bandingkan dengan Bab 2 dan 3.</div>
+</section>
+
+<section id="bab2">
+  <h2>Bab 2. Insertion Sort: menyisipkan ke tempat yang tepat</h2>
+  <p><span class="tag">Inti</span></p>
+  <p>Bayangkan kamu memegang kartu yang sudah tersusun rapi di tangan kiri. Kartu baru diambil dari meja, lalu kamu geser kartu-kartu di tangan sampai menemukan tempat yang tepat untuk kartu baru itu. Itulah cara Insertion Sort bekerja.</p>
+  <p>Langkahnya:</p>
+  <ol>
+    <li>Anggap elemen pertama sudah terurut. Bagian terurut hanya berisi satu elemen.</li>
+    <li>Ambil elemen berikutnya, sebut saja <em>kunci</em>.</li>
+    <li>Bandingkan kunci dengan elemen di kirinya. Jika elemen kiri lebih besar, geser elemen itu satu posisi ke kanan.</li>
+    <li>Ulangi sampai menemukan elemen yang tidak lebih besar dari kunci, atau sampai tidak ada elemen lagi di kiri. Taruh kunci tepat di posisi kosong itu.</li>
+    <li>Ulangi untuk elemen berikutnya sampai semua elemen masuk ke bagian terurut.</li>
+  </ol>
+
+  <h3>Contoh: data 6, 2, 9, 4</h3>
+  <table>
+    <tr><th>Langkah</th><th>Kunci</th><th>Yang terjadi</th><th>Urutan sekarang</th></tr>
+    <tr><td>Awal</td><td>-</td><td>Bagian terurut hanya 6</td><td>6, 2, 9, 4</td></tr>
+    <tr><td>1</td><td>2</td><td>6 lebih besar dari 2, geser 6. Kunci masuk di depan.</td><td>2, 6, 9, 4</td></tr>
+    <tr><td>2</td><td>9</td><td>6 lebih kecil dari 9, tidak ada yang digeser.</td><td>2, 6, 9, 4</td></tr>
+    <tr><td>3</td><td>4</td><td>9 digeser, 6 digeser. Kunci masuk setelah 2.</td><td>2, 4, 6, 9</td></tr>
+  </table>
+  <p>Perhatikan langkah 2. Karena kunci 9 sudah lebih besar dari elemen kirinya, tidak ada pergeseran sama sekali. Itulah sebabnya Insertion Sort cepat pada data yang hampir terurut.</p>
+  <div class="box warn"><strong>Ingat</strong>Insertion Sort tidak memeriksa seluruh data di setiap langkah. Ia hanya membandingkan kunci dengan bagian yang sudah terurut, dan berhenti begitu menemukan tempat yang tepat.</div>
+</section>
+
+<section id="simIns">
+  <h3>Simulasi Insertion Sort</h3>
+  <p>Coba dengan data 5, 3, 8, 1, 4. Tebak dulu: pada langkah pertama, angka apa yang menjadi kunci, dan apakah ia harus digeser?</p>
+  <div class="sim" id="insSim">
+    <div class="sim-controls">
+      <input type="text" id="insData" value="5, 3, 8, 1, 4" aria-label="Data angka, dipisah koma">
+      <button id="insApply">Terapkan data</button>
+    </div>
+    <div class="presets">
+      <button type="button" data-ins="5, 3, 8, 1, 4">Contoh kita</button>
+      <button type="button" data-ins="5, 4, 3, 2, 1">Terbalik</button>
+      <button type="button" data-ins="1, 2, 3, 5, 4">Hampir terurut</button>
+    </div>
+    <div class="sim-err" id="insErr"></div>
+    <div class="bars" id="insBars" role="img" aria-label="Batang angka saat insertion sort"></div>
+    <div class="legend">Kuning: kunci yang sedang disisipkan. Biru: elemen yang sedang dibandingkan atau digeser. Hijau: bagian yang sudah terurut.</div>
+    <div class="sim-stats">
+      <div>Perbandingan: <strong id="insCmp">0</strong></div>
+      <div>Pergeseran: <strong id="insGeser">0</strong></div>
+    </div>
+    <div class="sim-msg" id="insMsg">Tekan Langkah untuk mulai.</div>
+    <div class="sim-controls">
+      <button id="insStep">Langkah</button>
+      <button id="insAuto">Otomatis</button>
+      <button id="insReset" class="ghost">Ulang</button>
+    </div>
+  </div>
+</section>
+
+<section id="bab3">
+  <h2>Bab 3. Selection Sort: memilih yang terkecil</h2>
+  <p><span class="tag">Inti</span></p>
+  <p>Selection Sort bekerja dengan memilih. Pada setiap putaran, cari elemen terkecil di bagian yang belum terurut. Setelah ketemu, tukar elemen itu dengan elemen pertama dari bagian yang belum terurut. Bagian terurut bertambah satu elemen di setiap putaran.</p>
+  <p>Langkahnya:</p>
+  <ol>
+    <li>Anggap posisi pertama adalah posisi yang harus diisi dengan elemen terkecil.</li>
+    <li>Periksa semua elemen di sebelah kanannya. Catat index elemen terkecil yang ditemukan.</li>
+    <li>Jika elemen terkecil itu bukan yang di posisi pertama, tukar keduanya.</li>
+    <li>Lanjutkan ke posisi berikutnya, sampai semua posisi terisi.</li>
+  </ol>
+
+  <h3>Contoh: data 6, 2, 9, 4</h3>
+  <table>
+    <tr><th>Putaran</th><th>Yang dicari</th><th>Yang terjadi</th><th>Urutan setelah putaran</th></tr>
+    <tr><td>1</td><td>Terkecil dari 6, 2, 9, 4</td><td>Terkecil 2, di index 1. Tukar dengan 6.</td><td>2, 6, 9, 4</td></tr>
+    <tr><td>2</td><td>Terkecil dari 6, 9, 4</td><td>Terkecil 4, di index 3. Tukar dengan 6.</td><td>2, 4, 9, 6</td></tr>
+    <tr><td>3</td><td>Terkecil dari 9, 6</td><td>Terkecil 6, di index 3. Tukar dengan 9.</td><td>2, 4, 6, 9</td></tr>
+  </table>
+  <p>Perhatikan bahwa Selection Sort hanya menukar elemen sedikit kali, yaitu paling banyak satu kali per putaran. Tetapi ia tetap harus memeriksa semua elemen yang tersisa di setiap putaran, walaupun datanya sudah terurut.</p>
+</section>
+
+<section id="simSel">
+  <h3>Simulasi Selection Sort</h3>
+  <p>Coba dengan data 5, 3, 8, 1, 4. Tebak dulu: pada putaran pertama, index mana yang berisi elemen terkecil?</p>
+  <div class="sim" id="selSim">
+    <div class="sim-controls">
+      <input type="text" id="selData" value="5, 3, 8, 1, 4" aria-label="Data angka, dipisah koma">
+      <button id="selApply">Terapkan data</button>
+    </div>
+    <div class="presets">
+      <button type="button" data-sel="5, 3, 8, 1, 4">Contoh kita</button>
+      <button type="button" data-sel="5, 4, 3, 2, 1">Terbalik</button>
+      <button type="button" data-sel="1, 2, 3, 5, 4">Hampir terurut</button>
+    </div>
+    <div class="sim-err" id="selErr"></div>
+    <div class="bars" id="selBars" role="img" aria-label="Batang angka saat selection sort"></div>
+    <div class="legend">Kuning: posisi yang sedang diisi. Hijau tebal: elemen terkecil sementara. Biru: elemen yang sedang diperiksa. Merah: pertukaran. Hijau pudar: bagian yang sudah terurut.</div>
+    <div class="sim-stats">
+      <div>Perbandingan: <strong id="selCmp">0</strong></div>
+      <div>Pertukaran: <strong id="selSw">0</strong></div>
+    </div>
+    <div class="sim-msg" id="selMsg">Tekan Langkah untuk mulai.</div>
+    <div class="sim-controls">
+      <button id="selStep">Langkah</button>
+      <button id="selAuto">Otomatis</button>
+      <button id="selReset" class="ghost">Ulang</button>
+    </div>
+  </div>
+</section>
+
+<section id="bab4">
+  <h2>Bab 4. Tiga algoritma dibandingkan</h2>
+  <p>Angka di bawah dihitung dengan menjalankan ketiga algoritma pada data yang sama. Versi Bubble Sort yang dipakai di sini tidak berhenti lebih awal, kecuali baris yang diberi tanda.</p>
+  <table>
+    <tr><th>Data</th><th>Bubble (tanpa berhenti awal)</th><th>Bubble (berhenti awal)</th><th>Insertion: perbandingan / pergeseran</th><th>Selection: perbandingan / pertukaran</th></tr>
+    <tr><td>5, 3, 8, 1, 4</td><td>10 perbandingan, 6 pertukaran</td><td>10 perbandingan, 6 pertukaran</td><td>8 / 6</td><td>10 / 2</td></tr>
+    <tr><td>5, 4, 3, 2, 1 (terbalik)</td><td>10 perbandingan, 10 pertukaran</td><td>10 perbandingan, 10 pertukaran</td><td>10 / 10</td><td>10 / 2</td></tr>
+    <tr><td>1, 2, 3, 4, 5 (sudah terurut)</td><td>10 perbandingan, 0 pertukaran</td><td>4 perbandingan, 0 pertukaran</td><td>4 / 0</td><td>10 / 0</td></tr>
+  </table>
+  <p>Ada tiga hal yang bisa kamu lihat dari tabel:</p>
+  <ul>
+    <li>Insertion Sort paling cepat pada data yang hampir terurut. Ia berhenti membandingkan begitu menemukan tempat yang tepat.</li>
+    <li>Selection Sort selalu memeriksa semua pasangan, sehingga jumlah perbandingannya sama walaupun datanya sudah terurut. Tetapi pertukarannya paling sedikit.</li>
+    <li>Pada data yang terbalik, ketiganya bekerja paling keras. Bubble dan Insertion melakukan sekitar n(n - 1) / 2 perbandingan atau pergeseran.</li>
+  </ul>
+  <div class="box tip"><strong>Catatan</strong>Angka ini hanya untuk lima data. Pada data yang lebih besar, perbedaan antara algoritma ini bisa jauh lebih besar. Kesimpulan yang berlaku umum: ketiganya memerlukan sekitar n(n - 1) / 2 perbandingan pada kasus terburuk, dan algoritma ini tidak cocok untuk data sangat besar.</div>
+</section>
+
+<section id="bab5">
+  <h2>Bab 5. Contoh nyata</h2>
+  <h3><span class="tag">Insertion</span> Menyusun kartu di tangan</h3>
+  <p>Ketika kamu menerima kartu satu per satu dan menyusunnya sambil jalan, kamu sedang melakukan Insertion Sort. Setiap kartu baru langsung disisipkan ke tempat yang tepat.</p>
+  <h3><span class="tag">Insertion</span> Daftar yang masuk satu per satu</h3>
+  <p>Daftar kontak di ponsel yang bertambah sedikit demi sedikit bisa diurutkan dengan cara ini. Setiap kontak baru langsung ditaruh di posisi abjadnya.</p>
+  <h3><span class="tag">Selection</span> Memilih nilai tertinggi</h3>
+  <p>Panitia lomba yang ingin mengurutkan peserta dari nilai tertinggi bisa mencari peringkat satu, lalu peringkat dua dari sisa peserta, dan seterusnya. Itu adalah Selection Sort.</p>
+  <h3><span class="tag">Selection</span> Memilih barang termurah</h3>
+  <p>Ketika kamu ingin membeli barang dengan harga dari yang termurah, kamu mencari yang termurah dulu, lalu yang termurah berikutnya dari sisanya. Caranya mirip sekali dengan Selection Sort.</p>
+  <div class="box warn"><strong>Catatan</strong>Contoh ini disederhanakan untuk belajar. Dalam praktik, perangkat lunak biasanya memakai algoritma yang lebih cepat untuk data besar.</div>
+</section>
+
+<section id="bab6">
+  <h2>Bab 6. Python</h2>
+  <p><span class="tag">Lanjut</span></p>
+  <h3>Insertion Sort</h3>
+<pre><code>nilai = [5, 3, 8, 1, 4]
+for i in range(1, len(nilai)):
+    kunci = nilai[i]
+    j = i - 1
+    while j &gt;= 0 and nilai[j] &gt; kunci:
+        nilai[j + 1] = nilai[j]
+        j = j - 1
+    nilai[j + 1] = kunci
+print(nilai)   # [1, 3, 4, 5, 8]</code></pre>
+
+  <h3>Selection Sort</h3>
+<pre><code>nilai = [5, 3, 8, 1, 4]
+n = len(nilai)
+for i in range(n - 1):
+    terkecil = i
+    for j in range(i + 1, n):
+        if nilai[j] &lt; nilai[terkecil]:
+            terkecil = j
+    if terkecil != i:
+        nilai[i], nilai[terkecil] = nilai[terkecil], nilai[i]
+print(nilai)   # [1, 3, 4, 5, 8]</code></pre>
+
+  <div class="box tip"><strong>Catatan</strong>Kedua kode di atas sudah dijalankan dan menghasilkan urutan yang sama. Coba ubah data, lalu tebak hasilnya sebelum menjalankan.</div>
+</section>
+
+<section id="bab7">
+  <h2>Bab 7. Latihan</h2>
+  <p>Kerjakan di buku catatan. Tulis langkahnya, bukan hanya hasil akhirnya.</p>
+
+  <h3>Latihan A (memahami)</h3>
+  <div class="check"><span class="box-l"></span><div>1. Dalam satu kalimat, apa yang dilakukan Insertion Sort pada setiap langkah?</div></div>
+  <div class="check"><span class="box-l"></span><div>2. Dalam satu kalimat, apa yang dilakukan Selection Sort pada setiap putaran?</div></div>
+
+  <h3>Latihan B (menelusuri)</h3>
+  <div class="check"><span class="box-l"></span><div>3. Data 6, 2, 9, 4. Jalankan Insertion Sort. Tulis urutan data setelah setiap langkah.</div></div>
+  <div class="check"><span class="box-l"></span><div>4. Data 6, 2, 9, 4. Jalankan Selection Sort. Tulis index elemen terkecil di setiap putaran, dan urutan data setelahnya.</div></div>
+  <details>
+    <summary>Lihat kunci nomor 3 dan 4</summary>
+    <p><strong>Nomor 3 (Insertion):</strong> awal 6, 2, 9, 4. Setelah kunci 2: 2, 6, 9, 4. Setelah kunci 9: 2, 6, 9, 4. Setelah kunci 4: 2, 4, 6, 9.</p>
+    <p><strong>Nomor 4 (Selection):</strong> putaran 1, terkecil 2 di index 1, hasil 2, 6, 9, 4. Putaran 2, terkecil 4 di index 3, hasil 2, 4, 9, 6. Putaran 3, terkecil 6 di index 3, hasil 2, 4, 6, 9.</p>
+  </details>
+
+  <h3>Latihan C (menganalisis)</h3>
+  <div class="check"><span class="box-l"></span><div>5. Mengapa Insertion Sort lebih cepat dari Selection Sort pada data yang sudah hampir terurut? Jelaskan dengan jumlah perbandingan.</div></div>
+  <div class="check"><span class="box-l"></span><div>6. Mengapa Selection Sort cocok jika pertukaran mahal, misalnya data yang sangat besar atau sulit dipindah? Jelaskan.</div></div>
+  <details>
+    <summary>Lihat kunci nomor 5 dan 6</summary>
+    <p><strong>Nomor 5:</strong> Insertion Sort berhenti membandingkan begitu menemukan tempat yang tepat. Pada data hampir terurut, itu terjadi cepat, sehingga jumlah perbandingannya kecil. Selection Sort tetap memeriksa semua pasangan di setiap putaran.</p>
+    <p><strong>Nomor 6:</strong> Selection Sort melakukan paling banyak satu pertukaran per putaran, sehingga jumlah pertukarannya kecil. Insertion Sort bisa menggeser banyak elemen untuk satu kunci. Pemindahan data yang sedikit bisa menjadi alasan memilih Selection Sort.</p>
+  </details>
+
+  <h3>Latihan D (menjalankan)</h3>
+  <div class="check"><span class="box-l"></span><div>7. Jalankan kode Insertion Sort dan Selection Sort di Python. Ubah data menjadi 9, 7, 5, 3, 1, lalu tebak jumlah pergeseran dan pertukarannya sebelum menjalankan.</div></div>
+</section>
+
+<section id="referensi">
+  <h2>Referensi belajar</h2>
+  <table>
+    <tr><th>Sumber</th><th>Bagian yang relevan</th><th>Catatan</th></tr>
+    <tr><td>Mushthofa, dkk. (2023). Informatika untuk SMA/MA/SMK/MAK Kelas X, Edisi Revisi. Kemendikbudristek.</td><td>Bab 2, Subbab C, bagian pengurutan</td><td>Nomor halaman belum saya verifikasi. Cari di daftar isi buku Anda.</td></tr>
+    <tr><td><a href="https://en.wikipedia.org/wiki/Insertion_sort" target="_blank" rel="noopener">Wikipedia (Inggris): Insertion sort</a></td><td>Ide dasar dan perilaku pada data hampir terurut</td><td>Saya buka halamannya. Isinya dalam bahasa Inggris.</td></tr>
+    <tr><td><a href="https://en.wikipedia.org/wiki/Selection_sort" target="_blank" rel="noopener">Wikipedia (Inggris): Selection sort</a></td><td>Ide dasar dan jumlah pertukaran</td><td>Saya buka halamannya. Isinya dalam bahasa Inggris.</td></tr>
+  </table>
+</section>
+
+<footer>
+  Bahan ini disusun untuk belajar mandiri dan pelajaran di kelas. Istilah dan contoh perlu dicocokkan dengan buku Informatika Kelas X Edisi Revisi 2023 sebelum digunakan sebagai rujukan resmi.
+</footer>
+
+</div>
+<script>
+function makeInsertion(data) {
+  const s = { arr: data.slice(), n: data.length, i: 1, j: 0, key: null, phase: 'pick', cmp: 0, geser: 0, done: data.length <= 1 };
+  s.step = function () {
+    if (s.done) return { type: 'done' };
+    if (s.phase === 'pick') {
+      if (s.i >= s.n) { s.done = true; return { type: 'done' }; }
+      s.key = s.arr[s.i]; s.j = s.i - 1; s.phase = 'cmp';
+      return { type: 'pick', i: s.i, key: s.key, arr: s.arr.slice() };
+    }
+    // phase cmp
+    if (s.j >= 0) {
+      s.cmp++;
+      if (s.arr[s.j] > s.key) {
+        s.arr[s.j + 1] = s.arr[s.j]; s.geser++;
+        const from = s.j; s.j--;
+        return { type: 'geser', from: from, to: from + 1, arr: s.arr.slice() };
+      }
+    }
+    const pos = s.j + 1;
+    s.arr[pos] = s.key;
+    const i = s.i;
+    s.i++; s.phase = 'pick';
+    return { type: 'sisip', pos: pos, i: i, arr: s.arr.slice() };
+  };
+  return s;
+}
+function makeSelection(data) {
+  const s = { arr: data.slice(), n: data.length, i: 0, j: 0, min: 0, phase: 'begin', cmp: 0, sw: 0, done: data.length <= 1 };
+  s.step = function () {
+    if (s.done) return { type: 'done' };
+    if (s.phase === 'begin') {
+      if (s.i >= s.n - 1) { s.done = true; return { type: 'done' }; }
+      s.min = s.i; s.j = s.i + 1; s.phase = 'scan';
+      return { type: 'begin', i: s.i, arr: s.arr.slice() };
+    }
+    if (s.phase === 'scan') {
+      if (s.j < s.n) {
+        s.cmp++;
+        const j = s.j;
+        let newMin = false;
+        if (s.arr[j] < s.arr[s.min]) { s.min = j; newMin = true; }
+        s.j++;
+        return { type: 'cmp', j: j, min: s.min, newMin: newMin, arr: s.arr.slice() };
+      }
+      s.phase = 'swap';
+    }
+    // swap phase
+    const i = s.i, m = s.min;
+    let ev;
+    if (m !== i) {
+      const t = s.arr[i]; s.arr[i] = s.arr[m]; s.arr[m] = t; s.sw++;
+      ev = { type: 'swap', i: i, min: m, arr: s.arr.slice() };
+    } else {
+      ev = { type: 'noswap', i: i, arr: s.arr.slice() };
+    }
+    s.i++; s.phase = 'begin';
+    return ev;
+  };
+  return s;
+}
+
+
+(function () {
+  function parse(text) {
+    var parts = text.split(',').map(function (x) { return x.trim(); }).filter(function (x) { return x !== ''; });
+    if (parts.length < 2 || parts.length > 12) return { error: 'Masukkan 2 sampai 12 angka, dipisah koma.' };
+    var nums = [];
+    for (var i = 0; i < parts.length; i++) {
+      if (!/^-?\d+$/.test(parts[i])) return { error: 'Semua isi harus bilangan bulat. Periksa "' + parts[i] + '".' };
+      nums.push(parseInt(parts[i], 10));
+    }
+    return { nums: nums };
+  }
+  function $(id) { return document.getElementById(id); }
+
+  function makeView(prefix, mk) {
+    var s = null, timer = null;
+    var bars = $(prefix + 'Bars'), msg = $(prefix + 'Msg'), err = $(prefix + 'Err'), input = $(prefix + 'Data');
+    var stepBtn = $(prefix + 'Step'), autoBtn = $(prefix + 'Auto');
+
+    function draw(arr, marks, sortedUpTo) {
+      var max = Math.max.apply(null, arr.map(Math.abs)) || 1;
+      bars.innerHTML = '';
+      arr.forEach(function (v, i) {
+        var b = document.createElement('div');
+        b.className = 'bar';
+        if (sortedUpTo !== undefined && i < sortedUpTo) b.classList.add('sorted');
+        if (marks) {
+          if (marks.key === i) b.classList.add('key');
+          if (marks.cmp === i) b.classList.add('cmp');
+          if (marks.min === i) b.classList.add('min');
+          if (marks.swap && (marks.swap.indexOf(i) !== -1)) b.classList.add('swap');
+        }
+        var val = document.createElement('div'); val.className = 'val'; val.textContent = v;
+        var fill = document.createElement('div'); fill.className = 'fill';
+        fill.style.height = Math.max(8, Math.round(Math.abs(v) / max * 150)) + 'px';
+        var idx = document.createElement('div'); idx.className = 'idx'; idx.textContent = 'index ' + i;
+        b.appendChild(val); b.appendChild(fill); b.appendChild(idx);
+        bars.appendChild(b);
+      });
+    }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } autoBtn.textContent = 'Otomatis'; }
+    function reset(text) {
+      var r = parse(text);
+      if (r.error) { err.textContent = r.error; return; }
+      err.textContent = ''; stop();
+      s = mk(r.nums);
+      draw(s.arr, null, 0);
+      stats();
+      msg.textContent = s.done ? 'Data sudah terurut (atau hanya satu angka).' : 'Tekan Langkah untuk mulai.';
+      stepBtn.disabled = s.done; autoBtn.disabled = s.done;
+    }
+    function stats() {
+      if (prefix === 'ins') { $('insCmp').textContent = s.cmp; $('insGeser').textContent = s.geser; }
+      else { $('selCmp').textContent = s.cmp; $('selSw').textContent = s.sw; }
+    }
+    function doStep() {
+      if (!s || s.done) { stop(); return false; }
+      var r = s.step();
+      if (r.type === 'done') { stop(); stepBtn.disabled = true; autoBtn.disabled = true; msg.textContent += ' Simulasi selesai.'; return false; }
+      if (prefix === 'ins') {
+        if (r.type === 'pick') { draw(r.arr, { key: r.i }, r.i); msg.textContent = 'Kunci ' + r.key + ' (index ' + r.i + ') akan disisipkan ke bagian terurut di kirinya.'; }
+        else if (r.type === 'geser') { draw(r.arr, { cmp: r.to }, undefined); msg.textContent = 'Elemen ' + r.arr[r.to] + ' lebih besar dari kunci, jadi digeser ke kanan.'; }
+        else if (r.type === 'sisip') { draw(r.arr, null, r.i + 1); msg.textContent = 'Kunci masuk di index ' + r.pos + '. Bagian terurut sekarang sampai index ' + r.i + '.'; }
+      } else {
+        if (r.type === 'begin') { draw(r.arr, { key: r.i }, r.i); msg.textContent = 'Putaran ' + (r.i + 1) + ': cari elemen terkecil dari index ' + r.i + ' ke kanan.'; }
+        else if (r.type === 'cmp') { draw(r.arr, { cmp: r.j, min: r.min }, s.i); msg.textContent = (r.newMin ? 'Index ' + r.j + ' lebih kecil. Ini jadi elemen terkecil sementara.' : 'Index ' + r.j + ' tidak lebih kecil dari yang terkecil sementara.'); }
+        else if (r.type === 'swap') { draw(r.arr, { swap: [r.i, r.min] }, r.i); msg.textContent = 'Tukar index ' + r.i + ' dengan index ' + r.min + '.'; }
+        else if (r.type === 'noswap') { draw(r.arr, null, r.i + 1); msg.textContent = 'Elemen di index ' + r.i + ' sudah yang terkecil. Tidak perlu ditukar.'; }
+      }
+      stats();
+      return true;
+    }
+    stepBtn.addEventListener('click', function () { doStep(); });
+    autoBtn.addEventListener('click', function () {
+      if (timer) { stop(); return; }
+      autoBtn.textContent = 'Jeda';
+      timer = setInterval(function () { if (!doStep()) stop(); }, 800);
+    });
+    $(prefix + 'Reset').addEventListener('click', function () { reset(input.value); });
+    $(prefix + 'Apply').addEventListener('click', function () { reset(input.value); });
+    input.addEventListener('keydown', function (e) { if (e.key === 'Enter') reset(input.value); });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-' + (prefix === 'ins' ? 'ins' : 'sel') + ']'), function (btn) {
+      btn.addEventListener('click', function () { input.value = btn.getAttribute('data-' + (prefix === 'ins' ? 'ins' : 'sel')); reset(input.value); });
+    });
+    reset(input.value);
+  }
+
+  makeView('ins', makeInsertion);
+  makeView('sel', makeSelection);
+})();
+</script>
+</body>
+</html>
