@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualisasi Stack Undo - AplikasiKetik</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;600;700&display=swap');
+
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --accent: #38bdf8;
+      --accent2: #a78bfa;
+      --success: #4ade80;
+      --danger: #f87171;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --stack-item: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, #38bdf8, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 28px;
+      font-size: 0.95rem;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 800px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      border: 1px solid #334155;
+    }
+
+    .card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .editor-display {
+      background: #0f172a;
+      border: 2px solid #334155;
+      border-radius: 12px;
+      padding: 20px;
+      min-height: 100px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.3rem;
+      line-height: 1.5;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .editor-display .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.3em;
+      background: var(--accent);
+      margin-left: 2px;
+      animation: blink 1s infinite;
+      vertical-align: text-bottom;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .stack-container {
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+      gap: 8px;
+      min-height: 220px;
+      padding: 16px;
+      background: #0f172a;
+      border-radius: 12px;
+      border: 2px dashed #475569;
+      position: relative;
+    }
+
+    .stack-label {
+      position: absolute;
+      top: 8px;
+      left: 12px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .stack-item {
+      background: linear-gradient(135deg, #334155, #1e293b);
+      border: 2px solid #64748b;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      width: 90%;
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      opacity: 0;
+      transform: translateY(-30px) scale(0.8);
+    }
+
+    .stack-item.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .stack-item.popping {
+      animation: popOut 0.45s forwards;
+    }
+
+    @keyframes popOut {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-40px) scale(0.6); opacity: 0; }
+    }
+
+    .stack-item.top {
+      border-color: var(--accent);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+    }
+
+    .empty-stack {
+      color: var(--muted);
+      font-style: italic;
+      font-size: 0.9rem;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    button {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .btn-type {
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+      color: white;
+    }
+
+    .btn-undo {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      color: white;
+    }
+
+    .btn-reset {
+      background: #475569;
+      color: white;
+    }
+
+    .btn-auto {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      color: white;
+    }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* Code highlight section */
+    .code-panel {
+      grid-column: 1 / -1;
+    }
+
+    .code-box {
+      background: #0f172a;
+      border-radius: 12px;
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      border: 1px solid #334155;
+    }
+
+    .code-line {
+      padding: 2px 8px;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+
+    .code-line.active {
+      background: rgba(56, 189, 248, 0.2);
+      border-left: 3px solid var(--accent);
+    }
+
+    .code-line.comment {
+      color: #64748b;
+    }
+
+    .keyword { color: #c084fc; }
+    .func { color: #38bdf8; }
+    .string { color: #4ade80; }
+    .var { color: #fbbf24; }
+
+    .status {
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      font-size: 0.95rem;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status.success {
+      background: rgba(74, 222, 128, 0.1);
+      border-color: rgba(74, 222, 128, 0.3);
+    }
+
+    .status.warning {
+      background: rgba(251, 191, 36, 0.1);
+      border-color: rgba(251, 191, 36, 0.3);
+    }
+
+    .legend {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      flex-wrap: wrap;
+    }
+
+    .legend span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <h1>📚 Visualisasi Stack Undo</h1>
+  <p class="subtitle">AplikasiKetik — Class Editor Teks dengan Fitur Undo (menggunakan Stack)</p>
+
+  <div class="container">
+    <!-- Editor -->
+    <div class="card">
+      <h2>🖥️ Tampilan Editor</h2>
+      <div class="editor-display" id="editor">
+        <span id="teks"></span><span class="cursor"></span>
+      </div>
+
+      <div class="controls">
+        <button class="btn-type" onclick="ketikKata('Halo ')">Ketik "Halo "</button>
+        <button class="btn-type" onclick="ketikKata('Teman-teman ')">Ketik "Teman-teman "</button>
+        <button class="btn-type" onclick="ketikKata('Kelas X!')">Ketik "Kelas X!"</button>
+        <button class="btn-undo" id="btnUndo" onclick="tekanUndo()" disabled>↩ UNDO</button>
+        <button class="btn-auto" onclick="jalankanDemo()">▶ Auto Demo</button>
+        <button class="btn-reset" onclick="resetAll()">Reset</button>
+      </div>
+
+      <div class="status" id="status">
+        Klik tombol di atas untuk mulai mengetik...
+      </div>
+    </div>
+
+    <!-- Stack Visualization -->
+    <div class="card">
+      <h2>📚 Stack (riwayat)</h2>
+      <div class="stack-container" id="stackContainer">
+        <div class="stack-label">Bottom → Top</div>
+        <div class="empty-stack" id="emptyMsg">Stack kosong</div>
+      </div>
+      <div class="legend">
+        <span><div class="dot" style="background:#38bdf8"></div> Item paling atas (akan di-pop saat Undo)</span>
+        <span><div class="dot" style="background:#64748b"></div> Item di bawahnya</span>
+      </div>
+    </div>
+
+    <!-- Code Panel -->
+    <div class="card code-panel">
+      <h2>💻 Kode yang sedang dijalankan</h2>
+      <div class="code-box" id="codeBox">
+        <div class="code-line" id="line1"><span class="keyword">class</span> <span class="func">AplikasiKetik</span>:</div>
+        <div class="code-line" id="line2">    <span class="keyword">def</span> <span class="func">__init__</span>(self):</div>
+        <div class="code-line" id="line3">        self.<span class="var">teks</span> = <span class="string">""</span></div>
+        <div class="code-line" id="line4">        self.<span class="var">riwayat</span> = []          <span class="comment"># STACK</span></div>
+        <div class="code-line" id="line5">&nbsp;</div>
+        <div class="code-line" id="line6">    <span class="keyword">def</span> <span class="func">ketik_kata</span>(self, kata_baru):</div>
+        <div class="code-line" id="line7">        self.<span class="var">riwayat</span>.append(self.<span class="var">teks</span>)   <span class="comment"># PUSH ke stack</span></div>
+        <div class="code-line" id="line8">        self.<span class="var">teks</span> += kata_baru</div>
+        <div class="code-line" id="line9">        print(f<span class="string">"Hasil: '{self.teks}'"</span>)</div>
+        <div class="code-line" id="line10">&nbsp;</div>
+        <div class="code-line" id="line11">    <span class="keyword">def</span> <span class="func">tekan_undo</span>(self):</div>
+        <div class="code-line" id="line12">        <span class="keyword">if</span> len(self.<span class="var">riwayat</span>) > 0:</div>
+        <div class="code-line" id="line13">            self.<span class="var">teks</span> = self.<span class="var">riwayat</span>.pop()  <span class="comment"># POP dari stack</span></div>
+        <div class="code-line" id="line14">            print(f<span class="string">"[UNDO] Teks: '{self.teks}'"</span>)</div>
+        <div class="code-line" id="line15">        <span class="keyword">else</span>:</div>
+        <div class="code-line" id="line16">            print(<span class="string">"Tidak ada yang bisa di-undo!"</span>)</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== State =====
+    let teks = "";
+    let riwayat = [];
+    let isAnimating = false;
+
+    // ===== DOM =====
+    const teksEl = document.getElementById('teks');
+    const stackContainer = document.getElementById('stackContainer');
+    const emptyMsg = document.getElementById('emptyMsg');
+    const statusEl = document.getElementById('status');
+    const btnUndo = document.getElementById('btnUndo');
+
+    // ===== Helper =====
+    function updateEditor() {
+      teksEl.textContent = teks;
+    }
+
+    function setStatus(msg, type = '') {
+      statusEl.className = 'status ' + type;
+      statusEl.innerHTML = msg;
+    }
+
+    function highlightCode(lines) {
+      // clear all
+      document.querySelectorAll('.code-line').forEach(el => el.classList.remove('active'));
+      lines.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('active');
+      });
+    }
+
+    function renderStack() {
+      // remove old items (keep emptyMsg)
+      const items = stackContainer.querySelectorAll('.stack-item');
+      items.forEach(item => item.remove());
+
+      if (riwayat.length === 0) {
+        emptyMsg.style.display = 'block';
+        btnUndo.disabled = true;
+        return;
+      }
+
+      emptyMsg.style.display = 'none';
+      btnUndo.disabled = false;
+
+      riwayat.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'stack-item';
+        div.textContent = item === "" ? '"" (kosong)' : `"${item}"`;
+        if (index === riwayat.length - 1) {
+          div.classList.add('top');
+        }
+        stackContainer.appendChild(div);
+        // trigger animation
+        requestAnimationFrame(() => {
+          setTimeout(() => div.classList.add('show'), 20);
+        });
+      });
+    }
+
+    // ===== Actions =====
+    async function ketikKata(kataBaru) {
+      if (isAnimating) return;
+      isAnimating = true;
+
+      // Highlight code for ketik_kata
+      highlightCode(['line6', 'line7', 'line8', 'line9']);
+      setStatus(`📝 Menyimpan kondisi lama ke stack, lalu menambahkan <b>"${kataBaru}"</b>...`);
+
+      // Push to stack
+      riwayat.push(teks);
+      renderStack();
+
+      await sleep(600);
+
+      // Update text
+      teks += kataBaru;
+      updateEditor();
+
+      setStatus(`✅ Teks sekarang: <b>"${teks}"</b>`, 'success');
+      highlightCode([]);
+      isAnimating = false;
+    }
+
+    async function tekanUndo() {
+      if (isAnimating || riwayat.length === 0) return;
+      isAnimating = true;
+
+      highlightCode(['line11', 'line12', 'line13', 'line14']);
+      setStatus(`↩ Mengambil kondisi terakhir dari stack (POP)...`);
+
+      // Animate pop
+      const items = stackContainer.querySelectorAll('.stack-item');
+      const topItem = items[items.length - 1];
+      if (topItem) {
+        topItem.classList.add('popping');
+        await sleep(450);
+      }
+
+      // Actual pop
+      teks = riwayat.pop();
+      updateEditor();
+      renderStack();
+
+      setStatus(`✅ Teks kembali menjadi: <b>"${teks}"</b>`, 'success');
+      highlightCode([]);
+      isAnimating = false;
+    }
+
+    function resetAll() {
+      teks = "";
+      riwayat = [];
+      updateEditor();
+      renderStack();
+      highlightCode([]);
+      setStatus('🔄 Direset. Siap mengetik lagi!');
+    }
+
+    async function jalankanDemo() {
+      if (isAnimating) return;
+      resetAll();
+      await sleep(400);
+
+      await ketikKata('Halo ');
+      await sleep(900);
+      await ketikKata('Teman-teman ');
+      await sleep(900);
+      await ketikKata('Kelas X!');
+      await sleep(1200);
+
+      setStatus('⚠️ Ups, salah ketik! Mari kita Undo...', 'warning');
+      await sleep(1000);
+
+      await tekanUndo();
+      await sleep(1000);
+      await tekanUndo();
+
+      setStatus('🎉 Demo selesai! Kamu bisa coba sendiri dengan tombol di atas.', 'success');
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // Init
+    updateEditor();
+    renderStack();
+  </script>
+</body>
+</html>

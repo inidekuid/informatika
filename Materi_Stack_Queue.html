@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stack dan Queue: Tumpukan dan Antrean</title>
+<style>
+:root{
+  --bg:#fbfaf7; --ink:#1f2328; --muted:#5b6370; --line:#e3e0d8;
+  --accent:#1d5fa7; --accent-soft:#e7f0fa; --code-bg:#f3f1ec; --warn:#8a5a00; --warn-soft:#fbf3e2; --hl:#f0c46c; --ok:#2e8b57; --bad:#c0392b;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16181c; --ink:#e7e9ee; --muted:#9aa3b2; --line:#2b3038;
+    --accent:#7fb3ea; --accent-soft:#1d2b3d; --code-bg:#20242b; --warn:#f0c46c; --warn-soft:#2e2a20; --hl:#b8892a; --ok:#4cbf82; --bad:#e06b5d;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16181c; --ink:#e7e9ee; --muted:#9aa3b2; --line:#2b3038;
+  --accent:#7fb3ea; --accent-soft:#1d2b3d; --code-bg:#20242b; --warn:#f0c46c; --warn-soft:#2e2a20; --hl:#b8892a; --ok:#4cbf82; --bad:#e06b5d;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:17px/1.7 Georgia,"Times New Roman",serif}
+.wrap{max-width:740px;margin:0 auto;padding:24px 16px 80px}
+header.cover{padding:40px 0 24px;border-bottom:1px solid var(--line);margin-bottom:24px}
+.kicker{font:600 13px/1.4 system-ui,sans-serif;color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
+h1{font-size:2rem;line-height:1.25;margin:8px 0 12px}
+h2{font-size:1.45rem;margin:48px 0 8px;padding-top:12px;border-top:1px solid var(--line)}
+h3{font-size:1.15rem;margin:28px 0 6px}
+p{margin:0 0 14px}
+.meta{font:14px/1.5 system-ui,sans-serif;color:var(--muted)}
+nav.toc{background:var(--accent-soft);border-radius:10px;padding:16px 20px;margin:24px 0}
+nav.toc h2{border:0;margin:0 0 8px;padding:0;font-size:1.05rem}
+nav.toc ol{margin:0;padding-left:20px}
+nav.toc a{color:var(--accent);text-decoration:none}
+nav.toc li{margin:4px 0}
+.box{border-radius:10px;padding:14px 18px;margin:20px 0;font:15px/1.6 system-ui,sans-serif}
+.box.tip{background:var(--accent-soft)}
+.box.warn{background:var(--warn-soft);color:var(--ink)}
+.box strong{display:block;margin-bottom:4px}
+pre{background:var(--code-bg);border-radius:8px;padding:14px 16px;overflow-x:auto;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;margin:14px 0}
+code{font:0.92em ui-monospace,Menlo,Consolas,monospace;background:var(--code-bg);padding:1px 5px;border-radius:4px}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:16px 0;font:15px/1.5 system-ui,sans-serif;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--accent-soft)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:18px 0}
+.card{border:1px solid var(--line);border-radius:10px;padding:14px}
+.card h3{margin:0 0 6px;font-size:1rem}
+.card p{font:14px/1.5 system-ui,sans-serif;margin:0;color:var(--muted)}
+.tag{display:inline-block;font:600 12px/1 system-ui,sans-serif;padding:5px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);margin-right:6px}
+details{border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin:14px 0}
+summary{cursor:pointer;font:600 15px/1.4 system-ui,sans-serif;color:var(--accent)}
+details[open] summary{margin-bottom:8px}
+.check{display:flex;gap:10px;align-items:flex-start;font:15px/1.5 system-ui,sans-serif;margin:8px 0}
+.check span.box-l{flex:none;width:16px;height:16px;border:1.5px solid var(--muted);border-radius:3px;margin-top:3px}
+
+/* simulation */
+.sim{border:1px solid var(--line);border-radius:12px;padding:16px;margin:18px 0;font:15px/1.5 system-ui,sans-serif}
+.sim-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+.sim input[type=text]{width:90px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:14px ui-monospace,Menlo,Consolas,monospace}
+.sim button{padding:8px 12px;border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);border-radius:6px;cursor:pointer;font:600 14px system-ui,sans-serif}
+.sim button:disabled{opacity:.45;cursor:default}
+.sim .ghost{border-color:var(--line);background:transparent;color:var(--muted)}
+.stage{min-height:230px;display:flex;align-items:flex-end;justify-content:center;border:1px dashed var(--line);border-radius:10px;padding:12px;margin:12px 0;overflow-x:auto}
+/* stack view: vertical */
+.stack-view{display:flex;flex-direction:column-reverse;align-items:center;gap:6px;width:100%;min-height:200px;justify-content:flex-start}
+.cell{min-width:86px;padding:9px 12px;border:2px solid var(--accent);border-radius:8px;background:var(--accent-soft);text-align:center;font:600 16px system-ui,sans-serif}
+.cell.top{border-color:var(--hl);box-shadow:0 0 0 2px var(--hl)}
+.cell.new{background:var(--ok);color:#fff;border-color:var(--ok)}
+.cell.gone{background:var(--bad);color:#fff;border-color:var(--bad)}
+.label-side{font:13px system-ui,sans-serif;color:var(--muted);text-align:center}
+/* queue view: horizontal */
+.queue-view{display:flex;flex-direction:row;align-items:center;gap:8px;min-height:90px}
+.qcell{min-width:64px;padding:12px 10px;border:2px solid var(--accent);border-radius:8px;background:var(--accent-soft);text-align:center;font:600 16px system-ui,sans-serif}
+.qcell.front{border-color:var(--hl);box-shadow:0 0 0 2px var(--hl)}
+.qcell.new{background:var(--ok);color:#fff;border-color:var(--ok)}
+.qcell.gone{background:var(--bad);color:#fff;border-color:var(--bad)}
+.qmark{font:12px system-ui,sans-serif;color:var(--muted);text-align:center;margin-top:4px}
+.empty{font:14px system-ui,sans-serif;color:var(--muted);font-style:italic}
+.sim-msg{min-height:44px;padding:10px 12px;border-radius:8px;background:var(--accent-soft);margin:8px 0}
+.sim-err{color:var(--bad);min-height:18px;margin:4px 0}
+.sim-note{font:13px/1.5 system-ui,sans-serif;color:var(--muted)}
+.compare{font:15px/1.5 system-ui,sans-serif}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);font:14px/1.5 system-ui,sans-serif;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <div class="kicker">Informatika Kelas X &middot; Materi 2 Struktur Data Dasar &middot; Pertemuan 7 sampai 8</div>
+  <h1>Stack dan Queue: Tumpukan dan Antrean</h1>
+  <p class="meta">Bahan belajar mandiri. Setiap bagian punya simulasi yang bisa kamu coba langsung.</p>
+</header>
+
+<nav class="toc">
+  <h2>Isi</h2>
+  <ol>
+    <li><a href="#bab1">Dua cara menata data</a></li>
+    <li><a href="#bab2">Stack: tumpukan (LIFO)</a></li>
+    <li><a href="#sim1">Simulasi Stack</a></li>
+    <li><a href="#bab3">Queue: antrean (FIFO)</a></li>
+    <li><a href="#sim2">Simulasi Queue</a></li>
+    <li><a href="#bab4">Stack dan Queue dibandingkan</a></li>
+    <li><a href="#bab5">Contoh nyata di sekitar kita</a></li>
+    <li><a href="#bab6">Stack dan Queue di Python</a></li>
+    <li><a href="#bab7">Latihan</a></li>
+    <li><a href="#referensi">Referensi belajar</a></li>
+  </ol>
+</nav>
+
+<section id="bab1">
+  <h2>Bab 1. Dua cara menata data</h2>
+  <p>Bayangkan dua situasi. Di situasi pertama, kamu menumpuk piring bersih di rak. Piring yang paling akhir kamu taruh adalah yang pertama kamu ambil saat makan. Di situasi kedua, orang-orang berdiri di depan loket. Orang yang datang paling awal dilayani paling awal, dan yang baru datang harus menunggu di belakang.</p>
+  <p>Kedua situasi itu sama-sama menyimpan data, tetapi aturan keluar-masuknya berbeda. Itulah inti dari dua struktur data ini:</p>
+  <div class="cards">
+    <div class="card"><h3>Stack</h3><p>Yang masuk terakhir, keluar pertama. Disebut LIFO (Last In, First Out).</p></div>
+    <div class="card"><h3>Queue</h3><p>Yang masuk pertama, keluar pertama. Disebut FIFO (First In, First Out).</p></div>
+  </div>
+  <div class="box tip"><strong>Sebelum lanjut</strong>Jika kamu menaruh tiga buku berurutan di meja, lalu mengambil satu, buku mana yang sebaiknya kamu ambil dulu? Itu pertanyaan tentang aturan keluar. Tulis jawabanmu, lalu baca lanjutannya.</div>
+</section>
+
+<section id="bab2">
+  <h2>Bab 2. Stack: tumpukan (LIFO)</h2>
+  <p><span class="tag">Inti</span></p>
+  <p>Stack hanya punya satu tempat untuk keluar-masuk data, yaitu di bagian atas. Data baru selalu ditaruh di atas. Data yang diambil juga selalu dari atas.</p>
+  <p>Ada tiga operasi dasar:</p>
+  <table>
+    <tr><th>Operasi</th><th>Artinya</th></tr>
+    <tr><td>push(x)</td><td>Menaruh x di atas tumpukan.</td></tr>
+    <tr><td>pop()</td><td>Mengambil dan membuang elemen paling atas.</td></tr>
+    <tr><td>peek()</td><td>Melihat elemen paling atas tanpa mengambilnya.</td></tr>
+  </table>
+  <p>Jika stack kosong lalu kamu lakukan pop, itu kesalahan. Tidak ada yang bisa diambil.</p>
+  <div class="box warn"><strong>Ingat</strong>Pada stack, kamu tidak bisa mengambil elemen dari tengah atau bawah tanpa lebih dulu mengambil semua elemen di atasnya.</div>
+</section>
+
+<section id="sim1">
+  <h3>Simulasi Stack</h3>
+  <p>Coba push beberapa angka, lalu pop. Perhatikan urutan yang keluar. Tebak dulu: setelah push 4, 9, 2, lalu pop dua kali, angka apa yang keluar?</p>
+  <div class="sim" id="stackSim">
+    <div class="sim-controls">
+      <input type="text" id="stIn" value="7" aria-label="Angka yang akan di-push">
+      <button id="stPush">Push</button>
+      <button id="stPop">Pop</button>
+      <button id="stPeek" class="ghost">Peek</button>
+      <button id="stReset" class="ghost">Ulang</button>
+    </div>
+    <div class="sim-err" id="stErr"></div>
+    <div class="stage"><div class="stack-view" id="stView"></div></div>
+    <div class="sim-msg" id="stMsg">Stack kosong. Coba push angka pertama.</div>
+    <div class="sim-note">Maksimal 8 elemen. Elemen paling atas diberi tanda kuning.</div>
+  </div>
+</section>
+
+<section id="bab3">
+  <h2>Bab 3. Queue: antrean (FIFO)</h2>
+  <p><span class="tag">Inti</span></p>
+  <p>Queue punya dua ujung. Data baru masuk di belakang, dan data yang dilayani keluar dari depan.</p>
+  <table>
+    <tr><th>Operasi</th><th>Artinya</th></tr>
+    <tr><td>enqueue(x)</td><td>Menambahkan x di belakang antrean.</td></tr>
+    <tr><td>dequeue()</td><td>Mengambil dan membuang elemen paling depan.</td></tr>
+    <tr><td>front()</td><td>Melihat elemen paling depan tanpa mengambilnya.</td></tr>
+  </table>
+  <p>Jika antrean kosong lalu kamu lakukan dequeue, itu kesalahan. Tidak ada yang bisa dilayani.</p>
+</section>
+
+<section id="sim2">
+  <h3>Simulasi Queue</h3>
+  <p>Tebak dulu: setelah enqueue A, B, C, lalu dequeue dua kali, siapa yang tersisa di depan?</p>
+  <div class="sim" id="queueSim">
+    <div class="sim-controls">
+      <input type="text" id="qIn" value="A" aria-label="Nama atau angka yang akan masuk antrean">
+      <button id="qEnq">Enqueue</button>
+      <button id="qDeq">Dequeue</button>
+      <button id="qFront" class="ghost">Front</button>
+      <button id="qReset" class="ghost">Ulang</button>
+    </div>
+    <div class="sim-err" id="qErr"></div>
+    <div class="stage"><div class="queue-view" id="qView"></div></div>
+    <div class="sim-msg" id="qMsg">Antrean kosong. Coba enqueue elemen pertama.</div>
+    <div class="sim-note">Maksimal 8 elemen. Elemen paling depan diberi tanda kuning. Elemen baru masuk dari kanan.</div>
+  </div>
+</section>
+
+<section id="bab4">
+  <h2>Bab 4. Stack dan Queue dibandingkan</h2>
+  <table>
+    <tr><th>Aspek</th><th>Stack</th><th>Queue</th></tr>
+    <tr><td>Aturan keluar</td><td>LIFO: yang terakhir masuk keluar pertama</td><td>FIFO: yang pertama masuk keluar pertama</td></tr>
+    <tr><td>Tempat masuk dan keluar</td><td>Satu ujung, yaitu atas</td><td>Dua ujung: belakang untuk masuk, depan untuk keluar</td></tr>
+    <tr><td>Operasi utama</td><td>push, pop, peek</td><td>enqueue, dequeue, front</td></tr>
+    <tr><td>Cocok untuk</td><td>Membalik urutan, mengingat langkah terakhir</td><td>Melayani sesuai urutan datang</td></tr>
+  </table>
+  <p>Pertanyaan untuk dipikirkan: jika kamu memasukkan 1, 2, 3 lalu mengeluarkan semuanya, urutan keluarnya sama dengan urutan masuk atau terbalik? Jawabannya berbeda untuk stack dan queue. Coba pastikan dengan kedua simulasi di atas.</p>
+</section>
+
+<section id="bab5">
+  <h2>Bab 5. Contoh nyata di sekitar kita</h2>
+  <h3><span class="tag">Stack</span> Undo dan Redo</h3>
+  <p>Setiap perubahan yang kamu lakukan di aplikasi pengolah teks bisa disimpan sebagai elemen di tumpukan. Saat kamu menekan Undo, aplikasi mengambil perubahan paling atas (pop) dan membatalkannya. Itulah sebabnya Undo selalu membatalkan perubahan terakhir, bukan yang pertama.</p>
+  <h3><span class="tag">Stack</span> Tombol kembali di peramban</h3>
+  <p>Setiap halaman yang kamu buka ditumpuk. Tombol kembali mengambil halaman paling atas dan menampilkan halaman sebelumnya.</p>
+  <h3><span class="tag">Stack</span> Pemanggilan fungsi</h3>
+  <p>Saat sebuah fungsi memanggil fungsi lain, komputer menyimpan posisi kerja di tumpukan. Ketika fungsi selesai, posisi terakhir diambil lagi. Ini juga yang membuat rekursi bisa berjalan.</p>
+  <h3><span class="tag">Queue</span> Antrean cetak</h3>
+  <p>Beberapa dokumen dikirim ke printer. Dokumen yang dikirim lebih dulu dicetak lebih dulu. Dokumen baru menunggu di belakang.</p>
+  <h3><span class="tag">Queue</span> Loket layanan</h3>
+  <p>Pelanggan dilayani sesuai urutan datang. Orang yang datang belakangan tidak boleh langsung dilayani melewati yang di depan.</p>
+  <h3><span class="tag">Queue</span> Pembagian waktu proses</h3>
+  <p>Sistem operasi sering memakai antrean untuk membagi waktu antarproses. Setiap proses mendapat giliran, lalu kembali ke belakang antrean jika belum selesai. Ini disederhanakan di sini, aturan nyatanya lebih kompleks.</p>
+  <div class="box warn"><strong>Catatan</strong>Contoh di atas disederhanakan untuk belajar. Implementasi nyata di aplikasi atau sistem operasi bisa lebih rumit. Gunakan contoh ini untuk memahami konsepnya, bukan sebagai penjelasan teknis lengkap.</div>
+</section>
+
+<section id="bab6">
+  <h2>Bab 6. Stack dan Queue di Python</h2>
+  <p><span class="tag">Lanjut</span></p>
+  <p>Python bisa memakai list biasa sebagai stack. Gunakan <code>append</code> untuk push dan <code>pop()</code> untuk pop, karena keduanya bekerja di ujung kanan list.</p>
+<pre><code>tumpukan = []
+tumpukan.append(4)
+tumpukan.append(9)
+tumpukan.append(2)
+print(tumpukan.pop())   # 2
+print(tumpukan.pop())   # 9
+print(tumpukan)         # [4]</code></pre>
+  <p>Untuk queue, list juga bisa dipakai, tetapi <code>pop(0)</code> mengambil elemen dari depan dan semua elemen lain harus digeser. Untuk antrean yang besar, Python menyediakan <code>deque</code> dari modul <code>collections</code>, yang dirancang untuk kedua ujungnya.</p>
+<pre><code>from collections import deque
+
+antrean = deque()
+antrean.append("A")      # enqueue
+antrean.append("B")
+antrean.append("C")
+print(antrean.popleft()) # A, dequeue dari depan
+print(antrean[0])        # B, lihat yang paling depan
+print(antrean)           # deque(['B', 'C'])</code></pre>
+  <div class="box tip"><strong>Catatan</strong>Untuk kelas X, cukup pahami konsepnya dulu. Kode di atas bisa dicoba di Thonny atau IDLE. Jika ada error, periksa nama modul dan tanda kurung.</div>
+</section>
+
+<section id="bab7">
+  <h2>Bab 7. Latihan</h2>
+  <p>Kerjakan di buku catatan. Tulis langkahnya, bukan hanya hasil akhirnya.</p>
+
+  <h3>Latihan A (memahami)</h3>
+  <div class="check"><span class="box-l"></span><div>1. Apa arti LIFO dan FIFO dengan kata-katamu sendiri?</div></div>
+  <div class="check"><span class="box-l"></span><div>2. Sebutkan satu contoh stack dan satu contoh queue dari kehidupanmu.</div></div>
+
+  <h3>Latihan B (menelusuri)</h3>
+  <div class="check"><span class="box-l"></span><div>3. Stack kosong. Lakukan: push 5, push 8, pop, push 3, pop, pop. Tuliskan isi stack setelah setiap langkah, dan angka yang keluar dari setiap pop.</div></div>
+  <div class="check"><span class="box-l"></span><div>4. Queue kosong. Lakukan: enqueue A, enqueue B, dequeue, enqueue C, dequeue, dequeue. Tuliskan isi antrean setelah setiap langkah, dan siapa yang dilayani di setiap dequeue.</div></div>
+  <details>
+    <summary>Lihat kunci nomor 3 dan 4</summary>
+    <p><strong>Nomor 3:</strong> push 5: [5]. push 8: [5, 8]. pop mengeluarkan 8: [5]. push 3: [5, 3]. pop mengeluarkan 3: [5]. pop mengeluarkan 5: []. Angka yang keluar: 8, 3, 5.</p>
+    <p><strong>Nomor 4:</strong> enqueue A: [A]. enqueue B: [A, B]. dequeue melayani A: [B]. enqueue C: [B, C]. dequeue melayani B: [C]. dequeue melayani C: []. Urutan dilayani: A, B, C.</p>
+  </details>
+
+  <h3>Latihan C (menganalisis)</h3>
+  <div class="check"><span class="box-l"></span><div>5. Kamu memasukkan angka 1, 2, 3, 4 ke stack, lalu mengeluarkannya semua. Apa urutan keluarnya? Bagaimana jika ke queue?</div></div>
+  <div class="check"><span class="box-l"></span><div>6. Mengapa Undo di aplikasi tidak bisa langsung membatalkan perubahan pertama yang kamu buat? Jelaskan dengan konsep stack.</div></div>
+  <details>
+    <summary>Lihat kunci nomor 5 dan 6</summary>
+    <p><strong>Nomor 5:</strong> stack mengeluarkan 4, 3, 2, 1. Queue mengeluarkan 1, 2, 3, 4.</p>
+    <p><strong>Nomor 6:</strong> Undo mengambil elemen paling atas di stack, yaitu perubahan terakhir. Perubahan pertama berada di bawah dan baru bisa diambil setelah semua perubahan di atasnya diambil.</p>
+  </details>
+
+  <h3>Latihan D (menjalankan)</h3>
+  <div class="check"><span class="box-l"></span><div>7. Jalankan contoh stack dan queue di Python di bab 6. Ubah data, lalu tebak hasilnya sebelum menjalankan.</div></div>
+</section>
+
+<section id="referensi">
+  <h2>Referensi belajar</h2>
+  <table>
+    <tr><th>Sumber</th><th>Bagian yang relevan</th><th>Catatan</th></tr>
+    <tr><td>Mushthofa, dkk. (2023). Informatika untuk SMA/MA/SMK/MAK Kelas X, Edisi Revisi. Kemendikbudristek.</td><td>Bab 2, Subbab D: tumpukan dan antrean</td><td>Nomor halaman belum saya verifikasi. Cari di daftar isi buku Anda.</td></tr>
+  </table>
+  <p>Referensi daring untuk stack dan queue belum saya tambahkan karena belum saya buka dan verifikasi. Tambahkan setelah diperiksa.</p>
+</section>
+
+<footer>
+  Bahan ini disusun untuk belajar mandiri dan pelajaran di kelas. Istilah dan contoh perlu dicocokkan dengan buku Informatika Kelas X Edisi Revisi 2023 sebelum digunakan sebagai rujukan resmi.
+</footer>
+
+</div>
+<script>
+function makeStack(max) {
+  const s = { items: [], max: max || 8 };
+  s.push = function (x) {
+    if (s.items.length >= s.max) return { ok: false, msg: 'Tumpukan penuh (maksimal ' + s.max + '). Pop dulu sebelum menambah.' };
+    s.items.push(x); return { ok: true, msg: 'Push ' + x + '. Elemen teratas sekarang ' + x + '.' };
+  };
+  s.pop = function () {
+    if (s.items.length === 0) return { ok: false, msg: 'Stack kosong, tidak ada yang bisa di-pop.' };
+    const v = s.items.pop(); return { ok: true, value: v, msg: 'Pop ' + v + '. Yang keluar adalah elemen paling atas.' };
+  };
+  s.peek = function () {
+    if (s.items.length === 0) return { ok: false, msg: 'Stack kosong.' };
+    return { ok: true, value: s.items[s.items.length - 1], msg: 'Elemen teratas: ' + s.items[s.items.length - 1] + '.' };
+  };
+  return s;
+}
+function makeQueue(max) {
+  const q = { items: [], max: max || 8 };
+  q.enqueue = function (x) {
+    if (q.items.length >= q.max) return { ok: false, msg: 'Antrean penuh (maksimal ' + q.max + ').' };
+    q.items.push(x); return { ok: true, msg: 'Enqueue ' + x + ' masuk di belakang antrean.' };
+  };
+  q.dequeue = function () {
+    if (q.items.length === 0) return { ok: false, msg: 'Antrean kosong, tidak ada yang dilayani.' };
+    const v = q.items.shift(); return { ok: true, value: v, msg: 'Dequeue ' + v + '. Yang dilayani adalah yang paling depan.' };
+  };
+  q.front = function () {
+    if (q.items.length === 0) return { ok: false, msg: 'Antrean kosong.' };
+    return { ok: true, value: q.items[0], msg: 'Paling depan: ' + q.items[0] + '.' };
+  };
+  return q;
+}
+
+
+(function () {
+  function bind(id, fn) { var el = document.getElementById(id); if (el) el.addEventListener('click', fn); }
+  var st = makeStack(8), q = makeQueue(8);
+
+  // stack UI
+  var stView = document.getElementById('stView'), stMsg = document.getElementById('stMsg'), stErr = document.getElementById('stErr');
+  var stIn = document.getElementById('stIn');
+  function drawStack(newIdx, goneVal) {
+    stView.innerHTML = '';
+    if (st.items.length === 0) { var e = document.createElement('div'); e.className = 'empty'; e.textContent = '(kosong)'; stView.appendChild(e); return; }
+    st.items.forEach(function (v, i) {
+      var c = document.createElement('div');
+      c.className = 'cell' + (i === st.items.length - 1 ? ' top' : '') + (i === newIdx ? ' new' : '');
+      c.textContent = v;
+      stView.appendChild(c);
+    });
+    if (goneVal !== undefined) {
+      var g = document.createElement('div'); g.className = 'cell gone'; g.textContent = 'keluar: ' + goneVal; stView.appendChild(g);
+    }
+  }
+  function stOk(r) { stErr.textContent = r.ok ? '' : r.msg; }
+  bind('stPush', function () {
+    var v = stIn.value.trim();
+    if (v === '') { stErr.textContent = 'Isi angka dulu.'; return; }
+    var r = st.push(isNaN(v) ? v : Number(v));
+    stOk(r);
+    if (r.ok) { drawStack(st.items.length - 1); stMsg.textContent = r.msg; }
+  });
+  bind('stPop', function () {
+    var r = st.pop(); stOk(r);
+    if (r.ok) { drawStack(-1, r.value); stMsg.textContent = r.msg; } else stMsg.textContent = r.msg;
+  });
+  bind('stPeek', function () {
+    var r = st.peek(); stOk(r); stMsg.textContent = r.msg;
+  });
+  bind('stReset', function () { st = makeStack(8); drawStack(-1); stErr.textContent = ''; stMsg.textContent = 'Stack kosong. Coba push angka pertama.'; });
+  drawStack(-1);
+
+  // queue UI
+  var qView = document.getElementById('qView'), qMsg = document.getElementById('qMsg'), qErr = document.getElementById('qErr');
+  var qIn = document.getElementById('qIn');
+  function drawQueue(newIdx, goneVal) {
+    qView.innerHTML = '';
+    if (q.items.length === 0) { var e = document.createElement('div'); e.className = 'empty'; e.textContent = '(kosong)'; qView.appendChild(e); return; }
+    q.items.forEach(function (v, i) {
+      var wrap = document.createElement('div');
+      var c = document.createElement('div');
+      c.className = 'qcell' + (i === 0 ? ' front' : '') + (i === newIdx ? ' new' : '');
+      c.textContent = v;
+      var m = document.createElement('div'); m.className = 'qmark'; m.textContent = i === 0 ? 'depan' : (i === q.items.length - 1 ? 'belakang' : '');
+      wrap.appendChild(c); wrap.appendChild(m);
+      qView.appendChild(wrap);
+    });
+  }
+  function qOk(r) { qErr.textContent = r.ok ? '' : r.msg; }
+  bind('qEnq', function () {
+    var v = qIn.value.trim();
+    if (v === '') { qErr.textContent = 'Isi nama atau angka dulu.'; return; }
+    var r = q.enqueue(isNaN(v) ? v : Number(v));
+    qOk(r);
+    if (r.ok) { drawQueue(q.items.length - 1); qMsg.textContent = r.msg; }
+  });
+  bind('qDeq', function () {
+    var r = q.dequeue(); qOk(r);
+    if (r.ok) { drawQueue(-1); qMsg.textContent = r.msg + ' Dilayani: ' + r.value + '.'; } else qMsg.textContent = r.msg;
+  });
+  bind('qFront', function () { var r = q.front(); qOk(r); qMsg.textContent = r.msg; });
+  bind('qReset', function () { q = makeQueue(8); drawQueue(-1); qErr.textContent = ''; qMsg.textContent = 'Antrean kosong. Coba enqueue elemen pertama.'; });
+  drawQueue(-1);
+})();
+</script>
+</body>
+</html>
