@@ -83,6 +83,7 @@ details[open] summary{margin-bottom:8px}
 .sim-err{color:var(--bad);min-height:18px;margin:4px 0}
 .sim-note{font:13px/1.5 system-ui,sans-serif;color:var(--muted)}
 .compare{font:15px/1.5 system-ui,sans-serif}
+.visualization-frame{display:block;width:100%;min-height:600px;border:1px solid var(--line);border-radius:12px;background:#0f172a}
 footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);font:14px/1.5 system-ui,sans-serif;color:var(--muted)}
 </style>
 </head>
@@ -103,6 +104,8 @@ footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);font:14
     <li><a href="#sim1">Simulasi Stack</a></li>
     <li><a href="#bab3">Queue: antrean (FIFO)</a></li>
     <li><a href="#sim2">Simulasi Queue</a></li>
+    <li><a href="#visual-stack">Visualisasi Stack: Undo</a></li>
+    <li><a href="#visual-queue">Visualisasi Queue</a></li>
     <li><a href="#bab4">Stack dan Queue dibandingkan</a></li>
     <li><a href="#bab5">Contoh nyata di sekitar kita</a></li>
     <li><a href="#bab6">Stack dan Queue di Python</a></li>
@@ -184,6 +187,20 @@ footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);font:14
     <div class="sim-msg" id="qMsg">Antrean kosong. Coba enqueue elemen pertama.</div>
     <div class="sim-note">Maksimal 8 elemen. Elemen paling depan diberi tanda kuning. Elemen baru masuk dari kanan.</div>
   </div>
+</section>
+
+<section id="visual-stack">
+  <h2>Visualisasi Stack: Undo</h2>
+  <p>Gunakan tombol ketik untuk menambahkan perubahan ke riwayat, lalu tekan Undo untuk mengambil perubahan terakhir dari stack. Visualisasi ini juga menampilkan kode yang sedang dijalankan.</p>
+  <p><a href="visualisasi_stack_undo.html" target="_blank" rel="noopener">Buka visualisasi Stack di tab baru</a></p>
+  <iframe class="visualization-frame" src="visualisasi_stack_undo.html" title="Visualisasi interaktif Stack untuk fitur Undo" loading="lazy"></iframe>
+</section>
+
+<section id="visual-queue">
+  <h2>Visualisasi Queue: Antrean</h2>
+  <p>Tambahkan orang ke belakang antrean, lalu layani orang dari depan. Perhatikan aturan FIFO: yang masuk pertama akan keluar pertama.</p>
+  <p><a href="visualisasi_queue.html" target="_blank" rel="noopener">Buka visualisasi Queue di tab baru</a></p>
+  <iframe class="visualization-frame" src="visualisasi_queue.html" title="Visualisasi interaktif Queue dengan aturan FIFO" loading="lazy"></iframe>
 </section>
 
 <section id="bab4">
@@ -284,6 +301,16 @@ print(antrean)           # deque(['B', 'C'])</code></pre>
 
 </div>
 <script>
+document.querySelectorAll('.visualization-frame').forEach(function (frame) {
+  function resizeFrame() {
+    frame.style.height = frame.contentDocument.documentElement.scrollHeight + 'px';
+  }
+
+  frame.addEventListener('load', resizeFrame);
+  frame.contentWindow.addEventListener('resize', resizeFrame);
+  if (frame.contentDocument.readyState === 'complete') resizeFrame();
+});
+
 function makeStack(max) {
   const s = { items: [], max: max || 8 };
   s.push = function (x) {
